@@ -141,17 +141,7 @@ public class WelcomeActivity extends BaseDialogActivity
 			case R.id.welcome_exit_butt:
 				// todo
 				//	testing!
-//				finish();
-				show_yes_no_dialog(R.string.welcome_help_help_title,
-						R.string.welcome_help_help_msg,
-						new View.OnClickListener() {
-							public void onClick(View v) {
-								dismiss_all_dialogs();
-								Log.d(tag, "Yep, you dismissed that dialog, you betcha!");
-							}
-						});
-				// todo
-				//	end test
+				finish();
 				break;
 
 			case R.id.welcome_help_butt:
