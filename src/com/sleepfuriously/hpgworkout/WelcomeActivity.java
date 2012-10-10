@@ -89,10 +89,10 @@ public class WelcomeActivity extends BaseDialogActivity
 		m_help_logo_butt = (ImageView) findViewById(R.id.welcome_logo_id);
 		m_help_logo_butt.setOnClickListener(this);
 
-		m_export_butt = (Button) findViewById(R.id.welcome_export_butt);
-		m_export_butt.setOnClickListener(this);
-		m_export_butt.setOnLongClickListener(this);
-		m_export_butt.setEnabled(false); // todo - change this!!
+//		m_export_butt = (Button) findViewById(R.id.welcome_export_butt);
+//		m_export_butt.setOnClickListener(this);
+//		m_export_butt.setOnLongClickListener(this);
+//		m_export_butt.setEnabled(false); // todo - change this!!
 
 		// Get the DatabaseHelper going.  Since this is the
 		// first Activity, this should take care of the life
@@ -130,8 +130,8 @@ public class WelcomeActivity extends BaseDialogActivity
 				startActivityForResult(itt, WGlobals.PREFSACTIVITY);
 				break;
 
-			case R.id.welcome_export_butt:
-				break;
+//			case R.id.welcome_export_butt:
+//				break;
 
 			case R.id.welcome_graph_butt:
 				itt = new Intent (this, GraphSelectorActivity.class);
@@ -179,9 +179,9 @@ public class WelcomeActivity extends BaseDialogActivity
 				show_help_dialog(R.string.welcome_settings_help_title, R.string.welcome_settings_help_msg);
 				return true;
 
-			case R.id.welcome_export_butt:
-				show_help_dialog(R.string.welcome_export_help_title, R.string.welcome_export_help_msg);
-				return true;
+//			case R.id.welcome_export_butt:
+//				show_help_dialog(R.string.welcome_export_help_title, R.string.welcome_export_help_msg);
+//				return true;
 
 			case R.id.welcome_graph_butt:
 				show_help_dialog(R.string.welcome_graphs_help_title, R.string.welcome_graphs_help_msg);

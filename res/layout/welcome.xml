@@ -81,6 +81,7 @@
         android:textColor="@color/ivory"
         android:textSize="@dimen/font_size_button_default" />
 
+<!-- 
     <Button
         android:id="@+id/welcome_export_butt"
         android:layout_width="fill_parent"
@@ -94,12 +95,13 @@
         android:text="@string/welcome_export_button"
         android:textColor="@color/black"
         android:textSize="@dimen/font_size_button_default" />
+-->
 
 	<Button
 	    android:id="@+id/welcome_graph_butt"
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
-	    android:layout_below="@id/welcome_export_butt"
+	    android:layout_below="@id/welcome_settings_butt"
 	    android:layout_marginBottom="3dp"
 	    android:layout_marginLeft="10dp"
 	    android:layout_marginRight="10dp"
