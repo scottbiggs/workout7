@@ -36,6 +36,7 @@
         android:layout_toLeftOf="@id/dialog_help_logo"
         android:text="foo" />
 
+    
     <ImageView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/dialog_help_title_divider"
@@ -48,21 +49,6 @@
         android:paddingTop="10dp"
         android:scaleType="fitXY"
         android:src="@android:drawable/divider_horizontal_dark" />
-
-    <Button
-        android:id="@+id/dialog_help_ok_butt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/dialog_help_scrollview"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="-50dp"
-        android:background="@drawable/button_shiny_black"
-        android:paddingLeft="50dp"
-        android:paddingRight="50dp"
-        android:text="@string/ok"
-        android:textColor="@color/ivory"
-        android:textSize="@dimen/font_size_button_default" />
 
     <ScrollView
         android:id="@+id/dialog_help_scrollview"
@@ -91,4 +77,19 @@
         </LinearLayout>
     </ScrollView>
 
+    <Button
+        android:id="@+id/dialog_help_ok_butt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dialog_help_scrollview"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="-50dp"
+        android:background="@drawable/button_shiny_black"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        android:text="@string/ok"
+        android:textColor="@color/ivory"
+        android:textSize="@dimen/font_size_button_default" />
+    
 </RelativeLayout>
