@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	This screen appears after the user has selected "graphs"
+	from the welcome screen.  They then pick an exercise
+	or a muscle group to look at.
+-->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/darkdark_gray"
+    tools:ignore="ContentDescription" >
+
+    <ImageView
+        android:id="@+id/graph_selector_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="6dp"
+        android:src="@drawable/hpglogo_36x36" />
+
+    <TextView
+        android:id="@+id/graph_selector_title_tv"
+        style="@style/white_text_large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_toLeftOf="@id/graph_selector_logo"
+        android:text="@string/graph_selector_title"
+        />
+
+    <TextView
+        android:id="@+id/graph_selector_description_tv"
+        style="@style/white_text_small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/graph_selector_title_tv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="6dp"
+        android:gravity="center"
+        android:text="@string/graph_selector_exercise_msg"
+        android:textColor="@color/off_white"
+        android:textStyle="bold" />
+
+    <!-- ============= -->
+    <!-- Buttons -->
+    <!-- ============= -->
+
+    <Button
+        android:id="@+id/graph_selector_back_butt"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:background="@drawable/button_shiny_black"
+        android:text="@string/back"
+        android:textColor="@color/ivory" />
+
+    <ListView
+        android:id="@+id/graph_selector_lv"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/graph_selector_back_butt"
+        android:layout_below="@+id/graph_selector_description_tv"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="5dp"
+        android:background="@drawable/rounded_edges"
+        android:cacheColorHint="@color/rounded_bg_gray1"
+        android:padding="3dp" >
+    </ListView>
+
+</RelativeLayout>

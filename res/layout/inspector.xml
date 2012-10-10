@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	 This Layout is for the Activity that pops up when the
+	user has clicked on one of their workout sets in the grid.
+
+	We want them to:
+		- Review all the sets (if more than one) that this grid
+		  cell represents.
+		- Edit any of the sets here (and delete). New Activity?
+		- Help (of course).
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/darkdark_gray" 
+    >
+<!--
+    <TextView
+        android:id="@+id/inspector_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/inspector_title"
+	    style="@style/white_text_large"
+        />
+
+    <ImageView
+        android:id="@+id/inspector_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="6dp"
+        android:src="@drawable/hpglogo_36x36" />
+-->
+
+<!--  no longer used, but kept just in case...
+    <TextView
+        android:id="@+id/inspector_description_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/inspector_title_tv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="6dp"
+        android:gravity="center"
+        android:text="error"
+	    style="@style/white_text_small"
+        android:textStyle="bold" />
+-->
+
+    <ScrollView
+        android:id="@+id/inspector_sv"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" >
+
+        <!--
+			This LinearLayout is where all the tables
+        		will be dynamically put in.
+        -->
+
+        <LinearLayout
+            android:id="@+id/inspector_all_sets_ll"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+        </LinearLayout>
+
+
+
+    </ScrollView>
+
+</RelativeLayout>

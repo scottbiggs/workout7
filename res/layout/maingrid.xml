@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Layout for the main grid.
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" 
+    android:background="@color/darkdark_gray" 
+    >
+
+    <TextView
+        android:id="@+id/grid_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/grid_title"
+	    style="@style/white_text_large"
+        android:typeface="sans" />
+
+    <ImageView
+        android:id="@+id/grid_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/grid_title"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:src="@drawable/hpglogo_36x36" />
+
+    <LinearLayout
+        android:id="@+id/grid_button_ll"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="6dp"
+        android:orientation="horizontal"
+        android:weightSum="1" >
+
+        <Button
+            android:id="@+id/grid_add_exercise_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="3dp"
+            android:layout_weight=".3"
+	        android:background="@drawable/button_shiny_black"
+	        android:textColor="@color/ivory"
+            android:text="@string/grid_add_button" />
+
+        <Button
+            android:id="@+id/grid_order_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_weight=".3"
+	        android:background="@drawable/button_shiny_black"
+	        android:textColor="@color/ivory"
+            android:text="@string/grid_order_button" />
+
+        <Button
+            android:id="@+id/grid_done_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:layout_weight=".4"
+	        android:background="@drawable/button_shiny_black"
+	        android:textColor="@color/ivory"
+            android:text="@string/done"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/main_sv"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/grid_button_ll"
+        android:layout_below="@id/grid_title" android:scrollbarStyle="insideInset">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TableLayout
+                android:id="@+id/left_table"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+            </TableLayout>
+
+            <HorizontalScrollView
+                android:id="@+id/grid_horiz_sv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scrollbars="none" >
+
+                <TableLayout
+                    android:id="@+id/big_table"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+                </TableLayout>
+            </HorizontalScrollView>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

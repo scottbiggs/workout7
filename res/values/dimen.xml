@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<!--  Universal Text Sizes (initially) -->
+	<!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+		x	WARNING!!!
+		x
+		x	These values MUST match up with the corresponding
+		x	values in in ASetActivity.java.  Change these, and you
+		x	MUST change those and vice versa.
+		x -->
+	<dimen name="font_size_xtra_large_default">24dp</dimen>
+	<dimen name="font_size_large_default">20dp</dimen>
+	<dimen name="font_size_medium_default">18dp</dimen>
+	<dimen name="font_size_default">15dp</dimen>
+	<dimen name="font_size_button_default">15dp</dimen>
+
+</resources>

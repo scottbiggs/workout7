@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<string-array name="type_array">
+		<item>anaerobic</item>
+		<item>aerobic</item>
+		<item>both</item>
+		<item>misc</item>
+	</string-array>
+
+	<string-array name="muscle_group_array">
+		<item>upper</item>
+		<item>lower</item>
+		<item>trunk</item>
+		<item>all</item>
+		<item>misc</item>
+	</string-array>
+
+    <!--
+		Corresponds with the columns in DatabaseHelper
+    -->
+    <string-array name="exercise_column_names_array">
+        	<item>_id</item>
+		<item>name</item>
+		<item>type</item>
+		<item>muscle_group</item>
+		<item>weights</item>
+		<item>weight_unit</item>
+		<item>reps</item>
+		<item>distanced</item>
+		<item>distance_unit</item>
+		<item>timed</item>
+		<item>time_unit</item>
+		<item>level</item>
+		<item>calories</item>
+		<item>other</item>
+		<item>other_title</item>
+		<item>other_unit</item>
+		<item>significant</item>
+		<item>lorder</item>
+    </string-array>
+
+    <string-array name="months">
+        <item>Jan</item>
+        <item>Feb</item>
+        <item>Mar</item>
+        <item>Apr</item>
+        <item>May</item>
+        <item>Jun</item>
+        <item>Jul</item>
+        <item>Aug</item>
+        <item>Sep</item>
+        <item>Oct</item>
+        <item>Nov</item>
+        <item>Dec</item>
+    </string-array>
+
+	<string-array name="weight_unit_array">
+		<item>pounds</item>
+		<item>ounces</item>
+		<item>troy ounces</item>
+		<item>tons</item>
+		<item>metric tons</item>
+    		<item>kilograms</item>
+		<item>grams</item>
+		<item>picograms</item>
+		<item>drams</item>
+		<item>pennyweight</item>
+    		<item>grains</item>
+		<item>custom</item>
+	</string-array>
+
+	<string-array name="dist_unit_array">
+		<item>miles</item>
+		<item>kilometers</item>
+		<item>yards</item>
+		<item>meters</item>
+		<item>feet</item>
+    		<item>inches</item>
+    		<item>cubits</item>
+    		<item>spans</item>
+		<item>centimeters</item>
+		<item>millimeters</item>
+		<item>nanometers</item>
+		<item>light years</item>
+    		<item>parsecs</item>
+		<item>custom</item>
+	</string-array>
+
+	<string-array name="time_unit_array">
+    		<item>milliseconds</item>
+		<item>seconds</item>
+    		<item>minutes</item>
+		<item>hours</item>
+		<item>days</item>
+		<item>weeks</item>
+    		<item>months</item>
+		<item>years</item>
+		<item>centuries</item>
+		<item>eons</item>
+		<item>jiffies</item>
+    		<item>nanocenturies</item>
+    		<item>dog years</item>
+    		<item>custom</item>
+	</string-array>
+
+</resources>

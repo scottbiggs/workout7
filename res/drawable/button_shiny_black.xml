@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This file defines the shiny black buttons.
+
+	To use:
+		- Make sure this file is in your res->drawable folder
+		- Set the background of the buttons you want to
+			this file using this command:  
+			android:background="@drawable/button_shiny_black"
+		- Make sure that the text color of your button
+			is set to a light color!
+		- That's it!
+-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+	<item
+	    android:state_focused="true"
+	    android:state_pressed="false" 
+	    android:drawable="@drawable/button_shiny_black_no_logo_focused"
+        />
+    	<item
+	    android:state_pressed="true" 
+	    android:drawable="@drawable/button_shiny_black_no_logo_pressed"
+        />
+	<item 
+        android:state_enabled="false" 
+	    android:drawable="@drawable/button_shiny_black_no_logo_disabled"
+        />
+	<item 
+	    android:drawable="@drawable/button_shiny_black_no_logo_normal"
+	/>
+</selector>

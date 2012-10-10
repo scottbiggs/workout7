@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Allows the user to change the stress levels of a
+	workout set.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" 
+    android:background="@color/darkdark_gray" 
+    >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/enter_stress_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="3dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/enter_stress_title"
+		    style="@style/white_text_large"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="6dp"
+            android:src="@drawable/hpglogo_36x36" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <!-- ============= -->
+        <!-- Buttons -->
+        <!-- ============= -->
+
+        <Button
+            android:id="@+id/enter_stress_help_butt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="@string/question_mark" />
+
+        <Button
+            android:id="@+id/enter_stress_ok_butt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="8dp"
+            android:layout_toRightOf="@id/enter_stress_help_butt"
+            android:text="@string/done" />
+
+        <Button
+            android:id="@+id/enter_stress_cancel_butt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="8dp"
+            android:layout_toLeftOf="@id/enter_stress_help_butt"
+            android:text="@string/cancel" />
+
+        <TextView
+            android:id="@+id/enter_stress_value_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/enter_stress_title_tv"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="5dp"
+            android:shadowColor="@color/hpg_orange"
+            android:shadowDx="3"
+            android:shadowDy="3"
+            android:shadowRadius="5"
+            android:text="@string/enter_stress_prod"
+		    style="@style/white_text_medium"
+            />
+
+        <RadioGroup
+            android:id="@+id/enter_stress_rg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/enter_stress_value_tv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp" >
+
+            <RadioButton
+                android:id="@+id/enter_stress_radio0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:checked="true"
+                android:text="@string/enter_stress_cond_stress_ok" />
+
+            <RadioButton
+                android:id="@+id/enter_stress_radio1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/enter_stress_cond_stress_too_easy" />
+
+            <RadioButton
+                android:id="@+id/enter_stress_radio2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/enter_stress_cond_stress_too_hard" />
+
+            <RadioButton
+                android:id="@+id/enter_stress_radio3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/enter_stress_cond_stress_injury" />
+        </RadioGroup>
+    </RelativeLayout>
+
+</LinearLayout>

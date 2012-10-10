@@ -1,0 +1,591 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+	The Edit Exercise Screen
+	
+	This version uses TABLES 
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" 
+    android:background="@color/darkdark_gray" 
+    >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="5dp" >
+
+        <!-- ============= -->
+        <!-- Buttons -->
+        <!-- ============= -->
+
+        <Button
+            android:id="@+id/edit_exer_help_butt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="@string/question_mark"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/edit_exer_delete_butt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="8dp"
+            android:layout_toLeftOf="@id/edit_exer_help_butt"
+	        android:background="@drawable/button_shiny_black"
+	        android:textColor="@color/ivory"
+            android:text="@string/editexer_delete_button"
+			/>
+
+
+        <Button
+            android:id="@+id/edit_exer_ok_butt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="8dp"
+            android:layout_toRightOf="@id/edit_exer_help_butt"
+	        android:background="@drawable/button_shiny_black"
+	        android:textColor="@color/ivory"
+            android:text="@string/editexer_ok_butt" />
+
+        <!-- ============= -->
+        <!-- NAME -->
+        <!-- ============= -->
+
+        <LinearLayout
+            android:id="@+id/name_ll"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1.0"
+                android:gravity="right|center_vertical"
+                android:paddingRight="5dp"
+                android:text="@string/addexer_name_label"
+                android:textAppearance="@android:attr/textAppearanceMedium" />
+
+			<!-- Make this the first focused widget via the
+            		"requestFocus" thing below.
+            	-->
+            <EditText
+                android:id="@+id/editexer_name_et"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="18dp"
+                android:layout_weight="1.0"
+                android:gravity="left|center_vertical"
+                android:hint="@string/addexer_name_hint"
+                android:singleLine="true"
+                android:textAppearance="@android:attr/textAppearanceMedium" >
+                <requestFocus />
+            </EditText>
+
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@id/edit_exer_help_butt"
+            android:layout_below="@id/name_ll" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TableLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/edit_exer_help_butt"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="6dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/rounded_edges"
+                    android:shrinkColumns="1"
+                    android:stretchColumns="1" >
+
+                    <!-- ============= -->
+                    <!-- TYPE -->
+                    <!-- ============= -->
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp" >
+
+                        <TextView
+                            android:id="@+id/edit_exer_type_label_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="5dp"
+                            android:gravity="right"
+                            android:text="@string/addexer_type_label"
+						    style="@style/white_text_medium"
+                            />
+
+                        <com.sleepfuriously.hpgworkout.MySpinner
+                            android:id="@+id/edit_exer_type_msp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="16dp"
+                            android:drawableRight="@android:drawable/arrow_down_float"
+                            android:gravity="center"
+                            android:hint="@string/select" />
+                    </TableRow>
+
+                    <!-- ============= -->
+                    <!-- GROUP -->
+                    <!-- ============= -->
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="5dp"
+                            android:layout_span="1"
+                            android:gravity="right"
+                            android:text="@string/addexer_musclegroup_label"
+						    style="@style/white_text_medium"
+                            />
+
+                        <com.sleepfuriously.hpgworkout.MySpinner
+                            android:id="@+id/edit_exer_group_msp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="16dp"
+                            android:drawableRight="@android:drawable/arrow_down_float"
+                            android:gravity="center"
+                            android:hint="@string/select" />
+                    </TableRow>
+                </TableLayout>
+
+                <TableLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/edit_exer_help_butt"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/rounded_edges"
+                    android:shrinkColumns="0"
+                    android:stretchColumns="1" >
+
+                    <!-- ============= -->
+                    <!-- REPS -->
+                    <!-- ============= -->
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp" >
+
+                        <CheckBox
+                            android:id="@+id/edit_exer_reps_cb"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="5dp"
+                            android:gravity="right|center_vertical"
+                            android:text="@string/addexer_rep_label"
+						    style="@style/white_text_medium"
+                            />
+
+                        <com.sleepfuriously.hpgworkout.MySpinner
+                            android:id="@+id/edit_exer_reps_unit_msp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="16dp"
+                            android:drawableRight="@android:drawable/arrow_down_float"
+                            android:gravity="left|center_vertical"
+                            android:visibility="invisible" />
+
+                        <RadioButton
+                            android:id="@+id/edit_exer_reps_rad"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="16dp"
+                            android:enabled="false" android:focusable="false" android:focusableInTouchMode="false"/>
+                    </TableRow>
+
+                    <!-- Separator -->
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginBottom="3dp"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginTop="3dp"
+                        android:background="#808080" />
+
+                    <!-- ============= -->
+                    <!-- LEVEL -->
+                    <!-- ============= -->
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="2dp"
+                        android:baselineAligned="true" >
+
+                        <CheckBox
+                            android:id="@+id/edit_exer_level_cb"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="5dp"
+                            android:gravity="right|center_vertical"
+                            android:text="@string/addexer_level_label"
+						    style="@style/white_text_medium"
+                            />
+
+                        <com.sleepfuriously.hpgworkout.MySpinner
+                            android:id="@+id/edit_exer_level_msp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="16dp"
+                            android:drawSelectorOnTop="true"
+                            android:drawableRight="@android:drawable/arrow_down_float"
+                            android:gravity="left|center_vertical"
+                            android:visibility="invisible" />
+
+                        <RadioButton
+                            android:id="@+id/edit_exer_level_rad"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:enabled="false" android:focusable="false" android:focusableInTouchMode="false"/>
+                    </TableRow>
+
+                    <!-- Separator -->
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginBottom="3dp"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginTop="3dp"
+                        android:background="#808080" />
+
+                    <!-- ============= -->
+                    <!-- CALORIES -->
+                    <!-- ============= -->
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="2dp"
+                        android:baselineAligned="true" >
+
+                        <CheckBox
+                            android:id="@+id/edit_exer_calorie_cb"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="5dp"
+                            android:gravity="right|center_vertical"
+                            android:text="@string/addexer_calorie_label"
+						    style="@style/white_text_medium"
+                            />
+
+                        <com.sleepfuriously.hpgworkout.MySpinner
+                            android:id="@+id/edit_exer_calorie_msp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="16dp"
+                            android:drawSelectorOnTop="true"
+                            android:drawableRight="@android:drawable/arrow_down_float"
+                            android:gravity="left|center_vertical"
+                            android:visibility="invisible" />
+
+                        <RadioButton
+                            android:id="@+id/edit_exer_calorie_rad"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false" />
+
+                    </TableRow>
+
+                    <!-- Separator -->
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginBottom="3dp"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginTop="3dp"
+                        android:background="#808080" />
+
+                    <!-- ============= -->
+                    <!-- WEIGHTS -->
+                    <!-- ============= -->
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="2dp" >
+
+                        <CheckBox
+                            android:id="@+id/edit_exer_weight_cb"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="5dp"
+                            android:gravity="right|center_vertical"
+                            android:text="@string/addexer_weight_label"
+						    style="@style/white_text_medium"
+                            />
+
+                        <com.sleepfuriously.hpgworkout.MySpinner
+                            android:id="@+id/edit_exer_weight_unit_msp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="16dp"
+                            android:drawableRight="@android:drawable/arrow_down_float"
+                            android:enabled="false"
+                            android:gravity="center"
+                            android:hint="@string/unit" android:focusable="false" android:focusableInTouchMode="false"/>
+
+                        <RadioButton
+                            android:id="@+id/edit_exer_weights_rad"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:enabled="false" android:focusable="false" android:focusableInTouchMode="false"/>
+                    </TableRow>
+
+                    <!-- Separator -->
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginBottom="3dp"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginTop="3dp"
+                        android:background="#808080" />
+
+                    <!-- ============= -->
+                    <!-- DISTANCE -->
+                    <!-- ============= -->
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="2dp" >
+
+                        <CheckBox
+                            android:id="@+id/edit_exer_dist_cb"
+                            style="@style/white_text_medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="5dp"
+                            android:gravity="right|center_vertical"
+                            android:text="@string/addexer_dist_label" />
+
+                        <com.sleepfuriously.hpgworkout.MySpinner
+                            android:id="@+id/edit_exer_dist_unit_msp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="16dp"
+                            android:drawableRight="@android:drawable/arrow_down_float"
+                            android:enabled="false"
+                            android:gravity="center"
+                            android:hint="@string/unit" android:focusable="false" android:focusableInTouchMode="false"/>
+
+                        <RadioButton
+                            android:id="@+id/edit_exer_dist_rad"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:enabled="false" android:focusable="false" android:focusableInTouchMode="false"/>
+                    </TableRow>
+
+                    <!-- Separator -->
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginBottom="3dp"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginTop="3dp"
+                        android:background="#808080" />
+
+                    <!-- ============= -->
+                    <!-- TIME -->
+                    <!-- ============= -->
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="2dp" >
+
+                        <CheckBox
+                            android:id="@+id/edit_exer_time_cb"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="5dp"
+                            android:gravity="right|center_vertical"
+                            android:text="@string/addexer_time_label"
+						    style="@style/white_text_medium"
+                            />
+
+                        <com.sleepfuriously.hpgworkout.MySpinner
+                            android:id="@+id/edit_exer_time_unit_msp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="16dp"
+                            android:drawableRight="@android:drawable/arrow_down_float"
+                            android:enabled="false"
+                            android:gravity="center"
+                            android:hint="@string/unit" android:focusable="false" android:focusableInTouchMode="false"/>
+
+                        <RadioButton
+                            android:id="@+id/edit_exer_time_rad"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:enabled="false" android:focusable="false" android:focusableInTouchMode="false"/>
+                    </TableRow>
+
+                    <!-- Separator -->
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginBottom="3dp"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginTop="3dp"
+                        android:background="#808080" />
+
+                    <!-- ============= -->
+                    <!-- OTHER -->
+                    <!-- ============= -->
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="2dp" >
+
+                        <CheckBox
+                            android:id="@+id/edit_exer_other_cb"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="5dp"
+                            android:gravity="right|center_vertical"
+                            android:text="@string/addexer_other_label"
+						    style="@style/white_text_medium"
+                            />
+
+                        <EditText
+                            android:id="@+id/edit_exer_other_name_et"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="16dp"
+                            android:enabled="false"
+                            android:gravity="center"
+                            android:hint="@string/name" android:focusable="false" android:focusableInTouchMode="false"/>
+
+                        <RadioButton
+                            android:id="@+id/edit_exer_other_rad"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:enabled="false" android:focusable="false" android:focusableInTouchMode="false"/>
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_span="1"
+                            android:visibility="invisible" />
+
+                        <EditText
+                            android:id="@+id/edit_exer_other_unit_et"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="16dp"
+                            android:enabled="false"
+                            android:gravity="center"
+                            android:hint="@string/unit" android:focusable="false" android:focusableInTouchMode="false"/>
+                    </TableRow>
+                </TableLayout>
+
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+
+</LinearLayout>

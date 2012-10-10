@@ -1,0 +1,620 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	This is the screen that pops up for the user to edit
+	or delete a specific exercise set.
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/darkdark_gray" 
+    >
+
+    <TextView
+        android:id="@+id/editset_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/editset_title"
+        android:textAppearance="@android:attr/textAppearanceLarge" />
+
+    <ImageView
+        android:id="@+id/editset_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="6dp"
+        android:src="@drawable/hpglogo_36x36" />
+
+    <!-- ============= -->
+    <!-- Buttons -->
+    <!-- ============= -->
+
+    <Button
+        android:id="@+id/editset_help_butt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:visibility="invisible"
+        android:text="@string/question_mark" />
+
+    <Button
+        android:id="@+id/editset_ok_butt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="8dp"
+        android:layout_toRightOf="@id/editset_help_butt"
+        android:text="@string/done" />
+
+    <Button
+        android:id="@+id/editset_cancel_butt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="8dp"
+        android:layout_toLeftOf="@id/editset_help_butt"
+        android:text="@string/cancel" />
+
+    <TextView
+        android:id="@+id/editset_ex_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/editset_title_tv"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="5dp"
+        android:shadowColor="@color/hpg_orange"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="5"
+        android:text="foo"
+        android:textAppearance="@android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/editset_desc_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editset_ex_name_tv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:text="@string/editset_msg"
+        android:textAppearance="@android:attr/textAppearanceMedium" />
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/editset_help_butt"
+        android:layout_below="@id/editset_desc_tv"
+        android:layout_marginBottom="8dp" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/editset_main_ll"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/rounded_edges"
+                android:orientation="vertical" >
+
+                <!-- CALENDAR DATE -->
+
+                <LinearLayout
+                    android:id="@+id/editset_date_ll"
+                    android:layout_width="fill_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="4dp" >
+
+                    <TextView
+                        android:id="@+id/editset_date_label_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1.7"
+                        android:gravity="right"
+                        android:text="@string/editset_date_day_label"
+					    style="@style/white_text_medium"
+                        />
+
+                    <TextView
+                        android:id="@+id/editset_date_data_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_edges2"
+                        android:paddingLeft="6dp"
+                        android:paddingRight="5dp"
+                        android:text="@string/editset_empty_data"
+					    style="@style/white_text_medium"
+                        />
+                </LinearLayout>
+
+                <!-- CALENDAR TIME -->
+
+                <View
+                    android:id="@+id/editset_calendar_time_bar"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginRight="24dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_span="2"
+                    android:background="@color/hpg_orange_dark_desaturated4" />
+
+                <LinearLayout
+                    android:id="@+id/editset_calendar_time_ll"
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="4dp" >
+
+                    <TextView
+                        android:id="@+id/editset_calendar_time_label_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1.7"
+                        android:gravity="right"
+                        android:text="@string/editset_date_time_label"
+					    style="@style/white_text_medium"
+                        />
+
+                    <TextView
+                        android:id="@+id/editset_calendar_time_data_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_edges2"
+                        android:paddingLeft="6dp"
+                        android:paddingRight="5dp"
+                        android:text="@string/editset_empty_data"
+					    style="@style/white_text_medium"
+                        />
+                </LinearLayout>
+
+                <!-- REPS -->
+
+                <View
+                    android:id="@+id/editset_reps_bar"
+                    android:layout_width="fill_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginRight="24dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_span="2"
+                    android:background="@color/hpg_orange_desaturated1" />
+
+                <LinearLayout
+                    android:id="@+id/editset_reps_ll"
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="4dp" >
+
+                    <TextView
+                        android:id="@+id/editset_reps_label_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1.7"
+                        android:gravity="right"
+                        android:text="@string/editset_reps_label"
+					    style="@style/white_text_medium"
+                        />
+
+                    <TextView
+                        android:id="@+id/editset_reps_data_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_edges2"
+                        android:paddingLeft="6dp"
+                        android:paddingRight="5dp"
+                        android:text="@string/editset_empty_data"
+					    style="@style/white_text_medium"
+                        />
+                </LinearLayout>
+
+                <!-- WEIGHT -->
+
+                <View
+                    android:id="@+id/editset_weight_bar"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginRight="24dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_span="2"
+                    android:background="@color/hpg_orange_dark_desaturated4" />
+
+                <LinearLayout
+                    android:id="@+id/editset_weight_ll"
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="4dp" >
+
+                    <TextView
+                        android:id="@+id/editset_weight_label_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1.7"
+                        android:gravity="right"
+                        android:text="@string/editset_weight_label"
+					    style="@style/white_text_medium"
+                        />
+
+                    <TextView
+                        android:id="@+id/editset_weight_data_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_edges2"
+                        android:paddingLeft="6dp"
+                        android:paddingRight="5dp"
+                        android:text="@string/editset_empty_data"
+					    style="@style/white_text_medium"
+                        />
+                </LinearLayout>
+
+                <!-- LEVEL -->
+
+                <View
+                    android:id="@+id/editset_level_bar"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginRight="24dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_span="2"
+                    android:background="@color/hpg_orange_dark_desaturated4" />
+
+                <LinearLayout
+                    android:id="@+id/editset_level_ll"
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="4dp" >
+
+                    <TextView
+                        android:id="@+id/editset_level_label_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1.7"
+                        android:gravity="right"
+                        android:text="@string/editset_level_label"
+					    style="@style/white_text_medium"
+                        />
+
+                    <TextView
+                        android:id="@+id/editset_level_data_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_edges2"
+                        android:paddingLeft="6dp"
+                        android:paddingRight="5dp"
+                        android:text="@string/editset_empty_data"
+					    style="@style/white_text_medium"
+                        />
+                </LinearLayout>
+
+                <!-- CALORIES -->
+
+                <View
+                    android:id="@+id/editset_cals_bar"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginRight="24dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_span="2"
+                    android:background="@color/hpg_orange_dark_desaturated4" />
+
+                <LinearLayout
+                    android:id="@+id/editset_cals_ll"
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="4dp" >
+
+                    <TextView
+                        android:id="@+id/editset_cals_label_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1.7"
+                        android:gravity="right"
+                        android:text="@string/editset_cals_label"
+					    style="@style/white_text_medium"
+                        />
+
+                    <TextView
+                        android:id="@+id/editset_cals_data_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_edges2"
+                        android:paddingLeft="6dp"
+                        android:paddingRight="5dp"
+                        android:text="@string/editset_empty_data"
+					    style="@style/white_text_medium"
+                        />
+                </LinearLayout>
+
+                <!-- DISTANCE -->
+
+                <View
+                    android:id="@+id/editset_dist_bar"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginRight="24dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_span="2"
+                    android:background="@color/hpg_orange_dark_desaturated4" />
+
+                <LinearLayout
+                    android:id="@+id/editset_dist_ll"
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="4dp" >
+
+                    <TextView
+                        android:id="@+id/editset_dist_label_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1.7"
+                        android:gravity="right"
+                        android:text="@string/editset_dist_label"
+					    style="@style/white_text_medium"
+                        />
+
+                    <TextView
+                        android:id="@+id/editset_dist_data_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_edges2"
+                        android:paddingLeft="6dp"
+                        android:paddingRight="5dp"
+                        android:text="@string/editset_empty_data"
+					    style="@style/white_text_medium"
+                        />
+                </LinearLayout>
+
+                <!-- TIME -->
+
+                <View
+                    android:id="@+id/editset_time_bar"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginRight="24dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_span="2"
+                    android:background="@color/hpg_orange_dark_desaturated4" />
+
+                <LinearLayout
+                    android:id="@+id/editset_time_ll"
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="4dp" >
+
+                    <TextView
+                        android:id="@+id/editset_time_label_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1.7"
+                        android:gravity="right"
+                        android:text="@string/editset_time_label"
+					    style="@style/white_text_medium"
+                        />
+
+                    <TextView
+                        android:id="@+id/editset_time_data_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_edges2"
+                        android:paddingLeft="6dp"
+                        android:paddingRight="5dp"
+                        android:text="@string/editset_empty_data"
+					    style="@style/white_text_medium"
+                        />
+                </LinearLayout>
+
+                <!-- OTHER -->
+
+                <View
+                    android:id="@+id/editset_other_bar"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginRight="24dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_span="2"
+                    android:background="@color/hpg_orange_dark_desaturated4" />
+
+                <LinearLayout
+                    android:id="@+id/editset_other_ll"
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="4dp" >
+
+                    <TextView
+                        android:id="@+id/editset_other_label_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1.7"
+                        android:gravity="right"
+                        android:text="@string/editset_other_label"
+					    style="@style/white_text_medium"
+                        />
+
+                    <TextView
+                        android:id="@+id/editset_other_data_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_edges2"
+                        android:paddingLeft="6dp"
+                        android:paddingRight="5dp"
+                        android:text="@string/editset_empty_data"
+					    style="@style/white_text_medium"
+                        />
+                </LinearLayout>
+
+                <!-- STRESS -->
+
+                <View
+                    android:id="@+id/editset_stress_bar"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginRight="24dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_span="2"
+                    android:background="@color/hpg_orange_dark_desaturated4" />
+
+                <LinearLayout
+                    android:id="@+id/editset_stress_ll"
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="4dp" >
+
+                    <TextView
+                        android:id="@+id/editset_stress_label_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1.7"
+                        android:gravity="right"
+                        android:text="@string/editset_stress_label"
+					    style="@style/white_text_medium"
+                        />
+
+                    <TextView
+                        android:id="@+id/editset_stress_data_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_edges2"
+                        android:paddingLeft="6dp"
+                        android:paddingRight="5dp"
+                        android:text="@string/editset_empty_data"
+					    style="@style/white_text_medium"
+                        />
+                </LinearLayout>
+
+                <!-- NOTES -->
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginRight="24dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_span="2"
+                    android:background="@color/hpg_orange_light_desaturated1" />
+
+                    <TextView
+                        android:id="@+id/editset_notes_label_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="3dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1.7"
+                        android:gravity="right"
+                        android:text="@string/editset_notes_label"
+                        android:textAppearance="@android:attr/textAppearanceMedium"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/editset_notes_data_tv"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="27dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_edges2"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:text="@string/editset_empty_notes"
+                        android:textColor="@color/off_white"/>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/editset_delete_butt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingBottom="5dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="2dp"
+                android:text="@string/editset_delete_button"
+                android:textAppearance="@android:attr/textAppearanceMedium" />
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

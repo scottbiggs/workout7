@@ -1,0 +1,1160 @@
+/**
+ * This class is used to open a database.
+ *
+ *	WARNING!
+ * There's a peculiarity right now that means it should
+ * only handle ONE instance at a time!  I've put in tests
+ * to make sure that only one instance happens, but it's
+ * not enforced.
+ *
+ */
+package com.sleepfuriously.hpgworkout;
+
+import java.util.Calendar;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.util.Log;
+import android.widget.Toast;
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+public class DatabaseHelper extends SQLiteOpenHelper {
+
+	//-----------------------
+	//	Class Constants
+	//-----------------------
+
+	/** The file name of the database */
+	private static final String
+			DB_NAME = "hpg.sqlite";
+
+	/**
+	 * The name of the table that lists
+	 * all the exercises.
+	 */
+	public static final String
+			EXERCISE_TABLE_NAME = "exercises";
+
+	/**
+	 *  The name of the table that holds all the
+	 *  workout data.
+	 */
+	public static final String
+			SET_TABLE_NAME = "sets";
+
+
+	/**
+	 * Strings for the column names of the exercise
+	 * definition table.
+	 *
+	 * NOTE:
+	 * 		Corresponds to R.arrays.exercise_column_names_array.
+	 * 		Update appropriately!
+	 */
+	public static final String
+		COL_ID = "_id",					// for all tables (int)
+		EXERCISE_COL_NAME = "name",		// Name of the exercise (string)
+		EXERCISE_COL_TYPE = "type",		// Exercise type (int)
+		EXERCISE_COL_GROUP = "muscle_group",	// muscle group (int)
+		EXERCISE_COL_WEIGHT = "weights",// weights? (bool)
+		EXERCISE_COL_WEIGHT_UNIT = "weight_unit",// weight unit (string)
+		EXERCISE_COL_REP = "reps", 		// Reps? (bool)
+		EXERCISE_COL_DIST = "distanced",// Distances? (bool)
+		EXERCISE_COL_DIST_UNIT = "distance_unit",// Distance unit (string)
+		EXERCISE_COL_TIME = "timed",	// timed? (bool)
+		EXERCISE_COL_TIME_UNIT = "time_unit",	// time unit (string)
+		EXERCISE_COL_LEVEL = "level",	// Levels? (bool)
+		EXERCISE_COL_CALORIES = "calories",	// count calories? (bool)
+		EXERCISE_COL_OTHER = "other",	// misc (bool)
+		EXERCISE_COL_OTHER_TITLE = "other_title",// title of other (string)
+		EXERCISE_COL_OTHER_UNIT = "other_unit",	// unit (string)
+		EXERCISE_COL_SIGNIFICANT = "significant",// which is most significant, 0 = n/a (int)
+		EXERCISE_COL_LORDER = "lorder";	// The order it appears (int)
+
+	/**
+	 * These are the column numbers in the database for
+	 * the various column names.
+	 *
+	 * 	NOTE!
+	 * These numbers are also used to determine which column
+	 * is the most significant!
+	 */
+	public static final int
+		EXERCISE_COL_ID_NUM = 0,
+		EXERCISE_COL_NAME_NUM = 1,
+		EXERCISE_COL_TYPE_NUM = 2,
+		EXERCISE_COL_GROUP_NUM = 3,
+		EXERCISE_COL_WEIGHT_NUM = 4,
+		EXERCISE_COL_WEIGHT_UNIT_NUM = 5,
+		EXERCISE_COL_REP_NUM = 6,
+		EXERCISE_COL_DIST_NUM = 7,
+		EXERCISE_COL_DIST_UNIT_NUM = 8,
+		EXERCISE_COL_TIME_NUM = 9,
+		EXERCISE_COL_TIME_UNIT_NUM = 10,
+		EXERCISE_COL_LEVEL_NUM = 11,
+		EXERCISE_COL_CALORIE_NUM = 12,
+		EXERCISE_COL_OTHER_NUM = 13,
+		EXERCISE_COL_OTHER_TITLE_NUM = 14,
+		EXERCISE_COL_OTHER_UNIT_NUM = 15,
+		EXERCISE_COL_SIGNIFICANT_NUM = 16,
+		EXERCISE_COL_ORDER_NUM = 17,
+		EXERCISE_COL_NUM_ROWS = 18;		// The number of rows
+
+
+	/********************
+	 * Strings for the column names of the workout table
+	 * where each row is a single exercise SET.
+	 */
+	public static final String
+		SET_COL_NAME = "name",	// name of the exercise
+		SET_COL_DATEMILLIS = "datemillis",	// time of set (long)
+		SET_COL_WEIGHT = "weight",	// weight lifted (real)
+		SET_COL_REPS = "reps",	// num reps done (int)
+		SET_COL_LEVELS = "level",// level accomplished (int)
+		SET_COL_CALORIES = "calories", // calorie count (int)
+		SET_COL_DIST = "dist",	// distance travelled (real)
+		SET_COL_TIME = "time",	// elapsed time (real)
+		SET_COL_OTHER = "other",	// quantity of 'other' units (real)
+		SET_COL_CONDITION = "condition",	// +, -, x, or none (int)
+		SET_COL_NOTES = "notes";	// string to keep notes (string)
+
+	/********************
+	 * Different column data types and other useful strings.
+	 */
+	public static final String
+			TEXT = "TEXT",
+			INT = "INTEGER",
+			DB_TYPE_REAL = "REAL",
+			DB_TYPE_NULL = "NULL",
+			DB_TYPE_BLOB = "BLOB",
+			DEFAULT = "DEFAULT",
+			COMMA = ", ",		// Note that this includes a space
+			SEMICOLON = ";",
+			SPACE = " ";
+
+	/**********************
+	 * String to create the exercise db.  Should match
+	 * the constants above, but that makes things a lot
+	 * messier.  When everything works, I'll straighten up.
+	 */
+	private static final String EXERCISE_TABLE_CREATE_STRING =
+		"CREATE TABLE " + EXERCISE_TABLE_NAME
+		+ " (" + COL_ID + SPACE + INT + SPACE + "PRIMARY KEY AUTOINCREMENT, "
+		+ EXERCISE_COL_NAME + SPACE + TEXT + COMMA
+		+ EXERCISE_COL_TYPE + SPACE + INT + COMMA
+		+ EXERCISE_COL_GROUP + SPACE + INT + COMMA
+		+ EXERCISE_COL_WEIGHT + SPACE + INT + COMMA
+		+ EXERCISE_COL_WEIGHT_UNIT + SPACE + TEXT + COMMA
+		+ EXERCISE_COL_REP + SPACE + INT + COMMA
+		+ EXERCISE_COL_DIST + SPACE + INT + COMMA
+		+ EXERCISE_COL_DIST_UNIT + SPACE + TEXT + COMMA
+		+ EXERCISE_COL_TIME + SPACE + INT + COMMA
+		+ EXERCISE_COL_TIME_UNIT + SPACE + TEXT + COMMA
+		+ EXERCISE_COL_LEVEL + SPACE + INT + COMMA
+		+ EXERCISE_COL_CALORIES + SPACE + INT + COMMA
+		+ EXERCISE_COL_OTHER + SPACE + INT + COMMA
+		+ EXERCISE_COL_OTHER_TITLE + SPACE + TEXT + COMMA
+		+ EXERCISE_COL_OTHER_UNIT + SPACE + TEXT + COMMA
+		+ EXERCISE_COL_LORDER + SPACE + INT + COMMA
+		+ EXERCISE_COL_SIGNIFICANT + SPACE + INT + ");";
+
+	/**
+	 * Like the above String, this is used to create a
+	 * table in our database. But this one holds the data
+	 * of all the sets of workouts the user did.
+	 */
+	private static final String SET_TABLE_CREATE_STRING =
+		"CREATE TABLE " + SET_TABLE_NAME
+		+ " (" + COL_ID + SPACE + INT + SPACE + "PRIMARY KEY AUTOINCREMENT, "
+		+ SET_COL_NAME + SPACE + TEXT + COMMA
+		+ SET_COL_DATEMILLIS + SPACE + INT + COMMA
+		+ SET_COL_WEIGHT + SPACE + DB_TYPE_REAL + DEFAULT + "\'-1.0\'" + COMMA
+		+ SET_COL_REPS + SPACE + INT + DEFAULT + "\'-1\'" + COMMA
+		+ SET_COL_LEVELS + SPACE + INT + DEFAULT + "\'-1\'" + COMMA
+		+ SET_COL_CALORIES + SPACE + INT + DEFAULT + "\'-1\'" + COMMA
+		+ SET_COL_DIST + SPACE + DB_TYPE_REAL + DEFAULT + "\'-1.0\'" + COMMA
+		+ SET_COL_TIME + SPACE + DB_TYPE_REAL + DEFAULT + "\'-1.0\'" + COMMA
+		+ SET_COL_OTHER + SPACE + DB_TYPE_REAL + DEFAULT + "\'-1.0\'" + COMMA
+		+ SET_COL_CONDITION + SPACE + INT + COMMA
+		+ SET_COL_NOTES + SPACE + TEXT + ");";
+
+	/**
+	 * These numbers are used to tell which condition
+	 * the exercise set is.
+	 */
+	public static final int
+		SET_COND_NONE = -1,
+		SET_COND_OK = 1,
+		SET_COND_PLUS = 2,
+		SET_COND_MINUS = 3,
+		SET_COND_INJURY = 4;
+
+	/** Current version of the Database */
+	private static final int DATABASE_VERSION = 5;
+
+	private static final String tag = "---DatabaseHelper---";
+
+	//-----------------------
+	//	Data Members
+	//-----------------------
+
+	/**
+	 * Counter to make sure we have only one instance.
+	 *
+	 * todo:
+	 * 	Not sure why I even have this.  Since it's not static,
+	 * 	it's really not counting the instances.
+	 */
+	private int m_instance_counter = 0;
+
+
+	// Nice to have around.
+	private Context m_context = null;
+
+
+	//-----------------------
+	//	Methods
+	//-----------------------
+
+	//-----------------------
+	//	Constructor
+	//
+	//	input:
+	//		context		The context of the application.
+	//					If you're calling from an Activity,
+	//					just use 'this'.
+	//
+	//		name			The name of the database file.  If
+	//					null, then the default filename is
+	//					used.
+	//
+	//		factory		Used for creating Cursor objects.
+	//					'null' is the default and will create
+	//					a new Cursor.
+	//
+	//		version		The number of the database you want to
+	//					open.  If the database file specified
+	//					has an older (smaller) number, then
+	//					onUpgrade() is automatically called.
+	//					If this is 0, then the default is used.
+	//
+	public DatabaseHelper (Context context,
+						  String name,
+						  CursorFactory factory,
+						  int version) {
+		super (context,
+			   name != null ? name : DB_NAME,
+			   factory,
+			   version != 0 ? version : DATABASE_VERSION);
+
+		if (m_instance_counter > 0) {
+			Toast.makeText(context, "Too many instances of DatabaseHelper!!!  Everything will go wrong, now.  You've been warned!", Toast.LENGTH_LONG).show();
+			Log.e(tag, "Error constructing database: too many instances (no more than one allowed)!");
+			return;
+		}
+
+		m_instance_counter++;
+		Log.i(tag, "Called the full Constructor!!!  (should be the only time)");
+		m_context = context;
+	} // constructor
+
+
+	//-----------------------
+	//	Simpler constructor
+	//
+	//		context		The context of the application.
+	//					If you're calling from an Activity,
+	//					just use 'this'.
+	//
+	public DatabaseHelper (Context context) {
+		super (context, DB_NAME, null, DATABASE_VERSION);
+
+		if (m_instance_counter > 0) {
+			Toast.makeText(context, "Too many instances of DatabaseHelper!!!  Everything will go wrong, now.  You've been warned!", Toast.LENGTH_LONG).show();
+			Log.e(tag, "Error constructing database: too many instances (no more than one allowed)!");
+			return;
+		}
+		m_instance_counter++;
+		Log.i(tag, "Called the minimal Constructor!!!  (should be the only time)");
+		m_context = context;
+	}
+
+
+	//--------------------------------------
+	//	Both Table Methods
+	//--------------------------------------
+
+	//-----------------------
+	//	Called when the database is created for the
+	//	first time.  Here's our chance to make the database
+	//	just the way we want it.
+	//
+	@Override
+	public void onCreate (SQLiteDatabase db) {
+		Log.i(tag, "Creating new database file, " + EXERCISE_TABLE_CREATE_STRING);
+
+		db.execSQL (EXERCISE_TABLE_CREATE_STRING);
+		init_exercises (db);
+
+		db.execSQL(SET_TABLE_CREATE_STRING);
+		init_sets (db);
+
+	} // onCreate (db)
+
+
+	//-----------------------
+	//	Called when the constructor detects that we tried
+	//	to load an old version.  Essentially the file name
+	//	that was loaded is older (lower number) than the
+	//	one specified in the constructor.  It's up to this
+	//	method to fix things.
+	//
+	@Override
+	public void onUpgrade (SQLiteDatabase db,
+						  int oldVersion,
+						  int newVersion) {
+		// TODO:
+		//	Make this work correctly so that it doesn't delete
+		//	a user's entire work!  Right now, it just deletes
+		//	the existing exercise table and creates a new one.
+		Log.w (tag, "WARNING!  Entering onUpgrade(" + db.toString() + ", " + oldVersion + ", " + newVersion + ")");
+		db.execSQL("DROP TABLE IF EXISTS " + EXERCISE_TABLE_NAME);
+		onCreate (db);
+		db.close();
+	} // onUpgrade (db, old, new)
+
+
+	//-----------------------
+	//	Java-equivalent of a destructor.  But this only works
+	//	if the garbage collector is on top of things.  That
+	//	is done kind of sporadically, so this may be a whole
+	//	bunch of crap.
+	//
+	@Override
+	protected void finalize() throws Throwable {
+		m_instance_counter--;
+		Log.i(tag, "Called finalize()!!!");
+		super.finalize();
+	} // destructor
+
+
+	/*************************
+	 * Use this as a quick way to see what's in the database.
+	 *
+	 * NOTE:
+	 * 		You may want to call startManagingCursor() on the
+	 * 		returned Cursor if you plan on having it stay a
+	 * 		while.  If not, you better CLOSE() it!!!
+	 *
+	 * @param db				A database ready to read.
+	 *
+	 * @param table_name		Which table do we want to get?
+	 * 						Supply 'null' to get the default
+	 * 						table (Exercise Table).
+	 *
+	 * @return	A Cursor filled with EVERYTHING!
+	 */
+	public static Cursor getEntireTable (SQLiteDatabase db,
+								 final String table_name) {
+		String name;
+		if (null == table_name)
+			name = EXERCISE_TABLE_NAME;
+		else
+			name = table_name;
+
+		return db.query(name, null, null, null, null, null, null);
+	} // getEntireTable (table_name)
+
+
+	//--------------------------------------
+	//	Exercise Table Methods
+	//--------------------------------------
+
+	//-----------------------
+	//	Called when the database is originally created.
+	//	This populates the database with a small set of
+	//	exercises to get the user going quickly with this
+	//	program.  They (almost certainly) will add exer-
+	//	cises later.
+	//
+	//	input:
+	//		db			The database to throw these
+	//					rows into.
+	//
+	//	NOTE:
+	//		It appears that the first entry to the
+	//		table has an _ID = 1
+	//
+	private void init_exercises (SQLiteDatabase db) {
+		ContentValues values = new ContentValues();
+
+		values.put (EXERCISE_COL_NAME, "bench press");
+		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_ANAEROBIC);
+		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_UPPER);
+		values.put (EXERCISE_COL_WEIGHT, true);
+		values.put (EXERCISE_COL_REP, true);
+		values.put (EXERCISE_COL_DIST, false);
+		values.put (EXERCISE_COL_TIME, false);
+		values.put (EXERCISE_COL_LEVEL, false);
+		values.put (EXERCISE_COL_OTHER, false);
+		values.put (EXERCISE_COL_WEIGHT_UNIT, "pounds");
+		values.put (EXERCISE_COL_DIST_UNIT, "");
+		values.put (EXERCISE_COL_TIME_UNIT, "");
+		values.put (EXERCISE_COL_OTHER_TITLE, "");
+		values.put (EXERCISE_COL_OTHER_UNIT, "");
+		values.put(EXERCISE_COL_LORDER, 2);
+		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_WEIGHT_NUM);
+		try {
+			db.insertOrThrow(EXERCISE_TABLE_NAME, null, values);
+		}
+		catch (SQLException e) {
+			Toast.makeText (m_context,
+							"Database Error!  Problem creating initial exercise list--aborting!",
+							Toast.LENGTH_LONG)
+					.show();
+			return;
+		}
+
+		values.clear();
+		values.put (EXERCISE_COL_NAME, "squats");
+		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_ANAEROBIC);
+		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_LOWER);
+		values.put (EXERCISE_COL_WEIGHT, true);
+		values.put (EXERCISE_COL_REP, true);
+		values.put (EXERCISE_COL_DIST, false);
+		values.put (EXERCISE_COL_TIME, false);
+		values.put (EXERCISE_COL_LEVEL, false);
+		values.put (EXERCISE_COL_OTHER, false);
+		values.put (EXERCISE_COL_WEIGHT_UNIT, "pounds");
+		values.put (EXERCISE_COL_DIST_UNIT, "");
+		values.put (EXERCISE_COL_TIME_UNIT, "");
+		values.put (EXERCISE_COL_OTHER_TITLE, "");
+		values.put (EXERCISE_COL_OTHER_UNIT, "");
+		values.put(EXERCISE_COL_LORDER, 3);
+		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_WEIGHT_NUM);
+		db.insert(EXERCISE_TABLE_NAME, null, values);
+
+		values.clear();
+		values.put (EXERCISE_COL_NAME, "rows");
+		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_AEROBIC);
+		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_ALL);
+		values.put (EXERCISE_COL_WEIGHT, false);
+		values.put (EXERCISE_COL_REP, false);
+		values.put (EXERCISE_COL_DIST, true);
+		values.put (EXERCISE_COL_TIME, true);
+		values.put (EXERCISE_COL_LEVEL, true);
+		values.put (EXERCISE_COL_OTHER, false);
+		values.put (EXERCISE_COL_WEIGHT_UNIT, "");
+		values.put (EXERCISE_COL_DIST_UNIT, "miles");
+		values.put (EXERCISE_COL_TIME_UNIT, "minutes");
+		values.put (EXERCISE_COL_OTHER_TITLE, "");
+		values.put (EXERCISE_COL_OTHER_UNIT, "");
+		values.put(EXERCISE_COL_LORDER, 1);
+		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_TIME_NUM);
+		db.insert(EXERCISE_TABLE_NAME, null, values);
+
+		values.clear();
+		values.put (EXERCISE_COL_NAME, "super winking");
+		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_BOTH);
+		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_UPPER);
+		values.put (EXERCISE_COL_WEIGHT, true);
+		values.put (EXERCISE_COL_REP, true);
+		values.put (EXERCISE_COL_DIST, true);
+		values.put (EXERCISE_COL_TIME, true);
+		values.put (EXERCISE_COL_LEVEL, true);
+		values.put (EXERCISE_COL_CALORIES, true);
+		values.put (EXERCISE_COL_OTHER, true);
+		values.put (EXERCISE_COL_WEIGHT_UNIT, "tids");
+		values.put (EXERCISE_COL_DIST_UNIT, "wankers");
+		values.put (EXERCISE_COL_TIME_UNIT, "clicks");
+		values.put (EXERCISE_COL_OTHER_TITLE, "tiddlies");
+		values.put (EXERCISE_COL_OTHER_UNIT, "winks");
+		values.put(EXERCISE_COL_LORDER, 4);
+		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_REP_NUM);
+		db.insert(EXERCISE_TABLE_NAME, null, values);
+
+		values.clear();
+		values.put (EXERCISE_COL_NAME, "sit-ups");
+		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_MISC);
+		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_TRUNK);
+		values.put (EXERCISE_COL_WEIGHT, false);
+		values.put (EXERCISE_COL_REP, true);
+		values.put (EXERCISE_COL_DIST, false);
+		values.put (EXERCISE_COL_TIME, false);
+		values.put (EXERCISE_COL_LEVEL, false);
+		values.put (EXERCISE_COL_OTHER, true);
+		values.put (EXERCISE_COL_WEIGHT_UNIT, "");
+		values.put (EXERCISE_COL_DIST_UNIT, "");
+		values.put (EXERCISE_COL_TIME_UNIT, "");
+		values.put (EXERCISE_COL_OTHER_TITLE, "incline");
+		values.put (EXERCISE_COL_OTHER_UNIT, "degrees");
+		values.put(EXERCISE_COL_LORDER, 5);
+		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_REP_NUM);
+		db.insert(EXERCISE_TABLE_NAME, null, values);
+
+		values.clear();
+		values.put (EXERCISE_COL_NAME, "bicep curls");
+		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_ANAEROBIC);
+		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_UPPER);
+		values.put (EXERCISE_COL_WEIGHT, true);
+		values.put (EXERCISE_COL_REP, true);
+		values.put (EXERCISE_COL_DIST, false);
+		values.put (EXERCISE_COL_TIME, false);
+		values.put (EXERCISE_COL_LEVEL, false);
+		values.put (EXERCISE_COL_OTHER, false);
+		values.put (EXERCISE_COL_WEIGHT_UNIT, "pounds");
+		values.put (EXERCISE_COL_DIST_UNIT, "");
+		values.put (EXERCISE_COL_TIME_UNIT, "");
+		values.put (EXERCISE_COL_OTHER_TITLE, "");
+		values.put (EXERCISE_COL_OTHER_UNIT, "");
+		values.put(EXERCISE_COL_LORDER, 6);
+		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_WEIGHT_NUM);
+		db.insert(EXERCISE_TABLE_NAME, null, values);
+
+		values.clear();
+		values.put (EXERCISE_COL_NAME, "jogging");
+		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_AEROBIC);
+		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_LOWER);
+		values.put (EXERCISE_COL_WEIGHT, false);
+		values.put (EXERCISE_COL_REP, false);
+		values.put (EXERCISE_COL_DIST, true);
+		values.put (EXERCISE_COL_TIME, true);
+		values.put (EXERCISE_COL_LEVEL, false);
+		values.put (EXERCISE_COL_CALORIES, true);
+		values.put (EXERCISE_COL_OTHER, false);
+		values.put (EXERCISE_COL_WEIGHT_UNIT, "");
+		values.put (EXERCISE_COL_DIST_UNIT, "miles");
+		values.put (EXERCISE_COL_TIME_UNIT, "minutes");
+		values.put (EXERCISE_COL_OTHER_TITLE, "");
+		values.put (EXERCISE_COL_OTHER_UNIT, "");
+		values.put(EXERCISE_COL_LORDER, 0);
+		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_DIST_NUM);
+		db.insert(EXERCISE_TABLE_NAME, null, values);
+
+		values.clear();
+		values.put (EXERCISE_COL_NAME, "chin-ups");
+		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_ANAEROBIC);
+		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_UPPER);
+		values.put (EXERCISE_COL_WEIGHT, false);
+		values.put (EXERCISE_COL_REP, true);
+		values.put (EXERCISE_COL_DIST, false);
+		values.put (EXERCISE_COL_TIME, false);
+		values.put (EXERCISE_COL_LEVEL, false);
+		values.put (EXERCISE_COL_OTHER, false);
+		values.put (EXERCISE_COL_WEIGHT_UNIT, "");
+		values.put (EXERCISE_COL_DIST_UNIT, "");
+		values.put (EXERCISE_COL_TIME_UNIT, "");
+		values.put (EXERCISE_COL_OTHER_TITLE, "");
+		values.put (EXERCISE_COL_OTHER_UNIT, "");
+		values.put(EXERCISE_COL_LORDER, 8);
+		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_REP_NUM);
+		db.insert(EXERCISE_TABLE_NAME, null, values);
+
+		values.clear();
+		values.put (EXERCISE_COL_NAME, "push-ups");
+		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_ANAEROBIC);
+		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_UPPER);
+		values.put (EXERCISE_COL_WEIGHT, false);
+		values.put (EXERCISE_COL_REP, true);
+		values.put (EXERCISE_COL_DIST, false);
+		values.put (EXERCISE_COL_TIME, false);
+		values.put (EXERCISE_COL_LEVEL, false);
+		values.put (EXERCISE_COL_OTHER, false);
+		values.put (EXERCISE_COL_WEIGHT_UNIT, "");
+		values.put (EXERCISE_COL_DIST_UNIT, "");
+		values.put (EXERCISE_COL_TIME_UNIT, "");
+		values.put (EXERCISE_COL_OTHER_TITLE, "");
+		values.put (EXERCISE_COL_OTHER_UNIT, "");
+		values.put(EXERCISE_COL_LORDER, 9);
+		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_REP_NUM);
+		db.insert(EXERCISE_TABLE_NAME, null, values);
+
+		values.clear();
+		values.put (EXERCISE_COL_NAME, "wrist-rolls");
+		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_ANAEROBIC);
+		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_UPPER);
+		values.put (EXERCISE_COL_WEIGHT, false);
+		values.put (EXERCISE_COL_REP, true);
+		values.put (EXERCISE_COL_DIST, false);
+		values.put (EXERCISE_COL_TIME, false);
+		values.put (EXERCISE_COL_LEVEL, false);
+		values.put (EXERCISE_COL_OTHER, false);
+		values.put (EXERCISE_COL_WEIGHT_UNIT, "");
+		values.put (EXERCISE_COL_DIST_UNIT, "");
+		values.put (EXERCISE_COL_TIME_UNIT, "");
+		values.put (EXERCISE_COL_OTHER_TITLE, "");
+		values.put (EXERCISE_COL_OTHER_UNIT, "");
+		values.put(EXERCISE_COL_LORDER, 10);
+		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_REP_NUM);
+		db.insert(EXERCISE_TABLE_NAME, null, values);
+
+		values.clear();
+		values.put (EXERCISE_COL_NAME, "roman chair");
+		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_ANAEROBIC);
+		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_UPPER);
+		values.put (EXERCISE_COL_WEIGHT, false);
+		values.put (EXERCISE_COL_REP, true);
+		values.put (EXERCISE_COL_DIST, false);
+		values.put (EXERCISE_COL_TIME, false);
+		values.put (EXERCISE_COL_LEVEL, false);
+		values.put (EXERCISE_COL_OTHER, false);
+		values.put (EXERCISE_COL_WEIGHT_UNIT, "");
+		values.put (EXERCISE_COL_DIST_UNIT, "");
+		values.put (EXERCISE_COL_TIME_UNIT, "");
+		values.put (EXERCISE_COL_OTHER_TITLE, "");
+		values.put (EXERCISE_COL_OTHER_UNIT, "");
+		values.put(EXERCISE_COL_LORDER, 11);
+		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_REP_NUM);
+		db.insert(EXERCISE_TABLE_NAME, null, values);
+
+		values.clear();
+		values.put (EXERCISE_COL_NAME, "military press");
+		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_ANAEROBIC);
+		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_UPPER);
+		values.put (EXERCISE_COL_WEIGHT, true);
+		values.put (EXERCISE_COL_REP, true);
+		values.put (EXERCISE_COL_DIST, false);
+		values.put (EXERCISE_COL_TIME, false);
+		values.put (EXERCISE_COL_LEVEL, false);
+		values.put (EXERCISE_COL_OTHER, false);
+		values.put (EXERCISE_COL_WEIGHT_UNIT, "tons");
+		values.put (EXERCISE_COL_DIST_UNIT, "");
+		values.put (EXERCISE_COL_TIME_UNIT, "");
+		values.put (EXERCISE_COL_OTHER_TITLE, "");
+		values.put (EXERCISE_COL_OTHER_UNIT, "");
+		values.put(EXERCISE_COL_LORDER, 12);
+		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_WEIGHT_NUM);
+		db.insert(EXERCISE_TABLE_NAME, null, values);
+
+//		values.clear();
+//		values.put (EXERCISE_COL_NAME, "thinker");
+//		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_ANAEROBIC);
+//		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_UPPER);
+//		values.put (EXERCISE_COL_WEIGHT, true);
+//		values.put (EXERCISE_COL_REP, true);
+//		values.put (EXERCISE_COL_DIST, false);
+//		values.put (EXERCISE_COL_TIME, false);
+//		values.put (EXERCISE_COL_LEVEL, false);
+//		values.put (EXERCISE_COL_OTHER, false);
+//		values.put (EXERCISE_COL_WEIGHT_UNIT, "thoughts");
+//		values.put (EXERCISE_COL_DIST_UNIT, "");
+//		values.put (EXERCISE_COL_TIME_UNIT, "");
+//		values.put (EXERCISE_COL_OTHER_TITLE, "");
+//		values.put (EXERCISE_COL_OTHER_UNIT, "");
+//		values.put(EXERCISE_COL_LORDER, 13);
+//		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_WEIGHT_NUM);
+//		db.insert(EXERCISE_TABLE_NAME, null, values);
+
+//		values.clear();
+//		values.put (EXERCISE_COL_NAME, "head banger");
+//		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_ANAEROBIC);
+//		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_UPPER);
+//		values.put (EXERCISE_COL_WEIGHT, true);
+//		values.put (EXERCISE_COL_REP, true);
+//		values.put (EXERCISE_COL_DIST, false);
+//		values.put (EXERCISE_COL_TIME, false);
+//		values.put (EXERCISE_COL_LEVEL, false);
+//		values.put (EXERCISE_COL_OTHER, false);
+//		values.put (EXERCISE_COL_WEIGHT_UNIT, "ounces");
+//		values.put (EXERCISE_COL_DIST_UNIT, "");
+//		values.put (EXERCISE_COL_TIME_UNIT, "");
+//		values.put (EXERCISE_COL_OTHER_TITLE, "");
+//		values.put (EXERCISE_COL_OTHER_UNIT, "");
+//		values.put(EXERCISE_COL_LORDER, 14);
+//		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_WEIGHT_NUM);
+//		db.insert(EXERCISE_TABLE_NAME, null, values);
+
+//		values.clear();
+//		values.put (EXERCISE_COL_NAME, "cross over");
+//		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_ANAEROBIC);
+//		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_UPPER);
+//		values.put (EXERCISE_COL_WEIGHT, true);
+//		values.put (EXERCISE_COL_REP, true);
+//		values.put (EXERCISE_COL_DIST, false);
+//		values.put (EXERCISE_COL_TIME, false);
+//		values.put (EXERCISE_COL_LEVEL, false);
+//		values.put (EXERCISE_COL_OTHER, false);
+//		values.put (EXERCISE_COL_WEIGHT_UNIT, "pounds");
+//		values.put (EXERCISE_COL_DIST_UNIT, "");
+//		values.put (EXERCISE_COL_TIME_UNIT, "");
+//		values.put (EXERCISE_COL_OTHER_TITLE, "");
+//		values.put (EXERCISE_COL_OTHER_UNIT, "");
+//		values.put(EXERCISE_COL_LORDER, 15);
+//		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_WEIGHT_NUM);
+//		db.insert(EXERCISE_TABLE_NAME, null, values);
+
+//		values.clear();
+//		values.put (EXERCISE_COL_NAME, "vmo blaster");
+//		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_ANAEROBIC);
+//		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_UPPER);
+//		values.put (EXERCISE_COL_WEIGHT, true);
+//		values.put (EXERCISE_COL_REP, true);
+//		values.put (EXERCISE_COL_DIST, false);
+//		values.put (EXERCISE_COL_TIME, false);
+//		values.put (EXERCISE_COL_LEVEL, false);
+//		values.put (EXERCISE_COL_OTHER, false);
+//		values.put (EXERCISE_COL_WEIGHT_UNIT, "kilograms");
+//		values.put (EXERCISE_COL_DIST_UNIT, "");
+//		values.put (EXERCISE_COL_TIME_UNIT, "");
+//		values.put (EXERCISE_COL_OTHER_TITLE, "");
+//		values.put (EXERCISE_COL_OTHER_UNIT, "");
+//		values.put(EXERCISE_COL_LORDER, 16);
+//		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_WEIGHT_NUM);
+//		db.insert(EXERCISE_TABLE_NAME, null, values);
+
+//		values.clear();
+//		values.put (EXERCISE_COL_NAME, "dips");
+//		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_ANAEROBIC);
+//		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_UPPER);
+//		values.put (EXERCISE_COL_WEIGHT, false);
+//		values.put (EXERCISE_COL_REP, true);
+//		values.put (EXERCISE_COL_DIST, false);
+//		values.put (EXERCISE_COL_TIME, false);
+//		values.put (EXERCISE_COL_LEVEL, false);
+//		values.put (EXERCISE_COL_OTHER, false);
+//		values.put (EXERCISE_COL_WEIGHT_UNIT, "");
+//		values.put (EXERCISE_COL_DIST_UNIT, "");
+//		values.put (EXERCISE_COL_TIME_UNIT, "");
+//		values.put (EXERCISE_COL_OTHER_TITLE, "");
+//		values.put (EXERCISE_COL_OTHER_UNIT, "");
+//		values.put(EXERCISE_COL_LORDER, 17);
+//		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_REP_NUM);
+//		db.insert(EXERCISE_TABLE_NAME, null, values);
+
+//		values.clear();
+//		values.put (EXERCISE_COL_NAME, "lunges");
+//		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_ANAEROBIC);
+//		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_LOWER);
+//		values.put (EXERCISE_COL_WEIGHT, false);
+//		values.put (EXERCISE_COL_REP, true);
+//		values.put (EXERCISE_COL_DIST, false);
+//		values.put (EXERCISE_COL_TIME, false);
+//		values.put (EXERCISE_COL_LEVEL, false);
+//		values.put (EXERCISE_COL_OTHER, false);
+//		values.put (EXERCISE_COL_WEIGHT_UNIT, "");
+//		values.put (EXERCISE_COL_DIST_UNIT, "");
+//		values.put (EXERCISE_COL_TIME_UNIT, "");
+//		values.put (EXERCISE_COL_OTHER_TITLE, "");
+//		values.put (EXERCISE_COL_OTHER_UNIT, "");
+//		values.put(EXERCISE_COL_LORDER, 18);
+//		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_REP_NUM);
+//		db.insert(EXERCISE_TABLE_NAME, null, values);
+
+		values.clear();
+		values.put (EXERCISE_COL_NAME, "med ball twister");
+		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_ANAEROBIC);
+		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_UPPER);
+		values.put (EXERCISE_COL_WEIGHT, false);
+		values.put (EXERCISE_COL_REP, true);
+		values.put (EXERCISE_COL_DIST, false);
+		values.put (EXERCISE_COL_TIME, false);
+		values.put (EXERCISE_COL_LEVEL, false);
+		values.put (EXERCISE_COL_OTHER, false);
+		values.put (EXERCISE_COL_WEIGHT_UNIT, "");
+		values.put (EXERCISE_COL_DIST_UNIT, "");
+		values.put (EXERCISE_COL_TIME_UNIT, "");
+		values.put (EXERCISE_COL_OTHER_TITLE, "");
+		values.put (EXERCISE_COL_OTHER_UNIT, "");
+		values.put(EXERCISE_COL_LORDER, 7);
+		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_REP_NUM);
+		db.insert(EXERCISE_TABLE_NAME, null, values);
+
+	} // init_exes (db)
+
+
+	/**************************
+	 * Returns a Cursor loaded with all the names of the
+	 * exercises.  They'll be sorted in the order that the
+	 * user wants them.
+	 *
+	 * NOTE:
+	 * 		You may want to call startManagingCursor() on the
+	 * 		returned Cursor if you plan on having it stay a
+	 * 		while.  If not, you better CLOSE() it!!!
+	 *
+	 * @param db 	A database ready to read from.
+	 *
+	 * @return	A Cursor with all the names.  It could be empty.
+	 * 			Oh yeah, and it's pointing to BEFORE the first
+	 * 			one, so you gotta to cursor.moveToFirst() or
+	 * 			something to get any data.  YOU'VE BEEN WARNED!
+	 */
+	public static Cursor getAllExerciseNames (SQLiteDatabase db) {
+		return db.query(EXERCISE_TABLE_NAME,	// table
+			new String[] {EXERCISE_COL_NAME},//	columns[]
+			null,	//selection
+			null,	// selectionArgs[]
+			null,	//	groupBy
+			null,	//	having
+			EXERCISE_COL_LORDER,	//	orderBy
+			null);	//	limit
+	} // getAllExerciseNames (activity)
+
+
+	/***************************
+	 * Similar to above, but this is the super-easy version.
+	 * You don't need to do ANY database stuff.  It's all done
+	 * here, hidden from view.
+	 * Again, all the names of the exercises are in an array,
+	 * ordered in the user's preference.
+	 *
+	 * @return	An array of Strings.  Could have a size 0.
+	 */
+	public static String[] getAllExerciseNames() {
+		int i, col;
+
+		SQLiteDatabase db = WGlobals.g_db_helper.getReadableDatabase();
+		Cursor c = db.query(EXERCISE_TABLE_NAME,	// table
+			new String[] {EXERCISE_COL_NAME},//	columns[]
+			null,	//selection
+			null,	// selectionArgs[]
+			null,	//	groupBy
+			null,	//	having
+			EXERCISE_COL_LORDER,	//	orderBy
+			null);	//	limit
+
+		String name_array[] = new String[c.getCount()];
+		i = 0;
+		col = c.getColumnIndex(EXERCISE_COL_NAME);
+		while (c.moveToNext()) {
+			name_array[i++] = c.getString(col);
+		}
+
+		c.close();
+		db.close();
+		return name_array;
+	} // getAllExerciseNames()
+
+
+	/***************************
+	 * This is a helper method.  It grabs ALL the rows of the
+	 * exercise table, but only the specified columns.
+	 *
+	 * NOTE:
+	 * 		The caller should call startManagingCursor() on the
+	 * 		returned cursor if they plan for it to stick around
+	 * 		a while.  If not, you better CLOSE() it!!!
+	 *
+	 * @param db			A database ready to read from.
+	 *
+	 * @param columns	An array of Strings, each item is the
+	 * 					column identifier string.
+	 * 					Null will give all columns.
+	 *
+	 * @param order		The String that is the column identifier
+	 * 					to sort the list by.  EXERCISE_COL_LORDER
+	 * 					is popular.
+	 * 					Use 'null' for no ordering.
+	 *
+	 * @return	A Cursor for you to use.  Could be empty.  But
+	 * 			it'll be pointing BEFORE the first entry.
+	 * 			YOU'VE BEEN WARNED!
+	 */
+	public Cursor getAllExerciseRows (SQLiteDatabase db,
+	                                  String[] columns,
+	                                  String order) {
+		return db.query(EXERCISE_TABLE_NAME,	// table
+			columns,//	columns[]
+			null,	//selection
+			null,	// selectionArgs[]
+			null,	//	groupBy
+			null,	//	having
+			order,	//	orderBy
+			null);	//	limit
+	} // getAllExerciseRows
+
+	/***************************
+	 * An easy way to get the significant exercise number.
+	 *
+	 * @param db			A database ready to read from.
+	 *
+	 * @param	The name of the exercise.
+	 *
+	 * @return	The number of the significant aspect of
+	 * 			the exercise.  See EXERCISE_COL_*_NUM for
+	 * 			the actual numbers.
+	 * 			-1 if there's a problem
+	 */
+	public static int getSignificantExerciseNum (
+                             SQLiteDatabase db,
+                             String ex_name) {
+		int col, sig = -1;
+
+		Cursor c = null;
+		try {
+			c = db.query(
+					EXERCISE_TABLE_NAME,	// table
+					null,			//	columns[]
+		            DatabaseHelper.EXERCISE_COL_NAME + "=?",//selection
+		            new String[] {ex_name},// selectionArgs[]
+		            null,	//	groupBy
+		            null,	//	having
+		            null,	//	orderBy
+		            null);
+
+			if (c.moveToFirst()) {
+				col = c.getColumnIndex(EXERCISE_COL_SIGNIFICANT);
+				sig = c.getInt(col);
+			}
+		}
+		catch (SQLiteException e) {
+			e.printStackTrace();
+		}
+		finally {
+			if (c != null) {
+				c.close();
+				c = null;
+			}
+		}
+
+		return sig;
+	} // getSignificantExerciseNum (ex_name)
+
+
+	/****************************
+	 * Returns a cursor with all the info about the named
+	 * exercise.
+	 *
+	 * NOTES:
+	 * 	- YOU BETTER CLOSE THAT CURSOR!!! Yeah, you've been warned.
+	 *
+	 *  - Don't forget to call Cursor.moveToFirst() !!!
+	 *
+	 * @param db		Ready to read.
+	 * @param name	The name of the exercise
+	 * @return	A cursor with one row (not set to it!).
+	 * 			NULL if there was an error.
+	 */
+	public static Cursor getAllExerciseInfoByName (SQLiteDatabase db,
+	                                         String name) {
+		return db.query(EXERCISE_TABLE_NAME,
+				null,
+				EXERCISE_COL_NAME + "=?",
+	            new String[] {name},// selectionArgs[]
+				null,
+				null,
+				null);
+	} // getAllExerciseInfoByName (db, name)
+
+	/****************************
+	 * Returns a cursor with all the info about the named
+	 * exercise.  This is the same as above, but the exercise
+	 * is referred to by its column id, not its name.
+	 *
+	 * NOTE:
+	 * 	YOU BETTER CLOSE THAT CURSOR!!! Yeah, you've been warned.
+	 *
+	 * @param db		Ready to read.
+	 * @param name	The order (as the user sees it) of the row.
+	 * @return	A cursor with one row (not set to it!).
+	 * 			NULL if there was an error.
+	 */
+	public static Cursor getAllExerciseInfoByOrder (SQLiteDatabase db,
+	                                         int lorder) {
+		return db.query(EXERCISE_TABLE_NAME,	// table
+				null,			//	columns[] -- all of 'em
+	            DatabaseHelper.EXERCISE_COL_LORDER + "=" + lorder,//selection
+	            null,// selectionArgs[]
+	            null,	//	groupBy
+	            null,	//	having
+	            null);	//	orderBy
+	} // getAllExerciseInfoByOrder (db, lorder)
+
+
+	/**********************
+	 * Given an LOrder (the row that an exercise appears on,
+	 * as ordered by the user), this returns that exercise's
+	 * name.
+	 *
+	 * @param db			A database ready for reading.
+	 * @param lorder		The row that this exercise appears to
+	 * 					the user (it's LOrder in the database).
+	 *
+	 * @return	The name of the exercise that corresponds to this
+	 * 			row.
+	 * 			Null, if an error occurs.
+	 */
+	public static String getNameFromLOrder (SQLiteDatabase db,
+	                                        int lorder) {
+		String name = null;
+		Cursor c = null;
+
+		try {
+			c =  db.query(EXERCISE_TABLE_NAME,	// table
+					new String[] {EXERCISE_COL_NAME},	// just the name column
+			        EXERCISE_COL_LORDER + "=" + lorder,//selection
+			        null,// selectionArgs[]
+			        null,	//	groupBy
+			        null,	//	having
+			        null);	//	orderBy
+			c.moveToFirst();
+			int col = c.getColumnIndex(EXERCISE_COL_NAME);
+			if (col == -1)
+				Log.e(tag, "Illegal column in getNameFromLorder() - lorder = " + lorder);
+			else
+				name = c.getString(col);
+		}
+		catch (SQLiteException e) {
+			e.printStackTrace();
+		}
+		finally {
+			if (c != null) {
+				c.close();
+				c = null;
+			}
+		}
+
+		return name;
+	} // getNameFromLOrder (db, lorder)
+
+	/**************************
+	 * Given an LOrder (the row that an exercise appears on,
+	 * as ordered by the user), this returns that exercise's
+	 * name.
+	 *
+	 * This is an even easier version--you don't need to
+	 * have a db variable lying around for this one.
+	 *
+	 * @param db			A database ready for reading.
+	 * @param lorder		The row that this exercise appears to
+	 * 					the user (it's LOrder in the database).
+	 *
+	 * @return	The name of the exercise that corresponds to this
+	 * 			row.
+	 * 			Null, if an error occurs.
+	 */
+	public static String getNameFromLOrder (int lorder) {
+		SQLiteDatabase db = null;
+		String name = null;
+
+		try {
+			db = WGlobals.g_db_helper.getReadableDatabase();
+			name = getNameFromLOrder(db, lorder);
+		}
+		catch (SQLiteException e) {
+			e.printStackTrace();
+		}
+		finally {
+			if (db != null) {
+				db.close();
+				db = null;
+			}
+		}
+		return name;
+	} // getNameFromLOrder (lorder)
+
+
+	//--------------------------------------
+	//	Set Table Methods
+	//--------------------------------------
+
+	/********************
+	 * Initializes the set table.
+	 */
+	private void init_sets (SQLiteDatabase db) {
+		ContentValues values = new ContentValues();
+
+		Calendar time = Calendar.getInstance();
+		long millis = time.getTimeInMillis();
+
+		values.clear();
+		values.put(SET_COL_DATEMILLIS, millis);
+		values.put(SET_COL_NAME, "squats");
+		values.put(SET_COL_REPS, 10);
+		values.put(SET_COL_WEIGHT, 400f);
+		values.put(SET_COL_CONDITION, SET_COND_OK);
+		db.insert(SET_TABLE_NAME, null, values);
+
+
+		time.add(Calendar.DAY_OF_MONTH, -4);
+		millis = time.getTimeInMillis();
+
+		values.clear();
+		values.put(SET_COL_DATEMILLIS, millis);
+		values.put(SET_COL_NAME, "squats");
+		values.put(SET_COL_REPS, 10);
+		values.put(SET_COL_WEIGHT, 200f);
+		values.put(SET_COL_CONDITION, SET_COND_OK);
+		db.insert(SET_TABLE_NAME, null, values);
+
+		time.add(Calendar.DAY_OF_MONTH, -12);
+		millis = time.getTimeInMillis();
+
+		values.clear();
+		values.put(SET_COL_DATEMILLIS, millis);
+		values.put(SET_COL_NAME, "squats");
+		values.put(SET_COL_REPS, 10);
+		values.put(SET_COL_WEIGHT, 100f);
+		values.put(SET_COL_CONDITION, SET_COND_OK);
+		db.insert(SET_TABLE_NAME, null, values);
+	} // init_sets (db)
+
+
+	/************************
+	 * This returns the most recently entered set (sorted in
+	 * descending order by date) for a given exercise.
+	 *
+	 * NOTE:
+	 * 	YOU BETTER CLOSE THAT CURSOR!!! Yeah, you've been warned.
+	 * 	Or...if you want this cursor to stick around for a while,
+	 *  call startManagingCursor() so that the Activity takes care
+	 *  of it.
+	 *
+	 * @param db		A database ready for reading.
+	 * @param name	The name of the exercise.
+	 * @return	A cursor with one row: all the columns of
+	 * 			this particular exercise set.
+	 * 			This Cursor could be empty (error)!!!  If not,
+	 * 			then it starts already moved to the item.
+	 */
+	public static Cursor getLastSet (SQLiteDatabase db,
+                                     String name) {
+		Cursor c = db.query(SET_TABLE_NAME,
+				null,
+				SET_COL_NAME + "=?",
+				new String[] {"" + name},
+				null,
+				null,
+				SET_COL_DATEMILLIS + " DESC", 	// descending by date
+				"1");	// Just one.
+		c.moveToFirst();		// A courtesy.
+		return c;
+	} // getLastSet (db, name)
+
+	/*************************
+	 * Returns a cursor with with ALL the sets of the named
+	 * exercise.
+	 *
+	 * NOTE:
+	 * 	YOU BETTER CLOSE THAT CURSOR!!! Yeah, you've been warned.
+	 * 	Or...if you want this cursor to stick around for a while,
+	 *  call startManagingCursor() so that the Activity takes care
+	 *  of it.
+	 *
+	 * @param db		A database ready for reading.
+	 * @param name	The name of the exercise.
+	 * @param descend	true - order ascending, with oldest first.
+	 * 					false - descending order, with newest first.
+	 * @return	A cursor with all the sets: all the columns of
+	 * 			this particular exercise set.
+	 * 			This Cursor could be empty!!!
+	 */
+	public static Cursor getAllSets (SQLiteDatabase db,
+	                                 String name, boolean descend) {
+		return db.query(SET_TABLE_NAME,
+				null,
+				SET_COL_NAME + "=?",
+				new String[] {"" + name},
+				null,
+				null,
+				SET_COL_DATEMILLIS + (descend ? " DESC" : "ASC")); // date ordered
+	} // getAllSets (db, name, descend)
+
+}

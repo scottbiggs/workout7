@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- It's the style defined here that makes buttons look like
+	a list item element.  Does a pretty good job!  It is copied
+	straight from the android system standard definition of a
+	List.  That's why it looks so much like a ListView!
+
+	I've changed the padding and textSize so that it's big enough
+	to actually scroll. -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+	<style 
+	    name="listlike_button" 
+	    parent="@android:style/Widget.Button">
+		<item name="android:background">@android:drawable/list_selector_background</item>
+		<item name="android:focusable">true</item>
+		<item name="android:clickable">true</item>
+			<!-- Perhaps this should reference some global string? -->
+		<item name="android:textSize">14dip</item>
+		<item name="android:textStyle">bold</item>
+		<item name="android:paddingBottom">10px</item>
+		<item name="android:paddingTop">10px</item>
+		<item name="android:paddingLeft">40px</item>
+		<item name="android:paddingRight">40px</item>
+		<item name="android:textAppearance">?android:attr/textAppearanceSmallInverse</item>
+		<item name="android:textColor">@android:color/white</item>
+		<item name="android:gravity">left</item>
+	</style>
+
+	<!-- =============================================== -->
+	<!-- Text Styles										-->	
+	<!-- =============================================== -->
+	<style 
+	    name="white_text_small" 
+	    parent="@android:style/TextAppearance">
+		<item name="android:textColor">@color/ivory</item>
+		<item name="android:textSize">15dp</item>	    
+	</style>
+		
+	<style 
+	    name="white_text_medium" 
+	    parent="@android:style/TextAppearance">
+		<item name="android:textColor">@color/ivory</item>
+		<item name="android:textSize">18dp</item>	    
+	</style>
+
+	<style 
+	    name="white_text_large" 
+	    parent="@android:style/TextAppearance">
+		<item name="android:textColor">@color/ivory</item>
+		<item name="android:textSize">20dp</item>	    
+	</style>
+
+	<style 
+	    name="white_text_extra_large" 
+	    parent="@android:style/TextAppearance">
+		<item name="android:textColor">@color/ivory</item>
+		<item name="android:textSize">24dp</item>	    
+	</style>
+		
+	
+</resources>

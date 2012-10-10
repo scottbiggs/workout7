@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Layout for just a row when moving the order of
+	the rows around.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@color/black"
+    >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center" >
+
+    <ImageView
+        android:id="@+id/row_edit_row_up_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_white_arrow_up"
+        />
+
+    <ImageView
+        android:id="@+id/row_edit_row_down_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="7dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_white_arrow_down" />
+
+    <TextView
+        android:id="@+id/row_edit_row_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/row_edit_row_down_image"
+        android:layout_toRightOf="@+id/row_edit_row_up_image"
+        android:gravity="center"
+        android:text="foo"
+	    style="@style/white_text_medium"
+        />
+
+    </RelativeLayout>
+
+</LinearLayout>

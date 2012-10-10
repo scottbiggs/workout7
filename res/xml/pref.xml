@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <com.sleepfuriously.hpgworkout.LongCheckboxPreference
+        android:key="@string/prefs_nag_key"
+        android:summaryOff="@string/prefs_nagging_is_off_msg"
+        android:summaryOn="@string/prefs_nagging_is_on_msg"
+        android:title="@string/prefs_nag_title" />
+
+    <com.sleepfuriously.hpgworkout.LongCheckboxPreference
+        android:key="@string/prefs_sound_key"
+        android:summaryOff="@string/prefs_sound_off_msg"
+        android:summaryOn="@string/prefs_sound_on_msg"
+        android:title="@string/prefs_sound_title" />
+
+    <com.sleepfuriously.hpgworkout.LongCheckboxPreference
+        android:key="@string/prefs_display_key"
+        android:summaryOff="@string/prefs_display_save_screen_msg"
+        android:summaryOn="@string/prefs_display_keep_on_msg"
+        android:title="@string/prefs_display_title" />
+
+</PreferenceScreen>

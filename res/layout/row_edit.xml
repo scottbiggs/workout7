@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	The layout to edit the order of the rows in the 
+	main grid.
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" 
+    android:background="@color/darkdark_gray" 
+    >
+
+    <TextView
+        android:id="@+id/row_edit_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/row_edit_title"
+	    style="@style/white_text_large"
+        />
+
+    <ImageView
+        android:id="@+id/row_edit_logo_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/row_edit_title"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:src="@drawable/hpglogo_36x36" />
+
+    <Button
+        android:id="@+id/row_edit_help_butt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:visibility="invisible"
+        android:text="@string/question_mark"/>
+
+    <Button
+        android:id="@+id/row_edit_cancel_butt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="8dp"
+        android:layout_toLeftOf="@+id/row_edit_help_butt"
+        android:background="@drawable/button_shiny_black"
+        android:textColor="@color/ivory"
+        android:text="@string/cancel" />
+    
+    <Button
+        android:id="@+id/row_edit_ok_butt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="8dp"
+        android:layout_toRightOf="@id/row_edit_help_butt"
+        android:background="@drawable/button_shiny_black"
+        android:textColor="@color/ivory"
+        android:text="@string/ok" />
+
+    <TextView
+        android:id="@+id/row_edit_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/row_edit_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/rounded_edges"
+        android:gravity="center_horizontal"
+        android:paddingBottom="3dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="3dp"
+        android:text="@string/row_edit_desc"
+	    style="@style/white_text_small"
+        />
+
+    <ListView
+        android:id="@+id/row_edit_lv"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/row_edit_help_butt"
+        android:layout_below="@id/row_edit_description"
+        android:layout_centerHorizontal="true" >
+    </ListView>
+
+</RelativeLayout>

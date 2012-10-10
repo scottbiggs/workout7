@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	This layout file defines the tabhost that describes a
+	single exercise.  The tabs are:
+		History
+		Inspector
+		Edit Exercise
+		Add a Set (the most important)
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/darkdark_gray"
+    tools:ignore="ContentDescription" >
+
+    <TextView
+        android:id="@+id/exercise_tabhost_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginTop="5dp"
+        android:text="name"
+	    style="@style/white_text_large"
+        />
+
+    <ImageView
+        android:id="@+id/exercise_tabhost_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="4dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="6dp"
+        android:src="@drawable/hpglogo_36x36" />
+    <!--
+    <Button
+        android:id="@+id/exercise_tabhost_to_grid_butt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:text="@string/exercise_tabhost_to_grid_butt" />
+    -->
+
+    <TabHost
+        android:id="@android:id/tabhost"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/exercise_tabhost_logo" >
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" >
+            </TabWidget>
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="5dp" >
+
+                <!--
+                    The FrameLayout needs to have at least
+                    one child to keep the graphical
+					editor from gagging.
+                -->
+				<LinearLayout 
+				    android:layout_width="fill_parent"
+			        android:layout_height="fill_parent"
+			        android:id="@+id/dummy_tab">
+				</LinearLayout>
+
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+
+</RelativeLayout>

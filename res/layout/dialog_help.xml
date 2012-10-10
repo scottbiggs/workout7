@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	This is my custom dialog for simple help messages.
+	It consists of a logo, a title, scrolling text, and 
+	an "ok" button at the bottom.
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:background="@color/hpg_blue_darkest"
+    android:padding="0dp"
+    tools:ignore="HardcodedText,ContentDescription" >
+
+    <ImageView
+        android:id="@+id/dialog_help_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="6dp"
+        android:src="@drawable/hpglogo_36x36" />
+
+    <TextView
+        android:id="@+id/dialog_help_title_tv"
+        style="@style/white_text_large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_toLeftOf="@id/dialog_help_logo"
+        android:text="foo" />
+
+    <ImageView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/dialog_help_title_divider"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dialog_help_logo"
+        android:paddingBottom="2dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="10dp"
+        android:scaleType="fitXY"
+        android:src="@android:drawable/divider_horizontal_dark" />
+
+    <Button
+        android:id="@+id/dialog_help_ok_butt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dialog_help_scrollview"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="-50dp"
+        android:background="@drawable/button_shiny_black"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        android:text="@string/ok"
+        android:textColor="@color/ivory"
+        android:textSize="@dimen/font_size_button_default" />
+
+    <ScrollView
+        android:id="@+id/dialog_help_scrollview"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/dialog_help_title_divider"
+        android:layout_marginBottom="60dp"
+        android:layout_marginTop="5dp" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/dialog_help_msg_tv"
+                style="@style/white_text_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="10dp"
+                android:text="TextView" />
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+	The layout for entering data for a single set of a workout. 
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" 
+    android:background="@color/darkdark_gray" 
+    >
+<!--
+	<TextView
+        android:id="@+id/aset_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="3dp"
+        android:text="name"
+	    style="@style/white_text_large"
+        />
+
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="6dp"
+        android:src="@drawable/hpglogo_36x36" />
+-->
+
+    <!-- ============= -->
+    <!-- Buttons -->
+    <!-- ============= -->
+
+    <Button
+        android:id="@+id/aset_null_butt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:text="@string/question_mark"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/aset_enter_butt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="8dp"
+        android:layout_toRightOf="@id/aset_null_butt"
+        android:background="@drawable/button_shiny_black"
+        android:textColor="@color/ivory"
+        android:text="@string/aset_enter_butt" />
+
+    <Button
+        android:id="@+id/aset_clear_butt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="8dp"
+        android:layout_toLeftOf="@id/aset_null_butt"
+        android:background="@drawable/button_shiny_black"
+        android:textColor="@color/ivory"
+        android:text="@string/aset_clear_button" />
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/aset_clear_butt"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="3dp" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TableLayout
+                android:id="@+id/aset_tableLayout1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/rounded_edges"
+                android:shrinkColumns="1"
+                android:stretchColumns="1" >
+
+                <!-- REPS -->
+
+                <TableRow
+                    android:id="@+id/aset_reps_row"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="5dp" >
+
+                    <TextView
+                        android:id="@+id/aset_reps_label_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:gravity="right"
+                        android:text="@string/aset_reps_label"
+					    style="@style/white_text_medium"
+                        />
+
+                    <EditText
+                        android:id="@+id/aset_reps_et"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="16dp"
+                        android:enabled="false"
+                        android:gravity="left|center_vertical"
+                        android:hint="@string/aset_reps_hint"
+                        android:inputType="number" />
+                </TableRow>
+
+                <!-- WEIGHT -->
+
+                <TableRow
+                    android:id="@+id/aset_weight_row"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="3dp" >
+
+                    <TextView
+                        android:id="@+id/aset_weight_label_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:gravity="right"
+                        android:text="@string/aset_weight_label"
+					    style="@style/white_text_medium"
+                        />
+
+                    <EditText
+                        android:id="@+id/aset_weight_et"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="16dp"
+                        android:enabled="false"
+                        android:gravity="left|center_vertical"
+                        android:inputType="numberDecimal"
+                        android:maxLines="1" />
+                </TableRow>
+
+                <!-- Level -->
+
+                <TableRow
+                    android:id="@+id/aset_level_row"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="3dp" >
+
+                    <TextView
+                        android:id="@+id/aset_level_label_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:gravity="right"
+                        android:text="@string/aset_level_label"
+					    style="@style/white_text_medium"
+                        />
+
+                    <EditText
+                        android:id="@+id/aset_level_et"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="16dp"
+                        android:enabled="false"
+                        android:gravity="left|center_vertical"
+                        android:hint="@string/aset_level_hint"
+                        android:inputType="number"
+                        android:maxLines="1" />
+                </TableRow>
+
+
+                <!-- Calories -->
+
+                <TableRow
+                    android:id="@+id/aset_cals_row"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="3dp" >
+
+                    <TextView
+                        android:id="@+id/aset_calorie_label_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:gravity="right"
+                        android:text="@string/aset_calorie_label"
+					    style="@style/white_text_medium"
+                        />
+
+                    <EditText
+                        android:id="@+id/aset_calorie_et"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="16dp"
+                        android:enabled="false"
+                        android:gravity="left|center_vertical"
+                        android:hint="@string/aset_calorie_hint"
+                        android:inputType="number"
+                        android:maxLines="1" />
+                </TableRow>
+
+                <!-- Distance -->
+
+                <TableRow
+                    android:id="@+id/aset_dist_row"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="3dp" >
+
+                    <TextView
+                        android:id="@+id/aset_dist_label_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:gravity="right"
+                        android:text="@string/aset_distance_off_label"
+					    style="@style/white_text_medium"
+                        />
+
+                    <EditText
+                        android:id="@+id/aset_dist_et"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="16dp"
+                        android:enabled="false"
+                        android:gravity="left|center_vertical"
+                        android:inputType="numberDecimal"
+                        android:maxLines="1" />
+                </TableRow>
+
+                <!-- Time -->
+
+                <TableRow
+                    android:id="@+id/aset_time_row"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="3dp" >
+
+                    <TextView
+                        android:id="@+id/aset_time_label_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:gravity="right"
+                        android:text="@string/aset_time_off_label"
+					    style="@style/white_text_medium"
+                        />
+
+                    <EditText
+                        android:id="@+id/aset_time_et"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="16dp"
+                        android:enabled="false"
+                        android:gravity="left|center_vertical"
+                        android:inputType="numberDecimal"
+                        android:maxLines="1" />
+                </TableRow>
+
+                <!-- Other -->
+
+                <TableRow
+                    android:id="@+id/aset_other_row"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="3dp" >
+
+                    <TextView
+                        android:id="@+id/aset_other_label_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:gravity="right"
+                        android:text="@string/aset_other_off_label"
+					    style="@style/white_text_medium"
+                        />
+
+                    <EditText
+                        android:id="@+id/aset_other_et"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="16dp"
+                        android:enabled="false"
+                        android:gravity="left|center_vertical"
+                        android:inputType="numberDecimal"
+                        android:maxLines="1" />
+                </TableRow>
+            </TableLayout>
+
+            <TextView
+                android:id="@+id/aset_cond_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/aset_tableLayout1"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/aset_cond_label"
+                android:textAppearance="@android:attr/textAppearanceMedium" />
+
+            <RadioGroup
+                android:id="@+id/aset_cond_rg"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/aset_cond_label"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/rounded_edges"
+                android:orientation="horizontal"
+                android:paddingBottom="3dp"
+                android:paddingTop="3dp" >
+
+                <RadioButton
+                    android:id="@+id/aset_cond_ok_rb"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:text="@string/aset_cond_stress_ok" />
+
+                <RadioButton
+                    android:id="@+id/aset_cond_plus_rb"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/aset_cond_stress_too_easy" />
+
+                <RadioButton
+                    android:id="@+id/aset_cond_minus_rb"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/aset_cond_stress_too_hard" />
+
+                <RadioButton
+                    android:id="@+id/aset_cond_injury_rb"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/aset_cond_stress_injury" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/aset_notes_label_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/aset_cond_rg"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/aset_notes_label"
+                android:textAppearance="@android:attr/textAppearanceMedium" />
+
+            <EditText
+                android:id="@+id/aset_notes_et"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/aset_null_butt"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/aset_notes_label_tv"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:inputType="textMultiLine"
+                android:maxLines="4" >
+            </EditText>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

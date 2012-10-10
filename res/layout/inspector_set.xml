@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	This is a grouping for the Inspector layout.
+	It is very likely that the Inspector will have more than
+	one exercise set to display.  Each set will need its own
+	list to display.  This is what it will look like.
+-->
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/inspector_set_ll"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:layout_margin="8dp"
+	android:background="@drawable/rounded_edges"
+	android:orientation="vertical"
+	android:paddingBottom="5dp"
+	android:paddingLeft="8dp"
+	android:paddingRight="8dp"
+	android:paddingTop="5dp">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+	    <TextView
+	        android:id="@+id/inspector_set_title_tv"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/inspector_set_title"
+		    style="@style/white_text_medium"
+	        android:textColor="@color/ivory" />
+
+	    <TextView
+	        android:id="@+id/inspector_set_time_tv"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginBottom="5dp"
+	        android:layout_marginLeft="12dp"
+	        android:text="@string/inspector_set_time_error"
+		    style="@style/white_text_small"
+	        android:textColor="@color/ivory" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/inspector_set_reps_ll"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="2dp" >
+
+        <TextView
+            android:id="@+id/inspector_set_reps_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1.5"
+            android:gravity="right"
+            android:text="@string/aset_reps_label"
+		    style="@style/white_text_small"
+            />
+
+        <TextView
+            android:id="@+id/inspector_set_reps_data"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_edges2"
+            android:paddingLeft="6dp"
+            android:text="data"
+		    style="@style/white_text_small"
+            android:textColor="@color/floral_white" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/inspector_set_weight_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="3dp"
+        android:background="@color/hpg_orange_dark_desaturated4" />
+
+    <LinearLayout
+        android:id="@+id/inspector_set_weight_ll"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="2dp" >
+
+        <TextView
+            android:id="@+id/inspector_set_weight_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1.5"
+            android:gravity="right"
+            android:text="@string/aset_weight_label"
+		    style="@style/white_text_small"
+            />
+
+        <TextView
+            android:id="@+id/inspector_set_weight_data"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_edges2"
+            android:paddingLeft="6dp"
+            android:text="data"
+		    style="@style/white_text_small"
+            android:textColor="@color/floral_white" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/inspector_set_level_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="3dp"
+        android:background="@color/hpg_orange_dark_desaturated4" />
+
+    <LinearLayout
+        android:id="@+id/inspector_set_level_ll"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="2dp" >
+
+        <TextView
+            android:id="@+id/inspector_set_level_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1.5"
+            android:gravity="right"
+            android:text="@string/aset_level_label"
+		    style="@style/white_text_small"
+			/>
+        <TextView
+            android:id="@+id/inspector_set_level_data"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_edges2"
+            android:paddingLeft="6dp"
+            android:text="data"
+		    style="@style/white_text_small"
+            android:textColor="@color/floral_white" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/inspector_set_calorie_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="3dp"
+        android:background="@color/hpg_orange_dark_desaturated4" />
+
+    <LinearLayout
+        android:id="@+id/inspector_set_calorie_ll"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="2dp" >
+
+        <TextView
+            android:id="@+id/inspector_set_calorie_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1.5"
+            android:gravity="right"
+            android:text="@string/aset_calorie_label"
+		    style="@style/white_text_small"
+            />
+
+        <TextView
+            android:id="@+id/inspector_set_calorie_data"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_edges2"
+            android:paddingLeft="6dp"
+            android:text="data"
+		    style="@style/white_text_small"
+            android:textColor="@color/floral_white" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/inspector_set_dist_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="3dp"
+        android:background="@color/hpg_orange_dark_desaturated4" />
+
+    <LinearLayout
+        android:id="@+id/inspector_set_dist_ll"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="2dp" >
+
+        <TextView
+            android:id="@+id/inspector_set_dist_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1.5"
+            android:gravity="right"
+            android:text="@string/aset_distance_label"
+		    style="@style/white_text_small"
+            />
+
+        <TextView
+            android:id="@+id/inspector_set_dist_data"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_edges2"
+            android:paddingLeft="6dp"
+            android:text="data"
+		    style="@style/white_text_small"
+            android:textColor="@color/floral_white" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/inspector_set_time_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="3dp"
+        android:background="@color/hpg_orange_dark_desaturated4" />
+
+    <LinearLayout
+        android:id="@+id/inspector_set_time_ll"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="2dp" >
+
+        <TextView
+            android:id="@+id/inspector_set_time_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1.5"
+            android:gravity="right"
+            android:text="@string/aset_time_label"
+		    style="@style/white_text_small"
+            />
+
+        <TextView
+            android:id="@+id/inspector_set_time_data"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_edges2"
+            android:paddingLeft="6dp"
+            android:text="data"
+		    style="@style/white_text_small"
+            android:textColor="@color/floral_white" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/inspector_set_other_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="3dp"
+        android:background="@color/hpg_orange_dark_desaturated4" />
+
+    <LinearLayout
+        android:id="@+id/inspector_set_other_ll"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="2dp" >
+
+        <TextView
+            android:id="@+id/inspector_set_other_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1.5"
+            android:gravity="right"
+            android:text="@string/aset_other_label"
+		    style="@style/white_text_small"
+            />
+
+        <TextView
+            android:id="@+id/inspector_set_other_data"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_edges2"
+            android:paddingLeft="6dp"
+            android:text="data"
+		    style="@style/white_text_small"
+            android:textColor="@color/floral_white" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/inspector_set_stress_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="3dp"
+        android:background="@color/hpg_orange_dark_desaturated4" />
+
+
+    	<LinearLayout
+        android:id="@+id/inspector_set_stress_ll"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="2dp" >
+
+        <TextView
+            android:id="@+id/inspector_set_stress_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1.5"
+            android:gravity="right"
+	        android:text="@string/inspector_set_stress_label"
+		    style="@style/white_text_small"
+            />
+
+        <TextView
+            android:id="@+id/inspector_set_stress_data"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_edges2"
+            android:paddingLeft="6dp"
+            android:text="data"
+		    style="@style/white_text_small"
+            android:textColor="@color/floral_white" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/hpg_orange_light_desaturated1" />
+
+    <TextView
+        android:id="@+id/inspector_set_notes_label_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="5dp"
+        android:text="@string/inspector_set_notes_label"
+	    style="@style/white_text_small"
+        android:textColor="@color/off_white"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/inspector_set_notes_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:text="@string/inspector_set_notes_data_none"
+	    style="@style/white_text_small"
+        />
+
+</LinearLayout>
