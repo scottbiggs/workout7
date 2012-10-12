@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 	This is my custom dialog for simple help messages.
-	It consists of a logo, a title, scrolling text, and 
+	It consists of a logo, a title, scrolling text, and
 	an "ok" button at the bottom.
+
+	NOTE:
+		There seems to be a small problem with this dialog
+		on the Motorola phones (Droid4, etc.).  But
+		it looks great on all the others.  Still works
+		on the Motorolas and it's just a minor cosmetic
+		issue, so I'm just worrying about it!
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -36,7 +43,7 @@
         android:layout_toLeftOf="@id/dialog_help_logo"
         android:text="foo" />
 
-    
+
     <ImageView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/dialog_help_title_divider"
@@ -91,5 +98,5 @@
         android:text="@string/ok"
         android:textColor="@color/ivory"
         android:textSize="@dimen/font_size_button_default" />
-    
+
 </RelativeLayout>
