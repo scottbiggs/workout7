@@ -48,7 +48,8 @@ public class WGlobals extends Application {
 		GRAPHACTIVITY = 17,
 		GRAPHSELECTORACTIVITY = 18,
 		HISTORYACTIVITY = 19,
-		EXERCISETABHOSTACTIVITY = 20;	// added as they're made
+		TESTACTIVITY = 20,		// todo:		Just for debugging!!
+		EXERCISETABHOSTACTIVITY = 21;	// added as they're made
 
 
 	//---------------------------

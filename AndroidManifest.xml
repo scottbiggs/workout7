@@ -68,6 +68,9 @@
 		    android:theme="@android:style/Theme.Dialog"
 		    />
 		
+		<!-- TODO:  This is just used for testing!!! -->
+		<activity android:name=".TestActivity" />
+				
 	</application>
 	
 </manifest>
