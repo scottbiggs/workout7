@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Master" id="1" measuredWidth="396" measuredHeight="790">
+    <screen xsi:type="model:WidgetGroup" href="assets/Android.screen#Phone"/>
+  </widgets>
+  <widgets xsi:type="model:Panel" id="42" x="38" y="89" width="320" height="535" measuredWidth="320" measuredHeight="535" background="#000000"/>
+  <widgets xsi:type="model:Panel" id="44" x="38" y="216" width="304" height="73" measuredWidth="304" measuredHeight="73" background="#cccccc" border="none"/>
+  <widgets xsi:type="model:Panel" id="43" x="38" y="304" width="304" height="257" measuredWidth="304" measuredHeight="257" background="#cccccc" border="none"/>
+  <widgets xsi:type="model:Master" id="4" x="38" y="89" measuredWidth="320" measuredHeight="28">
+    <screen xsi:type="model:WidgetGroup" href="assets/Android.screen#Status Bar"/>
+  </widgets>
+  <widgets xsi:type="model:VScrollbar" id="5" x="341" y="161" height="428" measuredWidth="17" measuredHeight="428"/>
+  <widgets xsi:type="model:Button" id="7" x="38" y="588" width="125" text="save" measuredWidth="125" measuredHeight="36" background="#666666">
+    <font size="22"/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="8" x="232" y="588" width="126" text="cancel" measuredWidth="126" measuredHeight="36" background="#666666">
+    <font size="22"/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="9" x="174" y="588" width="49" text="?" measuredWidth="49" measuredHeight="36" background="#666666">
+    <font size="22"/>
+  </widgets>
+  <widgets xsi:type="model:TextField" id="10" x="198" y="168" width="144" text="jogging" measuredWidth="144" measuredHeight="29">
+    <font size="18" bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="11" x="61" y="168" text="exercise name" measuredWidth="138" measuredHeight="29" foreground="#ffffff">
+    <font size="18" bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:Panel" id="14" x="38" y="116" width="320" height="46" measuredWidth="320" measuredHeight="46" background="#000000" alpha="192" foreground="#ffffff" border="none"/>
+  <widgets xsi:type="model:Label" id="6" x="38" y="116" width="320" text="Edit Exercise" measuredWidth="320" measuredHeight="46" textAlignment="Center" foreground="#ffffff">
+    <font size="32"/>
+  </widgets>
+  <widgets xsi:type="model:RadioButton" id="15" x="48" y="320" measuredWidth="20" measuredHeight="26">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="16" x="83" y="224" text="excercise type" measuredWidth="116" measuredHeight="26" textAlignment="Right">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Combo" id="18" x="198" y="224" width="144" text="aerobic" measuredWidth="144" measuredHeight="26">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="19" x="80" y="256" width="119" text="muscle group" measuredWidth="119" measuredHeight="26" textAlignment="Right">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Combo" id="20" x="198" y="256" width="144" text="lower" measuredWidth="144" measuredHeight="26">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Checkbox" id="21" x="107" y="320" text="weights" measuredWidth="81" measuredHeight="26">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Combo" id="23" x="198" y="320" width="144" text="unit" measuredWidth="144" measuredHeight="26" state="disabled">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Checkbox" id="24" x="107" y="352" text="reps" measuredWidth="55" measuredHeight="26">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Combo" id="25" x="198" y="352" width="144" text="unit" measuredWidth="144" measuredHeight="26" state="disabled">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:RadioButton" id="26" x="48" y="352" measuredWidth="20" measuredHeight="26">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Checkbox" id="27" x="107" y="384" text="distance" measuredWidth="86" measuredHeight="26" selected="true">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Combo" id="28" x="198" y="384" width="144" text="miles" measuredWidth="144" measuredHeight="26">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:RadioButton" id="29" x="48" y="384" measuredWidth="20" measuredHeight="26">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Checkbox" id="30" x="107" y="418" text="time" measuredWidth="56" measuredHeight="26" selected="true">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Combo" id="31" x="198" y="418" width="144" text="minutes" measuredWidth="144" measuredHeight="26">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:RadioButton" id="32" x="48" y="418" measuredWidth="20" measuredHeight="26" selected="true">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Checkbox" id="33" x="107" y="456" text="level" measuredWidth="57" measuredHeight="26">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:RadioButton" id="35" x="48" y="456" measuredWidth="20" measuredHeight="26">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Checkbox" id="36" x="107" y="488" text="other" measuredWidth="63" measuredHeight="26">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:RadioButton" id="38" x="48" y="488" measuredWidth="20" measuredHeight="26">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:TextField" id="39" x="198" y="488" width="144" text="label" measuredWidth="144" measuredHeight="26" state="disabled">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:TextField" id="40" x="198" y="520" width="144" text="unit" measuredWidth="144" measuredHeight="26" state="disabled">
+    <font/>
+  </widgets>
+  <hRuler>
+    <guides position="-35"/>
+    <guides position="198"/>
+  </hRuler>
+  <vRuler>
+    <guides position="-42"/>
+  </vRuler>
+  <font/>
+</model:Screen>
