@@ -6,7 +6,6 @@
 package com.sleepfuriously.hpgworkout;
 
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;

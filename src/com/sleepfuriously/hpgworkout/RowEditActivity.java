@@ -13,7 +13,6 @@ package com.sleepfuriously.hpgworkout;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;

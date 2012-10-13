@@ -28,10 +28,7 @@ package com.sleepfuriously.hpgworkout;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.Notification;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.pm.FeatureInfo;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,7 +36,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 public class BaseDialogActivity extends Activity {
@@ -424,133 +420,6 @@ public class BaseDialogActivity extends Activity {
 		yes_butt.setOnClickListener(listener);
 
 		m_custom_dialog.show();
-	}
-	/******************
-	 * todo:
-	 * 	Get rid of these old yes/no dialogs!
-	 *
-	 * This shows a yes/no dialog, prompting the user to choose
-	 * one.  If they choose yes, then the listener is activated.
-	 * If they choose no, then nothing is done.
-	 *
-	 * NOTE:		The title AND the message should be in the
-	 * 			form of yes or no question.
-	 *
-	 * @param title_id		The ID for the title.  Use -1 for
-	 * 						no title.
-	 *
-	 * @param msg_id			ID for the message. -1 for none.
-	 *
-	 * @param listener		The listener to activate when YES
-	 * 						is chosen.
-	 */
-	protected void show_yes_no_dialog_old (int title_id, int msg_id,
-							DialogInterface.OnClickListener listener) {
-
-		// Build the dialog.
-		AlertDialog.Builder builder =
-			new AlertDialog.Builder (this);
-		builder.setIcon (R.drawable.hpglogo_36x36);
-		if (title_id != -1) {
-			builder.setTitle (getString (title_id));
-		}
-		if (msg_id != -1) {
-			builder.setMessage (getString (msg_id));
-		}
-		builder.setPositiveButton(R.string.yes, listener);
-		builder.setNegativeButton(R.string.no, null);
-
-		// And show it.
-		m_dialog = builder.create();
-		m_dialog.show();
-	} // show_yes_no_dialog_old (title_id, title_args, msg_id, msg_args, listener)
-
-	/******************
-	 * todo:
-	 * 	Get rid of these old yes/no dialogs!
-	 *
-	 * This shows a yes/no dialog, prompting the user to choose
-	 * one.  If they choose yes, then the listener is activated.
-	 * If they choose no, then nothing is done.
-	 *
-	 * NOTE:		The title AND the message should be in the
-	 * 			form of yes or no question.
-	 *
-	 * @param title			String for title.  Use null for
-	 * 						no title.
-	 *
-	 * @param msg			String for message.  Null for none.
-	 *
-	 * @param listener		The listener to activate when YES
-	 * 						is chosen.
-	 */
-	protected void show_yes_no_dialog_old (String title, String msg,
-							DialogInterface.OnClickListener listener) {
-
-		// Build the dialog.
-		AlertDialog.Builder builder =
-			new AlertDialog.Builder (this);
-		builder.setIcon (R.drawable.hpglogo_36x36);
-		if (title != null) {
-			builder.setTitle (title);
-		}
-		if (msg != null) {
-			builder.setMessage (msg);
-		}
-		builder.setPositiveButton(R.string.yes, listener);
-		builder.setNegativeButton(R.string.no, null);
-
-		// And show it.
-		m_dialog = builder.create();
-		m_dialog.show();
-	} // show_yes_no_dialog (title_id, title_args, msg_id, msg_args, listener)
-
-
-
-	/******************
-	 * This shows a yes/no dialog, prompting the user to choose
-	 * one.  If they choose yes, then the listener is activated.
-	 * If they choose no, then nothing is done.
-	 *
-	 * NOTE:		The title AND the message should be in the
-	 * 			form of yes or no question.
-	 *
-	 * @param title_id		The string for the title.  Use -1 for
-	 * 						no title.
-	 *
-	 * @param title_args		Array of arguments to be used with the
-	 * 						title string. It's a lot like the C
-	 * 						printf statement.  Sorry, only allows
-	 * 						String (%s) args.
-	 *
-	 * @param msg_id			String for the message.
-	 *
-	 * @param msg_ags		Array of arguments for the message.
-	 *
-	 * @param listener		The listener to activate when YES
-	 * 						is chosen.
-	 */
-	protected void show_yes_no_dialog_old (int title_id, String[] title_args,
-										int msg_id, String[] msg_args,
-										DialogInterface.OnClickListener listener) {
-		// Build the dialog.
-		AlertDialog.Builder builder =
-			new AlertDialog.Builder (this);
-		builder.setIcon (R.drawable.hpglogo_36x36);
-		if (title_id != -1) {
-			String title = getString(title_id, (Object[])title_args);
-			builder.setTitle (title);
-		}
-		if (msg_id != -1) {
-			String msg = getString(msg_id, (Object[])msg_args);
-			builder.setMessage (msg);
-		}
-		builder.setPositiveButton(R.string.yes, listener);
-		builder.setNegativeButton(R.string.no, null);
-
-		// And show it.
-		m_dialog = builder.create();
-		m_dialog.show();
 	} // show_yes_no_dialog (title_id, title_args, msg_id, msg_args, listener)
 
 
