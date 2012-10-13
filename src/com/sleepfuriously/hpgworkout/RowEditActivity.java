@@ -145,8 +145,8 @@ public class RowEditActivity
 		Cursor cursor = m_db.query(
 				DatabaseHelper.EXERCISE_TABLE_NAME,	// table
 				new String[] {DatabaseHelper.COL_ID,
-							  DatabaseHelper.EXERCISE_COL_NAME,
-							  DatabaseHelper.EXERCISE_COL_LORDER},	//	columns[]
+							DatabaseHelper.EXERCISE_COL_NAME,
+							DatabaseHelper.EXERCISE_COL_LORDER},	//	columns[]
 				null,//selection
 				null,// selectionArgs[]
 				null,	//	groupBy
@@ -225,10 +225,11 @@ public class RowEditActivity
 				if (m_dirty && WGlobals.g_nag) {
 					show_yes_no_dialog(R.string.row_edit_cancel_warning_title, null,
 							R.string.editexer_cancel_warning_msg, null,
-							new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int which) {
+							new View.OnClickListener() {
+						public void onClick(View v) {
 							// Yes, they want to cancel.
 							setResult(RESULT_CANCELED);
+							dismiss_all_dialogs();
 							finish();
 							}
 					});
@@ -259,10 +260,11 @@ public class RowEditActivity
 				(keyCode == KeyEvent.KEYCODE_BACK)) {
 			show_yes_no_dialog(R.string.row_edit_cancel_warning_title, null,
 					R.string.row_edit_cancel_warning_msg, null,
-					new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
+					new View.OnClickListener() {
+				public void onClick(View v) {
 					// Yes, they want to cancel.
 					setResult(RESULT_CANCELED);
+					dismiss_all_dialogs();
 					finish();
 					}
 			});
@@ -321,7 +323,7 @@ public class RowEditActivity
 		//
 		public MyAdapter(Context context) {
 			super(context, R.layout.row_edit_row,
-				  R.id.row_edit_row_text, m_view_array);
+				R.id.row_edit_row_text, m_view_array);
 			mm_context = context;
 
 			// Cache the inflater.

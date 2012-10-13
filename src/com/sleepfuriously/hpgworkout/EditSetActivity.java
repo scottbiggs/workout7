@@ -361,20 +361,21 @@ public class EditSetActivity
 
 		else if (v == m_delete) {
 			String msg_args[] = {
-			                     m_exercise_name,
-			                     m_exercise_name,
-			                     m_calendar_date_data_tv.getText().toString(),
-			                     m_calendar_time_data_tv.getText().toString()
+								m_exercise_name,
+								m_exercise_name,
+								m_calendar_date_data_tv.getText().toString(),
+								m_calendar_time_data_tv.getText().toString()
 			};
 			show_yes_no_dialog(R.string.editset_delete_warning_title,
 					null,
 					R.string.editset_delete_warning_msg,
 					msg_args,
-					new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int which) {
+					new View.OnClickListener() {
+						public void onClick(View v) {
 							// YES, they want to delete it!
 							delete_set();
 							setResult(RESULT_OK);
+							dismiss_all_dialogs();
 							finish();
 						}
 					});
@@ -399,10 +400,11 @@ public class EditSetActivity
 			if (m_dirty && WGlobals.g_nag) {
 				show_yes_no_dialog(R.string.editset_cancel_warning_title, null,
 						R.string.editset_cancel_warning_msg, null,
-						new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
+						new View.OnClickListener() {
+					public void onClick(View v) {
 						// Yes, they want to cancel.
 						setResult(RESULT_CANCELED);
+						dismiss_all_dialogs();
 						finish();
 						}
 				});
@@ -426,7 +428,7 @@ public class EditSetActivity
 	//	Fires once a date has been set with a dialog.
 	//
 	public void onDateSet(DatePicker v,
-	                      int year, int month, int day) {
+						int year, int month, int day) {
 		m_set_date.set_year_month_day(year, month, day);
 		String date = String.format("%d/%02d/%d", m_set_date.get_month_12(), m_set_date.get_day(), m_set_date.get_year());
 		m_calendar_date_data_tv.setText(date);
@@ -456,8 +458,8 @@ public class EditSetActivity
 	 * Now how much would you pay for that?
 	 */
 	private NumString get_data_str (Cursor cursor,
-	                                String column_name,
-	                                boolean is_float) {
+									String column_name,
+									boolean is_float) {
 		NumString ret = new NumString();
 		int col = cursor.getColumnIndex(column_name);
 
@@ -507,9 +509,9 @@ public class EditSetActivity
 	 *
 	 */
 	private void activate_number_activity (int ex_num,
-	                                       String title,
-	                                       String orig,
-	                                       boolean dec_point) {
+										String title,
+										String orig,
+										boolean dec_point) {
 
 		// Fill in the data for the new Activity.
 		Intent itt = new Intent(this, NumberActivity.class);
@@ -726,12 +728,12 @@ public class EditSetActivity
 					ex_cursor = m_db.query(
 								DatabaseHelper.EXERCISE_TABLE_NAME,	// table
 								null,			//	columns[]
-					            DatabaseHelper.EXERCISE_COL_NAME + "=?",//selection
-					            new String[] {m_exercise_name},// selectionArgs[]
-					            null,	//	groupBy
-					            null,	//	having
-					            null,	//	orderBy
-					            null);
+								DatabaseHelper.EXERCISE_COL_NAME + "=?",//selection
+								new String[] {m_exercise_name},// selectionArgs[]
+								null,	//	groupBy
+								null,	//	having
+								null,	//	orderBy
+								null);
 					ex_cursor.moveToFirst();
 
 					// Need to know a bit about this exercise
@@ -845,7 +847,7 @@ public class EditSetActivity
 	 * 					it or not.
 	 */
 	private boolean setup_weight (Cursor ex_cursor, Cursor set_cursor,
-	                              boolean set_bar) {
+								boolean set_bar) {
 		LinearLayout weight_ll = (LinearLayout) findViewById(R.id.editset_weight_ll);
 		View bar = findViewById(R.id.editset_weight_bar);
 
@@ -888,7 +890,7 @@ public class EditSetActivity
 	 * LEVEL
 	 */
 	private boolean setup_level (Cursor ex_cursor, Cursor set_cursor,
-	                             boolean set_bar) {
+								boolean set_bar) {
 		View bar = findViewById(R.id.editset_level_bar);
 		LinearLayout level_ll = (LinearLayout)
 			findViewById(R.id.editset_level_ll);
@@ -923,7 +925,7 @@ public class EditSetActivity
 	 * CALORIES
 	 */
 	private boolean setup_cals (Cursor ex_cursor, Cursor set_cursor,
-	                             boolean set_bar) {
+								boolean set_bar) {
 		LinearLayout cals_ll = (LinearLayout) findViewById(R.id.editset_cals_ll);
 		View bar = findViewById(R.id.editset_cals_bar);
 
@@ -956,7 +958,7 @@ public class EditSetActivity
 	 * DIST
 	 */
 	private boolean setup_dist (Cursor ex_cursor, Cursor set_cursor,
-	                              boolean set_bar) {
+								boolean set_bar) {
 		LinearLayout dist_ll = (LinearLayout) findViewById(R.id.editset_dist_ll);
 		View bar = findViewById(R.id.editset_dist_bar);
 
@@ -997,7 +999,7 @@ public class EditSetActivity
 	 * TIME
 	 */
 	private boolean setup_time (Cursor ex_cursor, Cursor set_cursor,
-	                              boolean set_bar) {
+								boolean set_bar) {
 		LinearLayout time_ll = (LinearLayout) findViewById(R.id.editset_time_ll);
 		View bar = findViewById(R.id.editset_time_bar);
 
@@ -1037,7 +1039,7 @@ public class EditSetActivity
 	 * OTHER
 	 */
 	private boolean setup_other (Cursor ex_cursor, Cursor set_cursor,
-	                              boolean set_bar) {
+								boolean set_bar) {
 		LinearLayout other_ll = (LinearLayout) findViewById(R.id.editset_other_ll);
 		View bar = findViewById(R.id.editset_other_bar);
 

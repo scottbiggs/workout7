@@ -55,12 +55,12 @@ public class EditExerciseActivity
 		m_exer_other_name_et, m_exer_other_unit_et;
 
 	CheckBox m_exer_rep_cb, m_exer_level_cb, m_exer_weight_cb,
-			 m_exer_dist_cb, m_exer_time_cb, m_exer_other_cb,
-			 m_exer_calorie_cb;
+			m_exer_dist_cb, m_exer_time_cb, m_exer_other_cb,
+			m_exer_calorie_cb;
 
 	RadioButton m_exer_rep_rb, m_exer_level_rb, m_exer_weight_rb,
-			 m_exer_dist_rb, m_exer_time_rb, m_exer_other_rb,
-			 m_exer_calorie_rb;
+			m_exer_dist_rb, m_exer_time_rb, m_exer_other_rb,
+			m_exer_calorie_rb;
 
 	MySpinner m_exer_type_msp, m_exer_group_msp,
 		m_exer_weight_msp, m_exer_dist_msp, m_exer_time_msp;
@@ -177,8 +177,8 @@ public class EditExerciseActivity
 		Intent weight_itt = new Intent();
 		weight_itt.setClassName(getPackageName(), AddWeightItemActivity.class.getName());
 		m_exer_weight_msp.set_user_add(m_exer_weight_msp.length() - 1,
-									  weight_itt,
-									  m_exer_weight_msp.getId());
+									weight_itt,
+									m_exer_weight_msp.getId());
 		m_exer_weight_msp.set_icon(R.drawable.hpglogo_36x36);
 		m_exer_weight_msp.set_prompt(R.string.add_weight_item_prompt);
 
@@ -199,8 +199,8 @@ public class EditExerciseActivity
 		Intent dist_itt = new Intent();
 		dist_itt.setClassName(getPackageName(), AddDistItemActivity.class.getName());
 		m_exer_dist_msp.set_user_add(m_exer_dist_msp.length() - 1,
-									  dist_itt,
-									  m_exer_dist_msp.getId());
+									dist_itt,
+									m_exer_dist_msp.getId());
 		m_exer_dist_msp.set_icon(R.drawable.hpglogo_36x36);
 		m_exer_dist_msp.set_prompt(R.string.add_dist_item_prompt);
 
@@ -221,8 +221,8 @@ public class EditExerciseActivity
 		Intent time_itt = new Intent();
 		time_itt.setClassName(getPackageName(), AddTimeItemActivity.class.getName());
 		m_exer_time_msp.set_user_add(m_exer_time_msp.length() - 1,
-									  time_itt,
-									  m_exer_time_msp.getId());
+									time_itt,
+									m_exer_time_msp.getId());
 		m_exer_time_msp.set_icon(R.drawable.hpglogo_36x36);
 		m_exer_time_msp.set_prompt(R.string.add_time_item_prompt);
 
@@ -400,12 +400,12 @@ public class EditExerciseActivity
 				m_db.query(
 						DatabaseHelper.EXERCISE_TABLE_NAME,	// table
 						null,			//	columns[]
-			            DatabaseHelper.EXERCISE_COL_NAME + "=?",//selection
-			            new String[] {m_orig_exercise_name},// selectionArgs[]
-			            null,	//	groupBy
-			            null,	//	having
-			            null,	//	orderBy
-			            null);	//	limit
+						DatabaseHelper.EXERCISE_COL_NAME + "=?",//selection
+						new String[] {m_orig_exercise_name},// selectionArgs[]
+						null,	//	groupBy
+						null,	//	having
+						null,	//	orderBy
+						null);	//	limit
 
 			// Necessary!  Too bad no one told me that.
 			cursor.moveToFirst();
@@ -925,13 +925,14 @@ public class EditExerciseActivity
 		if (m_dirty && WGlobals.g_nag && (keyCode == KeyEvent.KEYCODE_BACK)) {
 			show_yes_no_dialog(R.string.editexer_cancel_warning_title, null,
 					R.string.editexer_cancel_warning_msg, null,
-					new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-					// Yes, they want to cancel.
-					setResult(RESULT_CANCELED);
-					finish();
-					}
-			});
+					new View.OnClickListener() {
+						public void onClick(View v) {
+							// Yes, they want to cancel.
+							setResult(RESULT_CANCELED);
+							dismiss_all_dialogs();
+							finish();
+						}
+				});
 		return true;		// We handled this event!
 		}
 
@@ -1015,12 +1016,13 @@ public class EditExerciseActivity
 								new String[] {m_orig_exercise_name},
 								R.string.editexer_delete_confirm_msg,
 								new String[] {m_orig_exercise_name},
-								new DialogInterface.OnClickListener() {
+								new View.OnClickListener() {
 
-				public void onClick(DialogInterface dialog, int which) {
+				public void onClick(View v) {
 					// This happens ONLY if they said YES!
 					delete_entry();
 					setResult(RESULT_OK);
+					dismiss_all_dialogs();
 					finish();
 				}
 				});

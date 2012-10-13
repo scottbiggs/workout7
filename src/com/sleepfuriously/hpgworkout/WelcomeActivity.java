@@ -92,7 +92,7 @@ public class WelcomeActivity extends BaseDialogActivity
 //		m_export_butt = (Button) findViewById(R.id.welcome_export_butt);
 //		m_export_butt.setOnClickListener(this);
 //		m_export_butt.setOnLongClickListener(this);
-//		m_export_butt.setEnabled(false); // todo - change this!!
+//		m_export_butt.setEnabled(false);
 
 		// Get the DatabaseHelper going.  Since this is the
 		// first Activity, this should take care of the life
@@ -139,8 +139,6 @@ public class WelcomeActivity extends BaseDialogActivity
 				break;
 
 			case R.id.welcome_exit_butt:
-				// todo
-				//	testing!
 				finish();
 				break;
 
@@ -189,7 +187,7 @@ public class WelcomeActivity extends BaseDialogActivity
 	//------------------------------
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode,
-	                                Intent data) {
+									Intent data) {
 		switch (requestCode) {
 			case WGlobals.PREFSACTIVITY:
 				WGlobals.load_prefs(this);

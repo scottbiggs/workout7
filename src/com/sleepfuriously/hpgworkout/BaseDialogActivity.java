@@ -152,7 +152,7 @@ public class BaseDialogActivity extends Activity {
 	 *
 	 */
 	protected void show_help_dialog (int title_id,
-	                                 int msg_id) {
+									int msg_id) {
 		// Start a new dialog.
 		m_custom_dialog = new Dialog(this);
 
@@ -233,7 +233,7 @@ public class BaseDialogActivity extends Activity {
 	 * @param msg_ags		Array of arguments for the message.
 	 */
 	protected void show_help_dialog (int title_id, String[] title_args,
-	                                 int msg_id, String[] msg_args) {
+									int msg_id, String[] msg_args) {
 		m_custom_dialog = new Dialog (this);
 		m_custom_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		m_custom_dialog.setContentView(R.layout.dialog_help);
@@ -279,9 +279,12 @@ public class BaseDialogActivity extends Activity {
 	 *
 	 * @param listener		The listener to activate when YES
 	 * 						is chosen.
+	 * 					NOTE:
+	 * 						This listener MUST call dismiss_all_dialogs()
+	 * 						if you want the dialog to close!!!
 	 */
 	protected void show_yes_no_dialog (int title_id, int msg_id,
-                            View.OnClickListener listener) {
+							View.OnClickListener listener) {
 
 		// Build the dialog.
 		m_custom_dialog = new Dialog (this);
@@ -311,10 +314,121 @@ public class BaseDialogActivity extends Activity {
 		yes_butt.setOnClickListener(listener);
 
 		m_custom_dialog.show();
-	} // show_yes_no_dialog (title_id, title_args, msg_id, msg_args, listener)
+	} // show_yes_no_dialog (title_id, msg_id, listener)
+
+	/******************
+	 * This shows a yes/no dialog, prompting the user to choose
+	 * one.  If they choose yes, then the listener is activated.
+	 * If they choose no, then nothing is done.
+	 *
+	 * NOTE:		The title AND the message should be in the
+	 * 			form of yes or no question.
+	 *
+	 * @param title			String for title.  Use null for
+	 * 						no title.
+	 *
+	 * @param msg			String for message.  Null for none.
+	 *
+	 * @param listener		The listener to activate when YES
+	 * 						is chosen.
+	 * 					NOTE:
+	 * 						This listener MUST call dismiss_all_dialogs()
+	 * 						if you want the dialog to close!!!
+	 */
+	protected void show_yes_no_dialog (String title, String msg,
+									View.OnClickListener listener) {
+				// Build the dialog.
+				m_custom_dialog = new Dialog (this);
+				m_custom_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+				m_custom_dialog.setContentView(R.layout.dialog_yes_no);
+
+				TextView title_tv = (TextView) m_custom_dialog.findViewById(R.id.dialog_yes_no_title_tv);
+				title_tv.setText(title);
+
+				TextView msg_tv = (TextView) m_custom_dialog.findViewById(R.id.dialog_yes_no_msg_tv);
+				msg_tv.setText(msg);
+
+				Button no_butt = (Button) m_custom_dialog.findViewById(R.id.dialog_yes_no_negative_butt);
+				no_butt.setOnClickListener(new OnClickListener() {
+					public void onClick(View v) {
+						m_custom_dialog.dismiss();
+					}
+				});
+
+				Button yes_butt = (Button) m_custom_dialog.findViewById(R.id.dialog_yes_no_affirmative_butt);
+				yes_butt.setOnClickListener(listener);
+
+				m_custom_dialog.show();
+			} // show_yes_no_dialog (title_id, msg_id, listener)
 
 
 	/******************
+	 * This shows a yes/no dialog, prompting the user to choose
+	 * one.  If they choose yes, then the listener is activated.
+	 * If they choose no, then nothing is done.
+	 *
+	 * NOTE:		The title AND the message should be in the
+	 * 			form of yes or no question.
+	 *
+	 * @param title_id		The string for the title.  Use -1 for
+	 * 						no title.
+	 *
+	 * @param title_args		Array of arguments to be used with the
+	 * 						title string. It's a lot like the C
+	 * 						printf statement.  Sorry, only allows
+	 * 						String (%s) args.
+	 *
+	 * @param msg_id			String for the message.
+	 *
+	 * @param msg_ags		Array of arguments for the message.
+	 *
+	 * @param listener		The listener to activate when YES
+	 * 						is chosen.
+	 * 					NOTE:
+	 * 						This listener MUST call dismiss_all_dialogs()
+	 * 						if you want the dialog to close!!!
+	 */
+	protected void show_yes_no_dialog (int title_id, String[] title_args,
+									int msg_id, String[] msg_args,
+									View.OnClickListener listener) {
+
+		// Build the dialog.
+		m_custom_dialog = new Dialog (this);
+		m_custom_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		m_custom_dialog.setContentView(R.layout.dialog_yes_no);
+
+		TextView title_tv = (TextView) m_custom_dialog.findViewById(R.id.dialog_yes_no_title_tv);
+		if (title_id == -1)
+			title_tv.setText("");
+		else {
+			String title = getString(title_id, (Object[])title_args);
+			title_tv.setText(title);
+		}
+
+		TextView msg_tv = (TextView) m_custom_dialog.findViewById(R.id.dialog_yes_no_msg_tv);
+		if (msg_id == -1)
+			msg_tv.setText("");
+		else {
+			String msg = getString(msg_id, (Object[])msg_args);
+			msg_tv.setText(msg);
+		}
+
+		Button no_butt = (Button) m_custom_dialog.findViewById(R.id.dialog_yes_no_negative_butt);
+		no_butt.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				m_custom_dialog.dismiss();
+			}
+		});
+
+		Button yes_butt = (Button) m_custom_dialog.findViewById(R.id.dialog_yes_no_affirmative_butt);
+		yes_butt.setOnClickListener(listener);
+
+		m_custom_dialog.show();
+	}
+	/******************
+	 * todo:
+	 * 	Get rid of these old yes/no dialogs!
+	 *
 	 * This shows a yes/no dialog, prompting the user to choose
 	 * one.  If they choose yes, then the listener is activated.
 	 * If they choose no, then nothing is done.
@@ -331,7 +445,7 @@ public class BaseDialogActivity extends Activity {
 	 * 						is chosen.
 	 */
 	protected void show_yes_no_dialog_old (int title_id, int msg_id,
-                            DialogInterface.OnClickListener listener) {
+							DialogInterface.OnClickListener listener) {
 
 		// Build the dialog.
 		AlertDialog.Builder builder =
@@ -349,9 +463,12 @@ public class BaseDialogActivity extends Activity {
 		// And show it.
 		m_dialog = builder.create();
 		m_dialog.show();
-	} // show_yes_no_dialog (title_id, title_args, msg_id, msg_args, listener)
+	} // show_yes_no_dialog_old (title_id, title_args, msg_id, msg_args, listener)
 
 	/******************
+	 * todo:
+	 * 	Get rid of these old yes/no dialogs!
+	 *
 	 * This shows a yes/no dialog, prompting the user to choose
 	 * one.  If they choose yes, then the listener is activated.
 	 * If they choose no, then nothing is done.
@@ -367,8 +484,8 @@ public class BaseDialogActivity extends Activity {
 	 * @param listener		The listener to activate when YES
 	 * 						is chosen.
 	 */
-	protected void show_yes_no_dialog (String title, String msg,
-                            DialogInterface.OnClickListener listener) {
+	protected void show_yes_no_dialog_old (String title, String msg,
+							DialogInterface.OnClickListener listener) {
 
 		// Build the dialog.
 		AlertDialog.Builder builder =
@@ -413,9 +530,9 @@ public class BaseDialogActivity extends Activity {
 	 * @param listener		The listener to activate when YES
 	 * 						is chosen.
 	 */
-	protected void show_yes_no_dialog (int title_id, String[] title_args,
-	                                   int msg_id, String[] msg_args,
-	                                   DialogInterface.OnClickListener listener) {
+	protected void show_yes_no_dialog_old (int title_id, String[] title_args,
+										int msg_id, String[] msg_args,
+										DialogInterface.OnClickListener listener) {
 		// Build the dialog.
 		AlertDialog.Builder builder =
 			new AlertDialog.Builder (this);
@@ -584,7 +701,7 @@ public class BaseDialogActivity extends Activity {
 	 *
 	 */
 	protected void show_help_dialog_old (int title_id, String[] title_args,
-	                               int msg_id, String[] msg_args) {
+								int msg_id, String[] msg_args) {
 		AlertDialog.Builder builder =
 			new AlertDialog.Builder (this);
 		builder.setIcon (R.drawable.hpglogo_36x36);

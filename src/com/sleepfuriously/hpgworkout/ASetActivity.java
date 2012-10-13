@@ -954,6 +954,7 @@ public class ASetActivity
 						  new View.OnClickListener() {
 							public void onClick(View v) {
 								save();
+								dismiss_all_dialogs();
 							}
 						});
 			}
@@ -1089,12 +1090,20 @@ public class ASetActivity
 						blank_forms.get(0));
 			}
 
-			show_yes_no_dialog(title, msg, new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-					// They said yes, so...
+			show_yes_no_dialog (title, msg, new OnClickListener() {
+				public void onClick(View v) {
+					// They said yes, so
 					save();
+					dismiss_all_dialogs();
 				}
 			});
+
+//			show_yes_no_dialog(title, msg, new DialogInterface.OnClickListener() {
+//				public void onClick(DialogInterface dialog, int which) {
+//					// They said yes, so...
+//					save();
+//				}
+//			});
 		}
 		else {
 			save();

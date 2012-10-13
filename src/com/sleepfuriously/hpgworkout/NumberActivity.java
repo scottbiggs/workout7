@@ -237,17 +237,11 @@ public class NumberActivity
 				if (m_dirty && WGlobals.g_nag) {
 					show_yes_no_dialog(R.string.enter_a_number_cancel_warn_title,
 						R.string.enter_a_number_cancel_warn_msg,
-//						new DialogInterface.OnClickListener() {
-//							public void onClick(DialogInterface dialog, int which) {
-//							// Yes, they want to cancel.
-//							setResult(RESULT_CANCELED);
-//							finish();
-//							}
-//						});
 						new View.OnClickListener() {
 							public void onClick(View v) {
 								// Yes, cancel!
 								setResult(RESULT_CANCELED);
+								dismiss_all_dialogs();
 								finish();
 							}
 						});
