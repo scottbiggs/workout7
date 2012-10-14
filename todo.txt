@@ -1,9 +1,5 @@
 TODO:
 -----------------
-The data parts of the Exercise description database that
-	are not used.  Take 'em out!  (That data is in the
-	set table).
-
 In ASet, the notes and stress labels are black, not ivory.
 
 The GraphSelectorActivity's buttons are abysmal!  What is "butt"?
