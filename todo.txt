@@ -1,0 +1,530 @@
+TODO:
+-----------------
+The data parts of the Exercise description database that
+	are not used.  Take 'em out!  (That data is in the
+	set table).
+
+In ASet, the notes and stress labels are black, not ivory.
+
+The GraphSelectorActivity's buttons are abysmal!  What is "butt"?
+
+The InspectorActivity needs a major overhaul.  The UI is integrally
+entwined in the database.  Taking it out will be a project.
+
+Graph ALL the aspects!
+
+The History and Inspector need to display something when there's
+	no data.
+
+When an exercise is edited, I don't want to be bumped back out to
+	the grid.  If anything, send a message that it's been updated
+	and refresh the EditExerciseACtivity.
+
+When editing a number when editing a set, it's possible to hit "ok"
+	without typing any numbers in.  The EditText says 0, but the
+	value is then displayed in the Inspector and History as "skipped."
+	What's going on there?
+
+In the HistoryActivity, it'd be nice if I put something like horizontal
+	lines between some of the sets to denote different days.
+
+BUG: "Other" no longer works when adding a new exercise!
+
+Make sure that HistoryActivity, GraphActivity (done), and InspectorActivity
+	use ASyncTask to load their data!
+
+BUG: ASet does not load the DISTANCE form correctly when it fills the
+	forms with the last data.  It truncates the dist, instead of using
+	the float value.
+
+BUG: When the GraphActivity removes x-axis tick lines because they
+	are too close together, the date on the last tick line can be
+	wrong.
+
+Dates need to be put in the inspector_set.xml and then populated properly.
+
+Problem: it seems that I NEED to have my drawables in the
+	"drawable" directory--they are not being found in the
+	respective ?dpi directory.
+	...This could be a problem for running only 1.5.
+
+Combine the History and Inspector Activities.
+
+In ASet, when pre-loading the previous values, floats have a decimal
+	point, even when there's a zero there.
+
+Preferences: put the option to Reset things here.  Clear the workout data, or
+	clear the exercises.
+
+ASetActivity - Change so that the user can add another set without
+	having to go back to the main grid.  This is possible from
+	the Inspector, but not from the regular one.
+
+ASetActivity needs to be modified so that the labels have the appro-
+	priate units.
+
+Add the ability to clear EVERYTHING.  This is a tabula rasa,
+	so that the person can clear their entire history AND
+	all their exercises at once.  Of course, give appropriate
+	warnings.
+
+In the graphs, instead of horizontal lines, divide up into
+	blocks of different colored backgrounds.
+
+When long clicking a exercise, bring up a dialog that queries
+	whether to see a graph of that exercise progress, or
+	to edit that exercise.
+
+TEST the nags.
+
+Need to make a preferences screen.
+	TODO:
+	* Save the database to SIMM card. (http://stackoverflow.com/questions/1209469/storing-android-application-data-on-sd-card,
+	read the whole article!)
+	* Numeric entry style: EditText, Numeric Keypad, Rollers. etc. ??
+	* Sound VOLUME
+	* Details of the sound (keypad clicks, warnings, nags, successful
+	completions, etc.).
+	* Should the program nag about cancelling.
+
+	DONE:
+	* Move the whole program to SIMM
+		- The system or the user has the option now.
+	* Should the program nag about unimportant empty portions
+	of workout sets.
+	* Sound
+	* Keep screen on.
+
+When doing aset, make it obvious which is the significant
+	row!  Something like a tick, or making it a different color.
+	Also, it might be nice to start with that one on top (or at
+	least have the cursor begin in that EditText).
+	-- partially done...
+
+Don't like the buttons on the GridActivity.  They're not
+	intuitive and the layout sucks.
+
+Need to redo the Welcome screen.
+
+Rearrange the buttons so that dismissive buttons (like
+	cancel) are on the left--acceptive buttons (like ok
+	or done) are on the right.  This conforms to Android's
+	UI as defined by google.
+	- Include the dialogs in BaseDialogActivity!
+
+Try some custom Themes to make things look original.
+	http://developer.android.com/guide/topics/ui/themes.html
+
+Click on a date, and get a summary of that day.  You also
+	get the option to edit those sets and even delete them.
+	Long-click to delete that day (with confirmation, of
+	course).
+
+Make a way to increase/decrease the font.
+
+Make the - sign in the ASet.XML layout look better.
+
+When coming back to the grid from Add or Edit exercise,
+	it doesn't look like the loading dialog comes up.
+
+There's something wrong with the waiting dialog: it doesn't seem
+	to animate in the emulator.  Why is that?
+
+Check out: http://developer.android.com/resources/articles/faster-screen-orientation-change.html
+	This should be applied to the grid screen to make
+	orientation changes much faster.
+
+Be nice if users can add a blank to their rows.
+
+BUG - MySpinner as used in EditExerciseActivity: when a custom
+	item for the spinner is loaded directly from the database,
+	it's possible to add another custom item to the list.
+	Everything still works, it's just not as advertised.
+
+How about some very nice sound effects for when the person
+	finishes a set and a workout!
+
+Make sure the layouts look good on all the various
+	devices, especially tablets.
+
+Make landscape versions of layouts.
+
+Fix the strings: there are lots of redundant strings for add
+	and edit screens.
+
+Make the DatabaseHelper.onUpgrade() work properly so that
+	it doesn't delete all their work when upgrading.  Instead,
+	the routine should gracefully update the new format.
+
+Move the SQLite stuff into AsyncTasks.  Shouldn't be too
+	hard.  It's explained a bit at:
+	http://www.youtube.com/watch?v=c4znvD-7VDA (around
+	minute 15:45 - 17:30).  Also see Busy Coder's, chpt 20.
+
+Allow for the option to have the database on the simm card.
+
+Make sure that all the drawables are in the correct directories.
+
+---------------------------------------------------
+Hmmmmmmmmmmmmmmmmmmmmmm
+---------------------------------------------------
+Not sure if the graph properly graphs the decimal point of data,
+	especially for weights.
+	- can't repeat
+
+In the Inspector, differentiate between "skipped" and "n/a", like
+	in the Grid.  Same for EditSet.
+	-hmmmm
+
+---------------------------------------------------
+DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
+---------------------------------------------------
+Make sure that long-clicking reveals HELP, and doesn't go to edit exericse
+	or inspector.
+	- No.  This is pretty useful, so I won't change it.
+
+ASet: does not display the units (except when a space is blank)!
+	- fixed
+
+BUG:  It seems that if I go quickly from entering a set to one of the
+	other tabs, I get an infinite loading dialog.
+	- Fixed it (at least for the GraphActivity).  I was calling
+	the loading dialog twice: once in onCreate(), and again in
+	onResume().
+
+Use a TabHost to control ASet, Inspector, Graphs, and History activities.
+	http://www.youtube.com/watch?v=m1AeMJux0Zo
+	- done
+
+After editing a set, the other tabs need to be marked as dirty
+	instead of exiting to the grid.
+	- Nope, gonna keep it exiting to the grid for now--so much
+	easier.
+
+BUG: In "Edit a Set" screen, the name of the exercise is not displayed!
+	- done
+
+When the person selects a cell from the Grid (a day of sets), have the
+	TabHost bring up the Inspector, and then the Inspector should scroll
+	to that specific date.
+	- done
+
+How about changing the button paradigm?  Long-pressing on the logo
+	brings up help?  That'll save on a whole lot of screen real estate.
+	- Just clicking the logo brings up help.  And the help (with a '?')
+	on the Welcome screen tells us about it).
+
+In the Inspector, when a set is deleted, you go back to the
+	Inspector.  The message needs to be reset to reflect the
+	new number of sets, and the set numbers also need to be
+	reset.
+	- not relevant anymore
+
+Also in the Inspector, if you click "do another" and then click
+	"done" without making any changes, it thinks you haven't
+	entered anything (the dirty bit isn't set).  I know this
+	conflicts with a bug you just fixed...what's the solution?
+	- not relevant anymore
+
+The Tab XML page should state the name of the exercise.
+	- done
+
+Changing or Removing exercise sets through the Inspector doesn't get
+	reflected in the other tabs (or even its own!).
+	- done
+
+When there's just one set, the GraphActivity thinks that there's
+	no data.
+	- fixed
+
+BUG: When graphing exercises with all the same data, it just draws a
+	blank!
+	- Now has a message telling the users what the value is.
+
+BUG: When adding a set now, it no longer registers with the other tabs
+	or when you return to the Grid.  You have to go back to the Welcome
+	screen to force the Grid to reload.
+	- Done
+
+What about the graphs?
+	- doing something now!
+
+Make the arrows on Edit Row screen bigger!
+	- done
+
+BUG:  Try clicking on the last exercise in the GraphSelectorActivity.
+	Something's going wrong with the IDs and the column numbers.  It's
+	worse when the Activity is in landcape mode.
+	- Fixed.  Was some weirdness with getChildAt() that I had to deal with.
+
+Long-clicking the Stress levels in (ASet) doesn't bring up help.
+	- done
+
+Add a quick and easy way to re-enter a set with everything
+	identical to the last time.
+	- done
+
+In HistoryActivity, need to show condition and maybe the notes, too.
+	- done (just the condition)
+
+CRASH - When changing the row, we get a crash when reloading
+	the grid.
+	- fixed.  I wasn't created a write-able SQLiteDatabase after
+	all my changes.
+
+BUG - Entered a workout set.  Changed it's date to May 20, 1980.
+	And it's still on the far right!
+	- MAYBE...I'm using a text of numbers instead of a LONG.
+	- fixed.  I was right--was using text.  Hard fix, though.
+
+What happens when the user clicks on an exercise that
+	they've done?  New Activity: show the results of that workout,
+	a button to do another set of that workout, and an edit.
+	- long done!
+
+BUG - Changing the date of a workout set seems to be broken.
+	- fixed
+
+BUG - When the date has changed in a set (via EditSetActivity),
+	we should go all the way back to the GridActivity (pass
+	through), because now that set no longer belongs with
+	the others in the InspectorActivity.
+	- done
+
+Along with the preferences, whenever the program nags the user
+	for some information, we need a section where they can
+	check, "Don't ask again."  The program will remind them
+	immediately after that they can switch the setting back
+	in the preferences.
+	- This is taken care of with the preferences system.
+
+In the Grid, make the current date bold or highlight that column
+	(which would be even better).
+	- done
+
+! The Grid needs to refresh after sets have been modified
+	via InspectorActivity.
+	- done
+
+POTENTIAL BUG:	When renaming an exercise, we need to go in
+	and change all the workout data that used the old name
+	to the new name.
+	- done.
+
+BUG - deleting an exercise does not delete the workout sets of
+	that exercise.
+	- done
+
+I need to make the default quantity of the workout sets
+	the same as when an element is skipped.  Right now,
+	it looks like the default is 0 (not -1).
+	- done
+
+BUG - SuperWinking doesn't display in the Inspector!  Looks
+	okay in the EditSet though.
+	- fixed. I neglected to find an XML id through a View
+	that was inflated, so it wasn't visible and we got a null
+	pointer error (which didn't do anything immediately because
+	of a try/catch loop that surrounded it).
+
+When editing an exercise (not a set), I MUST go through
+	all the sets of that exercise and modify them, if
+	necessary.
+	When DELETING an exercise, I MUST delete all those
+	sets, too.
+	After warning in a BIG way, of course.
+	- skipped.  Turns out this isn't necessary.  The way
+	I do the workout sets does this already.
+
+EditSet needs to be able to delete!!
+
+BUG - Date and Time don't change in EditSet.  Probably the
+	dirty bit isn't being set.
+	- fixed.  Yes, it was the dirty bit.
+
+BUG - problem when trying to do a chinup!
+	- fixed: the problem was with a modification to
+	DatabaseHelper--I deleted some exercises when initializing
+	and the LORDER was messed up.
+
+BUG - Decimal places beyond .1 aren't being displayed.
+	Changing the display to have more digits should work.
+	- Done: now displays 2 digits beyond decimal place,
+	but only in the Inspector and the Grid.  In the places
+	where we edit the number, the full float is displayed.
+
+BUG - The Activity/Dialogs from EditSet: the buttons at the
+	bottom overlap.  FIX.
+	- fixed
+
+BUG - Looks like entering a float for distance causes problems (when
+	doing ASet).
+	- fixed
+
+! Change EditSet so that it reads/saves IntFloats!
+	- didn't have to--already done!
+
+While doing ASet, the screen space is crowded with all
+	the unused areas.  Make them GONE if they're not being
+	used.
+	- done
+
+BUG - in ASet xml, the stress for OK is the wrong string.
+
+Start with the Grid scrolled all the way to the right.  Perhaps
+	move the exercises to the right side?  Hmmm.
+	- done
+
+So, when exiting the EditSetActivity, changing the weight
+	doesn't reflect in the SetInspector.  Why is that?
+	- fixed, I wasn't changing the class variables (using
+	locals instead--a legacy of the old way of doing things).
+
+The Grid screen needs to display years in the Date portion
+	if the year is different from the current year.
+	- done
+
+BUG: Looks like the DB bug is happening again.  This
+	time it rears its ugly head after clicking on a workout set
+	(Either InspectorActivity or how the GridActivity invokes it--
+	I'm betting on InspectorActivity as the problem).
+	What happens is that the debugger stops and complains. That's
+	all.  Probably a Cursor or DB isn't being closed.
+	- I think it's fixed.  Surrounded all the Cursor/DB calls
+	with try/catch/finally brackets.  Seems to work.
+
+BUG: The done button doesn't work well on my real phone. It
+	seems to be confused and doesn't fire, especially when
+	the on-screen keyboard is active.
+
+	MORE: If I can move the focus away from the an
+	EditText, I can save.  Some times it works anyway--still
+	experimenting...
+	- FIXED.  Since soft-keyboard events do not fire onKey(),
+	the changes were never noted as dirty.  I added a TextWatcher
+	and made sure that changes made set the dirty bit.
+
+Make a global DatabaseHelper and put it in WGlobals.  Make all
+	the database stuff happen there completely so that none
+	of the other classes will ever have to make a SQLiteDatabase.
+	Of course, they'll need to use Cursors though!
+	- PARTIALLY DONE.  Seems to work fine, though.
+
+I may be having some random crashes because the DatabaseHelper
+	is getting instantiated multiple times (possibly calling its
+	init methods?).  This could be solved by making the whole
+	class static and accessing it all globally.
+	- Done and fixed.  See above.
+
+Populate the main grid.
+	- done, but still could use some testing.
+
+Move all the stuff from workout2 to here.
+	* Start by with the mainworkout Activity
+	* Add the starting Activity
+	* Then the AddExercise Activity
+	- killed, gotten past that
+
+Put the HPG logo on all the layouts. And find some other
+	pretty images to put up as well.
+	- done
+
+Potential Bug:  When editing the rows, the GRidActivity may not
+	reflect it correctly (won't reload?).
+	- Yeah, it works fine.
+
+When adding an exercise (and editing), make sure they select units!!!
+	- done
+
+Test that deleting rows and adding rows doesn't affect the
+	row order.  And vice versa.
+	- Yes it did, and now it's fixed (finally).
+
+In Add Exercise, check to see if the name is already used.
+	This would happen in the OK button click.
+	- Done
+
+Memory Leak - When going the the EditExercise screen back to the
+	Grid, an orientation change during the loading dialog causes
+	a memory leak.
+	- I think it's fixed.  At least I don't see it any more
+	(don't remember fixing, but I may have--not sure).
+
+In the name edittext for edit-exercise, make the cursor start
+	at the end.  Or better yet, specify that nothing should start
+	highlighted (maybe the cancel button?).
+	- Killed. Not doing this one.
+
+Make it possible for the user to drag and rearrange
+	the rows.
+	- Tabled until I have more time.
+
+Wierd things happen when moving the highlight around via
+	arrow keys in the various Activities.  Fix it!
+	- I think the main problem was with the emulator and
+	how it read the mac's arrow keys.
+
+Find a way to move the exercise rows up or down.
+	- done
+
+Make the EditExercise layout look great.
+	- Pretty good.
+
+Need to redo the Grid layout.  This includes adding a way to
+	move rows up and down as well as editing and doing an exercise.
+
+Lots of the text in the Edit Activity XML file are simple text,
+	not strings as they should be.
+	- done
+
+Make the help button in the main_workout activity do something.
+	- done
+
+BUG - The help dialogs can disappear during a screen rotation.
+	The console says, "...has leaked a window"
+	- fixed, what a pain! Had to go through and make solid
+	data connections to the dialog in ALL the Activities.  Sigh.
+
+Make a dirty bit in editexerciseactivity.java.
+	- done
+
+Put the "loading..." message into an xml string.
+	- done
+
+BUG - When the edit exercise view is rotated, customized user
+	items are lost.  Need to intercept and save during a
+	rotation.
+	- fixed.  Kind of complicated, but did it by passing data
+	through ...InstanceState().
+
+In Edit Exercise, need a 'delete' button.
+	- done
+
+BUG: "Leak found" when exiting the grid Activity and
+	going to Welcome screen, then BACK to the grid Activity.
+	Probably are not closing the DB properly.
+	-- fixed.
+
+I have strings for "grid" and strings for "main".  They
+	need resolving. -- done
+
+Make sure that the TextViews for the grid also act on long
+	clicks, too.  -- done.
+
+BUG: When pressing on one of the exercises, it always says
+	that I selected row 5.  -- fixed, easy!
+
+BUG: there's some weirdness happening with the grid during
+	rotations.  Caused a crash.
+	-- Fixed.  Very complicated.
+
+Buttons need a margin for main_workout Activity.
+
+For the main grid, make the left-column buttons work.
+
+While doing the above AsyncTask, provide a ProgressDialog
+	to give the user some acknowledgement that they in
+	fact did something.
+
+Get the icon to be correct.
+
