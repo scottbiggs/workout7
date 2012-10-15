@@ -246,13 +246,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	//					If this is 0, then the default is used.
 	//
 	public DatabaseHelper (Context context,
-						  String name,
-						  CursorFactory factory,
-						  int version) {
+						String name,
+						CursorFactory factory,
+						int version) {
 		super (context,
-			   name != null ? name : DB_NAME,
-			   factory,
-			   version != 0 ? version : DATABASE_VERSION);
+			name != null ? name : DB_NAME,
+			factory,
+			version != 0 ? version : DATABASE_VERSION);
 
 		if (m_instance_counter > 0) {
 			Toast.makeText(context, "Too many instances of DatabaseHelper!!!  Everything will go wrong, now.  You've been warned!", Toast.LENGTH_LONG).show();
@@ -318,8 +318,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	//
 	@Override
 	public void onUpgrade (SQLiteDatabase db,
-						  int oldVersion,
-						  int newVersion) {
+						int oldVersion,
+						int newVersion) {
 		// TODO:
 		//	Make this work correctly so that it doesn't delete
 		//	a user's entire work!  Right now, it just deletes
@@ -362,7 +362,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * @return	A Cursor filled with EVERYTHING!
 	 */
 	public static Cursor getEntireTable (SQLiteDatabase db,
-								 final String table_name) {
+								final String table_name) {
 		String name;
 		if (null == table_name)
 			name = EXERCISE_TABLE_NAME;
@@ -858,8 +858,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * 			YOU'VE BEEN WARNED!
 	 */
 	public Cursor getAllExerciseRows (SQLiteDatabase db,
-	                                  String[] columns,
-	                                  String order) {
+									String[] columns,
+									String order) {
 		return db.query(EXERCISE_TABLE_NAME,	// table
 			columns,//	columns[]
 			null,	//selection
@@ -883,8 +883,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * 			-1 if there's a problem
 	 */
 	public static int getSignificantExerciseNum (
-                             SQLiteDatabase db,
-                             String ex_name) {
+							SQLiteDatabase db,
+							String ex_name) {
 		int col, sig = -1;
 
 		Cursor c = null;
@@ -892,12 +892,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			c = db.query(
 					EXERCISE_TABLE_NAME,	// table
 					null,			//	columns[]
-		            DatabaseHelper.EXERCISE_COL_NAME + "=?",//selection
-		            new String[] {ex_name},// selectionArgs[]
-		            null,	//	groupBy
-		            null,	//	having
-		            null,	//	orderBy
-		            null);
+					DatabaseHelper.EXERCISE_COL_NAME + "=?",//selection
+					new String[] {ex_name},// selectionArgs[]
+					null,	//	groupBy
+					null,	//	having
+					null,	//	orderBy
+					null);
 
 			if (c.moveToFirst()) {
 				col = c.getColumnIndex(EXERCISE_COL_SIGNIFICANT);
@@ -933,15 +933,145 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * 			NULL if there was an error.
 	 */
 	public static Cursor getAllExerciseInfoByName (SQLiteDatabase db,
-	                                         String name) {
+												String name) {
 		return db.query(EXERCISE_TABLE_NAME,
 				null,
 				EXERCISE_COL_NAME + "=?",
-	            new String[] {name},// selectionArgs[]
+				new String[] {name},// selectionArgs[]
 				null,
 				null,
 				null);
 	} // getAllExerciseInfoByName (db, name)
+
+	/****************************
+	 * Given a Cursor thats initialized AND pointing to an
+	 * exercise row (not BEFORE), this creates and fills in
+	 * an ExerciseData instance.
+	 *
+	 * preconditions:
+	 * 		This *really* should be called within a try/catch
+	 * 		block.  Do that anytime you fill in a Cursor from
+	 * 		a database.  It's just good sense.
+	 *
+	 * @param cursor		Pointing to the exercise to fill in (and
+	 * 					NOT before).  Also, ALL fields have been
+	 * 					read in from the database!!!  Otherwise
+	 * 					an exception will be thrown!
+	 *
+	 * @return	- A class instance of ExerciseData with all the
+	 * 			fields filled in.
+	 * 			- NULL if an error happened (detailed above).
+	 */
+	public static ExerciseData getExerciseData (Cursor cursor) {
+		int col;
+		ExerciseData data = new ExerciseData();
+
+		// now load up the data:
+		col = cursor.getColumnIndex(COL_ID);
+		data._id = cursor.getInt(col);
+
+		col = cursor.getColumnIndex(EXERCISE_COL_NAME);
+		data.name = cursor.getString(col);
+
+		col = cursor.getColumnIndex(EXERCISE_COL_TYPE);
+		data.type = cursor.getInt(col);
+
+		col = cursor.getColumnIndex(EXERCISE_COL_GROUP);
+		data.group = cursor.getInt(col);
+
+		col = cursor.getColumnIndex(EXERCISE_COL_WEIGHT);
+		data.bweight = cursor.getInt(col) == 1 ? true : false;
+		if (data.bweight) {
+			col = cursor.getColumnIndex(EXERCISE_COL_WEIGHT_UNIT);
+			data.weight_unit = cursor.getString(col);
+		}
+
+		col = cursor.getColumnIndex(EXERCISE_COL_REP);
+		data.breps = cursor.getInt(col) == 1 ? true : false;
+
+		col = cursor.getColumnIndex(EXERCISE_COL_DIST);
+		data.bdist = cursor.getInt(col) == 1 ? true : false;
+		if (data.bdist) {
+			col = cursor.getColumnIndex(EXERCISE_COL_DIST_UNIT);
+			data.dist_unit = cursor.getString(col);
+		}
+
+		col = cursor.getColumnIndex(EXERCISE_COL_TIME);
+		data.btime = cursor.getInt(col) == 1 ? true : false;
+		if (data.btime) {
+			col = cursor.getColumnIndex(EXERCISE_COL_TIME_UNIT);
+			data.time_unit = cursor.getString(col);
+		}
+
+		col = cursor.getColumnIndex(EXERCISE_COL_LEVEL);
+		data.blevel = cursor.getInt(col) == 1 ? true : false;
+
+		col = cursor.getColumnIndex(EXERCISE_COL_CALORIES);
+		data.bcals = cursor.getInt(col) == 1 ? true : false;
+
+		col = cursor.getColumnIndex(EXERCISE_COL_OTHER);
+		data.bother = cursor.getInt(col) == 1 ? true : false;
+		if (data.bother) {
+			col = cursor.getColumnIndex(EXERCISE_COL_OTHER_TITLE);
+			data.other_title = cursor.getString(col);
+			col = cursor.getColumnIndex(EXERCISE_COL_OTHER_UNIT);
+			data.other_unit = cursor.getString(col);
+		}
+		col = cursor.getColumnIndex(EXERCISE_COL_SIGNIFICANT);
+		data.significant = cursor.getInt(col);
+
+		col = cursor.getColumnIndex(EXERCISE_COL_LORDER);
+		data.lorder = cursor.getInt(col);
+
+		return data;
+	} // getExerciseData (cursor)
+
+
+	/****************************
+	 * Returns an ExerciseData instance with all the info filled
+	 * in for the named exercise.
+	 *
+	 * Use THIS method when loading up all the info for a single
+	 * exercise.  Really!  That way, you don't have to worry about
+	 * that damn cursor hanging around.
+	 *
+	 * @param db			DB ready to read.
+	 * @param name		The name of the exercise.
+	 * @return			- A class instance holding all the info about
+	 * 					this exercise.
+	 * 					- NULL if an error or the name could not be found.
+	 */
+	public static ExerciseData getExerciseData (SQLiteDatabase db,
+												String name) {
+
+		Cursor cursor = null;
+		ExerciseData data = null;
+
+		try {
+			cursor = db.query(EXERCISE_TABLE_NAME,
+									null,
+									EXERCISE_COL_NAME + "=?",
+									new String[] {name},// selectionArgs[]
+									null,
+									null,
+									null);
+			cursor.moveToFirst();	// Oh so important!
+
+			data = getExerciseData(cursor);
+
+		}
+		catch (SQLiteException e) {
+			e.printStackTrace();
+		}
+		finally {
+			if (cursor != null) {
+				cursor.close();
+				cursor = null;
+			}
+		}
+		return data;
+	} // getExerciseData (db, name)
+
 
 	/****************************
 	 * Returns a cursor with all the info about the named
@@ -957,14 +1087,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * 			NULL if there was an error.
 	 */
 	public static Cursor getAllExerciseInfoByOrder (SQLiteDatabase db,
-	                                         int lorder) {
+											int lorder) {
 		return db.query(EXERCISE_TABLE_NAME,	// table
 				null,			//	columns[] -- all of 'em
-	            DatabaseHelper.EXERCISE_COL_LORDER + "=" + lorder,//selection
-	            null,// selectionArgs[]
-	            null,	//	groupBy
-	            null,	//	having
-	            null);	//	orderBy
+				DatabaseHelper.EXERCISE_COL_LORDER + "=" + lorder,//selection
+				null,// selectionArgs[]
+				null,	//	groupBy
+				null,	//	having
+				null);	//	orderBy
 	} // getAllExerciseInfoByOrder (db, lorder)
 
 
@@ -982,18 +1112,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * 			Null, if an error occurs.
 	 */
 	public static String getNameFromLOrder (SQLiteDatabase db,
-	                                        int lorder) {
+											int lorder) {
 		String name = null;
 		Cursor c = null;
 
 		try {
 			c =  db.query(EXERCISE_TABLE_NAME,	// table
 					new String[] {EXERCISE_COL_NAME},	// just the name column
-			        EXERCISE_COL_LORDER + "=" + lorder,//selection
-			        null,// selectionArgs[]
-			        null,	//	groupBy
-			        null,	//	having
-			        null);	//	orderBy
+					EXERCISE_COL_LORDER + "=" + lorder,//selection
+					null,// selectionArgs[]
+					null,	//	groupBy
+					null,	//	having
+					null);	//	orderBy
 			c.moveToFirst();
 			int col = c.getColumnIndex(EXERCISE_COL_NAME);
 			if (col == -1)
@@ -1115,7 +1245,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * 			then it starts already moved to the item.
 	 */
 	public static Cursor getLastSet (SQLiteDatabase db,
-                                     String name) {
+									String name) {
 		Cursor c = db.query(SET_TABLE_NAME,
 				null,
 				SET_COL_NAME + "=?",
@@ -1147,7 +1277,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * 			This Cursor could be empty!!!
 	 */
 	public static Cursor getAllSets (SQLiteDatabase db,
-	                                 String name, boolean descend) {
+									String name, boolean descend) {
 		return db.query(SET_TABLE_NAME,
 				null,
 				SET_COL_NAME + "=?",
@@ -1156,5 +1286,69 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				null,
 				SET_COL_DATEMILLIS + (descend ? " DESC" : "ASC")); // date ordered
 	} // getAllSets (db, name, descend)
+
+
+	/****************************
+	 * Given a Cursor thats initialized AND pointing to an
+	 * workout set's row (not BEFORE), this creates and fills
+	 * in a SetData instance.
+	 *
+	 * preconditions:
+	 * 		This *really* should be called within a try/catch
+	 * 		block.  Do that anytime you fill in a Cursor from
+	 * 		a database.  It's just good sense.
+	 *
+	 * @param cursor		Pointing to the set to fill in (and
+	 * 					NOT before).  Also, ALL fields have
+	 * 					been read in from the database!!!
+	 * 					Otherwise an exception will be thrown!
+	 *
+	 * @return	- A class instance of SetData with all the
+	 * 			fields filled in.
+	 * 			- NULL if an error happened (detailed above).
+	 */
+	public static SetData getSetData (Cursor cursor) {
+		int col;
+		SetData data = new SetData();
+
+		// now load up the data:
+		col = cursor.getColumnIndex(COL_ID);
+		data._id = cursor.getInt(col);
+
+		col = cursor.getColumnIndex(SET_COL_NAME);
+		data.name = cursor.getString(col);
+
+		col = cursor.getColumnIndex(SET_COL_DATEMILLIS);
+		data.millis = cursor.getLong(col);
+
+		col = cursor.getColumnIndex(SET_COL_WEIGHT);
+		data.weight = cursor.getFloat(col);
+
+		col = cursor.getColumnIndex(SET_COL_REPS);
+		data.reps = cursor.getInt(col);
+
+		col = cursor.getColumnIndex(SET_COL_LEVELS);
+		data.levels = cursor.getInt(col);
+
+		col = cursor.getColumnIndex(SET_COL_CALORIES);
+		data.cals = cursor.getInt(col);
+
+		col = cursor.getColumnIndex(SET_COL_DIST);
+		data.dist = cursor.getFloat(col);
+
+		col = cursor.getColumnIndex(SET_COL_TIME);
+		data.time = cursor.getFloat(col);
+
+		col = cursor.getColumnIndex(SET_COL_OTHER);
+		data.other = cursor.getFloat(col);
+
+		col = cursor.getColumnIndex(SET_COL_CONDITION);
+		data.cond = cursor.getInt(col);
+
+		col = cursor.getColumnIndex(SET_COL_NOTES);
+		data.notes = cursor.getString(col);
+
+		return data;
+	} // getExerciseData (cursor)
 
 }

@@ -69,24 +69,27 @@ public class InspectorActivity2
 	//--------------------
 	//	All from the exercise database
 	//--------------------
+	/** Holds all info about this exercise. */
+	protected ExerciseData m_ex_data = null;
+
 	protected int m_ex_id;
 	protected String m_ex_name;
-	protected int m_ex_type;
-	protected int m_ex_group;
-	protected boolean m_ex_weights;
-	protected String m_ex_weight_unit;
-	protected boolean m_ex_reps;
-	protected boolean m_ex_dist;
-	protected String m_ex_dist_unit;
-	protected boolean m_ex_time;
-	protected String m_ex_time_unit;
-	protected boolean m_ex_level;
-	protected boolean m_ex_cals;
-	protected boolean m_ex_other;
-	protected String m_ex_other_title;
-	protected String m_ex_other_unit;
-	protected int m_ex_significant = -1;
-	protected int m_ex_lorder;
+//	protected int m_ex_type;
+//	protected int m_ex_group;
+//	protected boolean m_ex_weights;
+//	protected String m_ex_weight_unit;
+//	protected boolean m_ex_reps;
+//	protected boolean m_ex_dist;
+//	protected String m_ex_dist_unit;
+//	protected boolean m_ex_time;
+//	protected String m_ex_time_unit;
+//	protected boolean m_ex_level;
+//	protected boolean m_ex_cals;
+//	protected boolean m_ex_other;
+//	protected String m_ex_other_title;
+//	protected String m_ex_other_unit;
+//	protected int m_ex_significant = -1;
+//	protected int m_ex_lorder;
 
 
 	/**
@@ -102,6 +105,13 @@ public class InspectorActivity2
 
 	/** A hack to get around scoping rules for scroll_to_child(id). */
 	protected static int s_id;
+
+	/**
+	 * This indicates whether or not the main layout has
+	 * been initialized.  Necessary because of the multi-threading
+	 * nature of this class.
+	 */
+	protected boolean m_layout_initialized = false;
 
 
 	//------------------------------
@@ -178,7 +188,7 @@ public class InspectorActivity2
 	//
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode,
-	                                Intent data) {
+									Intent data) {
 
 		if (resultCode == RESULT_CANCELED) {
 			return;	// don't do anything
@@ -277,8 +287,8 @@ public class InspectorActivity2
 	 * 			is output indicating that the user didn't
 	 * 			supply this number.
 	 */
-	private String get_data_str (Cursor set_cursor, String column_name,
-	                             boolean is_float) {
+/*	private String get_data_str (Cursor set_cursor, String column_name,
+								boolean is_float) {
 		int col = set_cursor.getColumnIndex(column_name);
 
 		// Null is a special case (it only happens when an
@@ -309,7 +319,35 @@ public class InspectorActivity2
 			return ("" + num);
 		}
 	} // get_data_str (cursor, column_name)
+*/
+	/***************************
+	 * Helper to converts the given number to a nice string for
+	 * display in the inspector as a weight, distance, etc.
+	 *
+	 * @param f		The FLOAT to turn into a string
+	 * @return		A nice string, or an appropriate message
+	 * 				if the user skipped this value.
+	 */
+	private String get_formatted_string (float f) {
+		if (f < 0)
+			return getString (R.string.inspector_skipped_value);
+		return new DecimalFormat("#.###").format(f);
+	}
 
+	/***************************
+	 * Helper to converts the given number to a nice string for
+	 * display in the inspector as a weight, distance, etc.
+	 *
+	 * @param i		The INT to turn into a string
+	 * @return		A nice string, or an appropriate message
+	 * 				if the user skipped this value.
+	 */
+	private String get_formatted_string (int i) {
+		if (i == -1) {
+			return getString(R.string.inspector_skipped_value);
+		}
+		return ("" + i);
+	}
 
 	/***************************
 	 * Creates a display for a given set.  It needs a bunch
@@ -346,12 +384,12 @@ public class InspectorActivity2
 	 * 				the second time (2), and so on that
 	 * 				this has been called.
 	 */
-	void make_set_display(int id,
-	                      SQLiteDatabase db,
-	                      LinearLayout parent,
-	                      Cursor ex_cursor,
-	                      Cursor set_cursor,
-	                      int count) {
+/*	void make_set_display(int id,
+						SQLiteDatabase db,
+						LinearLayout parent,
+						Cursor ex_cursor,
+						Cursor set_cursor,
+						int count) {
 		boolean set_bar = false;		// used to determine whether or not to draw a divider bar
 
 		LayoutInflater inflater = getLayoutInflater();
@@ -402,21 +440,30 @@ public class InspectorActivity2
 		parent.addView(set_ll);
 
 	} // make_set_display (...)
+*/
 
 	/********************
 	 * Part of the UI thread while creating the display, this
 	 * takes all the data for a set that was loaded in by the
 	 * ASyncTask and puts those values into a new layout.
 	 *
+	 * Now this is filled in along the way, making a pleasing UI
+	 * while the data is loading.  But this means that there
+	 * will need to be a little bit of sorting as we figure out
+	 * where to put the layout that was sent in.
+	 *
 	 * preconditions:
 	 * 		m_main_ll		Needs to be ready to receive children.
 	 *
 	 * @param layout_values		The data for this set that was
 	 * 							loaded from the DB.
-	 *
-	 *
 	 */
 	void make_set_layout (SetLayout layout_values) {
+
+		if (!m_layout_initialized) {
+			init_layout();
+		}
+
 		/** used to determine whether or not to draw a divider bar */
 		boolean set_bar = false;
 
@@ -424,15 +471,71 @@ public class InspectorActivity2
 		LinearLayout set_ll = (LinearLayout) inflater
 				.inflate(R.layout.inspector_set, m_main_ll, false);
 
+		// Not using the title currently.
+		TextView title_tv = (TextView) set_ll.findViewById(R.id.inspector_set_title_tv);
+		title_tv.setText("");
+
+		// The date and time of this set.
+		setup_date (layout_values, set_ll);
+
+		if (setup_reps(layout_values, set_ll))
+			set_bar = true;
+
+		if (setup_weight (layout_values, set_ll, set_bar))
+			set_bar = true;
+
+		if (setup_level (layout_values, set_ll, set_bar))
+			set_bar = true;
+
+		if (setup_cals (layout_values, set_ll, set_bar))
+			set_bar = true;
+
+		if (setup_dist (layout_values, set_ll, set_bar))
+			set_bar = true;
+
+		if (setup_time (layout_values, set_ll, set_bar))
+			set_bar = true;
+
+		if (setup_other (layout_values, set_ll, set_bar))
+			set_bar = true;
+
+		setup_stress (layout_values, set_ll);
+
+		setup_notes (layout_values, set_ll);
+
+		// Make this respond to long clicks.  Use the set ID.
+		set_ll.setId(layout_values.data._id);
+		set_ll.setOnLongClickListener(this);
 
 
-		// todo
-		// todo
-		// todo
-		// todo
-		// todo
+		// Lastly we add this layout to m_main_ll.  But first,
+		// we gotta figure out where to add it.
+		//	O(n), sigh.
+		//
+		int index = 0;
+		while (index <= layout_values.order)
+			index++;
+		m_main_ll.addView(set_ll, index);
 
 	}  // make_set_layout (layout_values)
+
+	/********************
+	 * Called the first time that make_set_layout() is called.
+	 * This sets up all the general stuff that's germain to
+	 * every set layout.
+	 */
+	protected void init_layout() {
+		if (m_layout_initialized) {
+			return;
+		}
+
+		// Tabula rasa.
+		m_main_ll.removeAllViews();
+
+		// todo
+
+		m_layout_initialized = true;
+	} // init_layout()
 
 
 	/********************
@@ -455,7 +558,7 @@ public class InspectorActivity2
 	 *
 	 * 			0:	Continue normally.  Date has not changed.
 	 */
-	private int reload_set(LinearLayout ll) {
+/*	private int reload_set(LinearLayout ll) {
 
 		// used to determine whether or not to draw a divider bar
 		boolean set_bar = false;
@@ -477,12 +580,12 @@ public class InspectorActivity2
 				ex_cursor = m_db.query(
 							DatabaseHelper.EXERCISE_TABLE_NAME,
 							null,			//	columns[]
-				            DatabaseHelper.EXERCISE_COL_NAME + "=?",//selection
-				            new String[] {m_ex_name},// selectionArgs[]
-				            null,	//	groupBy
-				            null,	//	having
-				            null,	//	orderBy
-				            null);
+							DatabaseHelper.EXERCISE_COL_NAME + "=?",//selection
+							new String[] {m_ex_name},// selectionArgs[]
+							null,	//	groupBy
+							null,	//	having
+							null,	//	orderBy
+							null);
 				ex_cursor.moveToFirst();
 
 				// While we have it, save the lorder of this exercise.
@@ -586,22 +689,19 @@ public class InspectorActivity2
 
 		return exit_code;
 	} // reload_set (ll)
-
+*/
 
 	/********************
 	 * Sets up the date and time portion of this Activity.
 	 *
-	 * @param set_cursor		The cursor for this workout
-	 * 						set, primed to use.
+	 * @param vals			Holds the date to display
 	 *
 	 * @param set_ll			The linearLayout that holds this
 	 * 						particular exercise set.  It'll
 	 * 						have some Views added.
 	 */
-	private void setup_date (Cursor set_cursor, LinearLayout set_ll) {
-		int col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_DATEMILLIS);
-		long date_millis = set_cursor.getLong(col);
-		m_set_date = new MyCalendar(date_millis);
+	private void setup_date (SetLayout vals, LinearLayout set_ll) {
+		m_set_date = new MyCalendar(vals.data.millis);
 
 		// And display the time of this particular set.
 		TextView time_tv = (TextView) set_ll.findViewById(R.id.inspector_set_time_tv);
@@ -611,26 +711,25 @@ public class InspectorActivity2
 	/********************
 	 * Sets up the reps portion.
 	 *
-	 * @param set_cursor
-	 * @param ex_cursor
-	 * @param set_ll
+	 * @param vals			Holds the reps to display
+	 *
+	 * @param set_ll			The linearLayout that holds this
+	 * 						particular exercise set.  It'll
+	 * 						have some Views added.
 	 *
 	 * @return	Whether or not set_bar need to be true.  Use
 	 * 			this like:	if (setup_reps())
 	 * 							set_bar = true;
 	 */
-	private boolean setup_reps (Cursor set_cursor, Cursor ex_cursor,
-	                         LinearLayout set_ll) {
+	private boolean setup_reps (SetLayout vals,
+							LinearLayout set_ll) {
 		LinearLayout reps_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_reps_ll);
 
-		int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_REP);
-		boolean reps = ex_cursor.getInt(col) == 1 ? true : false;
-		if (reps) {
-			String data_str = get_data_str (set_cursor,
-					DatabaseHelper.SET_COL_REPS, false);
+		if (m_ex_data.breps) {
+			String data_str = get_formatted_string(vals.data.reps);
 			TextView reps_data_tv = (TextView) set_ll.findViewById(R.id.inspector_set_reps_data);
 			reps_data_tv.setText(data_str);
-			if (m_ex_significant == DatabaseHelper.EXERCISE_COL_REP_NUM) {
+			if (m_ex_data.significant == DatabaseHelper.EXERCISE_COL_REP_NUM) {
 				TextView reps_label_tv = (TextView) set_ll.findViewById(R.id.inspector_set_reps_label);
 				reps_label_tv.setTypeface(null, Typeface.BOLD);
 			}
@@ -646,28 +745,20 @@ public class InspectorActivity2
 
 	/*********************
 	 */
-	private boolean setup_weight (Cursor set_cursor, Cursor ex_cursor,
-	                              LinearLayout set_ll, boolean set_bar) {
+	private boolean setup_weight (SetLayout vals,
+								LinearLayout set_ll, boolean set_bar) {
 		LinearLayout weight_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_weight_ll);
 		View bar = set_ll.findViewById(R.id.inspector_set_weight_bar);
 
-		int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_WEIGHT);
-		boolean weight = ex_cursor.getInt(col) == 1 ? true : false;
-		if (weight) {
-			// Unit of Weight
-			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_WEIGHT_UNIT);
-			String weight_unit = ex_cursor.getString(col);
-
+		if (m_ex_data.bweight) {
 			TextView weight_label_tv = (TextView) set_ll.findViewById(R.id.inspector_set_weight_label);
 			String weight_label_str = getString (R.string.inspector_set_weight_label,
-					(Object[]) new String[] {weight_unit});
+					(Object[]) new String[] {m_ex_data.weight_unit});
 			weight_label_tv.setText(weight_label_str);
 
-			String data_str = get_data_str (set_cursor,
-					DatabaseHelper.SET_COL_WEIGHT, true);
 			TextView weight_data_tv = (TextView) set_ll.findViewById(R.id.inspector_set_weight_data);
-			weight_data_tv.setText(data_str);
-			if (m_ex_significant == DatabaseHelper.EXERCISE_COL_WEIGHT_NUM) {
+			weight_data_tv.setText(get_formatted_string(vals.data.weight));
+			if (m_ex_data.significant == DatabaseHelper.EXERCISE_COL_WEIGHT_NUM) {
 				weight_label_tv.setTypeface(null, Typeface.BOLD);
 			}
 
@@ -688,19 +779,20 @@ public class InspectorActivity2
 
 	/*********************
 	 */
-	private boolean setup_level (Cursor set_cursor, Cursor ex_cursor,
-	                              LinearLayout set_ll, boolean set_bar) {
+	private boolean setup_level (SetLayout vals,
+								LinearLayout set_ll, boolean set_bar) {
 		LinearLayout level_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_level_ll);
 		View bar = set_ll.findViewById(R.id.inspector_set_level_bar);
 
-		int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_LEVEL);
-		boolean level = ex_cursor.getInt(col) == 1 ? true : false;
-		if (level) {
-			String data_str = get_data_str (set_cursor,
-					DatabaseHelper.SET_COL_LEVELS, false);
+//		int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_LEVEL);
+//		boolean level = ex_cursor.getInt(col) == 1 ? true : false;
+		if (m_ex_data.blevel) {
+//			String data_str = get_data_str (set_cursor,
+//					DatabaseHelper.SET_COL_LEVELS, false);
+			String data_str = get_formatted_string(vals.data.levels);
 			TextView level_data_tv = (TextView) set_ll.findViewById(R.id.inspector_set_level_data);
 			level_data_tv.setText(data_str);
-			if (m_ex_significant == DatabaseHelper.EXERCISE_COL_LEVEL_NUM) {
+			if (m_ex_data.significant == DatabaseHelper.EXERCISE_COL_LEVEL_NUM) {
 				TextView level_label_tv = (TextView) set_ll.findViewById(R.id.inspector_set_level_label);
 				level_label_tv.setTypeface(null, Typeface.BOLD);
 			}
@@ -722,23 +814,19 @@ public class InspectorActivity2
 	/************************
 	 *
 	 */
-	private boolean setup_cals (Cursor set_cursor, Cursor ex_cursor,
-                              LinearLayout set_ll, boolean set_bar) {
+	private boolean setup_cals (SetLayout vals,
+							LinearLayout set_ll, boolean set_bar) {
 		LinearLayout cals_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_calorie_ll);
 		View bar = set_ll.findViewById(R.id.inspector_set_calorie_bar);
 
-		int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_CALORIES);
-		boolean cals = ex_cursor.getInt(col) == 1 ? true : false;
-		if (cals) {
-			String data_str = get_data_str (set_cursor,
-					DatabaseHelper.SET_COL_CALORIES, false);
+		if (m_ex_data.bcals) {
+			String data_str = get_formatted_string(vals.data.cals);
 			TextView cals_data_tv = (TextView) set_ll.findViewById(R.id.inspector_set_calorie_data);
 			cals_data_tv.setText(data_str);
-			if (m_ex_significant == DatabaseHelper.EXERCISE_COL_CALORIE_NUM) {
+			if (m_ex_data.significant == DatabaseHelper.EXERCISE_COL_CALORIE_NUM) {
 				TextView cals_label_tv = (TextView) set_ll.findViewById(R.id.inspector_set_calorie_label);
 				cals_label_tv.setTypeface(null, Typeface.BOLD);
 			}
-
 			if (!set_bar) {
 				bar.setVisibility(View.GONE);
 				return true;
@@ -753,31 +841,24 @@ public class InspectorActivity2
 	} // calories
 
 
-
 	/***********************
 	 *
 	 */
-	private boolean setup_dist (Cursor set_cursor, Cursor ex_cursor,
-                              LinearLayout set_ll, boolean set_bar) {
+	private boolean setup_dist (SetLayout vals,
+								LinearLayout set_ll, boolean set_bar) {
 		LinearLayout dist_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_dist_ll);
 		View bar = set_ll.findViewById(R.id.inspector_set_dist_bar);
 
-		int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_DIST);
-		boolean dist = ex_cursor.getInt(col) == 1 ? true : false;
-		if (dist) {
+		if (m_ex_data.bdist) {
 			// Unit of Distance
-			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_DIST_UNIT);
-			String dist_unit = ex_cursor.getString(col);
-
 			TextView dist_label_tv = (TextView) set_ll.findViewById(R.id.inspector_set_dist_label);
-			String dist_label_str = getString (R.string.inspector_set_dist_label, dist_unit);
+			String dist_label_str = getString (R.string.inspector_set_dist_label, m_ex_data.dist_unit);
 			dist_label_tv.setText(dist_label_str);
-			if (m_ex_significant == DatabaseHelper.EXERCISE_COL_DIST_NUM) {
+			if (m_ex_data.significant == DatabaseHelper.EXERCISE_COL_DIST_NUM) {
 				dist_label_tv.setTypeface(null, Typeface.BOLD);
 			}
 
-			String data_str = get_data_str (set_cursor,
-					DatabaseHelper.SET_COL_DIST, true);
+			String data_str = get_formatted_string(vals.data.dist);
 			TextView dist_data_tv = (TextView) set_ll.findViewById(R.id.inspector_set_dist_data);
 			dist_data_tv.setText(data_str);
 
@@ -797,27 +878,26 @@ public class InspectorActivity2
 	/***********************
 	 *
 	 */
-	private boolean setup_time (Cursor set_cursor, Cursor ex_cursor,
-                              LinearLayout set_ll, boolean set_bar) {
+	private boolean setup_time (SetLayout vals,
+							LinearLayout set_ll, boolean set_bar) {
 		LinearLayout time_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_time_ll);
 		View bar = set_ll.findViewById(R.id.inspector_set_time_bar);
 
-		int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_TIME);
-		boolean time = ex_cursor.getInt(col) == 1 ? true : false;
-		if (time) {
+//		int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_TIME);
+//		boolean time = ex_cursor.getInt(col) == 1 ? true : false;
+		if (m_ex_data.btime) {
 			// Unit of Time
-			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_TIME_UNIT);
-			String time_unit = ex_cursor.getString(col);
+//			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_TIME_UNIT);
+//			String time_unit = ex_cursor.getString(col);
 
 			TextView time_label_tv = (TextView) set_ll.findViewById(R.id.inspector_set_time_label);
-			String time_label_str = getString (R.string.inspector_set_time_label, time_unit);
+			String time_label_str = getString (R.string.inspector_set_time_label, m_ex_data.time_unit);
 			time_label_tv.setText(time_label_str);
-			if (m_ex_significant == DatabaseHelper.EXERCISE_COL_TIME_NUM) {
+			if (m_ex_data.significant == DatabaseHelper.EXERCISE_COL_TIME_NUM) {
 				time_label_tv.setTypeface(null, Typeface.BOLD);
 			}
 
-			String data_str = get_data_str (set_cursor,
-					DatabaseHelper.SET_COL_TIME, true);
+			String data_str = get_formatted_string(vals.data.time);
 			TextView time_data_tv = (TextView) set_ll.findViewById(R.id.inspector_set_time_data);
 			time_data_tv.setText(data_str);
 
@@ -837,32 +917,21 @@ public class InspectorActivity2
 	/***********************
 	 *
 	 */
-	private boolean setup_other (Cursor set_cursor, Cursor ex_cursor,
-                              LinearLayout set_ll, boolean set_bar) {
+	private boolean setup_other (SetLayout vals,
+							LinearLayout set_ll, boolean set_bar) {
 		LinearLayout other_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_other_ll);
 		View bar = set_ll.findViewById(R.id.inspector_set_other_bar);
 
-		int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_OTHER);
-		boolean other = ex_cursor.getInt(col) == 1 ? true : false;
-		if (other) {
-			// Other Label (this is a combo of the title
-			// and unit)--different from the others.
-			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_OTHER_TITLE);
-			String other_title = ex_cursor.getString(col);
-
-			// the unit
-			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_OTHER_UNIT);
-			String other_unit = ex_cursor.getString(col);
-
+		if (m_ex_data.bother) {
 			TextView other_label_tv = (TextView) set_ll.findViewById(R.id.inspector_set_other_label);
-			String other_label_str = getString (R.string.inspector_set_other_label, other_title, other_unit);
+			String other_label_str = getString (R.string.inspector_set_other_label, m_ex_data.other_title, m_ex_data.other_unit);
 			other_label_tv.setText(other_label_str);
-			if (m_ex_significant == DatabaseHelper.EXERCISE_COL_OTHER_NUM) {
+			if (m_ex_data.significant == DatabaseHelper.EXERCISE_COL_OTHER_NUM) {
 				other_label_tv.setTypeface(null, Typeface.BOLD);
 			}
 
-			String data_str = get_data_str (set_cursor,
-					DatabaseHelper.SET_COL_OTHER, true);
+			String data_str = get_formatted_string(vals.data.other);
+
 			TextView other_data_tv = (TextView) set_ll.findViewById(R.id.inspector_set_other_data);
 			other_data_tv.setText(data_str);
 
@@ -882,13 +951,11 @@ public class InspectorActivity2
 	/***********************
 	 *
 	 */
-	private void setup_stress (Cursor set_cursor,
-                              LinearLayout set_ll) {
+	private void setup_stress (SetLayout vals,
+							LinearLayout set_ll) {
 		TextView stress_data_tv = (TextView) set_ll.findViewById(R.id.inspector_set_stress_data);
 
-		int col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_CONDITION);
-		int stress_num = set_cursor.getInt(col);
-		switch (stress_num) {
+		switch (vals.data.cond) {
 			case DatabaseHelper.SET_COND_OK:
 				stress_data_tv.setText(R.string.aset_cond_stress_ok);
 				break;
@@ -911,14 +978,12 @@ public class InspectorActivity2
 	/***********************
 	 *
 	 */
-	private void setup_notes (Cursor set_cursor,
-                              LinearLayout set_ll) {
-		int col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_NOTES);
-		String notes = set_cursor.getString(col);
-		if ((notes != null) && (notes.length() > 0)) {
+	private void setup_notes (SetLayout vals,
+							LinearLayout set_ll) {
+		if ((vals.data.notes != null) && (vals.data.notes.length() > 0)) {
 			// There's a note!  Display it.
 			TextView notes_tv = (TextView) set_ll.findViewById(R.id.inspector_set_notes_tv);
-			notes_tv.setText(notes);
+			notes_tv.setText(vals.data.notes);
 		}
 	} // notes
 
@@ -966,7 +1031,7 @@ public class InspectorActivity2
 	 * 			FALSE - Something went wrong (probably the
 	 * 					exercise couldn't be found).
 	 */
-	private boolean get_exercise_info (SQLiteDatabase db) {
+/*	private boolean get_exercise_info (SQLiteDatabase db) {
 		int col;
 		Cursor ex_cursor = null;
 
@@ -985,65 +1050,65 @@ public class InspectorActivity2
 			m_ex_id = ex_cursor.getInt(col);
 
 			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_TYPE);
-			m_ex_type = ex_cursor.getInt(col);
+			m_ex_data.type = ex_cursor.getInt(col);
 
 			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_GROUP);
-			m_ex_group = ex_cursor.getInt(col);
+			m_ex_data.group = ex_cursor.getInt(col);
 
 			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_WEIGHT);
-			m_ex_weights = ex_cursor.getInt(col) == 1 ? true : false;
-			if (m_ex_weights) {
+			m_ex_data.bweight = ex_cursor.getInt(col) == 1 ? true : false;
+			if (m_ex_data.bweight) {
 				col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_WEIGHT_UNIT);
-				m_ex_weight_unit = ex_cursor.getString(col);
+				m_ex_data.weight_unit = ex_cursor.getString(col);
 			}
 			else
-				m_ex_weight_unit = null;
+				m_ex_data.weight_unit = null;
 
 			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_REP);
-			m_ex_reps = ex_cursor.getInt(col) == 1 ? true : false;
+			m_ex_data.brep = ex_cursor.getInt(col) == 1 ? true : false;
 
 			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_DIST);
-			m_ex_dist = ex_cursor.getInt(col) == 1 ? true : false;
-			if (m_ex_dist) {
+			m_ex_data.bdist = ex_cursor.getInt(col) == 1 ? true : false;
+			if (m_ex_data.bdist) {
 				col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_DIST_UNIT);
-				m_ex_dist_unit = ex_cursor.getString(col);
+				m_ex_data.dist_unit = ex_cursor.getString(col);
 			}
 			else
-				m_ex_dist_unit = null;
+				m_ex_data.dist_unit = null;
 
 			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_TIME);
-			m_ex_time = ex_cursor.getInt(col) == 1 ? true : false;
-			if (m_ex_time) {
+			m_ex_data.btime = ex_cursor.getInt(col) == 1 ? true : false;
+			if (m_ex_data.btime) {
 				col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_TIME_UNIT);
-				m_ex_time_unit = ex_cursor.getString(col);
+				m_ex_data.time_unit = ex_cursor.getString(col);
 			}
 			else
-				m_ex_time_unit = null;
+				m_ex_data.time_unit = null;
 
 			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_LEVEL);
-			m_ex_level = ex_cursor.getInt(col) == 1 ? true : false;
+			m_ex_data.blevel = ex_cursor.getInt(col) == 1 ? true : false;
 
 			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_CALORIES);
-			m_ex_cals = ex_cursor.getInt(col) == 1 ? true : false;
+			m_ex_data.bcals = ex_cursor.getInt(col) == 1 ? true : false;
 
 			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_OTHER);
-			m_ex_other = ex_cursor.getInt(col) == 1 ? true : false;
-			if (m_ex_other) {
+			m_ex_data.bother = ex_cursor.getInt(col) == 1 ? true : false;
+			if (m_ex_data.bother) {
 				col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_OTHER_UNIT);
-				m_ex_other_unit = ex_cursor.getString(col);
+				m_ex_data.other_unit = ex_cursor.getString(col);
 				col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_OTHER_TITLE);
-				m_ex_other_title = ex_cursor.getString(col);
+				m_ex_data.other_title = ex_cursor.getString(col);
 			}
 			else {
-				m_ex_other_unit = null;
-				m_ex_other_title = null;
+				m_ex_data.other_unit = null;
+				m_ex_data.other_title = null;
 			}
 
 			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_SIGNIFICANT);
-			m_ex_significant = ex_cursor.getInt(col);
+			m_ex_data.significant = ex_cursor.getInt(col);
 
 			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_LORDER);
-			m_ex_lorder = ex_cursor.getInt(col);
+			m_ex_data.lorder = ex_cursor.getInt(col);
 
 		} // main try
 
@@ -1059,7 +1124,7 @@ public class InspectorActivity2
 
 		return true;
 	} // get_exercise_info()
-
+*/
 
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1077,12 +1142,8 @@ public class InspectorActivity2
 		//-------------------
 		@Override
 		protected void onPreExecute() {
-
 			start_progress_dialog(R.string.loading_str);
-
-			// Tabula rasa.
-			m_main_ll.removeAllViews();
-
+			m_layout_initialized = false;
 		} // onPreExecute
 
 		//-------------------
@@ -1096,7 +1157,8 @@ public class InspectorActivity2
 				// Read in all the info we need about this
 				// exercise.  This works completely by
 				// side effect.
-				get_exercise_info (m_db);
+//				m_ex_data = get_exercise_info (m_db);
+				m_ex_data = DatabaseHelper.getExerciseData(m_db, m_ex_name);
 
 				// Get a cursor for the sets.  Then loop through
 				// them one by one, creating a layout for each.
@@ -1106,45 +1168,51 @@ public class InspectorActivity2
 				Cursor set_cursor = null;
 				try {
 					set_cursor = DatabaseHelper.getAllSets(m_db, m_ex_name, true);
-					int i = 1, id, col;
+					int layout_id = 0;	// Each layout is ordered.
+					int col, set_id;
 					while (set_cursor.moveToNext()) {
-						col = set_cursor.getColumnIndex(DatabaseHelper.COL_ID);
-						id = set_cursor.getInt(col);
+
+//						col = set_cursor.getColumnIndex(DatabaseHelper.COL_ID);
+//						set_id = set_cursor.getInt(col);
 
 						SetLayout layout_values = new SetLayout();
+						layout_values.data = DatabaseHelper.getSetData(set_cursor);
 
-						col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_NAME);
-						layout_values.name = set_cursor.getString(col);
-
-						col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_DATEMILLIS);
-						layout_values.millis = set_cursor.getLong(col);
-
-						col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_WEIGHT);
-						layout_values.weight = set_cursor.getFloat(col);
-
-						col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_REPS);
-						layout_values.reps = set_cursor.getInt(col);
-
-						col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_LEVELS);
-						layout_values.levels = set_cursor.getInt(col);
-
-						col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_CALORIES);
-						layout_values.cals = set_cursor.getInt(col);
-
-						col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_DIST);
-						layout_values.dist = set_cursor.getFloat(col);
-
-						col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_TIME);
-						layout_values.time = set_cursor.getFloat(col);
-
-						col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_OTHER);
-						layout_values.other = set_cursor.getFloat(col);
-
-						col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_CONDITION);
-						layout_values.cond = set_cursor.getInt(col);
-
-						col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_NOTES);
-						layout_values.notes = set_cursor.getString(col);
+//						layout_values.id = set_id;
+//						layout_values.order = layout_id;
+//
+//						col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_NAME);
+//						layout_values.name = set_cursor.getString(col);
+//
+//						col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_DATEMILLIS);
+//						layout_values.millis = set_cursor.getLong(col);
+//
+//						col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_WEIGHT);
+//						layout_values.weight = set_cursor.getFloat(col);
+//
+//						col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_REPS);
+//						layout_values.reps = set_cursor.getInt(col);
+//
+//						col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_LEVELS);
+//						layout_values.levels = set_cursor.getInt(col);
+//
+//						col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_CALORIES);
+//						layout_values.cals = set_cursor.getInt(col);
+//
+//						col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_DIST);
+//						layout_values.dist = set_cursor.getFloat(col);
+//
+//						col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_TIME);
+//						layout_values.time = set_cursor.getFloat(col);
+//
+//						col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_OTHER);
+//						layout_values.other = set_cursor.getFloat(col);
+//
+//						col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_CONDITION);
+//						layout_values.cond = set_cursor.getInt(col);
+//
+//						col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_NOTES);
+//						layout_values.notes = set_cursor.getString(col);
 
 						publishProgress(layout_values);
 					}
@@ -1261,13 +1329,24 @@ public class InspectorActivity2
 		//	Yep, the Cursors are changed (especially set_cursor!).
 		//	And that's the bug.
 		//
+		//	input:
+		//		set_array		This is an array of SetLayouts that
+		//						were filled in by the background
+		//						thread via doInBackground().  It has
+		//						only ONE element, the most recently
+		//						created SetLayout.  Let's use it
+		//						to make a new exercise set layout!
+		//			todo:
+		//						Problem, these may come out of
+		//						order!!!
+		//
 		@Override
-		protected void onProgressUpdate(SetLayout... arg0) {
-			super.onProgressUpdate(arg0);
+		protected void onProgressUpdate(SetLayout... set_array) {
+			super.onProgressUpdate(set_array);
 
 			// This does accesses the database, therefore is
 			// not thread safe.
-			make_set_layout (arg0[0]);
+			make_set_layout (set_array[0]);
 //			make_set_display(arg0[0].id, arg0[0].db, arg0[0].parent,
 //					arg0[0].ex_cursor, arg0[0].set_cursor,
 //					arg0[0].count);
@@ -1289,21 +1368,10 @@ public class InspectorActivity2
 	 * Holds the data needed to fill in an entire set's layout.
 	 */
 	class SetLayout {
-		/**
-		 * The DB id for this exercise set.  Used to identify this layout.
-		 */
-		int id;
-		String name;
-		long millis;
-		float weight;
-		int reps;
-		int levels;
-		int cals;
-		float dist;
-		float time;
-		float other;
-		int cond;
-		String notes;
+		/** The order that this set should be displayed */
+		int order;
+		/** Holds all the data for the exercise set */
+		SetData data;
 	} // class SetLayout
 
 
