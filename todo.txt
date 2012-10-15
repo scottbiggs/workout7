@@ -1,5 +1,8 @@
 TODO:
 -----------------
+Not all the new help dialogs use the new buttons.  The help dialogs
+	for the Tabs, display the old dialog, for example.
+
 In ASet, the notes and stress labels are black, not ivory.
 
 The GraphSelectorActivity's buttons are abysmal!  What is "butt"?
