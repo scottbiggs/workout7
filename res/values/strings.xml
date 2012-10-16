@@ -8,11 +8,11 @@
 	<string name="no">no</string>
 	<string name="cancel">cancel</string>
 	<string name="back">back</string>
-    <string name="loading_str">loading...</string>
+	<string name="loading_str">loading...</string>
 	<string name="saving_str">saving...</string>
 	<string name="question_mark">\?</string>
 	<string name="done">done</string>
-    	<string name="done_title">Done</string>
+		<string name="done_title">Done</string>
 	<string name="decimal_point">.</string>
 	<string name="clear">C</string>
 	<string name="hpg_logo_desc">Logo for the Hyde Park Gym</string>
@@ -43,15 +43,15 @@
 
 	<!-- ============          			============ -->
 	<!-- ============ Multiple Activity  ============ -->
-    <!-- ============          			============ -->
+	<!-- ============          			============ -->
 
-    <string name="label_reps">reps = %s</string>
-    <string name="label_weight">weight (%1$s) = %2$s</string>
-    <string name="label_level">level = %s</string>
-    <string name="label_cals">cals = %s</string>
-    <string name="label_dist">distance (%1$s) = %2$s</string>
-    <string name="label_time">time (%1$s) = %2$s</string>
-    <string name="label_other">%1$s (%2$s) = %3$s</string>
+	<string name="label_reps">reps = %s</string>
+	<string name="label_weight">weight (%1$s) = %2$s</string>
+	<string name="label_level">level = %s</string>
+	<string name="label_cals">cals = %s</string>
+	<string name="label_dist">distance (%1$s) = %2$s</string>
+	<string name="label_time">time (%1$s) = %2$s</string>
+	<string name="label_other">%1$s (%2$s) = %3$s</string>
 
 
 	<!-- ============		 ============ -->
@@ -63,33 +63,33 @@
 	<string name="welcome_start_button">workout</string>
 	<string name="welcome_start_help_title">start a workout</string>
 	<string name="welcome_start_help_msg">Press this button to
-	    begin or continue working out.
-	    \n\nThis takes you to the Grid, where all your exercises
-	    are listed and the details of your workouts can be
-	    found.
-	    \n\nHave fun!</string>
+		begin or continue working out.
+		\n\nThis takes you to the Grid, where all your exercises
+		are listed and the details of your workouts can be
+		found.
+		\n\nHave fun!</string>
 
 	<string name="welcome_settings_button">preferences</string>
 	<string name="welcome_settings_help_title">Preferences</string>
 	<string name="welcome_settings_help_msg">Tap on this
-	    button to change the settings for this program.
-	    \n\nDon\'t worry, they are pretty straight-forward.</string>
+		button to change the settings for this program.
+		\n\nDon\'t worry, they are pretty straight-forward.</string>
 
 	<string name="welcome_export_button">import/export</string>
 	<string name="welcome_export_help_title">Export Your Workout</string>
 	<string name="welcome_export_help_msg">
-	    This button takes you to a screen where you may
-	    export your workout to some common formats.
-	    \n\n(Right now, this part is still a work-in-progress,
-	    so it doesn\'t do much.)
+		This button takes you to a screen where you may
+		export your workout to some common formats.
+		\n\n(Right now, this part is still a work-in-progress,
+		so it doesn\'t do much.)
 	</string>
 
 	<string name="welcome_graphs_button">look at graphs</string>
 	<string name="welcome_graphs_help_title">Graph Progress</string>
 	<string name="welcome_graphs_help_msg">Seeing your progress
-	    is a great part of getting in shape. Press this button
-	    to look at all sorts of graphs of how your workouts and
-	    your body is changing over time.</string>
+		is a great part of getting in shape. Press this button
+		to look at all sorts of graphs of how your workouts and
+		your body is changing over time.</string>
 
 	<string name="welcome_exit_button">exit</string>
 	<string name="welcome_exit_help_title">Exit Program</string>
@@ -141,10 +141,10 @@
 	<string name="welcome_menu_credits_button">show credits</string>
 	<string name="welcome_menu_credits_title">Show Credits</string>
 	<string name="welcome_menu_credits_msg">Hyde Park Gym is owned
-	    and run by Brook Jones. This tool was created with the
-	    help of him and many of the other fine folks at Hyde Park
-	    Gym in Austin, Texas--just look for place with the arm
-	    sticking out! Programmed by Scott Biggs.</string>
+		and run by Brook Jones. This tool was created with the
+		help of him and many of the other fine folks at Hyde Park
+		Gym in Austin, Texas--just look for place with the arm
+		sticking out! Programmed by Scott Biggs.</string>
 	<string name="welcome_menu_exit_button">exit</string>
 
 	<!-- ============	 ============ -->
@@ -155,8 +155,8 @@
 	<!-- The dialog that pops up when they hit the Back button -->
 	<string name="addexer_leave_title">Really\?</string>
 	<string name="addexer_leave_msg">Are you sure you want to
-	    go back to the main workout screen\? This will abandon
-	    all entries you\'ve made here.</string>
+		go back to the main workout screen\? This will abandon
+		all entries you\'ve made here.</string>
 
 	<!-- Menus -->
 	<string name="addexer_help_title">Add Exercise Help</string>
@@ -231,13 +231,13 @@
 		a great workout!
 	</string>
 
-    <string name="addexer_cancel_warning_title">Cancel Add Exercise</string>
-    <string name="addexer_cancel_warning_msg">It looks like you
-        are about to cancel, even though you\'ve done a little
-        work on this new exercise.
-        \n\nAre you sure you want to cancel\?
-        \n\n(You can turn this warning off in the \'preferences\'.)
-    </string>
+	<string name="addexer_cancel_warning_title">Cancel Add Exercise</string>
+	<string name="addexer_cancel_warning_msg">It looks like you
+		are about to cancel, even though you\'ve done a little
+		work on this new exercise.
+		\n\nAre you sure you want to cancel\?
+		\n\n(You can turn this warning off in the \'preferences\'.)
+	</string>
 
 
 	<!-- The Widgets -->
@@ -252,7 +252,7 @@
 	<!-- These are for the AlertDialog that comes up as a ContextMenu -->
 	<string name="addexer_name_help_title">Exercise Name</string>
 	<string name="addexer_name_help_msg">Type in the name of
-	    this exercise here.</string>
+		this exercise here.</string>
 
 	<!-- The Toast that complains that this was not filled out correctly. -->
 	<string name="addexer_name_complaint">Please enter an exercise name.</string>
@@ -267,7 +267,7 @@
 		be categorized. Do your best to pick the most
 		appropriate type for this workout.</string>
 	<string name="addexer_type_complaint">Please select an
-	    exercise type.</string>
+		exercise type.</string>
 
 	<!-- For the title -->
 	<string name="addexer_type_str">What type of exercise\?</string>
@@ -277,33 +277,33 @@
 	<string name="addexer_musclegroup_str">Which group of muscles\?</string>
 	<string name="addexer_musclegroup_help_title">Muscle Group</string>
 	<string name="addexer_musclegroup_help_msg">Tell this program
-	    which muscle group this exercise targets. Information here
-	    will help the program keep track of what muscles you are
-	    exercising and will give more accurate progress charts.</string>
+		which muscle group this exercise targets. Information here
+		will help the program keep track of what muscles you are
+		exercising and will give more accurate progress charts.</string>
 	<string name="addexer_musclegroup_complaint">Please select a
-	    muscle group.</string>
+		muscle group.</string>
 
 	<!-- For the title of the ListBox that holds the CheckBoxes -->
 	<string name="addexer_checkbox_title">measurements</string>
 	<string name="addexer_checkbox_significant">significant</string>
 	<string name="addexer_checkbox_complaint">Please select at least
-	    one measurement.</string>
+		one measurement.</string>
 
 	<string name="addexer_unit_msg">Select in the unit of
-	    measurement you want to work with.
-	    \n\nIf you do not see what you need, feel free to
-	    select \'custom\' to create the unit you want to use.
-	    </string>
+		measurement you want to work with.
+		\n\nIf you do not see what you need, feel free to
+		select \'custom\' to create the unit you want to use.
+		</string>
 
 
 	<string name="addexer_rep_label">reps</string>
 	<string name="addexer_rep_help_title">Repetitions</string>
 	<string name="addexer_rep_help_msg">Select this checkbox ON
-	    (checked) if this exercise has multiple repetitions that
-	    you want to count. Push-ups will use this. Jogging probably
-	    will not (unless you obsessively count your steps!). If this
-	    is selected, the program will ask you how many time (reps)
-	    you performed this exercise.</string>
+		(checked) if this exercise has multiple repetitions that
+		you want to count. Push-ups will use this. Jogging probably
+		will not (unless you obsessively count your steps!). If this
+		is selected, the program will ask you how many time (reps)
+		you performed this exercise.</string>
 
 	<string name="addexer_weight_label">weighted</string>
 	<string name="addexer_weight_help_title">Weighted Checkbox</string>
@@ -314,17 +314,17 @@
 		to enter a weight on this exercise.</string>
 	<string name="addexer_weight_unit_title">Unit of Weight</string>
 	<string name="addexer_weight_unit_msg">Type in the measurement
-	    unit you\'re working on. Some examples: pounds, kilograms,
-	    ounces, tons, stones, picograms, etc.</string>
+		unit you\'re working on. Some examples: pounds, kilograms,
+		ounces, tons, stones, picograms, etc.</string>
 
 	<string name="addexer_dist_label">distanced</string>
 	<string name="addexer_dist_help_title">Distanced Checkbox</string>
 	<string name="addexer_dist_help_msg">Turn this checkbox ON
-	    (checked) if this workout measures distance. Obviously
-	    you won\'t use this one for bench presses. But many aerobic
-	    exercises (like swimming) measure distances. If this is
-	    not checked the program won\'t bother asking you to enter
-	    any distances for this exercise.</string>
+		(checked) if this workout measures distance. Obviously
+		you won\'t use this one for bench presses. But many aerobic
+		exercises (like swimming) measure distances. If this is
+		not checked the program won\'t bother asking you to enter
+		any distances for this exercise.</string>
 	<string name="addexer_dist_unit_title">Unit of Distance</string>
 	<string name="addexer_dist_unit_msg">How far are you
 		going\? But we need to know the unit. Any unit will
@@ -334,10 +334,10 @@
 	<string name="addexer_time_label">timed</string>
 	<string name="addexer_time_help_title">Timed Checkbox</string>
 	<string name="addexer_time_help_msg">Turn this checkbox ON
-	    (checked) if this workout measures time in any way (like
-	    how long the exercise takes, or even a race). Otherwise
-	    this program won\'t bother asking you to enter a time with
-	    this exercise.</string>
+		(checked) if this workout measures time in any way (like
+		how long the exercise takes, or even a race). Otherwise
+		this program won\'t bother asking you to enter a time with
+		this exercise.</string>
 	<string name="addexer_time_unit_title">Unit of Time</string>
 	<string name="addexer_time_unit_msg">What time unit do
 		you measure this exercise with\? Type it in here.
@@ -347,26 +347,26 @@
 	<string name="addexer_level_label">levels</string>
 	<string name="addexer_level_help_title">Levels Checkbox</string>
 	<string name="addexer_level_help_msg">Turn this checkbox ON
-	    (checked) if this workout uses some sort of level.
-	    \n\nFor example, a stair climber may have a speed setting;
-	    you can use Levels to keep track of this speed. Otherwise
-	    this program won\'t bother asking you to enter any levels.
-    </string>
+		(checked) if this workout uses some sort of level.
+		\n\nFor example, a stair climber may have a speed setting;
+		you can use Levels to keep track of this speed. Otherwise
+		this program won\'t bother asking you to enter any levels.
+	</string>
 
 	<string name="addexer_calorie_label">calories</string>
 	<string name="addexer_calorie_help_title">Calories Checkbox</string>
 	<string name="addexer_calorie_help_msg">Turn this checkbox ON
-	    (checked) if you want to count calories for this exercise!
-	    \n\nWhile this program does not calculate calories for you,
-	    many exercise machines do.  You can enter that information
-	    here and this app will keep track of it. Cool, right?
-	    Yeah yeah, I know--it\'s just a program.
-    </string>
+		(checked) if you want to count calories for this exercise!
+		\n\nWhile this program does not calculate calories for you,
+		many exercise machines do.  You can enter that information
+		here and this app will keep track of it. Cool, right?
+		Yeah yeah, I know--it\'s just a program.
+	</string>
 
-	    	<string name="addexer_other_label">other</string>
+			<string name="addexer_other_label">other</string>
 	<string name="addexer_other_complaint">Please fill out both text
-	    boxes for \'Other\'.</string>
-    	<string name="addexer_other_help_title">Other Measurement</string>
+		boxes for \'Other\'.</string>
+		<string name="addexer_other_help_title">Other Measurement</string>
 	<string name="addexer_other_help_msg">In the likely case
 		that I forgot some sort of exercise measurement,
 		checking this line should take care the problem.
@@ -393,27 +393,27 @@
 
 	<string name="addexer_radio_help_title">Significant Measurement</string>
 	<string name="addexer_radio_help_msg">There is always one
-	    part of a workout that is more important than the
-	    others.
-	    \n\nTouch the radio button to the right of
-	    that measurement to tell the program which part you think
-	    is the most important. For example, squats are all about
-	    the weight. So make sure the \'weighted\' line has its
-	    radio button turned on. For jogging, the \'distanced\'
-	    line is probably what you are most interested in.</string>
+		part of a workout that is more important than the
+		others.
+		\n\nTouch the radio button to the right of
+		that measurement to tell the program which part you think
+		is the most important. For example, squats are all about
+		the weight. So make sure the \'weighted\' line has its
+		radio button turned on. For jogging, the \'distanced\'
+		line is probably what you are most interested in.</string>
 
 	<string name="addexer_done_title">Done</string>
 	<string name="addexer_done_msg">When you\'re satisfied with all the details of this exercise, press this button (\'done\'), and this will be added to your list of exercies.</string>
 
-    <string name="addexer_cancel_title">Cancel Add</string>
+	<string name="addexer_cancel_title">Cancel Add</string>
 	<string name="addexer_cancel_msg">If you decide to not add this
-	    exercise, hit the \'cancel\' button. The program will forget
-	    this entire entry.</string>
+		exercise, hit the \'cancel\' button. The program will forget
+		this entire entry.</string>
 
 	<string name="addexer_ok_title">Okay Button</string>
-    <string name="addexer_ok_msg">Tap on this button
-        when you are satisfied and done adding this new
-        exercise. Duh.</string>
+	<string name="addexer_ok_msg">Tap on this button
+		when you are satisfied and done adding this new
+		exercise. Duh.</string>
 
 
 	<!-- ============	  ============ -->
@@ -470,9 +470,9 @@
 	<string name="grid_order_button">order</string>
 	<string name="grid_order_title">Rearrange Exercise Order</string>
 	<string name="grid_order_msg">All your exercises appear in
-	    the order you entered them. This ain\'t always the way
-	    you like it. Tap this button to go to a screen to
-	    modify the order to make it juuuust right.
+		the order you entered them. This ain\'t always the way
+		you like it. Tap this button to go to a screen to
+		modify the order to make it juuuust right.
 		</string>
 
 
@@ -504,12 +504,12 @@
 	-->
 	<string name="grid_edit_seperator">\u0020\u003a\u0020</string>
 
-    <!-- Used when there's an illegal number (-1) for the most
-    		significant aspect of a cell.  This can happen if the
-    		user modifies an exercise and changes the significant
-    		aspect.
-    	-->
-    <string name="grid_cell_negative_symbol">n/a</string>
+	<!-- Used when there's an illegal number (-1) for the most
+			significant aspect of a cell.  This can happen if the
+			user modifies an exercise and changes the significant
+			aspect.
+		-->
+	<string name="grid_cell_negative_symbol">n/a</string>
 
 
 	<!-- ============      ============ -->
@@ -611,58 +611,58 @@
 	<!-- These are for the AlertDialog that comes up as a ContextMenu -->
 	<string name="editexer_name_help_title">Exercise Name</string>
 	<string name="editexer_name_help_msg">Type in the name of
-	    this exercise here.</string>
+		this exercise here.</string>
 
 	<string name="editexer_cancel_title">Cancel Button</string>
-    	<string name="editexer_cancel_msg">If you decide to not
-	    edit this exercise, hit the \'cancel\' button. The
-	    program will forget this whole sordid episode.</string>
+		<string name="editexer_cancel_msg">If you decide to not
+		edit this exercise, hit the \'cancel\' button. The
+		program will forget this whole sordid episode.</string>
 
-    <string name="editexer_cancel_warning_title">Cancel Exercise</string>
-    <string name="editexer_cancel_warning_msg">I think you have made
-        some changes to this exercise.
-        \n\nAre you sure you want to cancel these changes\?
-        \n\n(You can turn this warning off in the \'preferences\'.)
-    </string>
+	<string name="editexer_cancel_warning_title">Cancel Exercise</string>
+	<string name="editexer_cancel_warning_msg">I think you have made
+		some changes to this exercise.
+		\n\nAre you sure you want to cancel these changes\?
+		\n\n(You can turn this warning off in the \'preferences\'.)
+	</string>
 
-    <string name="editexer_ok_butt">execute changes</string>
+	<string name="editexer_ok_butt">execute changes</string>
 	<string name="editexer_ok_title">Okay Button</string>
-    <string name="editexer_ok_msg">Tap on this button
-        when you are satisfied and done editing this
-        exercise. Yep, that\'ll do it.</string>
+	<string name="editexer_ok_msg">Tap on this button
+		when you are satisfied and done editing this
+		exercise. Yep, that\'ll do it.</string>
 
 	<string name="editexer_delete_button">delete exercise</string>
 	<string name="editexer_delete_help_title">Delete Exercise</string>
 	<string name="editexer_delete_help_msg">Yep, this button does
-	    exactly what you think it does:
-	    \nIt completely removes this particular exercise from the app.
-	    \n\nAlso note that any earlier workout sets that you
-	    recorded with this exercise will be deleted, too. So
-	    think a bit before hitting this button.
-	    \n\nAnd since this IS kind of a big deal, a confirmation
-	    dialog will pop up. It\'s the least I could do.
+		exactly what you think it does:
+		\nIt completely removes this particular exercise from the app.
+		\n\nAlso note that any earlier workout sets that you
+		recorded with this exercise will be deleted, too. So
+		think a bit before hitting this button.
+		\n\nAnd since this IS kind of a big deal, a confirmation
+		dialog will pop up. It\'s the least I could do.
 	</string>
 	<string name="editexer_delete_confirm_title">Delete \'%s\'\?</string>
 	<string name="editexer_delete_confirm_msg">Hey you! Pay
-	    attention!
-	    \n\nYou are about to completely remove the \"%s\" exercise from
-	    this program. That means that all data using this
-	    exercise will be lost.
-	    \n\nIf you are thinking, \"Of course, that is exactly what I
-	    want,\" then press \'yes\'.
-	    \n\nOtherwise, I think you will want to tap \'no\'
-	    (or hit the \'back\' button).
-	    </string>
+		attention!
+		\n\nYou are about to completely remove the \"%s\" exercise from
+		this program. That means that all data using this
+		exercise will be lost.
+		\n\nIf you are thinking, \"Of course, that is exactly what I
+		want,\" then press \'yes\'.
+		\n\nOtherwise, I think you will want to tap \'no\'
+		(or hit the \'back\' button).
+		</string>
 
-    <!-- Error Messages -->
-    <string name="editexer_warning_no_name">Please enter a name for this exercise!</string>
+	<!-- Error Messages -->
+	<string name="editexer_warning_no_name">Please enter a name for this exercise!</string>
 	<string name="editexer_dup_name_msg">That name is already used!</string>
-    <string name="editexer_warning_no_checked">Please check a measurement for this exercise!</string>
-    <string name="editexer_warning_no_significant">Please select a radio button
-        to indicate most important.</string>
+	<string name="editexer_warning_no_checked">Please check a measurement for this exercise!</string>
+	<string name="editexer_warning_no_significant">Please select a radio button
+		to indicate most important.</string>
 	<string name="editexer_warning_no_weight_unit">Hey, I need a weight unit!</string>
 	<string name="editexer_warning_no_dist_unit">Uh, what about a measurement of distance\?</string>
-    	<string name="editexer_warning_no_time_unit">You forgot to tell me what unit of time (seconds, minutes, hours, etc.)</string>
+		<string name="editexer_warning_no_time_unit">You forgot to tell me what unit of time (seconds, minutes, hours, etc.)</string>
 
 
 	<!-- ============               ============ -->
@@ -670,92 +670,92 @@
 	<!-- ============               ============ -->
 	<string name="add_weight_item_help_title">Adding a Custom Weight</string>
 	<string name="add_weight_item_help_msg">This page allows
-	    you to customize the weight unit for this exercise. I don\'t
-	    know how strong you are or what exercises you\'re doing,
-	    so I can\'t always predict the units of measurement you
-	    may need.  This is where you tell me what you\'re lifting.
-	    \n\nFor example, let\'s say that I\'m aspiring to be an Olympic
-	    rocket skater (just use your imagination). And I need to
-	    be able to lift my feet while wearing my skates a certain number of rocket skate
-	    units. And those units are named after the first rocket skater,
-	    Timothy Grosserbaumbergotten von Schloffenman Rodriguez di
-	    Gamba.
-	    \n\nJust type it in. The program will remember.  And of course,
-	    you can always come back and change things to TGvSRdG. I won\'t
-	    tell.</string>
+		you to customize the weight unit for this exercise. I don\'t
+		know how strong you are or what exercises you\'re doing,
+		so I can\'t always predict the units of measurement you
+		may need.  This is where you tell me what you\'re lifting.
+		\n\nFor example, let\'s say that I\'m aspiring to be an Olympic
+		rocket skater (just use your imagination). And I need to
+		be able to lift my feet while wearing my skates a certain number of rocket skate
+		units. And those units are named after the first rocket skater,
+		Timothy Grosserbaumbergotten von Schloffenman Rodriguez di
+		Gamba.
+		\n\nJust type it in. The program will remember.  And of course,
+		you can always come back and change things to TGvSRdG. I won\'t
+		tell.</string>
 
 	<string name="add_weight_item_et_help_title">Custom Weight Here</string>
 	<string name="add_weight_item_et_help_msg">This is a widget to
-	    hold text. The text to put in should be some sort of weight
-	    measurement....I know, something related to your workout! Yeah,
-	    that\'s it: some sort of weight measurement for THIS exercise
-	    that you\'re working on right now!
-	    \n\nHere\'s a gold star!</string>
+		hold text. The text to put in should be some sort of weight
+		measurement....I know, something related to your workout! Yeah,
+		that\'s it: some sort of weight measurement for THIS exercise
+		that you\'re working on right now!
+		\n\nHere\'s a gold star!</string>
 
-    <string name="add_weight_item_prompt">What unit of weight for this
-        exercise\?</string>
+	<string name="add_weight_item_prompt">What unit of weight for this
+		exercise\?</string>
 
 	<!-- ============             ============ -->
 	<!-- ============ AddDistItem =========== -->
 	<!-- ============             ============ -->
-    	<string name="add_dist_item_help_title">Adding a Custom Distance</string>
+		<string name="add_dist_item_help_title">Adding a Custom Distance</string>
 	<string name="add_dist_item_help_msg">This page allows
-	    you to customize the distance unit for this exercise. I don\'t
-	    dare guess what distance would be reasonable for this exercise,
-	    so you will have to tell me how far you\'re going or moving.
-	    \n\nLet\'s use the rocket skater example again. These people go really far,
-	    but to get better ratings, the television producers decided to
-	    avoid the nerdy astronomer units and adopt the more amusing unit of
-	    flatumeters.
-	    \n\nSo just type in flatumeters. The program will remember.  You can
-	    even come back later and type in much ruder units. The program won\'t
-	    even flinch.
-	    </string>
+		you to customize the distance unit for this exercise. I don\'t
+		dare guess what distance would be reasonable for this exercise,
+		so you will have to tell me how far you\'re going or moving.
+		\n\nLet\'s use the rocket skater example again. These people go really far,
+		but to get better ratings, the television producers decided to
+		avoid the nerdy astronomer units and adopt the more amusing unit of
+		flatumeters.
+		\n\nSo just type in flatumeters. The program will remember.  You can
+		even come back later and type in much ruder units. The program won\'t
+		even flinch.
+		</string>
 
 	<string name="add_dist_item_et_help_title">Custom Distance Here</string>
 	<string name="add_dist_item_et_help_msg">This is a widget to
-	    hold the text of some sort of distance
-	    measurement. I wasn\'t omniscient enough
-	    to predict how you want to measure the distance for this
-	    exercise. Sorry.
-	    </string>
+		hold the text of some sort of distance
+		measurement. I wasn\'t omniscient enough
+		to predict how you want to measure the distance for this
+		exercise. Sorry.
+		</string>
 
-    <string name="add_dist_item_prompt">What unit of distance for this
-        exercise\?</string>
+	<string name="add_dist_item_prompt">What unit of distance for this
+		exercise\?</string>
 
 
 	<!-- ============             ============ -->
 	<!-- ============ AddTimeItem ============ -->
-    	<!-- ============             ============ -->
-    	<string name="add_time_item_help_title">Adding a Custom Time Unit</string>
+		<!-- ============             ============ -->
+		<string name="add_time_item_help_title">Adding a Custom Time Unit</string>
 	<string name="add_time_item_help_msg">Time is always slipping... :)
-	    and this page allows you to get a litte better grip on it
-	    by using whatever time unit you want for this exercise.
-	    \n\nBack to the rocket skater: For the sprints, the time units are
-	    very tiny. Oh yeah, these things are FAST for short distances.
-	    So we like to use microseconds.
-	    \n\nBut, uh, ... I didn\'t put microseconds in my list! No sweat
-	    (hehe), type
-	    it in and we\'re back in business.
-	    </string>
+		and this page allows you to get a litte better grip on it
+		by using whatever time unit you want for this exercise.
+		\n\nBack to the rocket skater: For the sprints, the time units are
+		very tiny. Oh yeah, these things are FAST for short distances.
+		So we like to use microseconds.
+		\n\nBut, uh, ... I didn\'t put microseconds in my list! No sweat
+		(hehe), type
+		it in and we\'re back in business.
+		</string>
 
 	<string name="add_time_item_et_help_title">Custom Time Here</string>
 	<string name="add_time_item_et_help_msg">This is a text area to
-	    type in your favorite unit of time for this exercise.
-	    \n\nSigh, not very funny this time.
-	    </string>
+		type in your favorite unit of time for this exercise.
+		\n\nSigh, not very funny this time.
+		</string>
 
-    <string name="add_time_item_prompt">What unit of time for this
-        exercise\?</string>
+	<string name="add_time_item_prompt">What unit of time for this
+		exercise\?</string>
 
 	<!-- ============          ============ -->
 	<!-- ============ AddOther ============ -->
-    	<!-- ============          ============ -->
-    	<string name="add_other_name_et_help_title">The NAME For this Measurement</string>
-    	<string name="add_other_name_et_help_msg" >
+		<!-- ============          ============ -->
+		<string name="add_other_name_et_help_title">The NAME For this Measurement</string>
+		<string name="add_other_name_et_help_msg" >
 		Okay, this is a little esoteric,
-	    but if you hang on with me, I think we can get this figured out.
-	    \n\nIn case you come up with an exercise that has some sort
+		but if you hang on with me, I think we can get this figured out.
+		\n\nIn case you come up with an exercise that has some sort
 		of measurement that is NOT a repetition, level, calorie, weight,
 		distance, or some sort of elapsed time, you can fill this out
 		to fulfill this need.
@@ -773,57 +773,57 @@
 		go in the next textbox.
 		\n\nYeah, that\'s as clear as mud. Sorry, I\'m doing
 		my best; I\'m a programmer, not a writer.
-    	</string>
+		</string>
 
-    	<string name="add_other_unit_et_help_title">The UNIT For this Measurement</string>
+		<string name="add_other_unit_et_help_title">The UNIT For this Measurement</string>
 	<string name="add_other_unit_et_help_msg">Continuing from the help on
-	    the previous textbox (\"other Name\"), we still need to record
-	    the unit of volume for this exercise.
-	    \n\nYes, we rocket skaters are an odd group, and when we drink we
-	    REALLY drink. Since rocket fuel is measured in liters, that
-	    would be a good way to measure our drinking.
-	    \n\nBut since we feed our head with this foamy redish brown fuel,
-	    rocket skaters prefer the word \'redhead\' over liters.
-	    \n\nSo I would simply type \"redheads\" in this textbox.
-	    \n\nAnd every
-	    time I do this exercise, it will ask me, \"How many redheads
-	    did you do in this set\?\"  And I will grin quietly.
-    </string>
+		the previous textbox (\"other Name\"), we still need to record
+		the unit of volume for this exercise.
+		\n\nYes, we rocket skaters are an odd group, and when we drink we
+		REALLY drink. Since rocket fuel is measured in liters, that
+		would be a good way to measure our drinking.
+		\n\nBut since we feed our head with this foamy redish brown fuel,
+		rocket skaters prefer the word \'redhead\' over liters.
+		\n\nSo I would simply type \"redheads\" in this textbox.
+		\n\nAnd every
+		time I do this exercise, it will ask me, \"How many redheads
+		did you do in this set\?\"  And I will grin quietly.
+	</string>
 
 	<!-- ============          ============ -->
 	<!-- ============ EditRows ============ -->
-    	<!-- ============          ============ -->
+		<!-- ============          ============ -->
 	<string name="row_edit_title">Edit Rows</string>
 	<string name="row_edit_desc">Tap the arrows to move a row up or
-	    down.</string>
+		down.</string>
 
-    <string name="row_edit_help_title">Help Edit Rows</string>
-    <string name="row_edit_help_msg">This screen lets you change
-        the order of the exercises.
-        \n\nIt\'s pretty simple: just click the up or down arrows
-        next to the exercise you want to move.  Try it, you\'ll
-        like it!
-        \n\nAnd as usual, you can cancel if you don\'t like your
-        changes.
-       </string>
+	<string name="row_edit_help_title">Help Edit Rows</string>
+	<string name="row_edit_help_msg">This screen lets you change
+		the order of the exercises.
+		\n\nIt\'s pretty simple: just click the up or down arrows
+		next to the exercise you want to move.  Try it, you\'ll
+		like it!
+		\n\nAnd as usual, you can cancel if you don\'t like your
+		changes.
+	</string>
 
-    <string name="row_edit_cancel_warning_title">Cancel Row Change</string>
-    <string name="row_edit_cancel_warning_msg">I think you have made
-        some changes to the row order here.
-        \n\nAre you sure you want to cancel these changes\?
-        \n\n(You can turn this warning off in the \'preferences\'.)
-    </string>
+	<string name="row_edit_cancel_warning_title">Cancel Row Change</string>
+	<string name="row_edit_cancel_warning_msg">I think you have made
+		some changes to the row order here.
+		\n\nAre you sure you want to cancel these changes\?
+		\n\n(You can turn this warning off in the \'preferences\'.)
+	</string>
 
 	<!-- ============      ============ -->
 	<!-- ============ ASet ============ -->
-    	<!-- ============      ============ -->
+		<!-- ============      ============ -->
 
 	<string name="aset_title">Do a Set!</string>
 
-    	<string name="aset_enter_butt">enter set</string>
-    	<string name="aset_entered_msg">Entered!</string>
+		<string name="aset_enter_butt">enter set</string>
+		<string name="aset_entered_msg">Entered!</string>
 
-    	<string name="aset_help_title">Enter a Set Help</string>
+		<string name="aset_help_title">Enter a Set Help</string>
 	<string name="aset_help_msg">You\'re now working hard,
 		executing a rigorous set of an arduous exercise.
 		Tell us about it, that\'s what this program is for,
@@ -860,7 +860,7 @@
 
 	<string name="aset_weight_label">weight (%s)</string>
 	<string name="aset_weight_off_label">weight</string>
-    	<string name="aset_weight_help_title">Weight</string>
+		<string name="aset_weight_help_title">Weight</string>
 	<string name="aset_weight_help_msg">Enter the weight
 		that you\'re using on this set.  Please note that if you change
 		weights, you are really starting a new set.</string>
@@ -874,9 +874,9 @@
 		I have to explain this.</string>
 	<string name="aset_reps_hint">1, 2, 3...</string>
 
-    <string name="aset_time_label">time (%s)</string>
-    <string name="aset_time_off_label">time</string>
-    	<string name="aset_time_unit">minutes</string>
+	<string name="aset_time_label">time (%s)</string>
+	<string name="aset_time_off_label">time</string>
+		<string name="aset_time_unit">minutes</string>
 	<string name="aset_time_help_title">Time</string>
 	<string name="aset_time_help_msg">Just enter the time
 		you spent on this exercise. Use the units provided.
@@ -895,27 +895,27 @@
 	<string name="aset_calorie_label">calories</string>
 	<string name="aset_calorie_help_title">Calories</string>
 	<string name="aset_calorie_help_msg">How many calories
-	    did you burn this set?
-	    \n\nUseless and confusing information:\n
-	    \tIn the science world, a calorie is the amount of
-	    heat necessary to raise one gram of water one degree
-	    Celcius.
-	    \n\nThis isn\'t very much, compared to the
-	    massive amount of heat food can produce . So in the
-	    world of food and exercise, people have used the
-	    same word differently (sometimes called a \'dietary
-	    calorie\'): one thousand times more heat! enough
-	    to raise a kilogram of water one degree Celsius.
-	    \n\nImagine if we were using the small scientific
-	    calorie: \"Hey, George!  You\'re gonna have to
-	    jog a long time to match the 300,000 calories from that
-	    candy bar!\"
-	    </string>
+		did you burn this set?
+		\n\nUseless and confusing information:\n
+		\tIn the science world, a calorie is the amount of
+		heat necessary to raise one gram of water one degree
+		Celcius.
+		\n\nThis isn\'t very much, compared to the
+		massive amount of heat food can produce . So in the
+		world of food and exercise, people have used the
+		same word differently (sometimes called a \'dietary
+		calorie\'): one thousand times more heat! enough
+		to raise a kilogram of water one degree Celsius.
+		\n\nImagine if we were using the small scientific
+		calorie: \"Hey, George!  You\'re gonna have to
+		jog a long time to match the 300,000 calories from that
+		candy bar!\"
+		</string>
 	<string name="aset_calorie_hint">how many calories\?</string>
 
-    	<string name="aset_distance_label">distance (%s)</string>
+		<string name="aset_distance_label">distance (%s)</string>
 	<string name="aset_distance_off_label">distance</string>
-    	<string name="aset_distance_help_title">Distance Unit</string>
+		<string name="aset_distance_help_title">Distance Unit</string>
 	<string name="aset_distance_help_msg">Enter the distance
 		that you covered with this set. Decimal points are
 		icky, so just round to the closest or change units
@@ -924,23 +924,23 @@
 
 	<string name="aset_other_label_old">%1$s (%2$s)</string>
 	<string name="aset_other_label">%s</string>
-    	<string name="aset_other_off_label">other</string>
-    	<string name="aset_other_help_title">Other</string>
+		<string name="aset_other_off_label">other</string>
+		<string name="aset_other_help_title">Other</string>
 	<string name="aset_other_help_msg">While doing your
-	    %1$s exercise, enter the number of %2$s here. Hope that
-	    sentence makes sense.
-	    </string>
+		%1$s exercise, enter the number of %2$s here. Hope that
+		sentence makes sense.
+		</string>
 	<string name="aset_other_hint">%s</string>
 
-    <string name="aset_cond_label">stress</string>
+	<string name="aset_cond_label">stress</string>
 	<string name="aset_cond_stress_ok">ok</string>
 	<string name="aset_cond_stress_too_hard">-</string>
-    	<string name="aset_cond_stress_too_easy">+</string>
-    	<string name="aset_cond_stress_injury">X</string>
-    	<string name="aset_cond_stress_error">error!</string>
-    	<string name="aset_cond_stress_none">n/a</string>
+		<string name="aset_cond_stress_too_easy">+</string>
+		<string name="aset_cond_stress_injury">X</string>
+		<string name="aset_cond_stress_error">error!</string>
+		<string name="aset_cond_stress_none">n/a</string>
 
-    	<string name="aset_cond_help_title">Set Stress</string>
+		<string name="aset_cond_help_title">Set Stress</string>
 	<string name="aset_cond_help_msg">This is a quick way
 		to rate the the stress-levels when you do a set.
 		I just leave it blank for
@@ -957,172 +957,173 @@
 		thinks this far ahead\?.</string>
 	<string name="aset_notes_hint">anything at all...</string>
 
-    <string name="aset_cancel_warning_title">Cancel Workout Set</string>
-    <string name="aset_cancel_warning_msg">You\'ve started
-        filling in the details for this set.  Are you sure
-        you want to cancel\?
-        \n\n(You can turn this warning off in the \'preferences\'.)
-    </string>
+	<string name="aset_cancel_warning_title">Cancel Workout Set</string>
+	<string name="aset_cancel_warning_msg">You\'ve started
+		filling in the details for this set.  Are you sure
+		you want to cancel\?
+		\n\n(You can turn this warning off in the \'preferences\'.)
+	</string>
 
-    <string name="aset_cancel_help_title">Cancel Help</string>
-    <string name="aset_cancel_help_msg">Tap this button
-        to forget about this set and go back to
-        the main exercise grid.
+	<string name="aset_cancel_help_title">Cancel Help</string>
+	<string name="aset_cancel_help_msg">Tap this button
+		to forget about this set and go back to
+		the main exercise grid.
 
-        \n\nSurprised?  I didn\'t think so.</string>
+		\n\nSurprised?  I didn\'t think so.</string>
 
-    <string name="aset_enter_help_title">Enter Help</string>
-    <string name="aset_enter_help_msg">
-        Clicking on this button tells the app that you are
-        done entering data for this set.
+	<string name="aset_enter_help_title">Enter Help</string>
+	<string name="aset_enter_help_msg">
+		Clicking on this button tells the app that you are
+		done entering data for this set.
 
 		\n\nThis adds the details of this exercise set to
 		that great big database you are making with all
 		these workouts.
 
-        \n\nWhew, wipe off that sweat and take 30 sec
-        to catch your breath. YEAH!
-    </string>
-
-    <string name="aset_nag_title">Save With Blank Fields\?</string>
-    <string name="aset_nag_msg_plural">I think you may have forgotten
-        to fill out these fields:\n
-        %s
-        \n
-        This is not really a
-        problem, but now is your a chance to go back and fill them in.
-        \n\nShall I go ahead and save, leaving some blanks?</string>
-	<string name="aset_nag_msg_singular">Looks like you forgot
-	    to fill in the %1$s field.
-	    \n\nThis is not really a problem, but now is your chance to
-	    go back and fill it in.
-	    \n\nShall I go ahead and save, leaving a blank?</string>
-
-    <string name="aset_nag_significant_title">Blank Field!</string>
-    <string name="aset_nag_significant_msg">You left the %1$s
-        field blank!
-        \n\nBlank fields are generally not a problem. But since you
-        marked \'%2$s\' as the significant aspect of the %3$s exercise,
-        I have to insist that you put something there. Please?</string>
-
-    <string name="aset_nag_enter_empty_title">Enter on Empty</string>
-    <string name="aset_nag_enter_empty_msg">You clicked on \'enter set\',
-        but didn\'t do anything!
-        \n\nSorry, but you gotta give me at least one number to enter.
+		\n\nWhew, wipe off that sweat and take 30 sec
+		to catch your breath. YEAH!
 	</string>
 
-    <string name="aset_nag_no_changes_title">Enter Without Changes</string>
-    <string name="aset_nag_no_changes_msg">It looks like you didn\'t
-        make any changes.  Are you sure that you want
-        to enter this set?
-        \n\n(You can turn this warning off in the \'preferences\'.)
-        </string>
+	<string name="aset_nag_title">Save With Blank Fields\?</string>
+	<string name="aset_nag_msg_plural">I think you may have forgotten
+		to fill out these fields:\n
+		%s
+		\n
+		This is not really a
+		problem, but now is your a chance to go back and fill them in.
+		\n\nShall I go ahead and save, leaving some blanks?</string>
+	<string name="aset_nag_msg_singular">Looks like you forgot
+		to fill in the %1$s field.
+		\n\nThis is not really a problem, but now is your chance to
+		go back and fill it in.
+		\n\nShall I go ahead and save, leaving a blank?</string>
 
-    <string name="aset_clear_button">clear</string>
-    <string name="aset_clear_button_help_title">Clear Help</string>
-    <string name="aset_clear_button_help_msg">
-        This button is pretty straight-forward; it simply clears
-        all the entries in this workout set.
-    </string>
+	<string name="aset_nag_significant_title">Blank Field!</string>
+	<string name="aset_nag_significant_msg">You left the %1$s
+		field blank!
+		\n\nBlank fields are generally not a problem. But since you
+		marked \'%2$s\' as the significant aspect of the %3$s exercise,
+		I have to insist that you put something there. Please?</string>
 
-    <string name="aset_radio_help_title">Stress Help</string>
-    <string name="aset_radio_help_msg">
-        These four radio buttons are provided to give an
-        indication of how stressful this particular workout
-        set is to accomplish.
+	<string name="aset_nag_enter_empty_title">Enter on Empty</string>
+	<string name="aset_nag_enter_empty_msg">You clicked on \'enter set\',
+		but didn\'t do anything!
+		\n\nSorry, but you gotta give me at least one number to enter.
+	</string>
 
-        \n\nThe default is \'ok\'. This indicates that this
-        set was a good difficulty level. Most of the time
-        the sets will be this level (I hope!), so this is
-        the default.
+	<string name="aset_nag_no_changes_title">Enter Without Changes</string>
+	<string name="aset_nag_no_changes_msg">It looks like you didn\'t
+		make any changes.  Are you sure that you want
+		to enter this set?
+		\n\n(You can turn this warning off in the \'preferences\'.)
+		</string>
 
-        \n\nThe plus sign, \'+\', indicates that this set
-        was too easy, and you are ready to increase the
-        difficulty for your next set.
+	<string name="aset_clear_button">clear</string>
+	<string name="aset_clear_button_help_title">Clear Help</string>
+	<string name="aset_clear_button_help_msg">
+		This button is pretty straight-forward; it simply clears
+		all the entries in this workout set.
+	</string>
 
-        \n\nWhat\'s the opposite of plus? minus of course!
-        The \'-\' sign indicates that this set was too hard.
-    		You could not finish the set. Seriously consider
-    		making your next set easier.
+	<string name="aset_radio_help_title">Stress Help</string>
+	<string name="aset_radio_help_msg">
+		These four radio buttons are provided to give an
+		indication of how stressful this particular workout
+		set is to accomplish.
 
-    		\n\nThe \'X\' is bad, very bad. Sometimes we are
-    		too zealous with our workouts and get hurt. Mark these with the
-    		big nasty \'X\'. You may want to make a note about
-    		how and why this happened so you don\'t repeat this
-    		problem again.
-    </string>
+		\n\nThe default is \'ok\'. This indicates that this
+		set was a good difficulty level. Most of the time
+		the sets will be this level (I hope!), so this is
+		the default.
+
+		\n\nThe plus sign, \'+\', indicates that this set
+		was too easy, and you are ready to increase the
+		difficulty for your next set.
+
+		\n\nWhat\'s the opposite of plus? minus of course!
+		The \'-\' sign indicates that this set was too hard.
+			You could not finish the set. Seriously consider
+			making your next set easier.
+
+			\n\nThe \'X\' is bad, very bad. Sometimes we are
+			too zealous with our workouts and get hurt. Mark these with the
+			big nasty \'X\'. You may want to make a note about
+			how and why this happened so you don\'t repeat this
+			problem again.
+	</string>
 
 
-	<!-- ============              ============ -->
-	<!-- ============ Inspector ============ -->
-    	<!-- ============              ============ -->
+	<!-- ============           ============ -->
+	<!-- ============ Inspector	============ -->
+	<!-- ============           ============ -->
 
 	<string name="inspector_title">Set Inspector</string>
+	<string name="inspector_empty">No Sets to Display</string>
 
 	<string name="inspector_another_set_button">do another</string>
-    <string name="inspector_another_help_title">Do Another Set</string>
-    <string name="inspector_another_help_msg">
-        Like the exercise that you see? Want to do it again?
-        Well, my friend, this button is for you!
-        \n\nPress the \"do another\" button to...yes, you guessed
-        it, do another set of this exercise! Weeeee, isn\'t
-        working out fun?
-    </string>
+	<string name="inspector_another_help_title">Do Another Set</string>
+	<string name="inspector_another_help_msg">
+		Like the exercise that you see? Want to do it again?
+		Well, my friend, this button is for you!
+		\n\nPress the \"do another\" button to...yes, you guessed
+		it, do another set of this exercise! Weeeee, isn\'t
+		working out fun?
+	</string>
 
-    <string name="inspector_back_title">Go Back Help</string>
-    <string name="inspector_back_msg">
-        Really? You\'re tired of looking at this information
-        and want do go back to the previous screen?  REALLY?
-        \n\nI don\'t blame you a bit. You probably have more
-        important things to do than look at my carefully
-        crafted user interface.  Go ahead--you won\'t
-        hurt my feelings.  Sigh.
-    </string>
+	<string name="inspector_back_title">Go Back Help</string>
+	<string name="inspector_back_msg">
+		Really? You\'re tired of looking at this information
+		and want do go back to the previous screen?  REALLY?
+		\n\nI don\'t blame you a bit. You probably have more
+		important things to do than look at my carefully
+		crafted user interface.  Go ahead--you won\'t
+		hurt my feelings.  Sigh.
+	</string>
 
 	<string name="inspector_description_plural">Here are the %1$s %2$s sets
-	    that you did on %3$s:</string>
+		that you did on %3$s:</string>
 	<string name="inspector_description_singular">Here is the
-	    %1$s set you did on %2$s:</string>
+		%1$s set you did on %2$s:</string>
 
-    <string name="inspector_set_title">Set #%d</string>
+	<string name="inspector_set_title">Set #%d</string>
 
-    <string name="inspector_set_reps_label">reps</string>
-    <string name="inspector_set_weight_label">weight (%s)</string>
-    <string name="inspector_set_level_label">level</string>
-    <string name="inspector_set_calories_label">calories</string>
-    <string name="inspector_set_dist_label">distance (%s)</string>
-    <string name="inspector_set_time_label">time (%s)</string>
-    <string name="inspector_set_other_label">%1$s (%2$s)</string>
+	<string name="inspector_set_reps_label">reps</string>
+	<string name="inspector_set_weight_label">weight (%s)</string>
+	<string name="inspector_set_level_label">level</string>
+	<string name="inspector_set_calories_label">calories</string>
+	<string name="inspector_set_dist_label">distance (%s)</string>
+	<string name="inspector_set_time_label">time (%s)</string>
+	<string name="inspector_set_other_label">%1$s (%2$s)</string>
 
-    <string name="inspector_null_value">null</string>
-    <string name="inspector_skipped_value">skipped</string>
+	<string name="inspector_null_value">null</string>
+	<string name="inspector_skipped_value">skipped</string>
 
-    <string name="inspector_set_stress_label">stress level</string>
-    <string name="inspector_set_notes_label">notes</string>
-    <string name="inspector_set_notes_data_none">no comment</string>
+	<string name="inspector_set_stress_label">stress level</string>
+	<string name="inspector_set_notes_label">notes</string>
+	<string name="inspector_set_notes_data_none">no comment</string>
 
-    <string name="inspector_help_title">Inspector Help</string>
-    <string name="inspector_help_msg">
-        This screen allows you to inspect and modify specific
-        exercise sets,
-        with the most recent at the top.
-        \n\nLong click on an exercise set to edit (or even delete)
-        details of that set. This way
-        you can go back
-        and fix mistakes or even erase bad memories. After all,
-        we\'re only human.
-    </string>
-    <string name="inspector_set_time_error">no time specified</string>
+	<string name="inspector_help_title">Inspector Help</string>
+	<string name="inspector_help_msg">
+		This screen allows you to inspect and modify specific
+		exercise sets,
+		with the most recent at the top.
+		\n\nLong click on an exercise set to edit (or even delete)
+		details of that set. This way
+		you can go back
+		and fix mistakes or even erase bad memories. After all,
+		we\'re only human.
+	</string>
+	<string name="inspector_set_time_error">no time specified</string>
 
 	<!-- ============         ============ -->
 	<!-- ============ EditSet ============ -->
-    	<!-- ============         ============ -->
+		<!-- ============         ============ -->
 
 	<string name="editset_title">Edit a Set</string>
 	<string name="editset_msg">
-	    Tap to change.</string>
+		Tap to change.</string>
 	<string name="editset_date_day_label">date</string>
-    	<string name="editset_date_time_label">time</string>
+		<string name="editset_date_time_label">time</string>
 	<string name="editset_reps_label">reps</string>
 	<string name="editset_weight_label">weight (%s)</string>
 	<string name="editset_level_label">level</string>
@@ -1133,229 +1134,229 @@
 	<string name="editset_stress_label">stress level</string>
 	<string name="editset_notes_label">notes</string>
 
-    <string name="editset_empty_data">no data</string>
-    <string name="editset_empty_notes">no comment</string>
-    <string name="editset_notes_hint">type notes here</string>
-    <string name="editset_delete_button">delete set</string>
+	<string name="editset_empty_data">no data</string>
+	<string name="editset_empty_notes">no comment</string>
+	<string name="editset_notes_hint">type notes here</string>
+	<string name="editset_delete_button">delete set</string>
 
-    <string name="editset_cancel_warning_title">Cancel Edit</string>
-    <string name="editset_cancel_warning_msg">I think you have made
-        some changes to this exercise set.
-        \n\nAre you sure you want to cancel these changes\?
-        \n\n(You can turn this warning off in the \'preferences\'.)
-    </string>
+	<string name="editset_cancel_warning_title">Cancel Edit</string>
+	<string name="editset_cancel_warning_msg">I think you have made
+		some changes to this exercise set.
+		\n\nAre you sure you want to cancel these changes\?
+		\n\n(You can turn this warning off in the \'preferences\'.)
+	</string>
 
-    <string name="editset_help_title">Edit Exercise Set</string>
-    <string name="editset_help_msg">
-        This screen allows you to modify or delete an exercise
-        set that you have already entered.
-        \n\nTap on the data that you want to change. A dialog
-        will pop up where you can enter a new value.
-        \n\nPress the \'delete set\' button to remove the
-        whole set. Beware, because you can\'t get it back
-        (other than entering it in again).
-        \n\nAs usual, if you change your mind, you can hit
-        the \'back\' or the \'cancel\' buttons.
-    </string>
+	<string name="editset_help_title">Edit Exercise Set</string>
+	<string name="editset_help_msg">
+		This screen allows you to modify or delete an exercise
+		set that you have already entered.
+		\n\nTap on the data that you want to change. A dialog
+		will pop up where you can enter a new value.
+		\n\nPress the \'delete set\' button to remove the
+		whole set. Beware, because you can\'t get it back
+		(other than entering it in again).
+		\n\nAs usual, if you change your mind, you can hit
+		the \'back\' or the \'cancel\' buttons.
+	</string>
 
-    <string name="editset_delete_warning_title">Delete a Set</string>
-    <string name="editset_delete_warning_msg">
-        You are about to delete a set of the %1$s exercise. There
-        is no going back (other than re-entering it).
-        \n\nAre you sure you want to delete the %2$s set performed
-        on %3$s at %4$s?
-    </string>
+	<string name="editset_delete_warning_title">Delete a Set</string>
+	<string name="editset_delete_warning_msg">
+		You are about to delete a set of the %1$s exercise. There
+		is no going back (other than re-entering it).
+		\n\nAre you sure you want to delete the %2$s set performed
+		on %3$s at %4$s?
+	</string>
 
 	<!-- ============                ============ -->
 	<!-- ============ Enter a Number ============ -->
-    	<!-- ============                ============ -->
+		<!-- ============                ============ -->
 
 	<string name="enter_a_number_default_title">NO TITLE</string>
 	<string name="enter_a_number_old_value">Type in a new
-	    value
-	    \n(originally: %s)</string>
+		value
+		\n(originally: %s)</string>
 
-    <string name="enter_a_number_help_title">Number Help</string>
-    <string name="enter_a_number_help_msg">
-        Type in a number here.
-        \n\n\n\nGee, why do I even bother? \'Cause I\'m anal, that\'s
-        why.
-        \n\nI... must... cross... the... T\'s... dot...
-        the... I\'s... and... ... ...
-        \n\n
-        ...breathe! Whew.
-    </string>
+	<string name="enter_a_number_help_title">Number Help</string>
+	<string name="enter_a_number_help_msg">
+		Type in a number here.
+		\n\n\n\nGee, why do I even bother? \'Cause I\'m anal, that\'s
+		why.
+		\n\nI... must... cross... the... T\'s... dot...
+		the... I\'s... and... ... ...
+		\n\n
+		...breathe! Whew.
+	</string>
 
-    <string name="enter_a_number_cancel_warn_title">Cancel Number Change</string>
-    <string name="enter_a_number_cancel_warn_msg">
+	<string name="enter_a_number_cancel_warn_title">Cancel Number Change</string>
+	<string name="enter_a_number_cancel_warn_msg">
 		It looks like you made some changes to this number.
 		\n\nAre you sure you want to cancel these changes?
-        \n\n(You can turn this warning off in the \'preferences\'.)
-    </string>
+		\n\n(You can turn this warning off in the \'preferences\'.)
+	</string>
 
 	<!-- ============            ============ -->
 	<!-- ============ Enter Text ============ -->
-    	<!-- ============            ============ -->
+		<!-- ============            ============ -->
 	<string name="enter_text_default_title">Change Note</string>
 	<string name="enter_text_msg_empty">Type in a note
-	    for this set:</string>
-    <string name="enter_text_msg_old">Type in the new
-	    note.  Here\'s the old one to compare with:
-	    </string>
+		for this set:</string>
+	<string name="enter_text_msg_old">Type in the new
+		note.  Here\'s the old one to compare with:
+		</string>
 
-    <string name="enter_text_help_title">Note Help</string>
-    <string name="enter_text_help_msg">
-        Yep. You type right here. Yesiree, that\'ll do it.
-        Anything you like. Type it. However your phone or
-        device does it. Do it here.
-        \n\nThat\'s a good boy (or girl or whatever).
-    </string>
+	<string name="enter_text_help_title">Note Help</string>
+	<string name="enter_text_help_msg">
+		Yep. You type right here. Yesiree, that\'ll do it.
+		Anything you like. Type it. However your phone or
+		device does it. Do it here.
+		\n\nThat\'s a good boy (or girl or whatever).
+	</string>
 
-    <string name="enter_text_cancel_warn_title">Cancel Note Change</string>
-    <string name="enter_text_cancel_warn_msg">
+	<string name="enter_text_cancel_warn_title">Cancel Note Change</string>
+	<string name="enter_text_cancel_warn_msg">
 		It looks like you made some changes to your note.
 		\n\nAre you sure you want to cancel these changes?
-        \n\n(You can turn this warning off in the \'preferences\'.)
-    </string>
+		\n\n(You can turn this warning off in the \'preferences\'.)
+	</string>
 
 
 	<!-- ============              ============ -->
 	<!-- ============ Enter Stress ============ -->
-    	<!-- ============              ============ -->
-    <string name="enter_stress_title">Stress Level</string>
-    <string name="enter_stress_prod">Select the stress
-        level for this workout set.</string>
-    <string name="enter_stress_help_title">Stress Help</string>
-    <string name="enter_stress_help_msg">
-        Select the stress level of this exercise set.
-        \n\nIn general:\n
-        \t\'ok\' is for your normal workout.\n
-        \t\'+\' means that this was too easy; make it hard
-        next time.\n
-        \t\'-\' indicates that this set was too hard; you
-        either could not finish or had to strain.\n
-        \t\'X\' is bad, an injury or something very unusual
-        occurred.
-        \n\nYou don\'t have to do these. I just find them helpful
-        to know when it\'s time to up the weight or increase
-        the difficulty.
-    </string>
+		<!-- ============              ============ -->
+	<string name="enter_stress_title">Stress Level</string>
+	<string name="enter_stress_prod">Select the stress
+		level for this workout set.</string>
+	<string name="enter_stress_help_title">Stress Help</string>
+	<string name="enter_stress_help_msg">
+		Select the stress level of this exercise set.
+		\n\nIn general:\n
+		\t\'ok\' is for your normal workout.\n
+		\t\'+\' means that this was too easy; make it hard
+		next time.\n
+		\t\'-\' indicates that this set was too hard; you
+		either could not finish or had to strain.\n
+		\t\'X\' is bad, an injury or something very unusual
+		occurred.
+		\n\nYou don\'t have to do these. I just find them helpful
+		to know when it\'s time to up the weight or increase
+		the difficulty.
+	</string>
 
-    <string name="enter_stress_cond_label">stress</string>
+	<string name="enter_stress_cond_label">stress</string>
 	<string name="enter_stress_cond_stress_ok">ok</string>
 	<string name="enter_stress_cond_stress_too_hard">- (too hard)</string>
-    	<string name="enter_stress_cond_stress_too_easy">+ (not hard enough)</string>
-    	<string name="enter_stress_cond_stress_injury">X (injury)</string>
-    	<string name="enter_stress_cond_stress_error">error!</string>
-    	<string name="enter_stress_cond_stress_none">n\/a</string>
+		<string name="enter_stress_cond_stress_too_easy">+ (not hard enough)</string>
+		<string name="enter_stress_cond_stress_injury">X (injury)</string>
+		<string name="enter_stress_cond_stress_error">error!</string>
+		<string name="enter_stress_cond_stress_none">n\/a</string>
 
 
 	<!-- ============              ============ -->
 	<!-- ============ Preferences  ============ -->
-    	<!-- ============              ============ -->
+		<!-- ============              ============ -->
 
-    	<string name="prefs_nag_key">nag</string>
-    	<string name="prefs_nag_title">Nagging</string>
-    	<string name="prefs_nagging_is_off_msg">Nagging is reduced.
-    	    \nYou will still get messages that are *really* important!
-    	    \n\n(I\'m sick and tired of the program asking me to fill
-    	    out forms and fields that I don\'t have time to fool with!)
-    </string>
-    	<string name="prefs_nagging_is_on_msg">Nagging is on.
-    	    \n\n(I like being reminded of things that I may have
-    	    forgotten to do.)
-    	    </string>
+		<string name="prefs_nag_key">nag</string>
+		<string name="prefs_nag_title">Nagging</string>
+		<string name="prefs_nagging_is_off_msg">Nagging is reduced.
+			\nYou will still get messages that are *really* important!
+			\n\n(I\'m sick and tired of the program asking me to fill
+			out forms and fields that I don\'t have time to fool with!)
+	</string>
+		<string name="prefs_nagging_is_on_msg">Nagging is on.
+			\n\n(I like being reminded of things that I may have
+			forgotten to do.)
+			</string>
 
-    	<string name="prefs_sound_key">sound</string>
-    	<string name="prefs_sound_title">Play Sounds</string>
+		<string name="prefs_sound_key">sound</string>
+		<string name="prefs_sound_title">Play Sounds</string>
 	<string name="prefs_sound_on_msg">Can you hear that?
-	    Yeah, I think this program is trying to make some noises!</string>
+		Yeah, I think this program is trying to make some noises!</string>
 	<string name="prefs_sound_off_msg">Shhhhh, we\'re playing
-	    the quiet game now. Don\'t make a sound.</string>
+		the quiet game now. Don\'t make a sound.</string>
 
-    	<string name="prefs_display_key">display</string>
-    	<string name="prefs_display_title">Screen Saver</string>
+		<string name="prefs_display_key">display</string>
+		<string name="prefs_display_title">Screen Saver</string>
 	<string name="prefs_display_keep_on_msg">The display will
-	    stay on as long as this app is activie.</string>
+		stay on as long as this app is activie.</string>
 	<string name="prefs_display_save_screen_msg">While using
-	    this app, the screen saver will kick in
-	    according to your system settings.</string>
+		this app, the screen saver will kick in
+		according to your system settings.</string>
 
 	<!-- ============                 ============ -->
 	<!-- ============ Graph Selector  ============ -->
-    <!-- ============                 ============ -->
+	<!-- ============                 ============ -->
 
 	<string name="graph_selector_title">Graphs!</string>
 	<string name="graph_selector_exercise_msg">Which exercise
-	    do you want to look at?</string>
+		do you want to look at?</string>
 
-    <string name="graph_selector_help_title">Select a Graph</string>
-    <string name="graph_selector_help_msg">
-        Here is a list of all your exercises. Tap on one to see your
-        progress in that exercise.
-        \n\nRemember when you made the exercise, you noted one of the
-        bits as significant? Well that\'s the part that will be graphed.
-    </string>
+	<string name="graph_selector_help_title">Select a Graph</string>
+	<string name="graph_selector_help_msg">
+		Here is a list of all your exercises. Tap on one to see your
+		progress in that exercise.
+		\n\nRemember when you made the exercise, you noted one of the
+		bits as significant? Well that\'s the part that will be graphed.
+	</string>
 
 	<!-- ============        ============ -->
 	<!-- ============ Graph  ============ -->
-    <!-- ============        ============ -->
+	<!-- ============        ============ -->
 
-    <string name="graph_title_msg">%s</string>
+	<string name="graph_title_msg">%s</string>
 
-    <string name="graph_help_title">Graph Help</string>
-    <string name="graph_help_msg">You want to see your progress (or
-        lack thereof)? This is the place to be.
-        \n\nOn this screen you see a graph (also called a chart) of
-        this exercise.
-        \n\nThe horizontal axis is time, with each individual
-        exercise set presented with its own position.
-        \n\nThe vertical lines represent the quantities of the
-        significant aspect of that exercise (remember that? it\'s
-        the part of the exercise with the radio button selected
-        next to it when you defined this exercise).  For example,
-        if you were doing bench presses and weight (\'pounds\')
-        were the significant portion, then the graph shows all
-        the different weights (in pounds, of course!) you did for
-        all your exercise sets.
-        \n\nIf you see gaps, that means that there were times
-        that did not have entries for this exercise for this
-        aspect.
-        </string>
+	<string name="graph_help_title">Graph Help</string>
+	<string name="graph_help_msg">You want to see your progress (or
+		lack thereof)? This is the place to be.
+		\n\nOn this screen you see a graph (also called a chart) of
+		this exercise.
+		\n\nThe horizontal axis is time, with each individual
+		exercise set presented with its own position.
+		\n\nThe vertical lines represent the quantities of the
+		significant aspect of that exercise (remember that? it\'s
+		the part of the exercise with the radio button selected
+		next to it when you defined this exercise).  For example,
+		if you were doing bench presses and weight (\'pounds\')
+		were the significant portion, then the graph shows all
+		the different weights (in pounds, of course!) you did for
+		all your exercise sets.
+		\n\nIf you see gaps, that means that there were times
+		that did not have entries for this exercise for this
+		aspect.
+		</string>
 
-    <string name="graph_units_msg1">%s</string>
-    <string name="graph_units_msg2">%1$s (%2$s)</string>
+	<string name="graph_units_msg1">%s</string>
+	<string name="graph_units_msg2">%1$s (%2$s)</string>
 
-    <string name="graph_no_sets_msg">No data for this exercise</string>
-    <string name="graph_1_set_msg">Just one set: %s</string>
-    <string name="graph_illegal_sets_msg">Error trying to graph!</string>
+	<string name="graph_no_sets_msg">No data for this exercise</string>
+	<string name="graph_1_set_msg">Just one set: %s</string>
+	<string name="graph_illegal_sets_msg">Error trying to graph!</string>
 	<string name="graph_all_same_value_msg">All sets are the same value: %s</string>
 	<string name="graph_all_invalid_msg">All values are invalid, so there\'s
-	    nothing to graph. Sorry. Try filling some of the missing values.
-	    </string>
+		nothing to graph. Sorry. Try filling some of the missing values.
+		</string>
 
 	<!-- ============          ============ -->
 	<!-- ============ History  ============ -->
-    <!-- ============          ============ -->
+	<!-- ============          ============ -->
 
 	<string name="history_title">History of %s</string>
 	<string name="history_msg">A few of the more recent sets:</string>
 	<string name="history_empty_msg">You have not done
-	    any sets of this exercise yet.</string>
+		any sets of this exercise yet.</string>
 
-    <string name="history_help_title">History Help</string>
-    <string name="history_help_msg">
-        Pressing this button shows the recent history of this
-        exercise.
-    </string>
+	<string name="history_help_title">History Help</string>
+	<string name="history_help_msg">
+		Pressing this button shows the recent history of this
+		exercise.
+	</string>
 
 
 
 	<!-- ============                   ============ -->
 	<!-- ============ Exercise TabHost  ============ -->
-    <!-- ============              	   ============ -->
+	<!-- ============              	   ============ -->
 
-    	<string name="exercise_tabhost_to_grid_butt">back to grid</string>
+		<string name="exercise_tabhost_to_grid_butt">back to grid</string>
 	<string name="exer_tabhost_tab_aset">do a set</string>
 	<string name="exer_tabhost_tab_edit_exercise">edit exercise</string>
 	<string name="exer_tabhost_tab_inspector">inspector</string>

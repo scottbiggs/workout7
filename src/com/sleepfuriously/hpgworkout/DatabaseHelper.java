@@ -1284,7 +1284,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				new String[] {"" + name},
 				null,
 				null,
-				SET_COL_DATEMILLIS + (descend ? " DESC" : "ASC")); // date ordered
+				SET_COL_DATEMILLIS + (descend ? " DESC" : " ASC")); // date ordered
 	} // getAllSets (db, name, descend)
 
 

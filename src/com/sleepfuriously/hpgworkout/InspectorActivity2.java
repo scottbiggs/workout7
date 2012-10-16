@@ -12,8 +12,6 @@ import java.text.DecimalFormat;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -21,7 +19,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnLongClickListener;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -54,16 +51,12 @@ public class InspectorActivity2
 	//------------------
 
 	/**
-	 * The id for the exercise set to center on.  This is only used
+	 * The id for the exercise set to center on.  This is only assigned
 	 * during onCreate().  If this is a valid id number, then the
 	 * set with the given id should be scrolled to when this Activity
 	 * pops up the first time.
 	 */
 	private int m_set_id;
-
-
-	/** The REAL date for this set. */
-	private MyCalendar m_set_date;
 
 
 	//--------------------
@@ -72,25 +65,11 @@ public class InspectorActivity2
 	/** Holds all info about this exercise. */
 	protected ExerciseData m_ex_data = null;
 
-	protected int m_ex_id;
+//	protected int m_ex_id;
 	protected String m_ex_name;
-//	protected int m_ex_type;
-//	protected int m_ex_group;
-//	protected boolean m_ex_weights;
-//	protected String m_ex_weight_unit;
-//	protected boolean m_ex_reps;
-//	protected boolean m_ex_dist;
-//	protected String m_ex_dist_unit;
-//	protected boolean m_ex_time;
-//	protected String m_ex_time_unit;
-//	protected boolean m_ex_level;
-//	protected boolean m_ex_cals;
-//	protected boolean m_ex_other;
-//	protected String m_ex_other_title;
-//	protected String m_ex_other_unit;
-//	protected int m_ex_significant = -1;
-//	protected int m_ex_lorder;
 
+	/** The number of sets for this exercise. */
+	protected int m_num_sets;
 
 	/**
 	 * This tells the Activity when it needs to load data.  It
@@ -212,6 +191,7 @@ public class InspectorActivity2
 	 * 		uses a static variable: s_id to pass data to the Runnable.
 	 *
 	 * @param id		The ID of the View to scroll to.
+	 * 				-1 means invalid id, so nothing is done.
 	 */
 	protected void scroll_to_child (int id) {
 		// For the times we need to scroll to a given child of the
@@ -266,60 +246,6 @@ public class InspectorActivity2
 	} // init_from_db()
 
 
-	/***********************
-	 * A helper method that looks at the Cursor and figures out
-	 * the number that's returned.  If there is no number on
-	 * that column, then the null string is returned.
-	 *
-	 * @param set_cursor		The Cursor that holds the set data.  It
-	 * 					should be primed and on the correct
-	 * 					row.
-	 *
-	 * @param column_name	The String that defines the column
-	 * 					in question.
-	 *
-	 * @param is_float	true = float
-	 * 					false = int
-	 *
-	 * @return	A String that represents the number.  If the
-	 * 			number is less than 0 (which means that the
-	 * 			user skipped this), then a special string
-	 * 			is output indicating that the user didn't
-	 * 			supply this number.
-	 */
-/*	private String get_data_str (Cursor set_cursor, String column_name,
-								boolean is_float) {
-		int col = set_cursor.getColumnIndex(column_name);
-
-		// Null is a special case (it only happens when an
-		// exericse definition has changed).
-		String test = set_cursor.getString(col);
-		if (test == null) {
-			return getString(R.string.inspector_null_value);
-		}
-
-		if (is_float) {
-			try {
-				float f = set_cursor.getFloat(col);
-				if (f < 0) {
-					return getString(R.string.inspector_skipped_value);
-				}
-				return new DecimalFormat("#.###").format(f);
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-				return "float error!";
-			}
-		}
-		else {
-			int num = set_cursor.getInt(col);
-			if (num == -1) {
-				return getString(R.string.inspector_skipped_value);
-			}
-			return ("" + num);
-		}
-	} // get_data_str (cursor, column_name)
-*/
 	/***************************
 	 * Helper to converts the given number to a nice string for
 	 * display in the inspector as a weight, distance, etc.
@@ -349,98 +275,6 @@ public class InspectorActivity2
 		return ("" + i);
 	}
 
-	/***************************
-	 * Creates a display for a given set.  It needs a bunch
-	 * of widgets to fill in (and will make some, too).  This
-	 * will also do some database stuff so that it fills
-	 * everything in right.
-	 *
-	 * More than one set could be represented, so this may
-	 * call make_a_table() multiple times--once for each
-	 * exercise set.
-	 *
-	 * preconditions:
-	 * 		m_ex_name needs to be correct.
-	 *
-	 * @param id		The id (of the database) for the
-	 * 				set we're checking out.
-	 *
-	 * @param db		A database ready to read.
-	 *
-	 * @param parent		A LinearLayout (already created)
-	 * 				to hold the info for this set.  This
-	 * 				set will be added.
-	 *
-	 * @param ex_cursor		This cursor points to the exercise
-	 * 				info for this particular exercise.  It's
-	 * 				used to inflate the rows properly.
-	 *
-	 * @param set_cursor		A cursor that holds info about the
-	 * 				set to display.  It should be already on
-	 * 				the correct row and contain ALL relevant
-	 * 				columns.
-	 *
-	 * @param count	Tell me if this is the first time (1),
-	 * 				the second time (2), and so on that
-	 * 				this has been called.
-	 */
-/*	void make_set_display(int id,
-						SQLiteDatabase db,
-						LinearLayout parent,
-						Cursor ex_cursor,
-						Cursor set_cursor,
-						int count) {
-		boolean set_bar = false;		// used to determine whether or not to draw a divider bar
-
-		LayoutInflater inflater = getLayoutInflater();
-		LinearLayout set_ll = (LinearLayout) inflater.inflate(R.layout.inspector_set, parent, false);
-
-
-		// Put some info in.  Start with the title
-		TextView title_tv = (TextView) set_ll.findViewById(R.id.inspector_set_title_tv);
-		String title_str = getString(R.string.inspector_set_title, count);
-		title_tv.setText(title_str);
-
-		// Save the date of this set.  Since all the sets
-		// are on the same date, the repetition won't fuck
-		// things up.
-		setup_date (set_cursor, set_ll);
-
-		if (setup_reps (set_cursor, ex_cursor, set_ll))
-			set_bar = true;
-
-		if (setup_weight (set_cursor, ex_cursor, set_ll, set_bar))
-			set_bar = true;
-
-		if (setup_level (set_cursor, ex_cursor, set_ll, set_bar))
-			set_bar = true;
-
-		if (setup_cals (set_cursor, ex_cursor, set_ll, set_bar))
-			set_bar = true;
-
-		if (setup_dist (set_cursor, ex_cursor, set_ll, set_bar))
-			set_bar = true;
-
-		if (setup_time (set_cursor, ex_cursor, set_ll, set_bar))
-			set_bar = true;
-
-		if (setup_other (set_cursor, ex_cursor, set_ll, set_bar))
-			set_bar = true;
-
-		setup_stress (set_cursor,set_ll);
-
-		setup_notes (set_cursor,set_ll);
-
-		// Make this respond to long clicks.  Use the ID
-		// that was sent in.
-		set_ll.setId(id);
-		set_ll.setOnLongClickListener(this);
-
-		// Finally add this child and clean up
-		parent.addView(set_ll);
-
-	} // make_set_display (...)
-*/
 
 	/********************
 	 * Part of the UI thread while creating the display, this
@@ -459,9 +293,8 @@ public class InspectorActivity2
 	 * 							loaded from the DB.
 	 */
 	void make_set_layout (SetLayout layout_values) {
-
 		if (!m_layout_initialized) {
-			init_layout();
+			init_layout(layout_values.data.millis);
 		}
 
 		/** used to determine whether or not to draw a divider bar */
@@ -512,10 +345,17 @@ public class InspectorActivity2
 		// we gotta figure out where to add it.
 		//	O(n), sigh.
 		//
-		int index = 0;
-		while (index <= layout_values.order)
-			index++;
-		m_main_ll.addView(set_ll, index);
+		set_ll.setTag(layout_values.order);
+		int i;
+		for (i = 0; i < m_main_ll.getChildCount(); i++) {
+			if (((Integer) (m_main_ll.getChildAt(i).getTag()))
+					> layout_values.order) {
+				Log.d(tag, "make_set_layout(), broke out to add i at " + i);
+				break;
+			}
+		}
+		m_main_ll.addView(set_ll, i);
+		Log.d(tag, "make_set_layout(), layout added at " + i);
 
 	}  // make_set_layout (layout_values)
 
@@ -524,7 +364,7 @@ public class InspectorActivity2
 	 * This sets up all the general stuff that's germain to
 	 * every set layout.
 	 */
-	protected void init_layout() {
+	protected void init_layout (long date_in_millis) {
 		if (m_layout_initialized) {
 			return;
 		}
@@ -532,164 +372,23 @@ public class InspectorActivity2
 		// Tabula rasa.
 		m_main_ll.removeAllViews();
 
-		// todo
-
+		// If there are no sets, indicate so.
+		TextView title_tv = (TextView) findViewById(R.id.inspector_title_tv);
+		if (m_num_sets == 0) {
+			title_tv.setText(R.string.inspector_empty);
+		}
+		else {
+			// Show the date, but only if there IS a specific date.
+			if (m_set_id != -1) {
+				MyCalendar cal = new MyCalendar(date_in_millis);
+				title_tv.setText(cal.get_month_text(this) + " "
+								+ cal.get_day() + ", "
+								+ cal.get_year());
+			}
+		}
 		m_layout_initialized = true;
 	} // init_layout()
 
-
-	/********************
-	 * Called after the user has edited a workout set,
-	 * this clears the UI and reloads it with fresh
-	 * data from the DB.
-	 *
-	 * @param ll		The LinearLayout to reload.
-	 *
-	 * @return	2:	The item was probably deleted. The
-	 * 				InspectorActivity should delete this
-	 * 				entire bit.  If it's the only bit, then
-	 * 				it should exit entirely.
-	 *
-	 * 			1:	The InspectorActivity should immediately
-	 * 				exit and return RESULT_OK to GridActivity
-	 * 				because the date has changed and this
-	 * 				set no longer matches with the others
-	 * 				in this group of workout sets.
-	 *
-	 * 			0:	Continue normally.  Date has not changed.
-	 */
-/*	private int reload_set(LinearLayout ll) {
-
-		// used to determine whether or not to draw a divider bar
-		boolean set_bar = false;
-
-		// When TRUE, we need to abort the Inspector and go back
-		// to the GridActivity.
-		int exit_code = 0;
-
-		// The id for this exercise set happens to be the same
-		// as the id for the corresponding LinearLayout.
-		final int id = ll.getId();
-
-		try {
-			test_m_db();
-			m_db = WGlobals.g_db_helper.getReadableDatabase();
-
-			Cursor ex_cursor = null;
-			try {
-				ex_cursor = m_db.query(
-							DatabaseHelper.EXERCISE_TABLE_NAME,
-							null,			//	columns[]
-							DatabaseHelper.EXERCISE_COL_NAME + "=?",//selection
-							new String[] {m_ex_name},// selectionArgs[]
-							null,	//	groupBy
-							null,	//	having
-							null,	//	orderBy
-							null);
-				ex_cursor.moveToFirst();
-
-				// While we have it, save the lorder of this exercise.
-				// It's needed if we have to send off a new ASetActivity.
-//				col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_LORDER);
-//				m_lorder = ex_cursor.getInt(col);
-
-				// Get all the columns for this particular set.
-				Cursor set_cursor = null;
-				try {
-					set_cursor = m_db.query(
-							DatabaseHelper.SET_TABLE_NAME,
-							null,	// all columns
-							DatabaseHelper.COL_ID + "=?",
-							new String[] {"" + id},
-							null, null, null, null);
-
-					// Check to see if we got anything.  If this
-					// item was deleted, then the result here will
-					// be 0.
-					if (set_cursor.getCount() == 1) {
-
-						set_cursor.moveToFirst();
-
-						// Save the date of this set.  Since all the sets
-						// are on the same date, the repetition won't fuck
-						// things up.
-						MyCalendar old = new MyCalendar(m_set_date);
-						setup_date (set_cursor, ll);
-						if (!m_set_date.is_same_day(old)) {
-							// This is a different day.  Abandon the
-							// InspectorActivity and go straight to
-							// the GridActivity, informing it to
-							// reload.
-							exit_code = 1;
-						}
-						else {
-							if (setup_reps (set_cursor, ex_cursor, ll))
-								set_bar = true;
-
-							if (setup_weight (set_cursor, ex_cursor, ll, set_bar))
-								set_bar = true;
-
-							if (setup_level (set_cursor, ex_cursor, ll, set_bar))
-								set_bar = true;
-
-							if (setup_cals (set_cursor, ex_cursor, ll, set_bar))
-								set_bar = true;
-
-							if (setup_dist (set_cursor, ex_cursor, ll, set_bar))
-								set_bar = true;
-
-							if (setup_time (set_cursor, ex_cursor, ll, set_bar))
-								set_bar = true;
-
-							if (setup_other (set_cursor, ex_cursor, ll, set_bar))
-								set_bar = true;
-
-							setup_stress (set_cursor, ll);
-
-							setup_notes (set_cursor, ll);
-						}
-					} // There was the right number of items found
-					else {
-						// Some sort of error--probably this
-						// item was deleted.
-						exit_code = 2;
-					}
-
-				} // <--try set_cursor
-				catch (SQLException e) {
-					e.printStackTrace();
-				}
-				finally {
-					if (set_cursor != null) {
-						set_cursor.close();
-						set_cursor = null;
-					}
-				}
-			} // <--try ex_cursor
-			catch (SQLException e) {
-				e.printStackTrace();
-			}
-			finally {
-				if (ex_cursor != null) {
-					ex_cursor.close();
-					ex_cursor = null;
-				}
-			}
-
-		}
-		catch (SQLiteException e) {
-			e.printStackTrace();
-		}
-		finally {
-			if (m_db != null) {
-				m_db.close();
-				m_db = null;
-			}
-		}
-
-		return exit_code;
-	} // reload_set (ll)
-*/
 
 	/********************
 	 * Sets up the date and time portion of this Activity.
@@ -701,11 +400,24 @@ public class InspectorActivity2
 	 * 						have some Views added.
 	 */
 	private void setup_date (SetLayout vals, LinearLayout set_ll) {
-		m_set_date = new MyCalendar(vals.data.millis);
+		String str = "";
+		MyCalendar set_date = new MyCalendar(vals.data.millis);
 
 		// And display the time of this particular set.
 		TextView time_tv = (TextView) set_ll.findViewById(R.id.inspector_set_time_tv);
-		time_tv.setText(m_set_date.print_time(false));
+
+		// This is different, depending on whether we're looking at
+		// a specific date (a date was clicked), or just a general
+		// Inspector browse via the tab.
+		if (m_set_id == -1) {
+			// Just a general, so add the full date.
+			str = set_date.print_date(this) + "  -  ";
+		}
+
+		// Always do the time.
+		str += set_date.print_time(false);
+
+		time_tv.setText(str);
 	} // setup_date (set_cursor, set_ll)
 
 	/********************
@@ -784,11 +496,7 @@ public class InspectorActivity2
 		LinearLayout level_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_level_ll);
 		View bar = set_ll.findViewById(R.id.inspector_set_level_bar);
 
-//		int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_LEVEL);
-//		boolean level = ex_cursor.getInt(col) == 1 ? true : false;
 		if (m_ex_data.blevel) {
-//			String data_str = get_data_str (set_cursor,
-//					DatabaseHelper.SET_COL_LEVELS, false);
 			String data_str = get_formatted_string(vals.data.levels);
 			TextView level_data_tv = (TextView) set_ll.findViewById(R.id.inspector_set_level_data);
 			level_data_tv.setText(data_str);
@@ -883,13 +591,8 @@ public class InspectorActivity2
 		LinearLayout time_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_time_ll);
 		View bar = set_ll.findViewById(R.id.inspector_set_time_bar);
 
-//		int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_TIME);
-//		boolean time = ex_cursor.getInt(col) == 1 ? true : false;
 		if (m_ex_data.btime) {
 			// Unit of Time
-//			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_TIME_UNIT);
-//			String time_unit = ex_cursor.getString(col);
-
 			TextView time_label_tv = (TextView) set_ll.findViewById(R.id.inspector_set_time_label);
 			String time_label_str = getString (R.string.inspector_set_time_label, m_ex_data.time_unit);
 			time_label_tv.setText(time_label_str);
@@ -1018,115 +721,6 @@ public class InspectorActivity2
 	} // test_m_db()
 
 
-	/********************
-	 * Loads all the info about the current exercise into
-	 * the class variables.
-	 *
-	 * Called during an ASyncTask, this does NO UI stuff; it
-	 * just grabs some data and save it.
-	 *
-	 * @param db		A database initialized and ready to READ.
-	 *
-	 * @return	TRUE  - Everything went as expected.
-	 * 			FALSE - Something went wrong (probably the
-	 * 					exercise couldn't be found).
-	 */
-/*	private boolean get_exercise_info (SQLiteDatabase db) {
-		int col;
-		Cursor ex_cursor = null;
-
-		try {
-			ex_cursor = DatabaseHelper.getAllExerciseInfoByName(db, m_ex_name);
-			if ((ex_cursor == null) || (ex_cursor.getCount() != 1)) {
-				return false;
-			}
-
-			// Okay, now we have a Cursor loaded with info about
-			// our exercise.  Extract and save that data.
-			ex_cursor.moveToFirst();
-
-
-			col = ex_cursor.getColumnIndex(DatabaseHelper.COL_ID);
-			m_ex_id = ex_cursor.getInt(col);
-
-			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_TYPE);
-			m_ex_data.type = ex_cursor.getInt(col);
-
-			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_GROUP);
-			m_ex_data.group = ex_cursor.getInt(col);
-
-			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_WEIGHT);
-			m_ex_data.bweight = ex_cursor.getInt(col) == 1 ? true : false;
-			if (m_ex_data.bweight) {
-				col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_WEIGHT_UNIT);
-				m_ex_data.weight_unit = ex_cursor.getString(col);
-			}
-			else
-				m_ex_data.weight_unit = null;
-
-			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_REP);
-			m_ex_data.brep = ex_cursor.getInt(col) == 1 ? true : false;
-
-			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_DIST);
-			m_ex_data.bdist = ex_cursor.getInt(col) == 1 ? true : false;
-			if (m_ex_data.bdist) {
-				col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_DIST_UNIT);
-				m_ex_data.dist_unit = ex_cursor.getString(col);
-			}
-			else
-				m_ex_data.dist_unit = null;
-
-			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_TIME);
-			m_ex_data.btime = ex_cursor.getInt(col) == 1 ? true : false;
-			if (m_ex_data.btime) {
-				col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_TIME_UNIT);
-				m_ex_data.time_unit = ex_cursor.getString(col);
-			}
-			else
-				m_ex_data.time_unit = null;
-
-			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_LEVEL);
-			m_ex_data.blevel = ex_cursor.getInt(col) == 1 ? true : false;
-
-			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_CALORIES);
-			m_ex_data.bcals = ex_cursor.getInt(col) == 1 ? true : false;
-
-			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_OTHER);
-			m_ex_data.bother = ex_cursor.getInt(col) == 1 ? true : false;
-			if (m_ex_data.bother) {
-				col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_OTHER_UNIT);
-				m_ex_data.other_unit = ex_cursor.getString(col);
-				col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_OTHER_TITLE);
-				m_ex_data.other_title = ex_cursor.getString(col);
-			}
-			else {
-				m_ex_data.other_unit = null;
-				m_ex_data.other_title = null;
-			}
-
-			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_SIGNIFICANT);
-			m_ex_data.significant = ex_cursor.getInt(col);
-
-			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_LORDER);
-			m_ex_data.lorder = ex_cursor.getInt(col);
-
-		} // main try
-
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-		finally {
-			if (ex_cursor != null) {
-				ex_cursor.close();
-				ex_cursor = null;
-			}
-		}
-
-		return true;
-	} // get_exercise_info()
-*/
-
-
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		//	Classes
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1138,6 +732,8 @@ public class InspectorActivity2
 	 * The types are: <params, progress, result>
 	 */
 	class InspectorSyncTask extends AsyncTask <Void, SetLayout, Void> {
+
+		static final String tag = "InspectorSyncTask";
 
 		//-------------------
 		@Override
@@ -1155,9 +751,7 @@ public class InspectorActivity2
 				m_db = WGlobals.g_db_helper.getReadableDatabase();
 
 				// Read in all the info we need about this
-				// exercise.  This works completely by
-				// side effect.
-//				m_ex_data = get_exercise_info (m_db);
+				// exercise.
 				m_ex_data = DatabaseHelper.getExerciseData(m_db, m_ex_name);
 
 				// Get a cursor for the sets.  Then loop through
@@ -1167,55 +761,24 @@ public class InspectorActivity2
 				// for that layout.
 				Cursor set_cursor = null;
 				try {
-					set_cursor = DatabaseHelper.getAllSets(m_db, m_ex_name, true);
-					int layout_id = 0;	// Each layout is ordered.
-					int col, set_id;
-					while (set_cursor.moveToNext()) {
+					set_cursor = DatabaseHelper.getAllSets(m_db, m_ex_name, false);
+					m_num_sets = set_cursor.getCount();
 
-//						col = set_cursor.getColumnIndex(DatabaseHelper.COL_ID);
-//						set_id = set_cursor.getInt(col);
+					int counter = 0;
+					while (set_cursor.moveToNext()) {
 
 						SetLayout layout_values = new SetLayout();
 						layout_values.data = DatabaseHelper.getSetData(set_cursor);
-
-//						layout_values.id = set_id;
-//						layout_values.order = layout_id;
-//
-//						col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_NAME);
-//						layout_values.name = set_cursor.getString(col);
-//
-//						col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_DATEMILLIS);
-//						layout_values.millis = set_cursor.getLong(col);
-//
-//						col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_WEIGHT);
-//						layout_values.weight = set_cursor.getFloat(col);
-//
-//						col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_REPS);
-//						layout_values.reps = set_cursor.getInt(col);
-//
-//						col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_LEVELS);
-//						layout_values.levels = set_cursor.getInt(col);
-//
-//						col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_CALORIES);
-//						layout_values.cals = set_cursor.getInt(col);
-//
-//						col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_DIST);
-//						layout_values.dist = set_cursor.getFloat(col);
-//
-//						col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_TIME);
-//						layout_values.time = set_cursor.getFloat(col);
-//
-//						col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_OTHER);
-//						layout_values.other = set_cursor.getFloat(col);
-//
-//						col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_CONDITION);
-//						layout_values.cond = set_cursor.getInt(col);
-//
-//						col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_NOTES);
-//						layout_values.notes = set_cursor.getString(col);
-
+						layout_values.order = counter;
 						publishProgress(layout_values);
+						counter++;
 					}
+
+					// For the case where there are ZERO sets,
+					if (m_num_sets == 0) {
+						publishProgress((SetLayout)null);
+					}
+
 				} // end of set_cursor
 				catch (SQLiteException e) {
 					e.printStackTrace();
@@ -1227,82 +790,6 @@ public class InspectorActivity2
 					}
 				}
 
-
-
-
-
-
-
-
-
-
-
-
-				// Before proceeding, we need to get some info from
-				// our database.  First, some details about this
-				// exercise.
-//				Cursor ex_cursor = null;
-//				try {
-//					ex_cursor = DatabaseHelper.getAllExerciseInfoByName(m_db, m_ex_name);
-//					if (ex_cursor.moveToFirst() == false) {
-//						Log.e(tag, "No ex_cursor data in init_from_db()!!! Aborting!");
-//						return null;
-//					}
-//
-//					// Also, save the significant number.  This'll be
-//					// use to bold the appropriate line.
-//					int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_SIGNIFICANT);
-//					m_ex_significant = ex_cursor.getInt(col);
-//
-//					//	Loop through all the sets of this exercise, making the
-//					//	display.
-//					Cursor set_cursor = null;
-//					try {
-//						set_cursor = DatabaseHelper.getAllSets(m_db, m_ex_name, true);
-//						int i = 1, id;
-//						while (set_cursor.moveToNext()) {
-//							col = set_cursor.getColumnIndex(DatabaseHelper.COL_ID);
-//							id = set_cursor.getInt(col);
-//
-//							SetLayout layout_values = new SetLayout();
-//							// todo
-//							//	fill in a new SetLayout
-//							publishProgress(layout_values);
-
-//							SetDisplay values = new SetDisplay();
-//							values.id = id;
-//							values.db = m_db;
-//							values.parent = m_main_ll;
-//							values.ex_cursor = ex_cursor;
-//							values.set_cursor = set_cursor;
-//							values.count = i++;
-//							publishProgress(values);
-//							make_set_display(id, m_db, m_main_ll,
-//									ex_cursor, set_cursor,
-//									i++);
-
-//						}
-//					}
-//					catch (SQLiteException e) {
-//						e.printStackTrace();
-//					}
-//					finally {
-//						if (set_cursor != null) {
-//							set_cursor.close();
-//							set_cursor = null;
-//						}
-//					}
-//
-//				}
-//				catch (SQLException e) {
-//					e.printStackTrace();
-//				}
-//				finally {
-//					if (ex_cursor != null) {
-//						ex_cursor.close();
-//						ex_cursor = null;
-//					}
-//				}
 
 			} // end of m_db usage
 			catch (SQLiteException e) {
@@ -1336,21 +823,16 @@ public class InspectorActivity2
 		//						only ONE element, the most recently
 		//						created SetLayout.  Let's use it
 		//						to make a new exercise set layout!
-		//			todo:
-		//						Problem, these may come out of
-		//						order!!!
 		//
 		@Override
 		protected void onProgressUpdate(SetLayout... set_array) {
 			super.onProgressUpdate(set_array);
-
-			// This does accesses the database, therefore is
-			// not thread safe.
-			make_set_layout (set_array[0]);
-//			make_set_display(arg0[0].id, arg0[0].db, arg0[0].parent,
-//					arg0[0].ex_cursor, arg0[0].set_cursor,
-//					arg0[0].count);
-
+			if (set_array[0] == null) {
+				init_layout(0);
+			}
+			else {
+				make_set_layout (set_array[0]);
+			}
 		} // onProgressUpdate (arg0)
 
 
@@ -1368,23 +850,11 @@ public class InspectorActivity2
 	 * Holds the data needed to fill in an entire set's layout.
 	 */
 	class SetLayout {
-		/** The order that this set should be displayed */
+		/** The order that this set should be displayed. Zero based. */
 		int order;
 		/** Holds all the data for the exercise set */
 		SetData data;
 	} // class SetLayout
 
-
-	/****************************************
-	 * This holds data that is passed from doInBackground() to
-	 * onProgressUpdate.  Yeah, just a data class.
-	 *
-	 */
-//	class SetDisplay {
-//		int id, count;
-//		SQLiteDatabase db;
-//		LinearLayout parent;
-//		Cursor ex_cursor, set_cursor;
-//	} // class SetDisplay
 
 }

@@ -200,7 +200,20 @@ public class MyCalendar {
 			str = String.format("%d:%02d %s", hours, mins, am_pm);
 		}
 		return str;
-	} // get_time (military)
+	} // print_time (military)
+
+	/********************
+	 * Convenience function.  This returns a String suitable
+	 * for displaying the complete date (no time).
+	 *
+	 * @param	military		TRUE means to use military time.
+	 * 						Otherwise am/pm is appended.
+	 *
+	 * @return	A String for the date.
+	 */
+	String print_date (Context ctx) {
+		return get_month_text(ctx) + " " + get_day() + ", " + get_year();
+	}
 
 
 	/********************

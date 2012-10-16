@@ -167,10 +167,10 @@ public class ExerciseTabHostActivity
 		//		Need to create a NEW Intent--can't reuse the other one
 		//		as that'll create a lot of confusion.
 		{
-			Intent inspector_itt = new Intent(this, InspectorActivity.class);
+			Intent inspector_itt = new Intent(this, InspectorActivity2.class);
 			inspector_itt.putExtra(KEY_NAME, m_ex_name);
 			inspector_itt.putExtra(KEY_SET_ID, m_id);
-			spec = th.newTabSpec("InspectorActivity");// No one knows what this is for
+			spec = th.newTabSpec("InspectorActivity2");// No one knows what this is for
 			spec.setContent(inspector_itt);
 			spec.setIndicator(getString(R.string.exer_tabhost_tab_inspector),
 					res.getDrawable(R.drawable.user));
@@ -335,7 +335,7 @@ public class ExerciseTabHostActivity
 	/***********************
 	 * Taken directly from BaseDialogActivity
 	 */
- 	protected void show_help_dialog (int title_id, int msg_id) {
+	protected void show_help_dialog (int title_id, int msg_id) {
 			// Build the dialog.
 		AlertDialog.Builder builder =
 			new AlertDialog.Builder (this);
