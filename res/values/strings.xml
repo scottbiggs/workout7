@@ -1087,6 +1087,7 @@
 
 	<string name="inspector_set_title">Set #%d</string>
 
+	<string name="inspector_set_day_label">Day Label</string>
 	<string name="inspector_set_reps_label">reps</string>
 	<string name="inspector_set_weight_label">weight (%s)</string>
 	<string name="inspector_set_level_label">level</string>
@@ -1120,10 +1121,9 @@
 		<!-- ============         ============ -->
 
 	<string name="editset_title">Edit a Set</string>
-	<string name="editset_msg">
-		Tap to change.</string>
+	<string name="editset_msg">Tap to change.</string>
 	<string name="editset_date_day_label">date</string>
-		<string name="editset_date_time_label">time</string>
+	<string name="editset_date_time_label">time</string>
 	<string name="editset_reps_label">reps</string>
 	<string name="editset_weight_label">weight (%s)</string>
 	<string name="editset_level_label">level</string>

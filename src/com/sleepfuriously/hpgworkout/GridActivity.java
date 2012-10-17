@@ -64,7 +64,7 @@ import android.widget.Toast;
 //==================================================
 public class GridActivity extends BaseDialogActivity
 					implements OnClickListener,
-							   OnLongClickListener {
+							OnLongClickListener {
 
 
 	//-------------------
@@ -392,8 +392,8 @@ public class GridActivity extends BaseDialogActivity
 				Log.w(tag, "start_exercise_tabs() could not get an ID for the grid element!");
 				itt.putExtra(ExerciseTabHostActivity.KEY_SET_ID, -1);
 			}
-//			itt.putExtra(ExerciseTabHostActivity.KEY_SET_ID, ge.get_first_id());
-			itt.putExtra(ExerciseTabHostActivity.KEY_SET_ID, ge.get_last_id());
+			itt.putExtra(ExerciseTabHostActivity.KEY_SET_ID, ge.get_first_id());
+//			itt.putExtra(ExerciseTabHostActivity.KEY_SET_ID, ge.get_last_id());
 			Log.d(tag, "Just set the ID to " + ge.get_first_id());
 			itt.putExtra(ExerciseTabHostActivity.TAB_START_KEY,
 					ExerciseTabHostActivity.TAB_INSPECTOR);
@@ -540,7 +540,7 @@ public class GridActivity extends BaseDialogActivity
 				String seperator = getString(R.string.grid_edit_seperator);
 				String null_str = getString(R.string.grid_cell_negative_symbol);
 				cell.setText(m_row_info[row_num].tag_array[i]
-                       .construct_set_cell_string(seperator, null_str));
+					.construct_set_cell_string(seperator, null_str));
 			}
 			else {
 				cell.setText("");
@@ -867,8 +867,8 @@ public class GridActivity extends BaseDialogActivity
 					m_db.query(
 						DatabaseHelper.EXERCISE_TABLE_NAME,	// table
 						new String[] {DatabaseHelper.COL_ID,
-									  DatabaseHelper.EXERCISE_COL_NAME,
-									  DatabaseHelper.EXERCISE_COL_SIGNIFICANT},	//	columns[]
+									DatabaseHelper.EXERCISE_COL_NAME,
+									DatabaseHelper.EXERCISE_COL_SIGNIFICANT},	//	columns[]
 						null,//selection
 						null,// selectionArgs[]
 						null,	//	groupBy
@@ -1112,7 +1112,7 @@ public class GridActivity extends BaseDialogActivity
 				cursor = db.query(
 					DatabaseHelper.SET_TABLE_NAME, // table
 					new String[] {DatabaseHelper.COL_ID,
-								  DatabaseHelper.SET_COL_DATEMILLIS}, // columns
+								DatabaseHelper.SET_COL_DATEMILLIS}, // columns
 					DatabaseHelper.SET_COL_NAME + " =? ",
 					new String[] {ex_name},
 					null,

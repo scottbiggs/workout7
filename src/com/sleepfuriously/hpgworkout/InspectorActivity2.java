@@ -125,6 +125,7 @@ public class InspectorActivity2
 	@Override
 	protected void onResume() {
 		super.onResume();
+		Log.i(tag, "onResume()");
 
 		if (m_db_dirty) {
 			init_from_db();
@@ -168,13 +169,20 @@ public class InspectorActivity2
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode,
 									Intent data) {
+		Log.i(tag, "onActivityResult()");
 
 		if (resultCode == RESULT_CANCELED) {
 			return;	// don't do anything
 		}
 
+		// todo:
+		//	When we reload the Activity after modifying something,
+		//	scroll to the thing that was modified, not the whatever
+		//	was scrolled to when onCreate() was initially called.
+
 		// This happens when a set has been edited/deleted.
 		if (requestCode == WGlobals.EDITSETACTIVITY) {
+			m_set_id = data.getIntExtra(EditSetActivity.ID_KEY, -1);
 			init_from_db();
 			HistoryActivity.m_db_dirty = true;
 			GraphActivity.m_db_dirty = true;
@@ -203,7 +211,7 @@ public class InspectorActivity2
 		// WARNING!  This is a HACK to get around scoping rules!
 		s_id = id;
 
-		// Set the scroll the right value.
+		// Set the scroll to the right value.
 		m_sv = (ScrollView) findViewById(R.id.inspector_sv);
 
 		// Make it scroll, but first we have to wait for
@@ -304,6 +312,12 @@ public class InspectorActivity2
 		LinearLayout set_ll = (LinearLayout) inflater
 				.inflate(R.layout.inspector_set, m_main_ll, false);
 
+		// Put the day above the info rectangle
+		TextView date_tv = (TextView) set_ll.findViewById(R.id.inspector_set_date_tv);
+		MyCalendar cal = new MyCalendar(layout_values.data.millis);
+		date_tv.setText(cal.print_date(this));
+
+		// todo:		USE THIS!!!
 		// Not using the title currently.
 		TextView title_tv = (TextView) set_ll.findViewById(R.id.inspector_set_title_tv);
 		title_tv.setText("");
@@ -350,12 +364,11 @@ public class InspectorActivity2
 		for (i = 0; i < m_main_ll.getChildCount(); i++) {
 			if (((Integer) (m_main_ll.getChildAt(i).getTag()))
 					> layout_values.order) {
-				Log.d(tag, "make_set_layout(), broke out to add i at " + i);
 				break;
 			}
 		}
+
 		m_main_ll.addView(set_ll, i);
-		Log.d(tag, "make_set_layout(), layout added at " + i);
 
 	}  // make_set_layout (layout_values)
 
@@ -378,16 +391,45 @@ public class InspectorActivity2
 			title_tv.setText(R.string.inspector_empty);
 		}
 		else {
+			title_tv.setVisibility(View.GONE);
 			// Show the date, but only if there IS a specific date.
-			if (m_set_id != -1) {
-				MyCalendar cal = new MyCalendar(date_in_millis);
-				title_tv.setText(cal.get_month_text(this) + " "
-								+ cal.get_day() + ", "
-								+ cal.get_year());
-			}
+//			if (m_set_id != -1) {
+//				MyCalendar cal = new MyCalendar(date_in_millis);
+//				title_tv.setText(cal.get_month_text(this) + " "
+//								+ cal.get_day() + ", "
+//								+ cal.get_year());
+//			}
 		}
 		m_layout_initialized = true;
 	} // init_layout()
+
+
+	/********************
+	 * Goes through the m_main_ll and fills out the Date labels
+	 * for the sets.  This is tricky, because we don't want to
+	 * repeat ourselves (looks tacky!).
+	 *
+	 * preconditions:
+	 *		The main layout (m_main_ll) is filled out with
+	 *		all the sets that will be there.
+	 */
+	void trim_date_labels() {
+		if (m_main_ll.getChildCount() == 0)
+			return;
+
+		String last_date = "", date;
+
+		for (int i = 0; i < m_main_ll.getChildCount(); i++) {
+			View child = m_main_ll.getChildAt(i);
+			TextView tv = (TextView) child.findViewById(R.id.inspector_set_date_tv);
+			date = (String) tv.getText();
+			if (date.contentEquals(last_date)) {
+				tv.setVisibility(View.GONE);
+			}
+			last_date = date;
+		}
+
+	} // make_date_labels()
 
 
 	/********************
@@ -405,14 +447,6 @@ public class InspectorActivity2
 
 		// And display the time of this particular set.
 		TextView time_tv = (TextView) set_ll.findViewById(R.id.inspector_set_time_tv);
-
-		// This is different, depending on whether we're looking at
-		// a specific date (a date was clicked), or just a general
-		// Inspector browse via the tab.
-		if (m_set_id == -1) {
-			// Just a general, so add the full date.
-			str = set_date.print_date(this) + "  -  ";
-		}
 
 		// Always do the time.
 		str += set_date.print_time(false);
@@ -839,8 +873,13 @@ public class InspectorActivity2
 		//-------------------
 		@Override
 		protected void onPostExecute(Void not_used) {
-			stop_progress_dialog();
+			// todo
+			//	Put the date in a TextView.  But only do it if it's a different
+			//	date from the earlier one.  This is a little tricky.
+			//
+			trim_date_labels();
 			scroll_to_child (m_set_id);
+			stop_progress_dialog();
 		}
 
 	} // class InspectorSyncTask

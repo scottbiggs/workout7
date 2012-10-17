@@ -607,7 +607,9 @@ public class EditSetActivity
 //		HistoryActivity.m_db_dirty = true;
 //		GraphActivity.m_db_dirty = true;
 
-		setResult(RESULT_OK);
+		Intent itt = new Intent (this, InspectorActivity2.class);
+		itt.putExtra(EditSetActivity.ID_KEY, m_id);
+		setResult(RESULT_OK, itt);
 		finish();
 	} // save_and_exit()
 
