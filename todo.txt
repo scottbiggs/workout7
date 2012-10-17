@@ -1,7 +1,7 @@
 TODO:
 -----------------
-In HistoryActivity, need to indicate when there is no data
-	to display.
+The HistoryActivity only shows the first 10 sets.  Need to modify
+	the UI so that we can see others!!
 
 Need to use the new buttons in all the nice dialog/activities
 	when modifying sets (EditSetActivity calls them).
@@ -37,7 +37,7 @@ In the HistoryActivity, it'd be nice if I put something like horizontal
 
 BUG: "Other" no longer works when adding a new exercise!
 
-Make sure that HistoryActivity, GraphActivity (done), and InspectorActivity
+Make sure that HistoryActivity, GraphActivity (done), and InspectorActivity (done)
 	use ASyncTask to load their data!
 
 BUG: ASet does not load the DISTANCE form correctly when it fills the
@@ -186,6 +186,10 @@ In the Inspector, differentiate between "skipped" and "n/a", like
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+In HistoryActivity, need to indicate when there is no data
+	to display.
+	- done
+
 When you modify something in the Inspector, it should
 	scroll to that modified set.  Right now it scrolls
 	to wherever it originally scrolled to.

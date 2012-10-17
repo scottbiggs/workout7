@@ -1,64 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@color/darkdark_gray" 
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:background="@color/darkdark_gray"
 	>
 
 <!--
-    <TextView
-        android:id="@+id/history_title_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="3dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="3dp"
-        android:layout_marginTop="5dp"
-        android:text="@string/history_title"
-	    style="@style/white_text_large"
-        />
+	<TextView
+		android:id="@+id/history_title_tv"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentTop="true"
+		android:layout_marginBottom="3dp"
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="3dp"
+		android:layout_marginTop="5dp"
+		android:text="@string/history_title"
+		style="@style/white_text_large"
+		/>
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/history_title_tv"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="3dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:src="@drawable/hpglogo_36x36" />
-
-    <TextView
-        android:id="@+id/history_desc_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/history_title_tv"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="13dp"
-        android:layout_marginRight="13dp"
-        android:gravity="center"
-        android:text="@string/history_empty_msg"
-	    style="@style/white_text_medium"
-        />
+	<ImageView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignBottom="@id/history_title_tv"
+		android:layout_alignParentRight="true"
+		android:layout_marginBottom="3dp"
+		android:layout_marginLeft="5dp"
+		android:layout_marginRight="5dp"
+		android:src="@drawable/hpglogo_36x36" />
 -->
 
-    <ScrollView
-        android:id="@+id/scrollView1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="4dp" >
+	<!-- This defaults to GONE.  Will be turned on
+		programmatically when there are no sets to
+		display.
+	-->
+	<TextView
+		android:id="@+id/history_desc_tv"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentTop="true"
+		android:layout_centerHorizontal="true"
+		android:layout_marginLeft="13dp"
+		android:layout_marginRight="13dp"
+		android:gravity="center"
+		android:text="@string/history_empty_msg"
+		android:visibility="gone"
+		style="@style/white_text_medium"
+		/>
 
-        <LinearLayout
-            android:id="@+id/history_ll"
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
-        </LinearLayout>
-    </ScrollView>
+	<ScrollView
+		android:id="@+id/scrollView1"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentTop="true"
+		android:layout_alignParentBottom="true"
+		android:layout_centerHorizontal="true"
+		android:layout_marginTop="4dp" >
+
+		<LinearLayout
+			android:id="@+id/history_ll"
+			android:orientation="vertical"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content" >
+		</LinearLayout>
+	</ScrollView>
 
 </RelativeLayout>

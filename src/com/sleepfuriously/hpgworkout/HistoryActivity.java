@@ -41,21 +41,11 @@ public class HistoryActivity
 	//	Class Data
 	//------------------------
 
+	/** Nice place to hold all the info about this exercise. */
+	protected ExerciseData m_ex_data;
+
 	/** The name of this exercise */
 	protected String m_ex_name;
-
-	/** The aspect of this exercise that's significant */
-	protected int m_significant = -1;
-
-
-	/** Whether or not these aspects are used for this exercise */
-	protected boolean m_reps = false, m_weight = false,
-		m_level = false, m_cals = false, m_dist = false,
-		m_time = false, m_other = false;
-
-	/** The units for this units. */
-	protected String m_weight_unit, m_dist_unit, m_time_unit,
-		m_other_unit, m_other_title;
 
 	//------------------------
 	//	Static Data
@@ -129,75 +119,9 @@ public class HistoryActivity
 				throw new SQLiteException("m_db was in use!!!");
 			}
 			m_db = WGlobals.g_db_helper.getReadableDatabase();
+			m_ex_data = DatabaseHelper.getExerciseData(m_db, m_ex_name);
 
 			Cursor cursor = null;
-
-			// Load up info about this exercise.
-			try {
-				cursor = DatabaseHelper.
-						getAllExerciseInfoByName(m_db, m_ex_name);
-
-				if (cursor.moveToFirst()) {
-					col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_SIGNIFICANT);
-					m_significant = cursor.getInt(col);
-
-					// Set all the booleans
-					col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_REP);
-					m_reps = (cursor.getInt(col)) == 1 ? true : false;
-
-					col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_WEIGHT);
-					m_weight = (cursor.getInt(col)) == 1 ? true : false;
-					if (m_weight) {
-						col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_WEIGHT_UNIT);
-						m_weight_unit = cursor.getString(col);
-					}
-
-					col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_LEVEL);
-					m_level = (cursor.getInt(col)) == 1 ? true : false;
-
-					col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_CALORIES);
-					m_cals = (cursor.getInt(col)) == 1 ? true : false;
-
-					col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_DIST);
-					m_dist = (cursor.getInt(col)) == 1 ? true : false;
-					if (m_dist) {
-						col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_DIST_UNIT);
-						m_dist_unit = cursor.getString(col);
-					}
-
-					col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_TIME);
-					m_time = (cursor.getInt(col)) == 1 ? true : false;
-					if (m_time) {
-						col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_TIME_UNIT);
-						m_time_unit = cursor.getString(col);
-					}
-
-					col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_OTHER);
-					m_other = (cursor.getInt(col)) == 1 ? true : false;
-					if (m_other) {
-						col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_OTHER_TITLE);
-						m_other_title = cursor.getString(col);
-						col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_OTHER_UNIT);
-						m_other_unit = cursor.getString(col);
-					}
-
-				} // if we found info for this exercise
-
-				else {
-					Log.e(tag, "Cannot find the exercise!");
-					return;
-				}
-			}
-			catch (SQLiteException e) {
-				e.printStackTrace();
-			}
-			finally {
-				if (cursor != null) {
-					cursor.close();
-					cursor = null;
-				}
-			}
-
 			try {
 				// Load in all the sets of this exercise.
 				cursor = m_db.query(DatabaseHelper.SET_TABLE_NAME,
@@ -211,14 +135,17 @@ public class HistoryActivity
 
 				if (cursor.getCount() > 0) {
 					Log.v(tag, "The Cursor count is " + cursor.getCount());
-					// Now that there's something to show,
-					// change the display message.
-//					TextView msg_tv = (TextView) findViewById(R.id.history_desc_tv);
-//					msg_tv.setText(R.string.history_msg);
 
 					// This does all the dirty work.
 					build_list (cursor);
 				} //  if there's something to look at
+				else {
+					// Nothing there.  Indicate so by turning this
+					// TextView on (it's normally not visible and is
+					// covered up by the sets).
+					TextView tv = (TextView) findViewById(R.id.history_desc_tv);
+					tv.setVisibility(View.VISIBLE);
+				}
 
 			} // TRY to get a Cursor
 			catch (SQLiteException e) {
@@ -268,7 +195,7 @@ public class HistoryActivity
 
 			// Reps
 			tv = (TextView) set_ll.findViewById(R.id.history_row_reps);
-			if (m_reps) {
+			if (m_ex_data.breps) {
 				str = get_data_str(cursor, DatabaseHelper.SET_COL_REPS, false);
 				str = getString(R.string.label_reps, str);
 				tv.setText(str);
@@ -279,9 +206,9 @@ public class HistoryActivity
 
 			// Weight
 			tv = (TextView) set_ll.findViewById(R.id.history_row_weight);
-			if (m_weight) {
+			if (m_ex_data.bweight) {
 				str = get_data_str(cursor, DatabaseHelper.SET_COL_WEIGHT, true);
-				str = getString(R.string.label_weight, m_weight_unit, str);
+				str = getString(R.string.label_weight, m_ex_data.weight_unit, str);
 				tv.setText(str);
 			}
 			else {
@@ -290,7 +217,7 @@ public class HistoryActivity
 
 			// Level
 			tv = (TextView) set_ll.findViewById(R.id.history_row_level);
-			if (m_level) {
+			if (m_ex_data.blevel) {
 				str = get_data_str(cursor, DatabaseHelper.SET_COL_LEVELS, false);
 				str = getString(R.string.label_level, str);
 				tv.setText(str);
@@ -301,7 +228,7 @@ public class HistoryActivity
 
 			// Calories
 			tv = (TextView) set_ll.findViewById(R.id.history_row_cals);
-			if (m_cals) {
+			if (m_ex_data.bcals) {
 				str = get_data_str(cursor, DatabaseHelper.SET_COL_CALORIES, false);
 				str = getString(R.string.label_cals, str);
 				tv.setText(str);
@@ -312,9 +239,9 @@ public class HistoryActivity
 
 			// Distance
 			tv = (TextView) set_ll.findViewById(R.id.history_row_dist);
-			if (m_dist) {
+			if (m_ex_data.bdist) {
 				str = get_data_str(cursor, DatabaseHelper.SET_COL_DIST, true);
-				str = getString(R.string.label_dist, m_dist_unit, str);
+				str = getString(R.string.label_dist, m_ex_data.dist_unit, str);
 				tv.setText(str);
 			}
 			else {
@@ -323,9 +250,9 @@ public class HistoryActivity
 
 			// Time
 			tv = (TextView) set_ll.findViewById(R.id.history_row_time);
-			if (m_time) {
+			if (m_ex_data.btime) {
 				str = get_data_str(cursor, DatabaseHelper.SET_COL_TIME, true);
-				str = getString(R.string.label_time, m_time_unit, str);
+				str = getString(R.string.label_time, m_ex_data.time_unit, str);
 				tv.setText(str);
 			}
 			else {
@@ -334,10 +261,10 @@ public class HistoryActivity
 
 			// Other
 			tv = (TextView) set_ll.findViewById(R.id.history_row_other);
-			if (m_other) {
+			if (m_ex_data.bother) {
 				str = get_data_str(cursor, DatabaseHelper.SET_COL_OTHER, true);
 				str = getString(R.string.label_other,
-						m_other_title, m_other_unit, str);
+								m_ex_data.other_title, m_ex_data.other_unit, str);
 				tv.setText(str);
 			}
 			else {
@@ -417,7 +344,7 @@ public class HistoryActivity
 	 * 			supply this number.
 	 */
 	private String get_data_str (Cursor cursor, String column_name,
-	                             boolean is_float) {
+								boolean is_float) {
 		int col = cursor.getColumnIndex(column_name);
 
 		// Null is a special case (it only happens when an
