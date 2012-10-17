@@ -49,21 +49,52 @@
 		style="@style/white_text_medium"
 		/>
 
+	<Button
+		android:id="@+id/history_more_butt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_centerHorizontal="true"
+		android:layout_marginBottom="5dp"
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp"
+		android:layout_marginTop="5dp"
+		android:background="@drawable/button_shiny_black"
+		android:paddingLeft="18dp"
+		android:paddingRight="18dp"
+		android:text="@string/history_more_butt"
+		android:textColor="@color/ivory"
+		android:textSize="@dimen/font_size_default" />
+
+	<LinearLayout
+		android:id="@+id/history_wrapper_ll"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_above="@id/history_more_butt"
+		>
+<!--
 	<ScrollView
-		android:id="@+id/scrollView1"
+		android:id="@+id/history_sv"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:layout_alignParentTop="true"
-		android:layout_alignParentBottom="true"
 		android:layout_centerHorizontal="true"
+		android:layout_above="@id/history_more_butt"
 		android:layout_marginTop="4dp" >
-
-		<LinearLayout
-			android:id="@+id/history_ll"
-			android:orientation="vertical"
+-->
+		<ScrollView
+			android:id="@+id/history_sv"
 			android:layout_width="fill_parent"
-			android:layout_height="wrap_content" >
-		</LinearLayout>
-	</ScrollView>
+			android:layout_height="fill_parent"
+			android:layout_marginTop="4dp" >
+
+			<LinearLayout
+				android:id="@+id/history_ll"
+				android:orientation="vertical"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" >
+			</LinearLayout>
+		</ScrollView>
+	</LinearLayout>
 
 </RelativeLayout>

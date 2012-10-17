@@ -47,6 +47,18 @@ public class HistoryActivity
 	/** The name of this exercise */
 	protected String m_ex_name;
 
+	/** How many histories are displayed at a time. */
+	protected int m_limit = 10;
+
+	/**
+	 * The starting number (offset) of the histories to display.
+	 * Eg: to display histories [50..59], m_limit must be 10
+	 * and this = 50.
+	 *
+	 * The actual formula: [offset..(offset + limit)]
+	 */
+	protected int m_offset = 5;
+
 	//------------------------
 	//	Static Data
 	//------------------------
@@ -131,7 +143,11 @@ public class HistoryActivity
 						null,
 						null,
 						DatabaseHelper.SET_COL_DATEMILLIS + " DESC",	// Order by descending
-						"10");	// limit
+//						"" + m_offset + ", " + m_limit);	// Limit: which sets to display
+						"2, 3");
+//						"" + m_limit);
+//				cursor = m_db.rawQuery("SELECT * FROM " + DatabaseHelper.SET_TABLE_NAME
+//				                       + " ORDER BY DESC LIMIT 2, 3", null);
 
 				if (cursor.getCount() > 0) {
 					Log.v(tag, "The Cursor count is " + cursor.getCount());

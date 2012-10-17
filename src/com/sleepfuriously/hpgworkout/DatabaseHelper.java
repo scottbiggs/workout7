@@ -1228,6 +1228,45 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 	/************************
+	 * Finds out how many sets are in a given exercise.  Note that
+	 * this is pretty computationally expensive.  If you're going
+	 * to make a Cursor from this set, you might as well do that
+	 * and then call Cursor.getCount(), which would save you a lot
+	 * of time.
+	 *
+	 * @param db		A database ready for reading.
+	 * @param name	The name of the exercise.
+	 * @return	The number of exercise sets for the specified
+	 * 			exercise.
+	 * 			-1 if couldn't find anything for the given name.
+	 */
+	public static int getNumSets (SQLiteDatabase db, String name) {
+		Cursor c = null;
+		int ret_val = -1;
+		try {
+			c = db.query(SET_TABLE_NAME,
+						null,
+						SET_COL_NAME + "=?",
+						new String[] {"" + name},
+						null,
+						null,
+						null);
+			ret_val = c.getCount();
+		}
+		catch (SQLiteException e) {
+			Log.v(tag, "getNumSets() can't find any sets for exercise " + name + "!");
+		}
+		finally {
+			if (c != null) {
+				c.close();
+				c = null;
+			}
+		}
+		return ret_val;
+	} // getNumSets (db, name)
+
+
+	/************************
 	 * This returns the most recently entered set (sorted in
 	 * descending order by date) for a given exercise.
 	 *
@@ -1236,6 +1275,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * 	Or...if you want this cursor to stick around for a while,
 	 *  call startManagingCursor() so that the Activity takes care
 	 *  of it.
+	 *
+	 * NOTE 2:
+	 *	It's a GREAT idea to enclose this in a try/catch block
+	 *	(catch with SQLiteException).  Yeah, that'd do it.
 	 *
 	 * @param db		A database ready for reading.
 	 * @param name	The name of the exercise.
