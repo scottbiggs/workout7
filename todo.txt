@@ -1,5 +1,8 @@
 TODO:
 -----------------
+The "more" button in the History works, but it doesn't stop.  Perhaps
+	a major UI change is in order....
+
 The HistoryActivity only shows the first 10 sets.  Need to modify
 	the UI so that we can see others!!
 

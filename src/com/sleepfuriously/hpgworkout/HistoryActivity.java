@@ -12,6 +12,8 @@ import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -57,7 +59,7 @@ public class HistoryActivity
 	 *
 	 * The actual formula: [offset..(offset + limit)]
 	 */
-	protected int m_offset = 5;
+	protected int m_offset = 0;
 
 	//------------------------
 	//	Static Data
@@ -94,6 +96,15 @@ public class HistoryActivity
 //				(Object[]) new String[] {m_ex_name});
 //		TextView title_tv = (TextView) findViewById(R.id.history_title_tv);
 //		title_tv.setText(title);
+
+		Button more_butt = (Button) findViewById(R.id.history_more_butt);
+		more_butt.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				m_offset += m_limit;
+				m_db_dirty = true;
+				onResume();
+			}
+		});
 
 		init_from_database();
 
@@ -143,11 +154,7 @@ public class HistoryActivity
 						null,
 						null,
 						DatabaseHelper.SET_COL_DATEMILLIS + " DESC",	// Order by descending
-//						"" + m_offset + ", " + m_limit);	// Limit: which sets to display
-						"2, 3");
-//						"" + m_limit);
-//				cursor = m_db.rawQuery("SELECT * FROM " + DatabaseHelper.SET_TABLE_NAME
-//				                       + " ORDER BY DESC LIMIT 2, 3", null);
+						"" + m_offset + ", " + m_limit);	// Limit: which sets to display
 
 				if (cursor.getCount() > 0) {
 					Log.v(tag, "The Cursor count is " + cursor.getCount());
