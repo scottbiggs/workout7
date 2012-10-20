@@ -7,9 +7,9 @@
 	I've changed the padding and textSize so that it's big enough
 	to actually scroll. -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-	<style 
-	    name="listlike_button" 
-	    parent="@android:style/Widget.Button">
+	<style
+		name="listlike_button"
+		parent="@android:style/Widget.Button">
 		<item name="android:background">@android:drawable/list_selector_background</item>
 		<item name="android:focusable">true</item>
 		<item name="android:clickable">true</item>
@@ -26,35 +26,63 @@
 	</style>
 
 	<!-- =============================================== -->
-	<!-- Text Styles										-->	
+	<!-- Text Styles										-->
 	<!-- =============================================== -->
-	<style 
-	    name="white_text_small" 
-	    parent="@android:style/TextAppearance">
+	<style
+		name="white_text_small"
+		parent="@android:style/TextAppearance">
 		<item name="android:textColor">@color/ivory</item>
-		<item name="android:textSize">15dp</item>	    
-	</style>
-		
-	<style 
-	    name="white_text_medium" 
-	    parent="@android:style/TextAppearance">
-		<item name="android:textColor">@color/ivory</item>
-		<item name="android:textSize">18dp</item>	    
+		<item name="android:textSize">15dp</item>
 	</style>
 
-	<style 
-	    name="white_text_large" 
-	    parent="@android:style/TextAppearance">
+	<style
+		name="white_text_medium"
+		parent="@android:style/TextAppearance">
 		<item name="android:textColor">@color/ivory</item>
-		<item name="android:textSize">20dp</item>	    
+		<item name="android:textSize">18dp</item>
 	</style>
 
-	<style 
-	    name="white_text_extra_large" 
-	    parent="@android:style/TextAppearance">
+	<style
+		name="white_text_large"
+		parent="@android:style/TextAppearance">
 		<item name="android:textColor">@color/ivory</item>
-		<item name="android:textSize">24dp</item>	    
+		<item name="android:textSize">20dp</item>
 	</style>
-		
-	
+
+	<style
+		name="white_text_extra_large"
+		parent="@android:style/TextAppearance">
+		<item name="android:textColor">@color/ivory</item>
+		<item name="android:textSize">24dp</item>
+	</style>
+
+	<style
+		name="white_alt_small"
+		parent="@android:style/TextAppearance">
+		<item name="android:textColor">@color/ivory</item>
+		<item name="android:textSize">15dp</item>
+		<item name="android:typeface">serif</item>
+	</style>
+	<style
+		name="white_alt_medium"
+		parent="@android:style/TextAppearance">
+		<item name="android:textColor">@color/ivory</item>
+		<item name="android:textSize">18dp</item>
+		<item name="android:typeface">serif</item>
+	</style>
+	<style
+		name="white_alt_large"
+		parent="@android:style/TextAppearance">
+		<item name="android:textColor">@color/ivory</item>
+		<item name="android:textSize">20dp</item>
+		<item name="android:typeface">serif</item>
+	</style>
+	<style
+		name="white_alt_extra_large"
+		parent="@android:style/TextAppearance">
+		<item name="android:textColor">@color/ivory</item>
+		<item name="android:textSize">24dp</item>
+		<item name="android:typeface">serif</item>
+	</style>
+
 </resources>

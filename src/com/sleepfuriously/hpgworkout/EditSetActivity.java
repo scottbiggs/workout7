@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
@@ -148,6 +149,13 @@ public class EditSetActivity
 		setContentView(R.layout.editset);
 
 		Log.i(tag, "Entering onCreate()");
+
+		// This bit makes sure that the dialog takes up as much of
+		// the window as possible (and still look like a dialog).
+		LayoutParams params = getWindow().getAttributes();
+		params.height = LayoutParams.FILL_PARENT;
+		params.width  = LayoutParams.FILL_PARENT;
+		getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
 
 		m_weight_label_tv = (TextView) findViewById(R.id.editset_weight_label_tv);
 //		m_level_label_tv = (TextView) findViewById(R.id.editset_level_label_tv);

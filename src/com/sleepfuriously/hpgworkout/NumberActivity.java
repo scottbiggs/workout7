@@ -30,6 +30,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -112,10 +113,12 @@ public class NumberActivity
 	//----------------------------
 	//	Widgets
 	//----------------------------
-	Button m_cancel, m_help, m_done,
+	Button m_cancel, m_done,
 		m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, mdot, mclear;
 
 	TextView m_number_tv;
+
+	ImageView m_help;
 
 
 	//----------------------------
@@ -140,7 +143,7 @@ public class NumberActivity
 		setContentView(R.layout.enter_a_number);
 
 		m_cancel = (Button) findViewById(R.id.enter_a_number_cancel_butt);
-		m_help = (Button) findViewById(R.id.enter_a_number_help_butt);
+		m_help = (ImageView) findViewById(R.id.enter_a_number_logo);
 		m_done = (Button) findViewById(R.id.enter_a_number_ok_butt);
 
 		m0 = (Button) findViewById(R.id.enter_a_number_button0);
@@ -227,7 +230,7 @@ public class NumberActivity
 				}
 				break;
 
-			case R.id.enter_a_number_help_butt:
+			case R.id.enter_a_number_logo:
 				show_help_dialog(R.string.enter_a_number_help_title,
 						R.string.enter_a_number_help_msg);
 				break;

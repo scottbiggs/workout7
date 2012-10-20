@@ -4,263 +4,300 @@
 	to enter a number (int or float).
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" 
-    android:background="@color/darkdark_gray" 
-    >
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical"
+	android:background="@color/darkdark_gray"
+	>
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
+	<RelativeLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/enter_a_number_title_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_gravity="center_vertical"
-            android:layout_marginBottom="3dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="3dp"
-            android:layout_marginTop="5dp"
-            android:text="@string/enter_a_number_default_title"
-		    style="@style/white_text_large"
-            />
+		<TextView
+			android:id="@+id/enter_a_number_title_tv"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentLeft="true"
+			android:layout_alignParentTop="true"
+			android:layout_gravity="center_vertical"
+			android:layout_marginBottom="3dp"
+			android:layout_marginLeft="10dp"
+			android:layout_marginRight="3dp"
+			android:layout_marginTop="5dp"
+			android:text="@string/enter_a_number_default_title"
+			style="@style/white_text_large"
+			/>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="6dp"
-            android:src="@drawable/hpglogo_36x36" />
-    </RelativeLayout>
+		<ImageView
+			android:id="@+id/enter_a_number_logo"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentRight="true"
+			android:layout_marginRight="8dp"
+			android:layout_marginTop="6dp"
+			android:src="@drawable/hpglogo_36x36" />
+	</RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+	<RelativeLayout
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent" >
 
-        <!-- ============= -->
-        <!-- Buttons       -->
-        <!-- ============= -->
+		<!-- ============= -->
+		<!-- Buttons       -->
+		<!-- ============= -->
 
-        <Button
-            android:id="@+id/enter_a_number_help_butt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:text="@string/question_mark" />
+		<Button
+			android:id="@+id/enter_a_number_help_butt"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			android:layout_centerHorizontal="true"
+			android:layout_marginLeft="5dp"
+			android:layout_marginRight="5dp"
+			android:paddingLeft="15dp"
+			android:paddingRight="15dp"
+			android:visibility="invisible"
+			android:enabled="false"
+			android:text="@string/question_mark" />
 
-        <Button
-            android:id="@+id/enter_a_number_ok_butt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="8dp"
-            android:layout_toRightOf="@id/enter_a_number_help_butt"
-            android:text="@string/done" />
+		<Button
+			android:id="@+id/enter_a_number_ok_butt"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			android:layout_alignParentRight="true"
+			android:layout_marginRight="8dp"
+			android:layout_toRightOf="@id/enter_a_number_help_butt"
+			android:background="@drawable/button_shiny_black"
+			android:textColor="@color/ivory"
+			android:textSize="@dimen/font_size_button_default"
+			android:text="@string/done" />
 
-        <Button
-            android:id="@+id/enter_a_number_cancel_butt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="8dp"
-            android:layout_toLeftOf="@id/enter_a_number_help_butt"
-            android:text="@string/cancel" />
+		<Button
+			android:id="@+id/enter_a_number_cancel_butt"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			android:layout_alignParentLeft="true"
+			android:layout_marginLeft="8dp"
+			android:layout_toLeftOf="@id/enter_a_number_help_butt"
+			android:background="@drawable/button_shiny_black"
+			android:textColor="@color/ivory"
+			android:textSize="@dimen/font_size_button_default"
+			android:text="@string/cancel" />
 
-        <TextView
-            android:id="@+id/enter_a_number_value_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/enter_a_number_title_tv"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="12dp"
-            android:layout_marginTop="5dp"
-            android:shadowColor="@color/hpg_orange"
-            android:shadowDx="3"
-            android:shadowDy="3"
-            android:shadowRadius="5"
-            android:text="@string/enter_a_number_old_value"
-		    style="@style/white_text_medium"
-            />
+		<TextView
+			android:id="@+id/enter_a_number_value_tv"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentLeft="true"
+			android:layout_below="@id/enter_a_number_title_tv"
+			android:layout_marginLeft="25dp"
+			android:layout_marginRight="12dp"
+			android:layout_marginTop="5dp"
+			android:shadowColor="@color/hpg_orange"
+			android:shadowDx="3"
+			android:shadowDy="3"
+			android:shadowRadius="5"
+			android:text="@string/enter_a_number_old_value"
+			style="@style/white_text_medium"
+			/>
 
-        <TextView
-            android:id="@+id/enter_a_number_display_tv"
-            android:layout_width="100sp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/enter_a_number_value_tv"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/rounded_edges2"
-            android:gravity="center"
-            android:paddingBottom="4dp"
-            android:paddingLeft="6dp"
-            android:paddingRight="6dp"
-            android:paddingTop="4dp"
-            android:text="0"
-		    style="@style/white_text_large"
-            />
+		<TextView
+			android:id="@+id/enter_a_number_display_tv"
+			android:layout_width="100sp"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/enter_a_number_value_tv"
+			android:layout_centerHorizontal="true"
+			android:layout_marginTop="8dp"
+			android:background="@drawable/rounded_edges2"
+			android:gravity="center"
+			android:paddingBottom="4dp"
+			android:paddingLeft="6dp"
+			android:paddingRight="6dp"
+			android:paddingTop="4dp"
+			android:text="0"
+			style="@style/white_text_large"
+			/>
 
 
-        <!-- ============= -->
-        <!-- Table         -->
-        <!-- ============= -->
+		<!-- ============= -->
+		<!-- Table         -->
+		<!-- ============= -->
 
-        <TableLayout
-            android:id="@+id/tableLayout1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/enter_a_number_ok_butt"
-            android:layout_below="@+id/enter_a_number_display_tv"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="8dp"
-            android:stretchColumns="*" >
+		<TableLayout
+			android:id="@+id/tableLayout1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_above="@+id/enter_a_number_ok_butt"
+			android:layout_below="@+id/enter_a_number_display_tv"
+			android:layout_centerHorizontal="true"
+			android:layout_margin="8dp"
+			android:stretchColumns="*" >
 
-            <TableRow
-                android:id="@+id/tableRow1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+			<TableRow
+				android:id="@+id/tableRow1"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="5dp" >
 
-                <Button
-                    android:id="@+id/enter_a_number_button7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="7"
-				    style="@style/white_text_large"
-                    />
+				<Button
+					android:id="@+id/enter_a_number_button1"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_margin="5dp"
+					android:text="1"
+					android:background="@drawable/button_shiny_black"
+					android:textSize="@dimen/font_size_large_default"
+					style="@style/white_text_large"
+					/>
 
-                <Button
-                    android:id="@+id/enter_a_number_button8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="8"
-				    style="@style/white_text_large"
-                    />
+				<Button
+					android:id="@+id/enter_a_number_button2"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_margin="5dp"
+					android:text="2"
+					android:background="@drawable/button_shiny_black"
+					android:textSize="@dimen/font_size_large_default"
+					style="@style/white_text_large"
+					/>
 
-                <Button
-                    android:id="@+id/enter_a_number_button9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="9"
-				    style="@style/white_text_large"
-                    />
-            </TableRow>
+				<Button
+					android:id="@+id/enter_a_number_button3"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_margin="5dp"
+					android:text="3"
+					android:background="@drawable/button_shiny_black"
+					android:textSize="@dimen/font_size_large_default"
+					style="@style/white_text_large"
+					/>
+			</TableRow>
 
-            <TableRow
-                android:id="@+id/tableRow2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+			<TableRow
+				android:id="@+id/tableRow2"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="5dp" >
 
-                <Button
-                    android:id="@+id/enter_a_number_button4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="4"
-				    style="@style/white_text_large"
-                    />
+				<Button
+					android:id="@+id/enter_a_number_button4"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_margin="5dp"
+					android:text="4"
+					android:background="@drawable/button_shiny_black"
+					android:textSize="@dimen/font_size_large_default"
+					style="@style/white_text_large"
+					/>
 
-                <Button
-                    android:id="@+id/enter_a_number_button5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="5"
-				    style="@style/white_text_large"
-                    />
+				<Button
+					android:id="@+id/enter_a_number_button5"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_margin="5dp"
+					android:text="5"
+					android:background="@drawable/button_shiny_black"
+					android:textSize="@dimen/font_size_large_default"
+					style="@style/white_text_large"
+					/>
 
-                <Button
-                    android:id="@+id/enter_a_number_button6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="6"
-				    style="@style/white_text_large"
-                    />
-            </TableRow>
+				<Button
+					android:id="@+id/enter_a_number_button6"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_margin="5dp"
+					android:text="6"
+					android:background="@drawable/button_shiny_black"
+					android:textSize="@dimen/font_size_large_default"
+					style="@style/white_text_large"
+					/>
+			</TableRow>
 
-            <TableRow
-                android:id="@+id/tableRow3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+			<TableRow
+				android:id="@+id/tableRow3"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="5dp" >
 
-                <Button
-                    android:id="@+id/enter_a_number_button1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="1"
-				    style="@style/white_text_large"
-                    />
+				<Button
+					android:id="@+id/enter_a_number_button7"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_margin="5dp"
+					android:text="7"
+					android:background="@drawable/button_shiny_black"
+					android:textSize="@dimen/font_size_large_default"
+					style="@style/white_text_large"
+					/>
 
-                <Button
-                    android:id="@+id/enter_a_number_button2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="2"
-				    style="@style/white_text_large"
-                    />
+				<Button
+					android:id="@+id/enter_a_number_button8"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_margin="5dp"
+					android:text="8"
+					android:background="@drawable/button_shiny_black"
+					android:textSize="@dimen/font_size_large_default"
+					style="@style/white_text_large"
+					/>
 
-                <Button
-                    android:id="@+id/enter_a_number_button3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="3"
-				    style="@style/white_text_large"
-                    />
-            </TableRow>
+				<Button
+					android:id="@+id/enter_a_number_button9"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_margin="5dp"
+					android:text="9"
+					android:background="@drawable/button_shiny_black"
+					android:textSize="@dimen/font_size_large_default"
+					style="@style/white_text_large"
+					/>
+			</TableRow>
 
-            <TableRow
-                android:id="@+id/tableRow4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+			<TableRow
+				android:id="@+id/tableRow4"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="5dp" >
 
-                <Button
-                    android:id="@+id/enter_a_number_button_clear"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="@string/clear"
-				    style="@style/white_text_large"
-                    />
+				<Button
+					android:id="@+id/enter_a_number_button_clear"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_margin="5dp"
+					android:text="@string/clear"
+					android:background="@drawable/button_shiny_black"
+					android:textSize="@dimen/font_size_large_default"
+					style="@style/white_text_large"
+					/>
 
-                <Button
-                    android:id="@+id/enter_a_number_button0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="0"
-				    style="@style/white_text_large"
-                    />
+				<Button
+					android:id="@+id/enter_a_number_button0"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_margin="5dp"
+					android:text="0"
+					android:background="@drawable/button_shiny_black"
+					android:textSize="@dimen/font_size_large_default"
+					style="@style/white_text_large"
+					/>
 
-                <Button
-                    android:id="@+id/enter_a_number_button_dot"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="@string/decimal_point"
-				    style="@style/white_text_large"
-                    />
-            </TableRow>
-        </TableLayout>
+				<Button
+					android:id="@+id/enter_a_number_button_dot"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_margin="5dp"
+					android:text="@string/decimal_point"
+					android:background="@drawable/button_shiny_black"
+					android:textSize="@dimen/font_size_large_default"
+					style="@style/white_text_large"
+					/>
+			</TableRow>
+		</TableLayout>
 
-    </RelativeLayout>
+	</RelativeLayout>
 
 </LinearLayout>

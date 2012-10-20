@@ -1,9 +1,15 @@
 TODO:
 -----------------
+Edit a Workout Set: it's possible on small displays for the buttons
+	at the bottom to disappear.  We need to put the info stuff
+	in a ScrollView.
+
 The "more" button in the History works, but it doesn't stop.  Perhaps
 	a major UI change is in order....
 
-The HistoryActivity only shows the first 10 sets.  Need to modify
+	AND...
+
+	The HistoryActivity only shows the first 10 sets.  Need to modify
 	the UI so that we can see others!!
 
 Need to use the new buttons in all the nice dialog/activities
