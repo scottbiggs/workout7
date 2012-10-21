@@ -1173,9 +1173,8 @@
 		<!-- ============                ============ -->
 
 	<string name="enter_a_number_default_title">NO TITLE</string>
-	<string name="enter_a_number_old_value">Type in a new
-		value
-		\n(originally: %s)</string>
+	<string name="enter_a_number_instruction">Type in a new value:</string>
+	<string name="enter_a_number_old_value">(originally %s)</string>
 
 	<string name="enter_a_number_help_title">Number Help</string>
 	<string name="enter_a_number_help_msg">

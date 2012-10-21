@@ -89,8 +89,9 @@
 			android:text="@string/cancel" />
 
 		<TextView
-			android:id="@+id/enter_a_number_value_tv"
-			android:layout_width="wrap_content"
+			android:id="@+id/enter_a_number_instruction_tv"
+			style="@style/white_alt_medium"
+			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_alignParentLeft="true"
 			android:layout_below="@id/enter_a_number_title_tv"
@@ -101,27 +102,37 @@
 			android:shadowDx="3"
 			android:shadowDy="3"
 			android:shadowRadius="5"
+			android:text="@string/enter_a_number_instruction"
+			android:textStyle="normal" />
+
+		<TextView
+			android:id="@+id/enter_a_number_value_tv"
+			style="@style/white_alt_medium"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignParentLeft="true"
+			android:layout_below="@id/enter_a_number_instruction_tv"
+			android:layout_marginLeft="25dp"
+			android:layout_marginRight="12dp"
+			android:layout_marginTop="3dp"
+			android:gravity="center_horizontal"
 			android:text="@string/enter_a_number_old_value"
-			style="@style/white_text_medium"
-			/>
+			android:textStyle="normal|italic" />
 
 		<TextView
 			android:id="@+id/enter_a_number_display_tv"
+			style="@style/white_text_large"
 			android:layout_width="100sp"
 			android:layout_height="wrap_content"
 			android:layout_below="@+id/enter_a_number_value_tv"
 			android:layout_centerHorizontal="true"
-			android:layout_marginTop="8dp"
+			android:layout_marginTop="3dp"
 			android:background="@drawable/rounded_edges2"
-			android:gravity="center"
 			android:paddingBottom="4dp"
 			android:paddingLeft="6dp"
 			android:paddingRight="6dp"
 			android:paddingTop="4dp"
-			android:text="0"
-			style="@style/white_text_large"
-			/>
-
+			android:text="0" />
 
 		<!-- ============= -->
 		<!-- Table         -->
