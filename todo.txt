@@ -1,5 +1,11 @@
 TODO:
 -----------------
+Make the condition part of the Inspector better--REAL icons instead
+	of the plus/minus things.  And while we're at it, use these
+	icons for the radio buttons in ADD A SET, too!
+
+Get rid of the History Tab!  It's all encapsulated in the Inspector.
+
 Edit a Workout Set: it's possible on small displays for the buttons
 	at the bottom to disappear.  We need to put the info stuff
 	in a ScrollView.
@@ -22,8 +28,6 @@ Not all the new help dialogs use the new buttons.  The help dialogs
 
 In ASet, the notes and stress labels are black, not ivory.
 
-The GraphSelectorActivity's buttons are abysmal!  What is "butt"?
-
 The InspectorActivity needs a major overhaul.  The UI is integrally
 entwined in the database.  Taking it out will be a project.
 
@@ -45,9 +49,6 @@ In the HistoryActivity, it'd be nice if I put something like horizontal
 	lines between some of the sets to denote different days.
 
 BUG: "Other" no longer works when adding a new exercise!
-
-Make sure that HistoryActivity, GraphActivity (done), and InspectorActivity (done)
-	use ASyncTask to load their data!
 
 BUG: ASet does not load the DISTANCE form correctly when it fills the
 	forms with the last data.  It truncates the dist, instead of using
@@ -195,6 +196,13 @@ In the Inspector, differentiate between "skipped" and "n/a", like
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Make sure that HistoryActivity, GraphActivity (done), and InspectorActivity (done)
+	use ASyncTask to load their data!
+	- done.  Well, I'm going to remove the History, so I don't have to that one.
+
+The GraphSelectorActivity's buttons are abysmal!  What is "butt"?
+	-fixed
+
 In HistoryActivity, need to indicate when there is no data
 	to display.
 	- done

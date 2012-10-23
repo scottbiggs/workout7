@@ -1287,8 +1287,9 @@
 	<!-- ============                 ============ -->
 
 	<string name="graph_selector_title">Graphs!</string>
-	<string name="graph_selector_exercise_msg">Which exercise
-		do you want to look at?</string>
+	<string name="graph_selector_type_msg">Graph by Exercise Type</string>
+	<string name="graph_selector_group_msg">Graph by Muscle Group</string>
+	<string name="graph_selector_exercise_msg">View a specific exercise:</string>
 
 	<string name="graph_selector_help_title">Select a Graph</string>
 	<string name="graph_selector_help_msg">
