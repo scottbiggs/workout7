@@ -51,6 +51,9 @@ public class GraphActivity
 	 */
 	GView m_view;
 
+	Button m_back;
+
+
 	//-------------------------
 	//	Data
 	//-------------------------
@@ -115,6 +118,9 @@ public class GraphActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.graphs);
 
+		m_back = (Button) findViewById(R.id.graph_back_butt);
+		m_back.setOnClickListener(this);
+
 		m_view = (GView) findViewById(R.id.graph_view);
 
 		// Make sure we load the database each time onCreate() is called.
@@ -175,7 +181,9 @@ public class GraphActivity
 
 	//-------------------------
 	public void onClick(View v) {
-
+		if (v == m_back) {
+			finish();
+		}
 	} // onClick (v)
 
 	//-------------------------
@@ -372,12 +380,12 @@ public class GraphActivity
 					cursor = m_db.query(
 								DatabaseHelper.EXERCISE_TABLE_NAME,	// table
 								null,			//	columns[]
-					            DatabaseHelper.EXERCISE_COL_NAME + "=?",//selection
-					            new String[] {m_ex_name},// selectionArgs[]
-					            null,	//	groupBy
-					            null,	//	having
-					            null,	//	orderBy
-					            null);
+								DatabaseHelper.EXERCISE_COL_NAME + "=?",//selection
+								new String[] {m_ex_name},// selectionArgs[]
+								null,	//	groupBy
+								null,	//	having
+								null,	//	orderBy
+								null);
 
 					cursor.moveToFirst();
 
@@ -461,12 +469,12 @@ public class GraphActivity
 					cursor = m_db.query(
 								DatabaseHelper.SET_TABLE_NAME,	// table
 								null,			//	columns[]
-					            DatabaseHelper.SET_COL_NAME + "=?",//selection
-					            new String[] {m_ex_name},// selectionArgs[]
-					            null,	//	groupBy
-					            null,	//	having
-					            DatabaseHelper.SET_COL_DATEMILLIS,	//	orderBy
-					            null);
+								DatabaseHelper.SET_COL_NAME + "=?",//selection
+								new String[] {m_ex_name},// selectionArgs[]
+								null,	//	groupBy
+								null,	//	having
+								DatabaseHelper.SET_COL_DATEMILLIS,	//	orderBy
+								null);
 
 					// Record the number of set in this
 					// exercise.
@@ -691,8 +699,8 @@ public class GraphActivity
 		 * one shot.
 		 */
 		public SetData(boolean rep, boolean level, boolean cal,
-		               boolean weight, boolean dist, boolean time,
-		               boolean other) {
+					   boolean weight, boolean dist, boolean time,
+					   boolean other) {
 			init (rep, level, cal, weight, dist, time,
 					other);
 		}

@@ -1,60 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" 
-    android:background="@color/darkdark_gray" 
-    >
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:background="@color/darkdark_gray"
+	>
 
-    <ImageView
-        android:id="@+id/graph_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="6dp"
-        android:src="@drawable/hpglogo_36x36" />
+	<ImageView
+		android:id="@+id/graph_logo"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:layout_marginRight="8dp"
+		android:layout_marginTop="6dp"
+		android:src="@drawable/hpglogo_36x36" />
 
-    <TextView
-        android:id="@+id/graph_title_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_gravity="center_vertical"
-        android:layout_marginBottom="3dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="5dp"
-        android:layout_toLeftOf="@id/graph_logo"
-        android:text="@string/graph_title_msg"
-	    style="@style/white_text_medium"
-        android:textColor="@color/off_white" />
+	<TextView
+		android:id="@+id/graph_title_tv"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentTop="true"
+		android:layout_gravity="center_vertical"
+		android:layout_marginBottom="3dp"
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="8dp"
+		android:layout_marginTop="5dp"
+		android:layout_toLeftOf="@id/graph_logo"
+		android:text="@string/graph_title_msg"
+		style="@style/white_text_medium"
+		android:textColor="@color/off_white" />
 
-    <TextView
-        android:id="@+id/graph_description_tv"
-        android:layout_below="@id/graph_title_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="12dp"
-        android:layout_marginTop="6dp"
-        android:gravity="center"
-        android:text="@string/loading_str"
-	    style="@style/white_text_small"
-        android:textColor="@color/off_white"
-        android:textStyle="bold" />
+	<TextView
+		android:id="@+id/graph_description_tv"
+		android:layout_below="@id/graph_title_tv"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="24dp"
+		android:layout_marginRight="12dp"
+		android:layout_marginTop="6dp"
+		android:gravity="center"
+		android:text="@string/loading_str"
+		style="@style/white_text_small"
+		android:textColor="@color/off_white"
+		android:textStyle="bold" />
 
-    <!-- ============= -->
-    <!-- Bottom Buttons -->
-    <!-- ============= -->
+	<Button
+		android:id="@+id/graph_back_butt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_centerHorizontal="true"
+		android:layout_marginBottom="5dp"
+		android:background="@drawable/button_shiny_black"
+		android:paddingLeft="40dp"
+		android:paddingRight="40dp"
+		android:text="@string/back"
+		android:textColor="@color/ivory" />
 
-    <com.sleepfuriously.hpgworkout.GView
-        android:id="@+id/graph_view"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@id/graph_description_tv"
-        android:layout_margin="8dp"
-        android:background="@drawable/rounded_edges_dark_blue" android:padding="25dp"/>
+	<com.sleepfuriously.hpgworkout.GView
+		android:id="@+id/graph_view"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:layout_below="@id/graph_description_tv"
+		android:layout_above="@id/graph_back_butt"
+		android:layout_margin="8dp"
+		android:background="@drawable/rounded_edges_dark_blue"
+		android:padding="25dp"/>
 
 </RelativeLayout>
