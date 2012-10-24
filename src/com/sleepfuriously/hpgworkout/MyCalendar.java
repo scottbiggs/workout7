@@ -296,8 +296,8 @@ public class MyCalendar {
 	 * NOTE:		There's really no such thing as an illegal
 	 * 			date.  This is just a state that's different
 	 * 			from any possible date.  Used to tell if
-	 * 			the instance has been initialized or forci-
-	 * 			bly set to this state.
+	 * 			the instance has been initialized or forcibly
+	 * 			set to this state.
 	 */
 	public boolean is_legal_date() {
 		return m_legal_date;

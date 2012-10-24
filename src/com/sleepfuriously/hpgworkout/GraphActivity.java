@@ -18,6 +18,7 @@ import android.view.View.OnLongClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class GraphActivity
 					extends
@@ -71,16 +72,13 @@ public class GraphActivity
 	//	with our exercise.
 	//--------
 
-	/** The number of the most significant aspect of this exercise */
-	protected int m_significant = -1;
-
 	/** The number of times the user has done this exercise */
 	protected int m_set_count;
 
-	/** The number of days the user has done this exercise */
-	protected int m_day_count;
+	/** Holds all the info about this exercise */
+	protected ExerciseData m_exercise_data = null;
 
-	/** Holds all the data from our database */
+	/** Holds all the set data from our database to be processed later. */
 	protected ArrayList<SetData> m_set_data;
 
 	/**
@@ -118,9 +116,9 @@ public class GraphActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.graphs);
 
+		// Init buttons and the main graph View
 		m_back = (Button) findViewById(R.id.graph_back_butt);
 		m_back.setOnClickListener(this);
-
 		m_view = (GView) findViewById(R.id.graph_view);
 
 		// Make sure we load the database each time onCreate() is called.
@@ -154,8 +152,7 @@ public class GraphActivity
 		// Set the aspect that we're displaying.
 		set_aspect_and_units();
 
-		// The main thing!
-//		setup_data();
+		// Continued in onResume()
 
 	} // onCreate (.)
 
@@ -365,120 +362,25 @@ public class GraphActivity
 		@Override
 		protected Void doInBackground(Void... arg0) {
 			int col;	// temp to hold column info.  Should be used briefly.
-			Cursor cursor = null;
 
-			// A place to hold the set data.
-			SetData basic_set_data = new SetData();
 
 
 			try {
 				test_m_db();
 				m_db = WGlobals.g_db_helper.getReadableDatabase();
-
-				try {
-					// Grab all the info about this exercise.
-					cursor = m_db.query(
-								DatabaseHelper.EXERCISE_TABLE_NAME,	// table
-								null,			//	columns[]
-								DatabaseHelper.EXERCISE_COL_NAME + "=?",//selection
-								new String[] {m_ex_name},// selectionArgs[]
-								null,	//	groupBy
-								null,	//	having
-								null,	//	orderBy
-								null);
-
-					cursor.moveToFirst();
-
-					// Save which aspect is significant.
-					col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_SIGNIFICANT);
-					m_significant = cursor.getInt(col);
-
-					// Save which aspects are used.
-					col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_REP);
-					if (col == -1) {
-						basic_set_data.m_rep = false;
-					}
-					else {
-						basic_set_data.m_rep = ((cursor.getInt(col) == 1) ? true : false);
-					}
-
-					col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_LEVEL);
-					if (col == -1) {
-						basic_set_data.m_level = false;
-					}
-					else {
-						basic_set_data.m_level = (cursor.getInt(col) == 1 ? true : false);
-					}
-
-					col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_CALORIES);
-					if (col == -1) {
-						basic_set_data.m_cal = false;
-					}
-					else {
-						basic_set_data.m_cal = (cursor.getInt(col) == 1 ? true : false);
-					}
-
-					col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_WEIGHT);
-					if (col == -1) {
-						basic_set_data.m_weight = false;
-					}
-					else {
-						basic_set_data.m_weight = (cursor.getInt(col) == 1 ? true : false);
-					}
-
-					col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_DIST);
-					if (col == -1) {
-						basic_set_data.m_dist = false;
-					}
-					else {
-						basic_set_data.m_dist = (cursor.getInt(col) == 1 ? true : false);
-					}
-
-					col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_TIME);
-					if (col == -1) {
-						basic_set_data.m_time = false;
-					}
-					else {
-						basic_set_data.m_time = (cursor.getInt(col) == 1 ? true : false);
-					}
-
-					col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_OTHER);
-					if (col == -1) {
-						basic_set_data.m_other = false;
-					}
-					else {
-						basic_set_data.m_other = (cursor.getInt(col) == 1 ? true : false);
-					}
-
-				} // try reading the EXERCISE table
-				catch (SQLException e) {
-					e.printStackTrace();
-				}
-				finally {
-					if (cursor != null) {
-						cursor.close();
-						cursor = null;
-					}
-
+				m_exercise_data = DatabaseHelper.getExerciseData(m_db, m_ex_name);
+				if (m_exercise_data == null) {
+					Log.e(tag, "Error reading exercise info in doInBackground()! Aborting!");
+					return null;
 				}
 
+				Cursor set_cursor = null;
 
-				// Read in all the sets
+				// Read in all the sets and store that information
+				// in a list.
 				try {
-					// Grab all the info about this exercise.
-					cursor = m_db.query(
-								DatabaseHelper.SET_TABLE_NAME,	// table
-								null,			//	columns[]
-								DatabaseHelper.SET_COL_NAME + "=?",//selection
-								new String[] {m_ex_name},// selectionArgs[]
-								null,	//	groupBy
-								null,	//	having
-								DatabaseHelper.SET_COL_DATEMILLIS,	//	orderBy
-								null);
-
-					// Record the number of set in this
-					// exercise.
-					m_set_count = cursor.getCount();
+					set_cursor = DatabaseHelper.getAllSets(m_db, m_ex_name, false);
+					m_set_count = set_cursor.getCount();
 
 					// If there are not enough sets, don't do anything.
 					if (m_set_count < 1) {
@@ -486,85 +388,29 @@ public class GraphActivity
 						return null;
 					}
 
-					// todo
-					//	Do something with the Day count.
-					m_day_count = 0;
-					MyCalendar last_day = new MyCalendar();
-					last_day.make_illegal_date();
-
-					// Go through the exercise sets one by one.
-					while (cursor.moveToNext()) {
-						// First, figure out when this happened.
-						col = cursor.getColumnIndex(DatabaseHelper.SET_COL_DATEMILLIS);
-						long date_millis = cursor.getLong(col);
-
-						MyCalendar this_day = new MyCalendar(date_millis);
-						if (this_day.is_same_day(last_day)) {
-							last_day = this_day;
-						}
-
-					SetData new_set_data =
-						new SetData(basic_set_data.m_rep,
-								basic_set_data.m_level,
-								basic_set_data.m_cal,
-								basic_set_data.m_weight,
-								basic_set_data.m_dist,
-								basic_set_data.m_time,
-								basic_set_data.m_other);
-
-					//	add all the elements to new_set_data
-					if (new_set_data.m_rep) {
-						col = cursor.getColumnIndex(DatabaseHelper.SET_COL_REPS);
-						new_set_data.m_reps = cursor.getInt(col);
+					// Load up the exercise sets one by one into our list.
+					while (set_cursor.moveToNext()) {
+						SetData new_set_data = DatabaseHelper.getSetData(set_cursor);
+						m_set_data.add(new_set_data);
 					}
-					if (new_set_data.m_level) {
-						col = cursor.getColumnIndex(DatabaseHelper.SET_COL_LEVELS);
-						new_set_data.m_levels = cursor.getInt(col);
-					}
-					if (new_set_data.m_cal) {
-						col = cursor.getColumnIndex(DatabaseHelper.SET_COL_CALORIES);
-						new_set_data.m_cals = cursor.getInt(col);
-					}
-					if (new_set_data.m_weight) {
-						col = cursor.getColumnIndex(DatabaseHelper.SET_COL_WEIGHT);
-						new_set_data.m_weights = cursor.getFloat(col);
-					}
-					if (new_set_data.m_dist) {
-						col = cursor.getColumnIndex(DatabaseHelper.SET_COL_DIST);
-						new_set_data.m_dists = cursor.getFloat(col);
-					}
-					if (new_set_data.m_time) {
-						col = cursor.getColumnIndex(DatabaseHelper.SET_COL_TIME);
-						new_set_data.m_times = cursor.getFloat(col);
-					}
-					if (new_set_data.m_other) {
-						col = cursor.getColumnIndex(DatabaseHelper.SET_COL_OTHER);
-						new_set_data.m_others = cursor.getFloat(col);
-					}
-
-					// Add this to our list.
-					m_set_data.add(new_set_data);
-
-					} // looping through all the rows (sets)
 
 					// Setting the first and last labels of the x-axis.
-					cursor.moveToFirst();
-					col = cursor.getColumnIndex(DatabaseHelper.SET_COL_DATEMILLIS);
-					m_start_cal = new MyCalendar(cursor.getLong(col));
+					set_cursor.moveToFirst();
+					col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_DATEMILLIS);
+					m_start_cal = new MyCalendar(set_cursor.getLong(col));
 
-					cursor.moveToLast();
-					col = cursor.getColumnIndex(DatabaseHelper.SET_COL_DATEMILLIS);
-					m_end_cal = new MyCalendar(cursor.getLong(col));
-
-
+					set_cursor.moveToLast();
+					col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_DATEMILLIS);
+					m_end_cal = new MyCalendar(set_cursor.getLong(col));
 				} // try reading the SET table
+
 				catch (SQLException e) {
 					e.printStackTrace();
 				}
 				finally {
-					if (cursor != null) {
-						cursor.close();
-						cursor = null;
+					if (set_cursor != null) {
+						set_cursor.close();
+						set_cursor = null;
 					}
 
 				}
@@ -629,27 +475,27 @@ public class GraphActivity
 			m_view.set_x_axis_labels(start_str, end_str);
 
 			for (SetData set_data : m_set_data) {
-				switch (m_significant) {
+				switch (m_exercise_data.significant) {
 					case DatabaseHelper.EXERCISE_COL_REP_NUM:
-						m_view.add_point(set_data.m_reps);
+						m_view.add_point(set_data.reps);
 						break;
 					case DatabaseHelper.EXERCISE_COL_LEVEL_NUM:
-						m_view.add_point(set_data.m_levels);
+						m_view.add_point(set_data.levels);
 						break;
 					case DatabaseHelper.EXERCISE_COL_CALORIE_NUM:
-						m_view.add_point(set_data.m_cals);
+						m_view.add_point(set_data.cals);
 						break;
 					case DatabaseHelper.EXERCISE_COL_WEIGHT_NUM:
-						m_view.add_point(set_data.m_weights);
+						m_view.add_point(set_data.weight);
 						break;
 					case DatabaseHelper.EXERCISE_COL_DIST_NUM:
-						m_view.add_point(set_data.m_dists);
+						m_view.add_point(set_data.dist);
 						break;
 					case DatabaseHelper.EXERCISE_COL_TIME_NUM:
-						m_view.add_point(set_data.m_times);
+						m_view.add_point(set_data.time);
 						break;
 					case DatabaseHelper.EXERCISE_COL_OTHER_NUM:
-						m_view.add_point(set_data.m_others);
+						m_view.add_point(set_data.other);
 						break;
 					default:
 						Log.e(tag, "Can't find a significant aspect in onPostExecute!");
@@ -665,69 +511,6 @@ public class GraphActivity
 		} // onPostExecute( result )
 
 	} // class GraphSyncTask
-
-
-	/*******************************************
-	 * This class describes the data for
-	 * a single exercise set.
-	 *
-	 */
-	public class SetData {
-		/**
-		 * Booleans to tell if this aspect is relevant for
-		 * this exercise.
-		 */
-		public boolean m_rep, m_level, m_cal, m_weight,
-				m_dist, m_time, m_other;
-
-		/** The actual quantities */
-		public int m_reps, m_levels, m_cals;
-
-		/** The actual quantities */
-		public float m_weights, m_dists, m_times, m_others;
-
-		/******************
-		 * Basic Constructor
-		 */
-		public SetData() {
-			clear_all();
-		}
-
-		/******************
-		 * Constructor
-		 * This is a quick way to set all the booleans in
-		 * one shot.
-		 */
-		public SetData(boolean rep, boolean level, boolean cal,
-					   boolean weight, boolean dist, boolean time,
-					   boolean other) {
-			init (rep, level, cal, weight, dist, time,
-					other);
-		}
-
-		/*****************
-		 * Initializes the booleans
-		 */
-		private void init (boolean rep, boolean level, boolean cal,
-				boolean weight, boolean dist, boolean time,
-				boolean other) {
-			m_rep = rep;
-			m_level = level;
-			m_cal = cal;
-			m_weight = weight;
-			m_dist = dist;
-			m_time = time;
-			m_other = other;
-		}
-
-		/******************
-		 * Clears all the booleans (sets them to false).
-		 */
-		public void clear_all() {
-			m_rep = m_level = m_cal = m_weight = m_dist
-				= m_time = m_other = false;
-		}
-	} // class SetData
 
 
 }
