@@ -7,8 +7,11 @@ package com.sleepfuriously.hpgworkout;
 import java.util.Calendar;
 
 import android.content.Context;
+import android.util.Log;
 
 public class MyCalendar {
+
+	private static final String tag = "MyCalendar";
 
 	/** Start with a calendar for NOW */
 	public Calendar m_cal = Calendar.getInstance();
@@ -109,6 +112,49 @@ public class MyCalendar {
 
 		return m_cal.get(Calendar.DAY_OF_MONTH);
 	}
+
+	/********************
+	 * Finds how many days the two MyCalendar dates differ.
+	 * Equivalent to:
+	 * 		this.day - other_date.day
+	 *
+	 * @param other_date		The subtractor date.
+	 *
+	 * @return	The difference in number of days between
+	 * 			this date subtracted by other_date.  Yes,
+	 * 			this could be a negative number.  Note that
+	 * 			if they are on the same date, then this
+	 * 			returns 0.
+	 * 			- Also returns 0 if either is not a legal
+	 * 			date.
+	 */
+	public long get_difference_in_days (MyCalendar other_date) {
+		MyCalendar temp;
+
+		if (!m_legal_date)
+			return 0;
+
+		if (!other_date.is_legal_date())
+			return 0;
+
+		// Find the number of milliseconds for the beginning of
+		// today.
+		temp = new MyCalendar(this);
+		temp.set_time(0, 0, 0);
+		long millis_beginning_today = temp.get_millis();
+
+		// do the same for the other date.
+		temp = new MyCalendar(other_date);
+		temp.set_time(0, 0, 0);
+		long millis_beginning_other = temp.get_millis();
+
+		// NOTE: neither of these millis numbers should be zero!
+		// The chances of that happening are pretty low!
+
+		long millis_diff = millis_beginning_today - millis_beginning_other;
+		return millis_diff / (24l * 60l * 60l * 1000l);
+	} // get_difference_in_days (other_date)
+
 
 	/********************
 	 * Convenience function.  NOTE: hours are military.
