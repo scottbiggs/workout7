@@ -75,9 +75,27 @@ public class GView extends View {
 
 	/**
 	 * Holds the data to display.  These are the actual
-	 * numbers that are graphed.
+	 * numbers that are graphed.  Matches to the corresponding
+	 * m_graph_nums_date element.
+	 *
+	 *	NOTE:
+	 * If m_graph_nums are added on a day that already exists,
+	 * then that value will be added to the existing m_graph_num
+	 * and a new item will NOT be created.
 	 */
 	private List<Float> m_graph_nums = new ArrayList<Float>();
+
+	/**
+	 * The match to m_graph_nums.  This supplies the date for
+	 * that value.  The date is used to provide a proper x-axis
+	 * alignment for the value.
+	 *
+	 * 	NOTE:
+	 * Repeating dates causes the value of original date to be
+	 * ADDED by the new value, instead of a new element added
+	 * to the list.
+	 */
+	private List<MyCalendar> m_graph_nums_date = new ArrayList<MyCalendar>();
 
 	/**
 	 * This string defines the beginning of the x-axis.
@@ -156,6 +174,8 @@ public class GView extends View {
 		if (m_unique_graph_nums == null) {
 			m_unique_graph_nums = new ArrayList<Float>();
 		}
+
+		setWillNotDraw(false);	// The default, but just in case something weird happens
 	} // init()
 
 
@@ -300,6 +320,23 @@ public class GView extends View {
 		draw_x_axis_lines (horiz_spacing, canvas, m_paint);
 
 
+		draw_the_points (canvas, m_paint, horiz_spacing, dot_size);
+
+	} // onDraw (canvas)
+
+
+	/********************
+	 * Took the part that draws the lines out of the onDraw() method.
+	 * This way we can call this at different times for different
+	 * reasons.
+	 *
+	 * @param canvas
+	 * @param paint
+	 * @param horiz_spacing
+	 * @param dot_size
+	 */
+	protected void draw_the_points(Canvas canvas, Paint paint,
+								float horiz_spacing, float dot_size) {
 		// Draw each point!
 		float last_x = 0 + (horiz_spacing / 2);
 		last_x = conv_x(last_x);		// add the padding
@@ -340,8 +377,7 @@ public class GView extends View {
 			last_y = y;
 		}
 
-	} // onDraw (canvas)
-
+	}
 
 	/********************
 	 * Draws a dot at the position indicated.  If orig_y is
@@ -355,8 +391,8 @@ public class GView extends View {
 	 * @param paint
 	 */
 	protected void draw_dot (float screen_x, float screen_y,
-	                         float orig_y, float dot_size,
-	                         Canvas canvas, Paint paint) {
+							float orig_y, float dot_size,
+							Canvas canvas, Paint paint) {
 		if (orig_y == -1)
 			return;
 
@@ -406,7 +442,7 @@ public class GView extends View {
 	 * @param paint
 	 */
 	protected void draw_1_set_graph (float y,
-									   Canvas canvas, Paint paint) {
+									Canvas canvas, Paint paint) {
 		String msg = this.getContext().getString(R.string.graph_1_set_msg, "" + y);
 		Rect rect = new Rect();
 		paint.setAntiAlias(true);
@@ -432,7 +468,7 @@ public class GView extends View {
 	 * @param paint		ibid
 	 */
 	protected void draw_x_axis_lines (float horiz_spacing,
-									  Canvas canvas, Paint paint) {
+									Canvas canvas, Paint paint) {
 		paint.setColor(getResources().getColor(color.ghost_white));
 		paint.setAntiAlias(false);	// Just vert lines
 
@@ -510,24 +546,62 @@ public class GView extends View {
 	 * This allows you to add a point to this Widget, one
 	 * at a time.
 	 *
+	 * O(n)
+	 *
 	 * NOTE:
 	 * 		The points need to be added in order.
 	 *
-	 * @param x	The value of this point.  It can be in
-	 * 			any range--the class will figure things out.
+	 * NOTE 2:
+	 * 		Adding a value with the same DAY as an existing
+	 * 		point will NOT cause a new item to be added.
+	 * 		Instead, the value will be added to the existing
+	 * 		value on that same day.
+	 *
+	 * @param x		The value of this point.  It can be in
+	 * 				any range--the class will figure things out.
+	 *
+	 * @param date	The time of this set.
+	 *
+	 * @return	1	The point was added to the list.
+	 * 			0	The point matched the date of an existing
+	 * 				point which was incremented by x amount.
 	 */
-	public void add_point (float x) {
+	public int add_point (float x, MyCalendar date) {
+		for (int i = 0; i < m_graph_nums.size(); i++) {
+			if (date.get_day() == m_graph_nums_date.get(i).get_day()) {
+				float temp = m_graph_nums.get(i) + x;
+				m_graph_nums.set(i, temp);
+				return 0;
+			}
+		}
+
 		m_graph_nums.add(x);
-	}
+		m_graph_nums_date.add(date);
+
+		return 1;
+	} // add_point (x, date)
+
 
 	/********************
 	 * Same as above, but allows you to add an entire array
 	 * at once.
 	 *
-	 * @param array	A bunch of values.
+	 * NOTE:
+	 * 	This routine is pretty dumb.  It assumes that all
+	 * 	the dates are on different days.
+	 *
+	 * todo:
+	 * 	FIX THIS DUMBNESS!!  I'll keep it deprecated until it's fixed.
+	 *
+	 * @param vals	A bunch of values.
+	 *
+	 * @param dates	All the dates.  The should be all seperate
+	 * 				days!!!
 	 */
-	public void add_points (Float[] array) {
-		Collections.addAll(m_graph_nums, array);
+	@Deprecated
+	public void add_points (Float[] vals, MyCalendar[] dates) {
+		Collections.addAll(m_graph_nums, vals);
+		Collections.addAll(m_graph_nums_date, dates);
 	}
 
 	/********************
@@ -535,6 +609,7 @@ public class GView extends View {
 	 */
 	public void clear() {
 		m_graph_nums.clear();
+		m_graph_nums_date.clear();
 	}
 
 	/**********************
@@ -585,9 +660,9 @@ public class GView extends View {
 	 * 			to find the bottom of our drawing!
 	 */
 	protected float heckbert_loose_label (float min, float max,
-									  int ntick,
-									  Canvas canvas,
-									  Paint paint) {
+									int ntick,
+									Canvas canvas,
+									Paint paint) {
 		int nfrac;
 		float d;			// Tick mark spacing
 		float graphmin, graphmax;	// graph range min & max

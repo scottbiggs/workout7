@@ -475,27 +475,28 @@ public class GraphActivity
 			m_view.set_x_axis_labels(start_str, end_str);
 
 			for (SetData set_data : m_set_data) {
+				MyCalendar date = new MyCalendar (set_data.millis);
 				switch (m_exercise_data.significant) {
 					case DatabaseHelper.EXERCISE_COL_REP_NUM:
-						m_view.add_point(set_data.reps);
+						m_view.add_point(set_data.reps, date);
 						break;
 					case DatabaseHelper.EXERCISE_COL_LEVEL_NUM:
-						m_view.add_point(set_data.levels);
+						m_view.add_point(set_data.levels, date);
 						break;
 					case DatabaseHelper.EXERCISE_COL_CALORIE_NUM:
-						m_view.add_point(set_data.cals);
+						m_view.add_point(set_data.cals, date);
 						break;
 					case DatabaseHelper.EXERCISE_COL_WEIGHT_NUM:
-						m_view.add_point(set_data.weight);
+						m_view.add_point(set_data.weight, date);
 						break;
 					case DatabaseHelper.EXERCISE_COL_DIST_NUM:
-						m_view.add_point(set_data.dist);
+						m_view.add_point(set_data.dist, date);
 						break;
 					case DatabaseHelper.EXERCISE_COL_TIME_NUM:
-						m_view.add_point(set_data.time);
+						m_view.add_point(set_data.time, date);
 						break;
 					case DatabaseHelper.EXERCISE_COL_OTHER_NUM:
-						m_view.add_point(set_data.other);
+						m_view.add_point(set_data.other, date);
 						break;
 					default:
 						Log.e(tag, "Can't find a significant aspect in onPostExecute!");

@@ -1,5 +1,11 @@
 TODO:
 -----------------
+Graphs: the x-axis should be by date, not by the quantity of sets.
+
+Graph by muscle group.
+
+Graph by exercise type.
+
 Make the condition part of the Inspector better--REAL icons instead
 	of the plus/minus things.  And while we're at it, use these
 	icons for the radio buttons in ADD A SET, too!
@@ -22,8 +28,6 @@ In ASet, the notes and stress labels are black, not ivory.
 
 The InspectorActivity needs a major overhaul.  The UI is integrally
 entwined in the database.  Taking it out will be a project.
-
-Graph ALL the aspects!
 
 The History and Inspector need to display something when there's
 	no data.
@@ -50,8 +54,6 @@ BUG: When the GraphActivity removes x-axis tick lines because they
 	are too close together, the date on the last tick line can be
 	wrong.
 
-Dates need to be put in the inspector_set.xml and then populated properly.
-
 Problem: it seems that I NEED to have my drawables in the
 	"drawable" directory--they are not being found in the
 	respective ?dpi directory.
@@ -76,13 +78,6 @@ Add the ability to clear EVERYTHING.  This is a tabula rasa,
 	so that the person can clear their entire history AND
 	all their exercises at once.  Of course, give appropriate
 	warnings.
-
-In the graphs, instead of horizontal lines, divide up into
-	blocks of different colored backgrounds.
-
-When long clicking a exercise, bring up a dialog that queries
-	whether to see a graph of that exercise progress, or
-	to edit that exercise.
 
 TEST the nags.
 
@@ -185,9 +180,33 @@ In the Inspector, differentiate between "skipped" and "n/a", like
 	in the Grid.  Same for EditSet.
 	-hmmmm
 
+In the graphs, instead of horizontal lines, divide up into
+	blocks of different colored backgrounds.
+
+---------------------------------------------------
+TABLED (for later versions)
+---------------------------------------------------
+The Graph:
+	* Need to seperate the drawing of a graph from any knowledge of
+	the exercise.  This isolation will allow to have multiple graphs
+	at the same time (at the color choice and view of the caller).
+
+	* Need to be able to handle missing data.
+
+Graph ALL the aspects!
+
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+When long clicking a exercise, bring up a dialog that queries
+	whether to see a graph of that exercise progress, or
+	to edit that exercise.
+	- Nope. Not gonna do it.
+
+Dates need to be put in the inspector_set.xml and then populated properly.
+	- Dates are now displayed, but in inspector.xml, before a group of
+	sets on the same date.  Works better this way.
+
 The "more" button in the History works, but it doesn't stop.  Perhaps
 	a major UI change is in order....
 
