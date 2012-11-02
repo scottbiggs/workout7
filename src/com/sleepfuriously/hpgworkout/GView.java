@@ -201,12 +201,28 @@ public class GView extends View {
 	protected void onDraw(Canvas canvas) {
 		float dot_size = DOT_RADIUS;
 
+		// todo
+		//	DEBUG
+
+		for (int i = 0; i < m_graph_nums_date.size(); i++) {
+			Log.v(tag, "Days from first for day " + i + " is " +
+						m_graph_nums_date.get(i).get_difference_in_days(m_graph_nums_date.get(0)));
+		}
+		for (int i = 0; i < m_graph_nums_date.size(); i++) {
+			Log.v(tag, "Date #" + i + " is " + m_graph_nums_date.get(i).print_date_numbers()
+				  + ", " + m_graph_nums_date.get(i).print_time(false));
+		}
+
+
+		// todo
+		//	end DEBUG
+
 		m_paint.setStrokeWidth(0);		// hairline (min. of 0)
 		m_paint.setColor(getResources().getColor(color.ghost_white));
 
 		// Are we loading? Then just exit.
 		if (GraphActivity.m_loading) {
-//			Log.d(tag, "onDraw: EXITING because of loading");
+			Log.v(tag, "onDraw: EXITING because we're loading");
 			return;
 		}
 
@@ -314,13 +330,27 @@ public class GView extends View {
 		 * The number of horizontal pixels between graphed
 		 * points.
 		 */
-		float horiz_spacing = (m_usable_width - (LEFT_PADDING + RIGHT_PADDING))
-						/ (float) m_graph_nums.size();
+//		float horiz_spacing = (m_usable_width - (LEFT_PADDING + RIGHT_PADDING))
+//						/ (float) m_graph_nums.size();
 
-		draw_x_axis_lines (horiz_spacing, canvas, m_paint);
+		// Take two.  This version takes into account
+		MyCalendar start_day = m_graph_nums_date.get(0);
+		MyCalendar end_day = m_graph_nums_date.get(m_graph_nums.size() - 1);
+		float num_days = (float) (end_day.get_difference_in_days(start_day));
+		if (num_days != 0) {
+			Log.v(tag, "num_days = " + num_days);
+			float horiz_spacing = (m_usable_width - (LEFT_PADDING + RIGHT_PADDING))
+									/ num_days;
+			Log.v(tag, "horiz_spacing = " + horiz_spacing);
 
-
-		draw_the_points (canvas, m_paint, horiz_spacing, dot_size);
+			draw_x_axis_lines (horiz_spacing, canvas, m_paint);
+			draw_the_points (canvas, m_paint, horiz_spacing, dot_size);
+		}
+		else {
+			// todo:
+			//	handle the situation where all the sets (or the only set)
+			//	fall on the same day.
+		}
 
 	} // onDraw (canvas)
 
@@ -337,8 +367,12 @@ public class GView extends View {
 	 */
 	protected void draw_the_points(Canvas canvas, Paint paint,
 								float horiz_spacing, float dot_size) {
+
+		MyCalendar first_day = m_graph_nums_date.get(0);
+
 		// Draw each point!
-		float last_x = 0 + (horiz_spacing / 2);
+//		float last_x = 0 + (horiz_spacing / 2);
+		float last_x = 0;
 		last_x = conv_x(last_x);		// add the padding
 		float last_y = conv_y(map(m_graph_nums.get(0)));	// quick way
 
@@ -349,18 +383,25 @@ public class GView extends View {
 		m_paint.setAntiAlias(true);
 		m_paint.setStrokeWidth(LINE_STROKE_WIDTH);
 
-		// Draw the first dot.
-		if (horiz_spacing < DOT_RADIUS + 1) {
-			// Don't draw dots if they are too close together.
-			dot_size = LINE_STROKE_WIDTH;
+
+		// Draw the first dot.  But only if the spacing is big
+		// enough!
+		if (horiz_spacing > DOT_RADIUS + 2) {
+			draw_dot (last_x, last_y, m_graph_nums.get(0), dot_size,
+						canvas, m_paint);
 		}
-		draw_dot (last_x, last_y, m_graph_nums.get(0), dot_size,
-				canvas, m_paint);
+
+		Log.d(tag, "m_graph_nums_date(0) day = " + m_graph_nums_date.get(0).get_day());
 
 		// The LOOP!
-		for (int i = 1; i < m_graph_nums.size(); i++) {
-			float x = i * horiz_spacing + (horiz_spacing / 2);
+		for (int i = 1; i < m_graph_nums_date.size(); i++) {
+//			float x = i * horiz_spacing + (horiz_spacing / 2);
+
+			Log.d(tag, "m_graph_nums_date(" + i + ") day = " + m_graph_nums_date.get(i).get_day());
+			float x = m_graph_nums_date.get(i).get_difference_in_days(first_day);
+			x *= horiz_spacing;
 			x = conv_x(x);
+
 			float y = m_graph_nums.get(i);
 			y = map(y);
 			y = conv_y(y);
@@ -369,15 +410,17 @@ public class GView extends View {
 			if ((m_graph_nums.get(i - 1) != -1) &&
 				(m_graph_nums.get(i) != -1)) {
 				canvas.drawLine(last_x, last_y, x, y, m_paint);
+				Log.d(tag, "Line drawn from " + last_x + ", " + last_y + " to "
+					  + x + ", " + y);
 			}
 			if (m_graph_nums.get(i) != -1) {
 				canvas.drawCircle(x, y, dot_size, m_paint);
+				Log.d(tag, "Dot drawn at " + x + ", " + y);
 			}
 			last_x = x;
 			last_y = y;
 		}
-
-	}
+	} // draw_the_points (canvas, paint, horiz_spacing, dot_size)
 
 	/********************
 	 * Draws a dot at the position indicated.  If orig_y is
@@ -397,6 +440,7 @@ public class GView extends View {
 			return;
 
 		canvas.drawCircle(screen_x, screen_y, dot_size, paint);
+		Log.d(tag, "Dot drawn at " + screen_x + ", " + screen_y);
 	} // draw_dot (...)
 
 
@@ -475,13 +519,19 @@ public class GView extends View {
 		// Don't draw all of the lines if they are bunched
 		// together too closely.
 		float first_x = -1;
-
 		float last_x = -HORIZ_LINE_SPACING;
+		float days_from_first;
 
 		paint.setAntiAlias(false);	// just a horiz line
 
+		// find the first day and make that our base.
+		MyCalendar first_day = m_graph_nums_date.get(0);
+		MyCalendar last_day = m_graph_nums_date.get(m_graph_nums.size() - 1);
+
 		for (int i = 0; i < m_graph_nums.size(); i++) {
-			float x = i * horiz_spacing + (horiz_spacing / 2);
+			days_from_first = (float) m_graph_nums_date.get(i).get_difference_in_days(first_day);
+//			float x = days_from_first * horiz_spacing + (horiz_spacing / 2f);
+			float x = days_from_first * horiz_spacing;
 			x = conv_x(x);
 
 			if (x >= last_x + HORIZ_LINE_SPACING) {
@@ -568,7 +618,7 @@ public class GView extends View {
 	 */
 	public int add_point (float x, MyCalendar date) {
 		for (int i = 0; i < m_graph_nums.size(); i++) {
-			if (date.get_day() == m_graph_nums_date.get(i).get_day()) {
+			if (date.is_same_day(m_graph_nums_date.get(i))) {
 				float temp = m_graph_nums.get(i) + x;
 				m_graph_nums.set(i, temp);
 				return 0;
