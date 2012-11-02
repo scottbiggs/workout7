@@ -13,13 +13,17 @@ public class MyCalendar {
 
 	private static final String tag = "MyCalendar";
 
+	public static final long MILLIS_PER_DAY = 24L * 60L * 60L * 1000L;
+
 	/** Start with a calendar for NOW */
 	public Calendar m_cal = Calendar.getInstance();
 
 	/** Determines if the current date is legal or not. */
 	private boolean m_legal_date = false;
 
-	/** Constructors */
+	//------------------------------
+	// Constructors
+	//------------------------------
 	MyCalendar() {
 		m_legal_date = true;
 	}
@@ -118,7 +122,7 @@ public class MyCalendar {
 	 * Equivalent to:
 	 * 		this.day - other_date.day
 	 *
-	 * @param other_date		The subtractor date.
+	 * @param other_cal		The subtractor date.
 	 *
 	 * @return	The difference in number of days between
 	 * 			this date subtracted by other_date.  Yes,
@@ -128,31 +132,41 @@ public class MyCalendar {
 	 * 			- Also returns 0 if either is not a legal
 	 * 			date.
 	 */
-	public long get_difference_in_days (MyCalendar other_date) {
+	public long get_difference_in_days (MyCalendar other_cal) {
 		MyCalendar temp;
+		long millis;
 
 		if (!m_legal_date)
 			return 0;
 
-		if (!other_date.is_legal_date())
+		if (!other_cal.is_legal_date())
 			return 0;
 
 		// Find the number of milliseconds for the beginning of
 		// today.
 		temp = new MyCalendar(this);
+
 		temp.set_time(0, 0, 0);
+
+		// Needed to make sure there are no milliseconds to give us errors.
+		millis = truncate_to_seconds(temp.get_millis());
+		temp.set_millis(millis);
+
 		long millis_beginning_today = temp.get_millis();
 
 		// do the same for the other date.
-		temp.set_millis(other_date.get_millis());
+		temp.set_millis(other_cal.get_millis());
 		temp.set_time(0, 0, 0);
+		millis = truncate_to_seconds(temp.get_millis());
+		temp.set_millis(millis);
 		long millis_beginning_other = temp.get_millis();
 
 		// NOTE: neither of these millis numbers should be zero!
 		// The chances of that happening are pretty low!
 
 		long millis_diff = millis_beginning_today - millis_beginning_other;
-		return millis_diff / (24l * 60l * 60l * 1000l);
+		long return_val = millis_diff / MILLIS_PER_DAY;
+		return return_val;
 	} // get_difference_in_days (other_date)
 
 
@@ -370,4 +384,18 @@ public class MyCalendar {
 		m_legal_date = false;
 	}
 
+	/*****************************
+	 * Given a date in millis form, this truncates the extraneous
+	 * milliseconds.  Use this to set the time EXACTLY.
+	 *
+	 * @param millis		A date/time represented in milliseconds.
+	 *
+	 * @return		The same date and time, but the remaining
+	 * 				milliseconds should be 0.
+	 */
+	protected long truncate_to_seconds (long date_in_millis) {
+		long l = date_in_millis / 1000L;
+		l *= 1000L;
+		return l;
+	} // truncate_to_seconds(date_in_millis)
 }
