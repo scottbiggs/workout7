@@ -24,11 +24,11 @@ public class MyCalendar {
 		m_legal_date = true;
 	}
 	MyCalendar(MyCalendar cal_to_copy) {
-		m_cal = cal_to_copy.m_cal;
+		m_cal = (Calendar) cal_to_copy.m_cal.clone();
 		m_legal_date = true;
 	}
 	MyCalendar(Calendar cal_to_copy) {
-		m_cal = cal_to_copy;
+		m_cal = (Calendar) cal_to_copy.clone();
 		m_legal_date = true;
 	}
 	MyCalendar (long millis) {
@@ -144,7 +144,7 @@ public class MyCalendar {
 		long millis_beginning_today = temp.get_millis();
 
 		// do the same for the other date.
-		temp = new MyCalendar(other_date);
+		temp.set_millis(other_date.get_millis());
 		temp.set_time(0, 0, 0);
 		long millis_beginning_other = temp.get_millis();
 
@@ -252,15 +252,25 @@ public class MyCalendar {
 	 * Convenience function.  This returns a String suitable
 	 * for displaying the complete date (no time).
 	 *
-	 * @param	military		TRUE means to use military time.
-	 * 						Otherwise am/pm is appended.
+	 * @param	ctx		A context.  This allows the routine
+	 * 					to look up teh string for the month
+	 * 					name (varies by language!).
 	 *
 	 * @return	A String for the date.
 	 */
-	String print_date (Context ctx) {
+	public String print_date (Context ctx) {
 		return get_month_text(ctx) + " " + get_day() + ", " + get_year();
 	}
 
+	/********************
+	 * Returns a string suitable for printing the date.  This
+	 * version uses just a number format, like 9/12/2011.
+	 *
+	 * @return	A String for the date.
+	 */
+	public String print_date_numbers() {
+		return get_month_12() + "/" + get_day() + "/" + get_year();
+	}
 
 	/********************
 	 * Sets the calendar to a time denoted by all the milliseconds
