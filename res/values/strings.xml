@@ -816,14 +816,14 @@
 
 	<!-- ============      ============ -->
 	<!-- ============ ASet ============ -->
-		<!-- ============      ============ -->
+	<!-- ============      ============ -->
 
 	<string name="aset_title">Do a Set!</string>
 
-		<string name="aset_enter_butt">enter set</string>
-		<string name="aset_entered_msg">Entered!</string>
+	<string name="aset_enter_butt">enter set</string>
+	<string name="aset_entered_msg">Entered!</string>
 
-		<string name="aset_help_title">Enter a Set Help</string>
+	<string name="aset_help_title">Enter a Set Help</string>
 	<string name="aset_help_msg">You\'re now working hard,
 		executing a rigorous set of an arduous exercise.
 		Tell us about it, that\'s what this program is for,
@@ -832,7 +832,8 @@
 		\n\nThe data from the last time you did the set is
 		automatically filled in. You can change them or
 		press the \'clear\' button and start fresh. (Your
-		stress condition is ALWAYS set to \'ok\' and the
+		stress condition is ALWAYS set to \'just right\', the
+		first button. The
 		notes from your previous set is just a hint--it will
 		disappear when you save or start writing something else.)
 
@@ -843,14 +844,27 @@
 
 		\n\nSelect a radio button that indicates how hard this
 		set has been for you (I call it the \'stress\' level).
-		If the workout was too easy or you\'re ready to
-		up the amps, press \'+\'. If this set was so hard
-		that you could not finish, tap \'-\'. If something
-		odd or bad happened (an injury, an interruption, etc.),
-		press the \'X\'.
+		The first choice means that this exercise set was just
+		right--you had to push to complete it.
 
-		\n\nAnd the notes section is there for whatever pops up.
-		Try writing \"War and Peace\" while cooling down between sets!
+		\n\nIf the workout was too easy or you\'re ready to
+		up the amps, select the next radio button, an image
+		of someone lifting a weight that is too light.
+
+		\n\nIf this set was so hard
+		that you could not finish, tap on the third button (too
+		heavy).
+
+		\n\nWhile I hope your exercises never come to this, but
+		if something
+		odd or bad does happen (accident, injury, etc.),
+		press the last button, ouch! At least you can record
+		exactly what you were doing and when it happened.
+
+		\n\nAnd the notes section is there for whatever pops up,
+		usually relevant to the set you just did.  Of course you\'re
+		welcome to write that great novel you\'ve been thinking
+		of while cooling down between sets.
 		</string>
 
 	<string name="aset_leave_title">Really\?</string>

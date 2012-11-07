@@ -41,16 +41,13 @@ import android.view.View.OnLongClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.RadioGroup.OnCheckedChangeListener;
 
 public class ASetActivity
 				extends BaseDialogActivity
 				implements
-					OnCheckedChangeListener,
 					OnClickListener,
 					OnLongClickListener,
 					TextWatcher,
@@ -78,8 +75,6 @@ public class ASetActivity
 	EditText m_reps_et, m_weight_et, m_level_et,
 		m_dist_et, m_time_et, m_other_et,
 		m_notes_et, m_calorie_et;
-
-	RadioGroup m_cond_rg;
 
 	RadioButton m_ok_rb, m_plus_rb, m_minus_rb, m_x_rb;
 
@@ -176,17 +171,49 @@ public class ASetActivity
 		m_notes_et.setOnKeyListener(this);
 		m_notes_et.addTextChangedListener(this);
 
-		m_cond_rg = (RadioGroup) findViewById(R.id.aset_cond_rg);
-		m_cond_rg.setOnCheckedChangeListener(this);
-
 		m_ok_rb = (RadioButton) findViewById(R.id.aset_cond_ok_rb);
 		m_ok_rb.setOnLongClickListener(this);
+		m_ok_rb.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				m_ok_rb.setChecked(true);
+				m_plus_rb.setChecked(false);
+				m_minus_rb.setChecked(false);
+				m_x_rb.setChecked(false);
+			}
+		});
+
 		m_plus_rb = (RadioButton) findViewById(R.id.aset_cond_plus_rb);
 		m_plus_rb.setOnLongClickListener(this);
+		m_plus_rb.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				m_ok_rb.setChecked(false);
+				m_plus_rb.setChecked(true);
+				m_minus_rb.setChecked(false);
+				m_x_rb.setChecked(false);
+			}
+		});
+
 		m_minus_rb = (RadioButton) findViewById(R.id.aset_cond_minus_rb);
 		m_minus_rb.setOnLongClickListener(this);
+		m_minus_rb.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				m_ok_rb.setChecked(false);
+				m_plus_rb.setChecked(false);
+				m_minus_rb.setChecked(true);
+				m_x_rb.setChecked(false);
+			}
+		});
+
 		m_x_rb = (RadioButton) findViewById(R.id.aset_cond_injury_rb);
 		m_x_rb.setOnLongClickListener(this);
+		m_x_rb.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				m_ok_rb.setChecked(false);
+				m_plus_rb.setChecked(false);
+				m_minus_rb.setChecked(false);
+				m_x_rb.setChecked(true);
+			}
+		});
 
 		m_done = (Button) findViewById(R.id.aset_enter_butt);
 		m_done.setOnClickListener(this);
@@ -318,9 +345,9 @@ public class ASetActivity
 		}
 
 		else if ((v == m_ok_rb) ||
-				 (v == m_minus_rb) ||
-				 (v == m_plus_rb) ||
-				 (v == m_x_rb)) {
+				(v == m_minus_rb) ||
+				(v == m_plus_rb) ||
+				(v == m_x_rb)) {
 			show_help_dialog (R.string.aset_radio_help_title,
 					R.string.aset_radio_help_msg);
 			return true;
@@ -368,27 +395,6 @@ public class ASetActivity
 
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
 	}
-
-	//------------------------
-	//	Responds when a button from the RadioGroup is
-	//	touched.
-	//
-	public void onCheckedChanged(RadioGroup group, int checkedId) {
-		m_widgets_dirty = true;
-		switch (checkedId) {
-			case R.id.aset_cond_ok_rb:
-				break;
-
-			case R.id.aset_cond_plus_rb:
-				break;
-
-			case R.id.aset_cond_minus_rb:
-				break;
-
-			case R.id.aset_cond_injury_rb:
-				break;
-		} // switch
-	} // onCheckedChanged (group, checkedId)
 
 
 	/********************
@@ -512,7 +518,7 @@ public class ASetActivity
 	 * 						exercise has been used.
 	 */
 	protected void setup_reps (Cursor ex_cursor, Cursor set_cursor,
-	                           boolean set_valid) {
+							boolean set_valid) {
 		int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_REP);
 		m_reps = ex_cursor.getInt(col) == 1 ? true : false;
 		if (m_reps) {
@@ -541,7 +547,7 @@ public class ASetActivity
 	 * Similar to above
 	 */
 	protected void setup_levels (Cursor ex_cursor, Cursor set_cursor,
-	                             boolean set_valid) {
+								boolean set_valid) {
 		int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_LEVEL);
 		m_levels = ex_cursor.getInt(col) == 1 ? true : false;
 		if (m_levels) {
@@ -566,7 +572,7 @@ public class ASetActivity
 	}
 
 	protected void setup_calories (Cursor ex_cursor, Cursor set_cursor,
-	                               boolean set_valid) {
+								boolean set_valid) {
 		int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_CALORIES);
 		m_calories = ex_cursor.getInt(col) == 1 ? true : false;
 		if (m_calories) {
@@ -602,7 +608,7 @@ public class ASetActivity
 	 * 						exercise has been used.
 	 */
 	protected void setup_weights (Cursor ex_cursor, Cursor set_cursor,
-	                              boolean set_valid) {
+								boolean set_valid) {
 		int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_WEIGHT);
 		m_weight = ex_cursor.getInt(col) == 1 ? true : false;
 		if (m_weight) {
@@ -636,7 +642,7 @@ public class ASetActivity
 	}
 
 	protected void setup_dist (Cursor ex_cursor, Cursor set_cursor,
-	                           boolean set_valid) {
+							boolean set_valid) {
 		int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_DIST);
 		m_distanced = ex_cursor.getInt(col) == 1 ? true : false;
 		if (m_distanced) {
@@ -666,7 +672,7 @@ public class ASetActivity
 	}
 
 	protected void setup_time (Cursor ex_cursor, Cursor set_cursor,
-	                           boolean set_valid) {
+							boolean set_valid) {
 		int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_TIME);
 		m_timed = ex_cursor.getInt(col) == 1 ? true : false;
 		if (m_timed) {
@@ -696,7 +702,7 @@ public class ASetActivity
 	}
 
 	protected void setup_other (Cursor ex_cursor, Cursor set_cursor,
-	                            boolean set_valid) {
+								boolean set_valid) {
 		int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_OTHER);
 		m_other = ex_cursor.getInt(col) == 1 ? true : false;
 		if (m_other) {
@@ -779,7 +785,10 @@ public class ASetActivity
 			m_time_et.setText(null);
 		if (m_other_et.isEnabled())
 			m_other_et.setText(null);
-		m_cond_rg.check(R.id.aset_cond_ok_rb);
+		m_ok_rb.setChecked(false);
+		m_plus_rb.setChecked(false);
+		m_minus_rb.setChecked(false);
+		m_x_rb.setChecked(false);
 		m_notes_et.setText(null);
 	} // clear()
 
@@ -850,27 +859,19 @@ public class ASetActivity
 
 			// The condition (stress).
 			int cond;
-			switch (m_cond_rg.getCheckedRadioButtonId()) {
-				case R.id.aset_cond_ok_rb:
-					cond = DatabaseHelper.SET_COND_OK;
-					break;
-
-				case R.id.aset_cond_plus_rb:
-					cond = DatabaseHelper.SET_COND_PLUS;
-					break;
-
-				case R.id.aset_cond_minus_rb:
-					cond = DatabaseHelper.SET_COND_MINUS;
-					break;
-
-				case R.id.aset_cond_injury_rb:
-					cond = DatabaseHelper.SET_COND_INJURY;
-					break;
-
-				default:
-					cond = DatabaseHelper.SET_COND_NONE;
-					break;
+			if (m_ok_rb.isChecked())
+				cond =  DatabaseHelper.SET_COND_OK;
+			else if (m_plus_rb.isChecked())
+				cond = DatabaseHelper.SET_COND_PLUS;
+			else if (m_minus_rb.isChecked())
+				cond = DatabaseHelper.SET_COND_MINUS;
+			else if (m_x_rb.isChecked())
+				cond = DatabaseHelper.SET_COND_INJURY;
+			else {
+				cond = DatabaseHelper.SET_COND_NONE;
+				Log.e(tag, "Illegal stress condition while saving!");
 			}
+
 			values.put(DatabaseHelper.SET_COL_CONDITION, cond);
 
 			// The notes
@@ -949,8 +950,8 @@ public class ASetActivity
 			if (WGlobals.g_nag) {
 				// Warn them that they haven't made any changes.
 				show_yes_no_dialog(R.string.aset_nag_no_changes_title,
-						  R.string.aset_nag_no_changes_msg,
-						  new View.OnClickListener() {
+						R.string.aset_nag_no_changes_msg,
+						new View.OnClickListener() {
 							public void onClick(View v) {
 								save();
 								dismiss_all_dialogs();
@@ -1065,7 +1066,7 @@ public class ASetActivity
 		// we did if m_widgets_dirty was false.
 		if (get_num_enabled_forms() == blank_forms.size()) {
 			show_help_dialog(R.string.aset_nag_enter_empty_title,
-							  R.string.aset_nag_enter_empty_msg);
+							R.string.aset_nag_enter_empty_msg);
 			return;
 		}
 
