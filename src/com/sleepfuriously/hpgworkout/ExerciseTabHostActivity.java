@@ -6,6 +6,7 @@
 package com.sleepfuriously.hpgworkout;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -15,6 +16,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -70,6 +72,9 @@ public class ExerciseTabHostActivity
 	//---------------------
 	//	Widgets
 	//---------------------
+
+	/** The Help dialog for all the tabs. */
+	protected Dialog m_dialog = null;
 
 	/**
 	 * The button (or Image) that's pushed for help for ALL the
@@ -333,24 +338,39 @@ public class ExerciseTabHostActivity
 
 
 	/***********************
-	 * Taken directly from BaseDialogActivity
+	 * Based on BaseDialogActivity
 	 */
 	protected void show_help_dialog (int title_id, int msg_id) {
-			// Build the dialog.
-		AlertDialog.Builder builder =
-			new AlertDialog.Builder (this);
-		builder.setIcon (R.drawable.hpglogo_36x36);
-		if (title_id != -1) {
-			builder.setTitle (getString (title_id));
-		}
-		if (msg_id != -1) {
-			builder.setMessage (getString (msg_id));
-		}
-		builder.setPositiveButton(R.string.ok, null);
 
-			// And show it.
-		AlertDialog dialog = builder.create();
-		dialog.show();
+		// Build a new Dialog.
+		m_dialog = new Dialog(this);
+
+		// This prevents the automatic title area from being made.
+		// And it has to be the first thing, too.
+		m_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		m_dialog.setContentView(R.layout.dialog_help);
+
+		// Fill in the Views (title & msg).
+		TextView title = (TextView) m_dialog.findViewById(R.id.dialog_help_title_tv);
+		if (title_id == -1)
+			title.setText("");
+		else
+			title.setText(title_id);
+
+		TextView msg = (TextView) m_dialog.findViewById(R.id.dialog_help_msg_tv);
+		if (msg_id == -1)
+			msg.setText("");
+		else
+			msg.setText(msg_id);
+
+		Button ok_butt = (Button) m_dialog.findViewById(R.id.dialog_help_ok_butt);
+		ok_butt.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				m_dialog.dismiss();
+				m_dialog = null;		// Allows garbage collection
+			}
+		});
+		m_dialog.show();
 	} // showHelpDialog (title_id, msg_id)
 
 }
