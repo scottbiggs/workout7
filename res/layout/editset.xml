@@ -105,14 +105,14 @@
 						android:layout_marginTop="4dp" >
 
 						<TextView
-						    android:id="@+id/editset_date_label_tv"
-						    style="@style/white_text_medium"
-						    android:layout_width="0dp"
-						    android:layout_height="wrap_content"
-						    android:layout_marginRight="8dp"
-						    android:layout_weight="1.3"
-						    android:gravity="right"
-						    android:text="@string/editset_date_day_label" />
+							android:id="@+id/editset_date_label_tv"
+							style="@style/white_text_medium"
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:layout_marginRight="8dp"
+							android:layout_weight="1.3"
+							android:gravity="right"
+							android:text="@string/editset_date_day_label" />
 
 						<TextView
 							android:id="@+id/editset_date_data_tv"
@@ -510,27 +510,29 @@
 
 						<TextView
 							android:id="@+id/editset_stress_label_tv"
+							style="@style/white_text_medium"
 							android:layout_width="0dp"
 							android:layout_height="wrap_content"
+							android:layout_gravity="center_vertical"
 							android:layout_marginRight="8dp"
 							android:layout_weight="1.3"
 							android:gravity="right"
-							android:text="@string/editset_stress_label"
-							style="@style/white_text_medium"
-							/>
+							android:text="@string/editset_stress_label" />
 
-						<TextView
-							android:id="@+id/editset_stress_data_tv"
-							android:layout_width="0dp"
-							android:layout_height="wrap_content"
-							android:layout_marginRight="8dp"
-							android:layout_weight="1"
-							android:background="@drawable/rounded_edges2"
-							android:paddingLeft="6dp"
-							android:paddingRight="5dp"
-							android:text="@string/editset_empty_data"
-							style="@style/white_text_medium"
-							/>
+						<ImageView
+						    android:id="@+id/editset_stress_data_iv"
+						    android:layout_width="0dp"
+						    android:layout_height="wrap_content"
+						    android:layout_marginRight="8dp"
+						    android:layout_weight="1"
+						    android:background="@drawable/rounded_edges2"
+						    android:clickable="true"
+						    android:paddingBottom="3dp"
+						    android:paddingLeft="6dp"
+						    android:paddingRight="5dp"
+						    android:paddingTop="3dp"
+						    android:src="@drawable/stress_just_right" />
+
 					</LinearLayout>
 
 					<!-- NOTES -->

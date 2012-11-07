@@ -1,18 +1,22 @@
 TODO:
 -----------------
-Need to have the Inspector show our nifty new icons for
-	the stress condition of a set.
+*** Figure out which InspectorActivity I'm using and remove the
+	other from the src/ directory!
 
-Same for EditSet!
+When editing a set, pressing on the label should take
+	you to editing that aspect as well as the data.
+
+Need to have the Inspector show our nifty new icons for
+	the stress condition of a set.  Same for EditSet
+	and the popup edit screen!
 
 Issue:  The graph adds up weight on the same day, that's
 	good.  But it shouldn't add up everything, should it?
 	Like for reps, should it add 'em, show an average,
 	or show the max?
 
-Bug: Edit a set doesn't scroll when there's too much data
-	to display in one screen.  Makes it impossible to
-	see the buttons at the bottom!
+Bug: Edit a set doesn't always reveal the OK/Cancel buttons
+	at the bottom (when there's a lot to change).
 
 Bug: Inspector doesn't update when a set is added AFTER it has
 	already started displaying.

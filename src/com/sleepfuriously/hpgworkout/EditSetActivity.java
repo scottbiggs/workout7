@@ -64,7 +64,8 @@ public class EditSetActivity
 	TextView m_calendar_date_data_tv, m_calendar_time_data_tv,
 		m_reps_data_tv, m_weight_data_tv, m_level_data_tv,
 		m_cals_data_tv, m_dist_data_tv, m_time_data_tv,
-		m_other_data_tv, m_stress_data_tv, m_notes_data_tv;
+		m_other_data_tv, m_notes_data_tv;
+	ImageView m_stress_data_iv;
 
 	/** The clearly-marked buttons for this screen */
 	Button m_delete, m_done, m_cancel;
@@ -184,8 +185,9 @@ public class EditSetActivity
 		m_time_data_tv.setOnClickListener(this);
 		m_other_data_tv = (TextView) findViewById(R.id.editset_other_data_tv);
 		m_other_data_tv.setOnClickListener(this);
-		m_stress_data_tv = (TextView) findViewById(R.id.editset_stress_data_tv);
-		m_stress_data_tv.setOnClickListener(this);
+
+		m_stress_data_iv = (ImageView) findViewById(R.id.editset_stress_data_iv);
+		m_stress_data_iv.setOnClickListener(this);
 
 		m_notes_data_tv = (TextView) findViewById(R.id.editset_notes_data_tv);
 		m_notes_data_tv.setOnClickListener(this);
@@ -292,19 +294,19 @@ public class EditSetActivity
 			m_stress = data.getIntExtra(StressActivity.ITT_KEY_RETURN_STRESS, DatabaseHelper.SET_COND_NONE);
 			switch (m_stress) {
 				case DatabaseHelper.SET_COND_OK:
-					m_stress_data_tv.setText(R.string.aset_cond_stress_ok);
+					m_stress_data_iv.setImageResource(R.drawable.stress_just_right);
 					break;
 				case DatabaseHelper.SET_COND_MINUS:
-					m_stress_data_tv.setText(R.string.aset_cond_stress_too_hard);
+					m_stress_data_iv.setImageResource(R.drawable.stress_too_heavy);
 					break;
 				case DatabaseHelper.SET_COND_PLUS:
-					m_stress_data_tv.setText(R.string.aset_cond_stress_too_easy);
+					m_stress_data_iv.setImageResource(R.drawable.stress_too_easy);
 					break;
 				case DatabaseHelper.SET_COND_INJURY:
-					m_stress_data_tv.setText(R.string.aset_cond_stress_injury);
+					m_stress_data_iv.setImageResource(R.drawable.stress_injury);
 					break;
 				default:
-					m_stress_data_tv.setText(R.string.aset_cond_stress_none);
+					m_stress_data_iv.setImageResource(R.drawable.stress_error);
 					break;
 			}
 		} // stress change
@@ -314,6 +316,7 @@ public class EditSetActivity
 
 	//-------------------------
 	public void onClick(View v) {
+		Log.d(tag, "Click!");
 		if (v.getClass() == TextView.class) {
 			if (v == m_calendar_date_data_tv) {
 				new DatePickerDialog(this, this, m_set_date.get_year(), m_set_date.get_month(), m_set_date.get_day())
@@ -358,14 +361,15 @@ public class EditSetActivity
 						m_other_label_tv.getText().toString(),
 						m_other_data_tv.getText().toString(), true);
 			}
-			else if (v == m_stress_data_tv) {
-				activate_stress_activity();
-			}
 			else if (v == m_notes_data_tv) {
 				activate_text_activity();
 			}
 		} // if TextView
 
+		else if (v == m_stress_data_iv) {
+			Log.d(tag, "yep, they want to change the stress!");
+			activate_stress_activity();
+		}
 		else if (v == m_delete) {
 			String msg_args[] = {
 								m_exercise_name,
@@ -1098,19 +1102,19 @@ public class EditSetActivity
 		m_stress = set_cursor.getInt(col);
 		switch (m_stress) {
 			case DatabaseHelper.SET_COND_OK:
-				m_stress_data_tv.setText(R.string.aset_cond_stress_ok);
+				m_stress_data_iv.setImageResource(R.drawable.stress_just_right);
 				break;
 			case DatabaseHelper.SET_COND_MINUS:
-				m_stress_data_tv.setText(R.string.aset_cond_stress_too_hard);
+				m_stress_data_iv.setImageResource(R.drawable.stress_too_heavy);
 				break;
 			case DatabaseHelper.SET_COND_PLUS:
-				m_stress_data_tv.setText(R.string.aset_cond_stress_too_easy);
+				m_stress_data_iv.setImageResource(R.drawable.stress_too_easy);
 				break;
 			case DatabaseHelper.SET_COND_INJURY:
-				m_stress_data_tv.setText(R.string.aset_cond_stress_injury);
+				m_stress_data_iv.setImageResource(R.drawable.stress_injury);
 				break;
 			default:
-				m_stress_data_tv.setText(R.string.aset_cond_stress_error);
+				m_stress_data_iv.setImageResource(R.drawable.stress_error);
 				break;
 		}
 	} // stress

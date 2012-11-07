@@ -843,7 +843,7 @@
 		this information into the database.
 
 		\n\nSelect a radio button that indicates how hard this
-		set has been for you (I call it the \'stress\' level).
+		set has been for you (I call it the \'stress\' condition).
 		The first choice means that this exercise set was just
 		right--you had to push to complete it.
 
@@ -946,22 +946,14 @@
 		</string>
 	<string name="aset_other_hint">%s</string>
 
-	<string name="aset_cond_label">stress</string>
+	<string name="aset_cond_label">stress condition</string>
+
 	<string name="aset_cond_stress_ok">ok</string>
 	<string name="aset_cond_stress_too_hard">-</string>
-		<string name="aset_cond_stress_too_easy">+</string>
-		<string name="aset_cond_stress_injury">X</string>
-		<string name="aset_cond_stress_error">error!</string>
-		<string name="aset_cond_stress_none">n/a</string>
-
-		<string name="aset_cond_help_title">Set Stress</string>
-	<string name="aset_cond_help_msg">This is a quick way
-		to rate the the stress-levels when you do a set.
-		I just leave it blank for
-		a decent set. Select a plus-sign (\+) if you need
-		to move up a notch next time. I use a minus (-) if
-		I could not complete the set. And select an \'X\'
-		if you injured yourself--ouch!</string>
+	<string name="aset_cond_stress_too_easy">+</string>
+	<string name="aset_cond_stress_injury">X</string>
+	<string name="aset_cond_stress_error">error!</string>
+	<string name="aset_cond_stress_none">n/a</string>
 
 	<string name="aset_notes_label">notes</string>
 	<string name="aset_notes_help_title">Notes</string>
