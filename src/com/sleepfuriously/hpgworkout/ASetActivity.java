@@ -902,7 +902,7 @@ public class ASetActivity
 		// Indicate that the database has changed and tell the
 		//	other activities to reset.
 		m_db_dirty = true;
-		InspectorActivity.m_db_dirty = true;
+		InspectorActivity2.m_db_dirty = true;
 		HistoryActivity.m_db_dirty = true;
 		GraphActivity.m_db_dirty = true;
 	} // save()

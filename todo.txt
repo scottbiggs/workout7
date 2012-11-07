@@ -1,8 +1,5 @@
 TODO:
 -----------------
-*** Figure out which InspectorActivity I'm using and remove the
-	other from the src/ directory!
-
 When editing a set, pressing on the label should take
 	you to editing that aspect as well as the data.
 
@@ -17,9 +14,6 @@ Issue:  The graph adds up weight on the same day, that's
 
 Bug: Edit a set doesn't always reveal the OK/Cancel buttons
 	at the bottom (when there's a lot to change).
-
-Bug: Inspector doesn't update when a set is added AFTER it has
-	already started displaying.
 
 Graphs: the x-axis should be by date, not by the quantity of sets.
 
@@ -215,6 +209,15 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Bug: Inspector doesn't update when a set is added AFTER it has
+	already started displaying.
+	- Fixed when I removed the unused InspectorActivity.  Turns
+	out the update signal was sent to the wrong InspectorActivity.
+
+Figure out which InspectorActivity I'm using and remove the
+	other from the src/ directory!
+	- done.  We're now using InspectorActivity2.
+
 Make the condition part of the Inspector better--REAL icons instead
 	of the plus/minus things.  And while we're at it, use these
 	icons for the radio buttons in ADD A SET, too!
