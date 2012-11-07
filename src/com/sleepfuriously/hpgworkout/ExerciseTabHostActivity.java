@@ -51,11 +51,15 @@ public class ExerciseTabHostActivity
 	 * are the numbers you accompany the TAB_START_KEY with.
 	 */
 	public static final int
+//		TAB_ASET = 0,			// History is no longer used.
+//		TAB_INSPECTOR = 1,
+//		TAB_HISTORY = 2,
+//		TAB_GRAPH = 3,
+//		TAB_EDIT = 4;
 		TAB_ASET = 0,
 		TAB_INSPECTOR = 1,
-		TAB_HISTORY = 2,
-		TAB_GRAPH = 3,
-		TAB_EDIT = 4;
+		TAB_GRAPH = 2,
+		TAB_EDIT = 3;
 
 	/** The key to access the name of this exercise */
 	public static final String KEY_NAME = "name";
@@ -183,20 +187,20 @@ public class ExerciseTabHostActivity
 		}
 		Log.v(tag, "\t\tInspector complete...");
 
-		// (History = 2)
-		{
-			Intent hist_itt = new Intent(this, HistoryActivity.class);
-			hist_itt.putExtra(KEY_NAME, m_ex_name);
-			hist_itt.putExtra(KEY_SET_ID, m_id);
-			spec = th.newTabSpec("HistoryActivity");// No one knows what this is for
-			spec.setContent(hist_itt);
-			spec.setIndicator(getString(R.string.exer_tabhost_tab_history),
-					res.getDrawable(R.drawable.users));
-			th.addTab(spec);
-		}
-		Log.v(tag, "\t\tHistory complete...");
+//		// (History = 2)
+//		{
+//			Intent hist_itt = new Intent(this, HistoryActivity.class);
+//			hist_itt.putExtra(KEY_NAME, m_ex_name);
+//			hist_itt.putExtra(KEY_SET_ID, m_id);
+//			spec = th.newTabSpec("HistoryActivity");// No one knows what this is for
+//			spec.setContent(hist_itt);
+//			spec.setIndicator(getString(R.string.exer_tabhost_tab_history),
+//					res.getDrawable(R.drawable.users));
+//			th.addTab(spec);
+//		}
+//		Log.v(tag, "\t\tHistory complete...");
 
-		// (Graph = 3)
+		// (Graph = 2)
 		{
 			Intent graph_itt = new Intent(this, GraphActivity.class);
 			graph_itt.putExtra(KEY_NAME, m_ex_name);
@@ -209,7 +213,7 @@ public class ExerciseTabHostActivity
 		}
 		Log.v(tag, "\t\tGraph complete...");
 
-		// (EditExercise = 4)
+		// (EditExercise = 3)
 		{
 			Intent edit_itt = new Intent(this, EditExerciseActivity.class);
 			edit_itt.putExtra(KEY_NAME, m_ex_name);
@@ -277,10 +281,10 @@ public class ExerciseTabHostActivity
 					title = R.string.inspector_help_title;
 					msg = R.string.inspector_help_msg;
 					break;
-				case TAB_HISTORY:
-					title = R.string.history_help_title;
-					msg = R.string.history_help_msg;
-					break;
+//				case TAB_HISTORY:
+//					title = R.string.history_help_title;
+//					msg = R.string.history_help_msg;
+//					break;
 				case TAB_GRAPH:
 					title = R.string.graph_help_title;
 					msg = R.string.graph_help_msg;
