@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnLongClickListener;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -690,26 +691,26 @@ public class InspectorActivity2
 	 */
 	private void setup_stress (SetLayout vals,
 							LinearLayout set_ll) {
-		TextView stress_data_tv = (TextView) set_ll.findViewById(R.id.inspector_set_stress_data);
+		ImageView stress_data_iv = (ImageView) set_ll.findViewById(R.id.inspector_set_stress_data);
 
 		switch (vals.data.cond) {
 			case DatabaseHelper.SET_COND_OK:
-				stress_data_tv.setText(R.string.aset_cond_stress_ok);
+				stress_data_iv.setImageResource(R.drawable.stress_just_right);
 				break;
 			case DatabaseHelper.SET_COND_MINUS:
-				stress_data_tv.setText(R.string.aset_cond_stress_too_hard);
+				stress_data_iv.setImageResource(R.drawable.stress_too_heavy);
 				break;
 			case DatabaseHelper.SET_COND_PLUS:
-				stress_data_tv.setText(R.string.aset_cond_stress_too_easy);
+				stress_data_iv.setImageResource(R.drawable.stress_too_easy);
 				break;
 			case DatabaseHelper.SET_COND_INJURY:
-				stress_data_tv.setText(R.string.aset_cond_stress_injury);
+				stress_data_iv.setImageResource(R.drawable.stress_injury);
 				break;
 			default:
-				stress_data_tv.setText(R.string.aset_cond_stress_error);
+				stress_data_iv.setImageResource(R.drawable.stress_error);
 				break;
 		}
-	} // stress
+	} // setup_stress (vals, set_ll)
 
 
 	/***********************

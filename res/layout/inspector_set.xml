@@ -14,29 +14,29 @@
 	>
 
 	<TextView
-	    android:id="@+id/inspector_set_date_tv"
-	    style="@style/white_text_large"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_marginBottom="2dp"
-	    android:layout_marginLeft="28dp"
-	    android:layout_marginRight="3dp"
-	    android:layout_marginTop="5dp"
-	    android:text="@string/inspector_set_day_label" />
+		android:id="@+id/inspector_set_date_tv"
+		style="@style/white_text_large"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="2dp"
+		android:layout_marginLeft="28dp"
+		android:layout_marginRight="3dp"
+		android:layout_marginTop="5dp"
+		android:text="@string/inspector_set_day_label" />
 
 	<LinearLayout
-	    android:id="@+id/inspector_set_ll"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_marginBottom="8dp"
-	    android:layout_marginLeft="8dp"
-	    android:layout_marginRight="8dp"
-	    android:background="@drawable/rounded_edges"
-	    android:orientation="vertical"
-	    android:paddingBottom="5dp"
-	    android:paddingLeft="8dp"
-	    android:paddingRight="8dp"
-	    android:paddingTop="5dp" >
+		android:id="@+id/inspector_set_ll"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="8dp"
+		android:layout_marginLeft="8dp"
+		android:layout_marginRight="8dp"
+		android:background="@drawable/rounded_edges"
+		android:orientation="vertical"
+		android:paddingBottom="5dp"
+		android:paddingLeft="8dp"
+		android:paddingRight="8dp"
+		android:paddingTop="5dp" >
 
 		<LinearLayout
 			android:layout_width="fill_parent"
@@ -359,27 +359,25 @@
 			android:layout_marginTop="2dp" >
 
 			<TextView
-				android:id="@+id/inspector_set_stress_label"
-				android:layout_width="0dp"
-				android:layout_height="wrap_content"
-				android:layout_marginRight="5dp"
-				android:layout_weight="1.5"
-				android:gravity="right"
-				android:text="@string/inspector_set_stress_label"
-				style="@style/white_text_small"
-				/>
+			    android:id="@+id/inspector_set_stress_label"
+			    style="@style/white_text_small"
+			    android:layout_width="0dp"
+			    android:layout_height="wrap_content"
+			    android:layout_gravity="center_vertical"
+			    android:layout_marginRight="5dp"
+			    android:layout_weight="1.5"
+			    android:gravity="right"
+			    android:text="@string/inspector_set_stress_label" />
 
-			<TextView
+			<ImageView
 				android:id="@+id/inspector_set_stress_data"
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
 				android:layout_marginLeft="2dp"
 				android:layout_weight="1"
 				android:background="@drawable/rounded_edges2"
-				android:paddingLeft="6dp"
-				android:text="data"
-				style="@style/white_text_small"
-				android:textColor="@color/floral_white" />
+				android:padding="3dp"
+				android:src="@drawable/stress_just_right" />
 		</LinearLayout>
 
 		<View
