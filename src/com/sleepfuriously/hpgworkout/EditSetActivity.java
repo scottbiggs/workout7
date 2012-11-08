@@ -149,7 +149,7 @@ public class EditSetActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.editset);
 
-		Log.i(tag, "Entering onCreate()");
+//		Log.i(tag, "Entering onCreate()");
 
 		// This bit makes sure that the dialog takes up as much of
 		// the window as possible (and still look like a dialog).
@@ -158,15 +158,32 @@ public class EditSetActivity
 		params.width  = LayoutParams.FILL_PARENT;
 		getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
 
+		// The label TextViews (some are only used once, so they
+		// are local variables instead of class members).
+		TextView date_label_tv = (TextView) findViewById(R.id.editset_date_label_tv);
+		date_label_tv.setOnClickListener(this);
+		TextView cal_time_label_tv = (TextView) findViewById(R.id.editset_calendar_time_label_tv);
+		cal_time_label_tv.setOnClickListener(this);
+		TextView reps_label_tv = (TextView) findViewById(R.id.editset_reps_label_tv);
+		reps_label_tv.setOnClickListener(this);
 		m_weight_label_tv = (TextView) findViewById(R.id.editset_weight_label_tv);
-//		m_level_label_tv = (TextView) findViewById(R.id.editset_level_label_tv);
-//		m_cals_label_tv = (TextView) findViewById(R.id.editset_cals_label_tv);
+		m_weight_label_tv.setOnClickListener(this);
+		TextView level_label_tv = (TextView) findViewById(R.id.editset_level_label_tv);
+		level_label_tv.setOnClickListener(this);
+		TextView cals_label_tv = (TextView) findViewById(R.id.editset_cals_label_tv);
+		cals_label_tv.setOnClickListener(this);
 		m_dist_label_tv = (TextView) findViewById(R.id.editset_dist_label_tv);
+		m_dist_label_tv.setOnClickListener(this);
 		m_time_label_tv = (TextView) findViewById(R.id.editset_time_label_tv);
+		m_time_label_tv.setOnClickListener(this);
 		m_other_label_tv = (TextView) findViewById(R.id.editset_other_label_tv);
-//		m_stress_label_tv = (TextView) findViewById(R.id.editset_stress_label_tv);
-//		m_notes_label_tv = (TextView) findViewById(R.id.editset_notes_label_tv);
+		m_other_label_tv.setOnClickListener(this);
+		TextView stress_label_tv = (TextView) findViewById(R.id.editset_stress_label_tv);
+		stress_label_tv.setOnClickListener(this);
+		TextView notes_label_tv = (TextView) findViewById(R.id.editset_notes_label_tv);
+		notes_label_tv.setOnClickListener(this);
 
+		// The data TextViews
 		m_calendar_date_data_tv = (TextView) findViewById(R.id.editset_date_data_tv);
 		m_calendar_date_data_tv.setOnClickListener(this);
 		m_calendar_time_data_tv = (TextView) findViewById(R.id.editset_calendar_time_data_tv);
@@ -316,116 +333,257 @@ public class EditSetActivity
 
 	//-------------------------
 	public void onClick(View v) {
-		Log.d(tag, "Click!");
-		if (v.getClass() == TextView.class) {
-			if (v == m_calendar_date_data_tv) {
-				new DatePickerDialog(this, this, m_set_date.get_year(), m_set_date.get_month(), m_set_date.get_day())
+		switch (v.getId()) {
+			case R.id.editset_date_label_tv:
+			case R.id.editset_date_data_tv:
+				new DatePickerDialog(this, this,
+									m_set_date.get_year(),
+									m_set_date.get_month(),
+									m_set_date.get_day())
 					.show();
-			}
-			else if (v == m_calendar_time_data_tv) {
-				new TimePickerDialog(this, this, m_set_date.get_hour(), m_set_date.get_minutes(), true)
-					.show();
-			}
-			else if (v == m_reps_data_tv) {
-				activate_number_activity (DatabaseHelper.EXERCISE_COL_REP_NUM,
-						getString(R.string.editset_reps_label),
-						m_reps_data_tv.getText().toString(), false);
-			}
-			else if (v == m_weight_data_tv) {
-				activate_number_activity (DatabaseHelper.EXERCISE_COL_WEIGHT_NUM,
-						m_weight_label_tv.getText().toString(),
-						m_weight_data_tv.getText().toString(), true);
-			}
-			else if (v == m_level_data_tv) {
-				activate_number_activity (DatabaseHelper.EXERCISE_COL_LEVEL_NUM,
-						getString(R.string.editset_level_label),
-						m_level_data_tv.getText().toString(), false);
-			}
-			else if (v == m_cals_data_tv) {
-				activate_number_activity (DatabaseHelper.EXERCISE_COL_CALORIE_NUM,
-						getString(R.string.editset_cals_label),
-						m_cals_data_tv.getText().toString(), false);
-			}
-			else if (v == m_dist_data_tv) {
-				activate_number_activity (DatabaseHelper.EXERCISE_COL_DIST_NUM,
-						m_dist_label_tv.getText().toString(),
-						m_dist_data_tv.getText().toString(), true);
-			}
-			else if (v == m_time_data_tv) {
-				activate_number_activity (DatabaseHelper.EXERCISE_COL_TIME_NUM,
-						m_time_label_tv.getText().toString(),
-						m_time_data_tv.getText().toString(), true);
-			}
-			else if (v == m_other_data_tv) {
-				activate_number_activity (DatabaseHelper.EXERCISE_COL_OTHER_NUM,
-						m_other_label_tv.getText().toString(),
-						m_other_data_tv.getText().toString(), true);
-			}
-			else if (v == m_notes_data_tv) {
-				activate_text_activity();
-			}
-		} // if TextView
+				break;
 
-		else if (v == m_stress_data_iv) {
-			Log.d(tag, "yep, they want to change the stress!");
-			activate_stress_activity();
-		}
-		else if (v == m_delete) {
-			String msg_args[] = {
-								m_exercise_name,
-								m_exercise_name,
-								m_calendar_date_data_tv.getText().toString(),
-								m_calendar_time_data_tv.getText().toString()
-			};
-			show_yes_no_dialog(R.string.editset_delete_warning_title,
-					null,
-					R.string.editset_delete_warning_msg,
-					msg_args,
-					new View.OnClickListener() {
+			case R.id.editset_calendar_time_label_tv:
+			case R.id.editset_calendar_time_data_tv:
+				new TimePickerDialog(this, this,
+									m_set_date.get_hour(),
+									m_set_date.get_minutes(),
+									true)
+					.show();
+				break;
+
+			case R.id.editset_reps_label_tv:
+			case R.id.editset_reps_data_tv:
+				activate_number_activity (DatabaseHelper.EXERCISE_COL_REP_NUM,
+										getString(R.string.editset_reps_label),
+										m_reps_data_tv.getText().toString(), false);
+				break;
+
+			case R.id.editset_weight_label_tv:
+			case R.id.editset_weight_data_tv:
+				activate_number_activity (DatabaseHelper.EXERCISE_COL_WEIGHT_NUM,
+										m_weight_label_tv.getText().toString(),
+										m_weight_data_tv.getText().toString(), true);
+				break;
+
+			case R.id.editset_level_label_tv:
+			case R.id.editset_level_data_tv:
+				activate_number_activity (DatabaseHelper.EXERCISE_COL_LEVEL_NUM,
+										getString(R.string.editset_level_label),
+										m_level_data_tv.getText().toString(), false);
+				break;
+
+			case R.id.editset_cals_label_tv:
+			case R.id.editset_cals_data_tv:
+				activate_number_activity (DatabaseHelper.EXERCISE_COL_CALORIE_NUM,
+										getString(R.string.editset_cals_label),
+										m_cals_data_tv.getText().toString(), false);
+				break;
+
+			case R.id.editset_dist_label_tv:
+			case R.id.editset_dist_data_tv:
+				activate_number_activity (DatabaseHelper.EXERCISE_COL_DIST_NUM,
+										m_dist_label_tv.getText().toString(),
+										m_dist_data_tv.getText().toString(), true);
+				break;
+
+			case R.id.editset_time_label_tv:
+			case R.id.editset_time_data_tv:
+				activate_number_activity (DatabaseHelper.EXERCISE_COL_TIME_NUM,
+										m_time_label_tv.getText().toString(),
+										m_time_data_tv.getText().toString(), true);
+				break;
+
+			case R.id.editset_other_label_tv:
+			case R.id.editset_other_data_tv:
+				activate_number_activity (DatabaseHelper.EXERCISE_COL_OTHER_NUM,
+										m_other_label_tv.getText().toString(),
+										m_other_data_tv.getText().toString(), true);
+				break;
+
+			case R.id.editset_stress_label_tv:
+			case R.id.editset_stress_data_iv:
+				activate_stress_activity();
+				break;
+
+			case R.id.editset_notes_label_tv:
+			case R.id.editset_notes_data_tv:
+				activate_text_activity();
+				break;
+
+			case R.id.editset_delete_butt:
+				String msg_args[] = {
+										m_exercise_name,
+										m_exercise_name,
+										m_calendar_date_data_tv.getText().toString(),
+										m_calendar_time_data_tv.getText().toString()
+					};
+					show_yes_no_dialog(R.string.editset_delete_warning_title,
+							null,
+							R.string.editset_delete_warning_msg,
+							msg_args,
+							new View.OnClickListener() {
+								public void onClick(View v) {
+									// YES, they want to delete it!
+									delete_set();
+									setResult(RESULT_OK);
+									dismiss_all_dialogs();
+									finish();
+								}
+							});
+				break;
+
+			case R.id.editset_logo:		// HELP button
+				show_help_dialog(R.string.editset_help_title,
+									R.string.editset_help_msg);
+				break;
+
+			case R.id.editset_ok_butt:
+				if (!m_dirty) {
+					setResult(RESULT_CANCELED);
+					finish();
+				}
+				else {
+					save_and_exit();
+				}
+				break;
+
+			case R.id.editset_cancel_butt:
+				if (m_dirty && WGlobals.g_nag) {
+					show_yes_no_dialog(R.string.editset_cancel_warning_title, null,
+							R.string.editset_cancel_warning_msg, null,
+							new View.OnClickListener() {
 						public void onClick(View v) {
-							// YES, they want to delete it!
-							delete_set();
-							setResult(RESULT_OK);
+							// Yes, they want to cancel.
+							setResult(RESULT_CANCELED);
 							dismiss_all_dialogs();
 							finish();
-						}
+							}
 					});
-		}
 
-		else if (v == m_help) {
-			show_help_dialog(R.string.editset_help_title,
-					R.string.editset_help_msg);
-		}
+				}
+				else {
+					setResult(RESULT_CANCELED);
+					finish();
+				}
+				break;
 
-		else if (v == m_done) {
-			if (!m_dirty) {
-				setResult(RESULT_CANCELED);
-				finish();
-			}
-			else {
-				save_and_exit();
-			}
-		}
+			default:
+				Log.e(tag, "Illegal View id in onClick!");
+				break;
+		} // switch on v id
 
-		else if (v == m_cancel) {
-			if (m_dirty && WGlobals.g_nag) {
-				show_yes_no_dialog(R.string.editset_cancel_warning_title, null,
-						R.string.editset_cancel_warning_msg, null,
-						new View.OnClickListener() {
-					public void onClick(View v) {
-						// Yes, they want to cancel.
-						setResult(RESULT_CANCELED);
-						dismiss_all_dialogs();
-						finish();
-						}
-				});
+//		if (v.getClass() == TextView.class) {
+//			if (v == m_calendar_date_data_tv) {
+//				new DatePickerDialog(this, this,
+//									 m_set_date.get_year(),
+//									 m_set_date.get_month(),
+//									 m_set_date.get_day())
+//					.show();
+//			}
+//			else if (v == m_calendar_time_data_tv) {
+//				new TimePickerDialog(this, this, m_set_date.get_hour(), m_set_date.get_minutes(), true)
+//					.show();
+//			}
+//			else if (v == m_reps_data_tv) {
+//				activate_number_activity (DatabaseHelper.EXERCISE_COL_REP_NUM,
+//						getString(R.string.editset_reps_label),
+//						m_reps_data_tv.getText().toString(), false);
+//			}
+//			else if (v == m_weight_data_tv) {
+//				activate_number_activity (DatabaseHelper.EXERCISE_COL_WEIGHT_NUM,
+//						m_weight_label_tv.getText().toString(),
+//						m_weight_data_tv.getText().toString(), true);
+//			}
+//			else if (v == m_level_data_tv) {
+//				activate_number_activity (DatabaseHelper.EXERCISE_COL_LEVEL_NUM,
+//						getString(R.string.editset_level_label),
+//						m_level_data_tv.getText().toString(), false);
+//			}
+//			else if (v == m_cals_data_tv) {
+//				activate_number_activity (DatabaseHelper.EXERCISE_COL_CALORIE_NUM,
+//						getString(R.string.editset_cals_label),
+//						m_cals_data_tv.getText().toString(), false);
+//			}
+//			else if (v == m_dist_data_tv) {
+//				activate_number_activity (DatabaseHelper.EXERCISE_COL_DIST_NUM,
+//						m_dist_label_tv.getText().toString(),
+//						m_dist_data_tv.getText().toString(), true);
+//			}
+//			else if (v == m_time_data_tv) {
+//				activate_number_activity (DatabaseHelper.EXERCISE_COL_TIME_NUM,
+//						m_time_label_tv.getText().toString(),
+//						m_time_data_tv.getText().toString(), true);
+//			}
+//			else if (v == m_other_data_tv) {
+//				activate_number_activity (DatabaseHelper.EXERCISE_COL_OTHER_NUM,
+//						m_other_label_tv.getText().toString(),
+//						m_other_data_tv.getText().toString(), true);
+//			}
+//			else if (v == m_notes_data_tv) {
+//				activate_text_activity();
+//			}
+//		} // if TextView
 
-			}
-			else {
-				setResult(RESULT_CANCELED);
-				finish();
-			}
-		} // cancel
+//		else if (v == m_stress_data_iv) {
+//			activate_stress_activity();
+//		}
+//		else if (v == m_delete) {
+//			String msg_args[] = {
+//								m_exercise_name,
+//								m_exercise_name,
+//								m_calendar_date_data_tv.getText().toString(),
+//								m_calendar_time_data_tv.getText().toString()
+//			};
+//			show_yes_no_dialog(R.string.editset_delete_warning_title,
+//					null,
+//					R.string.editset_delete_warning_msg,
+//					msg_args,
+//					new View.OnClickListener() {
+//						public void onClick(View v) {
+//							// YES, they want to delete it!
+//							delete_set();
+//							setResult(RESULT_OK);
+//							dismiss_all_dialogs();
+//							finish();
+//						}
+//					});
+//		}
+
+//		else if (v == m_help) {
+//			show_help_dialog(R.string.editset_help_title,
+//					R.string.editset_help_msg);
+//		}
+
+//		else if (v == m_done) {
+//			if (!m_dirty) {
+//				setResult(RESULT_CANCELED);
+//				finish();
+//			}
+//			else {
+//				save_and_exit();
+//			}
+//		}
+
+//		else if (v == m_cancel) {
+//			if (m_dirty && WGlobals.g_nag) {
+//				show_yes_no_dialog(R.string.editset_cancel_warning_title, null,
+//						R.string.editset_cancel_warning_msg, null,
+//						new View.OnClickListener() {
+//					public void onClick(View v) {
+//						// Yes, they want to cancel.
+//						setResult(RESULT_CANCELED);
+//						dismiss_all_dialogs();
+//						finish();
+//						}
+//				});
+//
+//			}
+//			else {
+//				setResult(RESULT_CANCELED);
+//				finish();
+//			}
+//		} // cancel
 
 	} // onClick (v)
 

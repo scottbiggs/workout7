@@ -1,11 +1,27 @@
 TODO:
 -----------------
+Make the "just right" stress condition have a green check.
+	And you might do something to add more color to the 'too
+	heavy' and 'injury.'  Alternately, you could reduce the
+	color for 'too easy.'
+
+Bug: If you enter a Tiddly and only put up the reps, the
+	warning page scrolls such that the buttons are not
+	visible!
+
+Bug: When typing in a new value (number), the default number
+	is 0.  But if you just click 'done', it uses the
+	LAST value instead of 0 (which can be 'skipped', which
+	is NOT what people want).
+	!!! Also, if you just type a period and press enter, we
+	get a CRASH!!!
+
+Instead of a History tab (which is now removed), have a
+	button in the Inspector that enables a quick view.
+	Also a button to reverse the order.
+
 When editing a set, pressing on the label should take
 	you to editing that aspect as well as the data.
-
-Need to have the Inspector show our nifty new icons for
-	the stress condition of a set.  Same for EditSet
-	and the popup edit screen!
 
 Issue:  The graph adds up weight on the same day, that's
 	good.  But it shouldn't add up everything, should it?
@@ -209,6 +225,11 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Need to have the Inspector show our nifty new icons for
+	the stress condition of a set.  Same for EditSet
+	and the popup edit screen!
+	- done
+
 Bug: Inspector doesn't update when a set is added AFTER it has
 	already started displaying.
 	- Fixed when I removed the unused InspectorActivity.  Turns

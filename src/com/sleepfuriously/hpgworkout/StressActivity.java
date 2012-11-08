@@ -26,15 +26,15 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.RadioGroup;
-import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.TableRow;
 
 
 public class StressActivity
 			extends
 				BaseDialogActivity
 			implements
-				OnCheckedChangeListener,
 				View.OnClickListener {
 
 	//----------------------------
@@ -79,11 +79,16 @@ public class StressActivity
 	//----------------------------
 	//	Widgets
 	//----------------------------
-	Button m_cancel, m_help, m_done;
+	Button m_cancel, m_done;
+	ImageView m_help;
 
-	/** The main thing! */
-	RadioGroup m_stress_rg;
+	/** The rows that the user can click on */
+	TableRow m_ok_table, m_too_easy_table,
+			m_too_hard_table, m_injury_table;
 
+	/** The radio buttons that show the user's selection */
+	RadioButton m_ok_rb, m_easy_rb,
+				m_hard_rb, m_injury_rb;
 
 	//----------------------------
 	//	Data
@@ -104,15 +109,27 @@ public class StressActivity
 		setContentView(R.layout.enter_stress);
 
 		m_cancel = (Button) findViewById(R.id.enter_stress_cancel_butt);
-		m_help = (Button) findViewById(R.id.enter_stress_help_butt);
+		m_help = (ImageView) findViewById(R.id.enter_stress_logo);
 		m_done = (Button) findViewById(R.id.enter_stress_ok_butt);
 
 		m_cancel.setOnClickListener(this);
 		m_help.setOnClickListener(this);
 		m_done.setOnClickListener(this);
 
-		m_stress_rg = (RadioGroup) findViewById(R.id.enter_stress_rg);
-		m_stress_rg.setOnCheckedChangeListener(this);
+
+		m_ok_table = (TableRow) findViewById(R.id.enter_stress_table_row_ok);
+		m_ok_table.setOnClickListener(this);
+		m_too_easy_table = (TableRow) findViewById(R.id.enter_stress_table_row_too_easy);
+		m_too_easy_table.setOnClickListener(this);
+		m_too_hard_table = (TableRow) findViewById(R.id.enter_stress_table_row_too_hard);
+		m_too_hard_table.setOnClickListener(this);
+		m_injury_table = (TableRow) findViewById(R.id.enter_stress_table_row_injury);
+		m_injury_table.setOnClickListener(this);
+
+		m_ok_rb = (RadioButton) findViewById(R.id.enter_stress_ok_rb);
+		m_easy_rb = (RadioButton) findViewById(R.id.enter_stress_too_easy_rb);
+		m_hard_rb = (RadioButton) findViewById(R.id.enter_stress_too_hard_rb);
+		m_injury_rb = (RadioButton) findViewById(R.id.enter_stress_injury_rb);
 
 		// If there's an old value, then get it. Also
 		// set the TextView appropriately.
@@ -120,27 +137,11 @@ public class StressActivity
 		if (itt.getBooleanExtra(ITT_KEY_SHOW_OLD_BOOL, false)) {
 			m_stress_num = itt.getIntExtra(ITT_KEY_OLD_STRESS,
 					DatabaseHelper.SET_COND_NONE);
-			switch (m_stress_num) {
-				case DatabaseHelper.SET_COND_OK:
-					m_stress_rg.check(R.id.enter_stress_radio0);
-					break;
-				case DatabaseHelper.SET_COND_PLUS:
-					m_stress_rg.check(R.id.enter_stress_radio1);
-					break;
-				case DatabaseHelper.SET_COND_MINUS:
-					m_stress_rg.check(R.id.enter_stress_radio2);
-					break;
-				case DatabaseHelper.SET_COND_INJURY:
-					m_stress_rg.check(R.id.enter_stress_radio3);
-					break;
-				default:
-					m_stress_rg.check(-1);
-					break;
-			}
+			set_radio_buttons (m_stress_num);
 		}
 		else {
 			// No value, clear the radiogroup.
-			m_stress_rg.check(-1);
+			set_radio_buttons(DatabaseHelper.SET_COND_NONE);
 		}
 
 	} // onCreate (.)
@@ -148,37 +149,49 @@ public class StressActivity
 
 	//----------------------------
 	public void onClick(View v) {
-		if (v == m_done) {
+		if (v == m_ok_table) {
+			// Only do something if this is a new button.
+			if (m_stress_num != DatabaseHelper.SET_COND_OK) {
+				m_stress_num = DatabaseHelper.SET_COND_OK;
+				set_radio_buttons(m_stress_num);
+				m_dirty = true;
+			}
+		}
+
+		if (v == m_too_easy_table) {
+			if (m_stress_num != DatabaseHelper.SET_COND_PLUS) {
+				m_stress_num = DatabaseHelper.SET_COND_PLUS;
+				set_radio_buttons(m_stress_num);
+				m_dirty = true;
+			}
+		}
+
+		if (v == m_too_hard_table) {
+			// Only do something if this is a new button.
+			if (m_stress_num != DatabaseHelper.SET_COND_MINUS) {
+				m_stress_num = DatabaseHelper.SET_COND_MINUS;
+				set_radio_buttons(m_stress_num);
+				m_dirty = true;
+			}
+		}
+		if (v == m_injury_table) {
+			// Only do something if this is a new button.
+			if (m_stress_num != DatabaseHelper.SET_COND_INJURY) {
+				m_stress_num = DatabaseHelper.SET_COND_INJURY;
+				set_radio_buttons(m_stress_num);
+				m_dirty = true;
+			}
+		}
+
+		else if (v == m_done) {
 			if (!m_dirty) {	// didn't do anything
 				setResult(RESULT_CANCELED);
 				finish();
 				return;
 			}
 			Intent itt = new Intent();
-			int checked = m_stress_rg.getCheckedRadioButtonId();
-			switch (checked) {
-				case R.id.enter_stress_radio0:
-					itt.putExtra(ITT_KEY_RETURN_STRESS, DatabaseHelper.SET_COND_OK);
-					setResult(RESULT_OK, itt);
-					break;
-				case R.id.enter_stress_radio1:
-					itt.putExtra(ITT_KEY_RETURN_STRESS, DatabaseHelper.SET_COND_PLUS);
-					setResult(RESULT_OK, itt);
-					break;
-				case R.id.enter_stress_radio2:
-					itt.putExtra(ITT_KEY_RETURN_STRESS, DatabaseHelper.SET_COND_MINUS);
-					setResult(RESULT_OK, itt);
-					break;
-				case R.id.enter_stress_radio3:
-					itt.putExtra(ITT_KEY_RETURN_STRESS, DatabaseHelper.SET_COND_INJURY);
-					setResult(RESULT_OK, itt);
-					break;
-				default:			// they didn't do anything (sort of an error condition)
-					Log.w(tag, "Unusual case in onClick(). checked = "+ checked);
-					setResult(RESULT_CANCELED);
-					finish();
-					return;
-			}
+			itt.putExtra(ITT_KEY_RETURN_STRESS, m_stress_num);
+			setResult(RESULT_OK, itt);
 			finish();
 		} // done
 
@@ -195,11 +208,41 @@ public class StressActivity
 	} // onClick (v)
 
 
-	//----------------------------
-	// Not much to do here as it's handled automatically.
-	//
-	public void onCheckedChanged(RadioGroup group, int checkedId) {
-		m_dirty = true;
-	}
+	/*********************
+	 * Sets the radio buttons based on the given number.
+	 * If the number is out of range, then all the buttons
+	 * are turned off.
+	 *
+	 * NOTE:  This only does the UI stuff--does NOT keep
+	 * 	track of any internal data!!!  No side effects!
+	 *
+	 * preconditions:
+	 * 		All the widgets are set up and ready to go.
+	 *
+	 * @param button_num		The number of the radio
+	 * 						button to pick.  Defined
+	 * 						by the constants in DatabaseHelper.
+	 */
+	protected void set_radio_buttons (int button_num) {
+		m_ok_rb.setChecked(false	);
+		m_easy_rb.setChecked(false);
+		m_hard_rb.setChecked(false);
+		m_injury_rb.setChecked(false);
+
+		switch (button_num) {
+			case DatabaseHelper.SET_COND_OK:
+				m_ok_rb.setChecked(true);
+				break;
+			case DatabaseHelper.SET_COND_PLUS:
+				m_easy_rb.setChecked(true);
+				break;
+			case DatabaseHelper.SET_COND_MINUS:
+				m_hard_rb.setChecked(true);
+				break;
+			case DatabaseHelper.SET_COND_INJURY:
+				m_injury_rb.setChecked(true);
+				break;
+		}
+	} // set_radio_buttons (button_num)
 
 }

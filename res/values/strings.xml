@@ -1235,26 +1235,28 @@
 	<string name="enter_stress_help_title">Stress Help</string>
 	<string name="enter_stress_help_msg">
 		Select the stress level of this exercise set.
-		\n\nIn general:\n
-		\t\'ok\' is for your normal workout.\n
-		\t\'+\' means that this was too easy; make it hard
+		\n\n
+		\t\'just right\' is the selection for your normal workout.
+		You pushed to finish, but did not strain.\n
+		\t\'too easy\' means just that; this is a note to make it harder
 		next time.\n
-		\t\'-\' indicates that this set was too hard; you
-		either could not finish or had to strain.\n
-		\t\'X\' is bad, an injury or something very unusual
-		occurred.
-		\n\nYou don\'t have to do these. I just find them helpful
+		\t\'too hard\' indicates that you
+		either could not finish or had to strain dangerously (and
+		unproductively) to finish this set.\n
+		\t\'injury\' is bad! An injury or something very unusual
+		occurred. Sorry.
+		\n\nYou don\'t have to keep track of these items. I find them helpful
 		to know when it\'s time to up the weight or increase
-		the difficulty.
+		the difficulty in my own workouts.
 	</string>
 
 	<string name="enter_stress_cond_label">stress</string>
-	<string name="enter_stress_cond_stress_ok">ok</string>
-	<string name="enter_stress_cond_stress_too_hard">- (too hard)</string>
-		<string name="enter_stress_cond_stress_too_easy">+ (not hard enough)</string>
-		<string name="enter_stress_cond_stress_injury">X (injury)</string>
-		<string name="enter_stress_cond_stress_error">error!</string>
-		<string name="enter_stress_cond_stress_none">n\/a</string>
+	<string name="enter_stress_cond_stress_ok">just right</string>
+	<string name="enter_stress_cond_stress_too_hard">too hard</string>
+	<string name="enter_stress_cond_stress_too_easy">too easy</string>
+	<string name="enter_stress_cond_stress_injury">injury</string>
+	<string name="enter_stress_cond_stress_error">error!</string>
+	<string name="enter_stress_cond_stress_none">n\/a</string>
 
 
 	<!-- ============              ============ -->
