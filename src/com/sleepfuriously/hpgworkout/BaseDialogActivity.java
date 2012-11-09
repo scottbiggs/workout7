@@ -315,7 +315,11 @@ public class BaseDialogActivity extends Activity {
 	/******************
 	 * This shows a yes/no dialog, prompting the user to choose
 	 * one.  If they choose yes, then the listener is activated.
-	 * If they choose no, then nothing is done.
+	 * If they choose no, then the dialog is closed and nothing
+	 * else is done.
+	 *
+	 * NOTE:		When YES is selected, it's up to the listener
+	 * 			to dismiss the dialog with dismiss_all_dialogs().
 	 *
 	 * NOTE:		The title AND the message should be in the
 	 * 			form of yes or no question.
@@ -327,9 +331,6 @@ public class BaseDialogActivity extends Activity {
 	 *
 	 * @param listener		The listener to activate when YES
 	 * 						is chosen.
-	 * 					NOTE:
-	 * 						This listener MUST call dismiss_all_dialogs()
-	 * 						if you want the dialog to close!!!
 	 */
 	protected void show_yes_no_dialog (String title, String msg,
 									View.OnClickListener listener) {

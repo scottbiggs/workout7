@@ -8,6 +8,15 @@
 	Like the dialog_help.xml, there's a problem running this
 	dialog on Motorola phones.  But since it's just a minor
 	cosmetic issue, I'm ignoring it.
+
+	NOTE:
+	Getting text to scroll and still be above buttons (at the
+	bottom of a changeable-width screen) is very tricky.  It's
+	necessary to set the ScrollView's height to 0dp and give
+	it a weight of 1.  The buttons at the bottom must have
+	a weight of 1 as well.  Seems to work.
+	ref:
+	http://stackoverflow.com/questions/5447554/scrolling-text-above-buttons-buttons-fixed-at-bottom
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
@@ -67,21 +76,17 @@
 		android:src="@android:drawable/divider_horizontal_dark" />
 
 	<!-- Scrollview -->
-	<LinearLayout
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:orientation="vertical"
-		android:layout_weight="1"
-		>
 
 		<ScrollView
 			android:id="@+id/dialog_yes_no_scrollview"
 			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
+			android:layout_height="0dp"
+			android:layout_weight="1"
 			android:layout_marginBottom="8dp"
 			android:layout_marginTop="5dp" >
 
 			<LinearLayout
+				android:orientation="vertical"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content" >
 
@@ -97,14 +102,12 @@
 					android:text="TextView" />
 			</LinearLayout>
 		</ScrollView>
-	</LinearLayout>
 
 	<!-- Buttons at Bottom -->
 	<LinearLayout
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:orientation="horizontal"
-		android:layout_weight="1"
 		>
 
 		<Button

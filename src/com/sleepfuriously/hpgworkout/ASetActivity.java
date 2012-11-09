@@ -1075,7 +1075,6 @@ public class ASetActivity
 		// But NOT if they do not want nagging.
 		if (WGlobals.g_nag) {
 			String title, msg, blanks = "";
-
 			title = getString (R.string.aset_nag_title);
 
 			if (blank_forms.size() > 1) {
