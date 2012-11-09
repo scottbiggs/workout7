@@ -1,7 +1,10 @@
 TODO:
 -----------------
-Bug: Edit a set doesn't always reveal the OK/Cancel buttons
-	at the bottom (when there's a lot to change).
+Do something other than Toasts for errors when adding a
+	new exercise!  See http://android.programmerguru.com/android-custom-toast-example/
+
+Bug: The stress condition does not default to "Just Right"
+	anymore!
 
 Make the "just right" stress condition have a green check.
 	And you might do something to add more color to the 'too
@@ -221,6 +224,10 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Bug: Edit a set doesn't always reveal the OK/Cancel buttons
+	at the bottom (when there's a lot to change).
+	- fixed
+
 Bug: If you enter a Tiddly and only put up the reps, the
 	warning page scrolls such that the buttons are not
 	visible!
