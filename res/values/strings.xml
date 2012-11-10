@@ -232,10 +232,11 @@
 	</string>
 
 	<string name="addexer_cancel_warning_title">Cancel Add Exercise</string>
-	<string name="addexer_cancel_warning_msg">It looks like you
+	<string name="addexer_cancel_warning_msg">
+		Are you sure you want to cancel\?
+		\n\nIt looks like you
 		are about to cancel, even though you\'ve done a little
 		work on this new exercise.
-		\n\nAre you sure you want to cancel\?
 		\n\n(You can turn this warning off in the \'preferences\'.)
 	</string>
 
@@ -531,7 +532,7 @@
 		unit--there is no way I can convert from the old
 		unit to the new one without forcing you to enter
 		some sort of formula, which is the sort of thing
-		you\'re avoiding by using a computer, right?).
+		you\'re avoiding by using a computer, right\?).
 		\n\nConsequently, the sets you did before the change
 		may be messed up. But you can edit them and fix
 		the weirdness if you like.
@@ -571,7 +572,7 @@
 		\n\nThere are no levels to this exercise, so he leaves this
 		unchecked (levels are generally used with exercise machines
 		like Stair Steppers or rowers).
-		\n\nCounting calories? for tiddly-winks? You gotta be kidding!
+		\n\nCounting calories\? for tiddly-winks\? You gotta be kidding!
 		\n\nWinks do have a weight, so he checks \'weighted\'.
 		He then presses on the drop-down nextdoor and select \'grains\',
 		the unit of weight for a wink.
@@ -909,7 +910,7 @@
 	<string name="aset_calorie_label">calories</string>
 	<string name="aset_calorie_help_title">Calories</string>
 	<string name="aset_calorie_help_msg">How many calories
-		did you burn this set?
+		did you burn this set\?
 		\n\nUseless and confusing information:\n
 		\tIn the science world, a calorie is the amount of
 		heat necessary to raise one gram of water one degree
@@ -975,7 +976,7 @@
 		to forget about this set and go back to
 		the main exercise grid.
 
-		\n\nSurprised?  I didn\'t think so.</string>
+		\n\nSurprised\?  I didn\'t think so.</string>
 
 	<string name="aset_enter_help_title">Enter Help</string>
 	<string name="aset_enter_help_msg">
@@ -997,19 +998,19 @@
 		\n
 		This is not really a
 		problem, but now is your a chance to go back and fill them in.
-		\n\nShall I go ahead and save, leaving some blanks?</string>
+		\n\nShall I go ahead and save, leaving some blanks\?</string>
 	<string name="aset_nag_msg_singular">Looks like you forgot
 		to fill in the %1$s field.
 		\n\nThis is not really a problem, but now is your chance to
 		go back and fill it in.
-		\n\nShall I go ahead and save, leaving a blank?</string>
+		\n\nShall I go ahead and save, leaving a blank\?</string>
 
 	<string name="aset_nag_significant_title">Blank Field!</string>
 	<string name="aset_nag_significant_msg">You left the %1$s
 		field blank!
 		\n\nBlank fields are generally not a problem. But since you
 		marked \'%2$s\' as the significant aspect of the %3$s exercise,
-		I have to insist that you put something there. Please?</string>
+		I have to insist that you put something there. Please\?</string>
 
 	<string name="aset_nag_enter_empty_title">Enter on Empty</string>
 	<string name="aset_nag_enter_empty_msg">You clicked on \'enter set\',
@@ -1020,7 +1021,7 @@
 	<string name="aset_nag_no_changes_title">Enter Without Changes</string>
 	<string name="aset_nag_no_changes_msg">It looks like you didn\'t
 		make any changes.  Are you sure that you want
-		to enter this set?
+		to enter this set\?
 		\n\n(You can turn this warning off in the \'preferences\'.)
 		</string>
 
@@ -1046,7 +1047,7 @@
 		was too easy, and you are ready to increase the
 		difficulty for your next set.
 
-		\n\nWhat\'s the opposite of plus? minus of course!
+		\n\nWhat\'s the opposite of plus\? minus of course!
 		The \'-\' sign indicates that this set was too hard.
 			You could not finish the set. Seriously consider
 			making your next set easier.
@@ -1069,17 +1070,17 @@
 	<string name="inspector_another_set_button">do another</string>
 	<string name="inspector_another_help_title">Do Another Set</string>
 	<string name="inspector_another_help_msg">
-		Like the exercise that you see? Want to do it again?
+		Like the exercise that you see\? Want to do it again\?
 		Well, my friend, this button is for you!
 		\n\nPress the \"do another\" button to...yes, you guessed
 		it, do another set of this exercise! Weeeee, isn\'t
-		working out fun?
+		working out fun\?
 	</string>
 
 	<string name="inspector_back_title">Go Back Help</string>
 	<string name="inspector_back_msg">
-		Really? You\'re tired of looking at this information
-		and want do go back to the previous screen?  REALLY?
+		Really\? You\'re tired of looking at this information
+		and want do go back to the previous screen\?  REALLY\?
 		\n\nI don\'t blame you a bit. You probably have more
 		important things to do than look at my carefully
 		crafted user interface.  Go ahead--you won\'t
@@ -1171,7 +1172,7 @@
 		You are about to delete a set of the %1$s exercise. There
 		is no going back (other than re-entering it).
 		\n\nAre you sure you want to delete the %2$s set performed
-		on %3$s at %4$s?
+		on %3$s at %4$s\?
 	</string>
 
 	<!-- ============                ============ -->
@@ -1185,7 +1186,7 @@
 	<string name="enter_a_number_help_title">Number Help</string>
 	<string name="enter_a_number_help_msg">
 		Type in a number here.
-		\n\n\n\nGee, why do I even bother? \'Cause I\'m anal, that\'s
+		\n\n\n\nGee, why do I even bother\? \'Cause I\'m anal, that\'s
 		why.
 		\n\nI... must... cross... the... T\'s... dot...
 		the... I\'s... and... ... ...
@@ -1196,7 +1197,7 @@
 	<string name="enter_a_number_cancel_warn_title">Cancel Number Change</string>
 	<string name="enter_a_number_cancel_warn_msg">
 		It looks like you made some changes to this number.
-		\n\nAre you sure you want to cancel these changes?
+		\n\nAre you sure you want to cancel these changes\?
 		\n\n(You can turn this warning off in the \'preferences\'.)
 	</string>
 
@@ -1221,7 +1222,7 @@
 	<string name="enter_text_cancel_warn_title">Cancel Note Change</string>
 	<string name="enter_text_cancel_warn_msg">
 		It looks like you made some changes to your note.
-		\n\nAre you sure you want to cancel these changes?
+		\n\nAre you sure you want to cancel these changes\?
 		\n\n(You can turn this warning off in the \'preferences\'.)
 	</string>
 
@@ -1277,7 +1278,7 @@
 
 		<string name="prefs_sound_key">sound</string>
 		<string name="prefs_sound_title">Play Sounds</string>
-	<string name="prefs_sound_on_msg">Can you hear that?
+	<string name="prefs_sound_on_msg">Can you hear that\?
 		Yeah, I think this program is trying to make some noises!</string>
 	<string name="prefs_sound_off_msg">Shhhhh, we\'re playing
 		the quiet game now. Don\'t make a sound.</string>
@@ -1304,7 +1305,7 @@
 		Here is a list of all your exercises. Tap on one to see your
 		progress in that exercise.
 		\n\nRemember when you made the exercise, you noted one of the
-		bits as significant? Well that\'s the part that will be graphed.
+		bits as significant\? Well that\'s the part that will be graphed.
 	</string>
 
 	<!-- ============        ============ -->
@@ -1315,13 +1316,13 @@
 
 	<string name="graph_help_title">Graph Help</string>
 	<string name="graph_help_msg">You want to see your progress (or
-		lack thereof)? This is the place to be.
+		lack thereof)\? This is the place to be.
 		\n\nOn this screen you see a graph (also called a chart) of
 		this exercise.
 		\n\nThe horizontal axis is time, with each individual
 		exercise set presented with its own position.
 		\n\nThe vertical lines represent the quantities of the
-		significant aspect of that exercise (remember that? it\'s
+		significant aspect of that exercise (remember that\? it\'s
 		the part of the exercise with the radio button selected
 		next to it when you defined this exercise).  For example,
 		if you were doing bench presses and weight (\'pounds\')
