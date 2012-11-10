@@ -1,5 +1,11 @@
 TODO:
 -----------------
+When editing an exercise, the font for the exercise name is too small.
+
+BUG: ASet does not load the DISTANCE form correctly when it fills the
+	forms with the last data.  It truncates the dist, instead of using
+	the float value.
+
 When graphing, have the option of graphing by exercise
 	set or by day (toggle button or menu?).
 
@@ -66,12 +72,6 @@ When editing a number when editing a set, it's possible to hit "ok"
 
 In the HistoryActivity, it'd be nice if I put something like horizontal
 	lines between some of the sets to denote different days.
-
-BUG: "Other" no longer works when adding a new exercise!
-
-BUG: ASet does not load the DISTANCE form correctly when it fills the
-	forms with the last data.  It truncates the dist, instead of using
-	the float value.
 
 BUG: When the GraphActivity removes x-axis tick lines because they
 	are too close together, the date on the last tick line can be
@@ -221,6 +221,9 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+BUG: "Other" no longer works when adding a new exercise!
+	- fixed (I think)
+
 Bug: When typing in a new value (number), the default number
 	is 0.  But if you just click 'done', it uses the
 	LAST value instead of 0 (which can be 'skipped', which

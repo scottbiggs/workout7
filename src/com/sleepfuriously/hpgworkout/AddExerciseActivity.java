@@ -9,6 +9,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -94,6 +95,10 @@ public class AddExerciseActivity
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.addexercise);
+
+		if (m_db != null) {
+			Log.e(tag, "Error! m_db is active in onCreate()!!!");
+		}
 
 		// The standard buttons.
 		m_ok = (Button) findViewById(R.id.addexer_ok_butt);
@@ -233,7 +238,10 @@ public class AddExerciseActivity
 		m_exer_other_unit_et.setOnLongClickListener(this);
 		m_exer_other_unit_et.addTextChangedListener(this);
 
-		} // onCreate();
+		if (m_db != null) {
+			Log.e(tag, "Error! m_db is active at the end of onCreate()!!!");
+		}
+	} // onCreate();
 
 
 
@@ -357,7 +365,12 @@ public class AddExerciseActivity
 	 * 		ready to go.
 	 */
 	private void save_data() {
-		m_db = WGlobals.g_db_helper.getWritableDatabase();
+		if (m_db != null) {
+			Log.e(tag, "Error! m_db is active in save_data()!!! Continuing using this active instance.");
+		}
+		else {
+			m_db = WGlobals.g_db_helper.getWritableDatabase();
+		}
 
 		// Collect the data.
 		ContentValues values = new ContentValues();
@@ -407,6 +420,7 @@ public class AddExerciseActivity
 
 		m_db.insert(DatabaseHelper.EXERCISE_TABLE_NAME, null, values);
 		m_db.close();
+		m_db = null;
 	} // save_data()
 
 
@@ -420,30 +434,41 @@ public class AddExerciseActivity
 	void shift_order_up (SQLiteDatabase db) {
 		int col, id, lorder;
 
-		Cursor cursor = db.query(
-			DatabaseHelper.EXERCISE_TABLE_NAME,	// table
-			new String[] {DatabaseHelper.COL_ID, DatabaseHelper.EXERCISE_COL_LORDER},
-			null,//selection
-			null,// selectionArgs[]
-			null,	//	groupBy
-			null,	//	having
-			null,	//	orderBy
-			null);	//	limit
+		Cursor cursor = null;
+		try {
+			cursor = db.query(
+				DatabaseHelper.EXERCISE_TABLE_NAME,	// table
+				new String[] {DatabaseHelper.COL_ID, DatabaseHelper.EXERCISE_COL_LORDER},
+				null,//selection
+				null,// selectionArgs[]
+				null,	//	groupBy
+				null,	//	having
+				null,	//	orderBy
+				null);	//	limit
 
-		while (cursor.moveToNext()) {
-			col = cursor.getColumnIndex(DatabaseHelper.COL_ID);
-			id = cursor.getInt(col);
-			col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_LORDER);
-			lorder = cursor.getInt(col);
+			while (cursor.moveToNext()) {
+				col = cursor.getColumnIndex(DatabaseHelper.COL_ID);
+				id = cursor.getInt(col);
+				col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_LORDER);
+				lorder = cursor.getInt(col);
 
-			ContentValues values = new ContentValues();
-			values.put(DatabaseHelper.EXERCISE_COL_LORDER, lorder + 1);
-			db.update(DatabaseHelper.EXERCISE_TABLE_NAME,
-					values,
-					DatabaseHelper.COL_ID + " = " + id,
-					null);
+				ContentValues values = new ContentValues();
+				values.put(DatabaseHelper.EXERCISE_COL_LORDER, lorder + 1);
+				db.update(DatabaseHelper.EXERCISE_TABLE_NAME,
+						values,
+						DatabaseHelper.COL_ID + " = " + id,
+						null);
+			}
+		} catch (SQLiteException e) {
+			e.printStackTrace();
 		}
-		cursor.close();
+		finally {
+			if (cursor != null) {
+				cursor.close();
+				cursor = null;
+			}
+		}
+
 	} // shift_order_up (db)
 
 	/************
@@ -951,11 +976,11 @@ public class AddExerciseActivity
 		m_exer_other_name_et.setEnabled(on);
 		m_exer_other_name_et.setClickable(on);
 		m_exer_other_name_et.setFocusable(on);
-//		m_exer_other_name_et.setFocusableInTouchMode(on);
+		m_exer_other_name_et.setFocusableInTouchMode(on);
 		m_exer_other_unit_et.setEnabled(on);
 		m_exer_other_unit_et.setClickable(on);
 		m_exer_other_unit_et.setFocusable(on);
-//		m_exer_other_unit_et.setFocusableInTouchMode(on);
+		m_exer_other_unit_et.setFocusableInTouchMode(on);
 	}
 
 	/****************
@@ -1101,35 +1126,53 @@ public class AddExerciseActivity
 	 */
 	private boolean is_duplicate_name (String name) {
 		int col;
+		boolean ret_val = false;
 
 		if (m_db != null) {
-			Log.w(tag, "WARNING! m_db is active in is_duplicate_name()!!! Continuing using this active instance.");
+			Log.e(tag, "WARNING! m_db is active in is_duplicate_name()!!!");
 		}
-		else {
+
+		try {
 			m_db = WGlobals.g_db_helper.getReadableDatabase();
+
+			Cursor cursor = null;
+			try {
+				cursor = m_db.query(
+						DatabaseHelper.EXERCISE_TABLE_NAME,	// table
+						new String[] {DatabaseHelper.EXERCISE_COL_NAME},
+						null,//selection
+						null,// selectionArgs[]
+						null,	//	groupBy
+						null,	//	having
+						null,	//	orderBy
+						null);	//	limit
+
+				while (cursor.moveToNext()) {
+					col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_NAME);
+					if (cursor.getString(col).equalsIgnoreCase(name)) {
+						ret_val = true;
+					}
+				}
+			} catch (SQLiteException e) {
+				e.printStackTrace();
+			}
+			finally {
+				if (cursor != null) {
+					cursor.close();
+					cursor = null;
+				}
+			}
+		} catch (SQLiteException e) {
+			e.printStackTrace();
 		}
-
-		Cursor cursor = m_db.query(
-				DatabaseHelper.EXERCISE_TABLE_NAME,	// table
-				new String[] {DatabaseHelper.EXERCISE_COL_NAME},
-				null,//selection
-				null,// selectionArgs[]
-				null,	//	groupBy
-				null,	//	having
-				null,	//	orderBy
-				null);	//	limit
-
-		while (cursor.moveToNext()) {
-			col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_NAME);
-			if (cursor.getString(col).equalsIgnoreCase(name)) {
-				return true;
+		finally {
+			if (m_db != null) {
+				m_db.close();
+				m_db = null;
 			}
 		}
 
-		cursor.close();
-		m_db.close();
-
-		return false;
+		return ret_val;
 	} // is_duplicate_name (name)
 
 }

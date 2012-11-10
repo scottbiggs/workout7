@@ -264,6 +264,9 @@ public class GridActivity extends BaseDialogActivity
 					break;
 
 				case R.id.grid_add_exercise_button:
+					// todo:
+					//	debug
+					Log.d(tag, "onClick(), about to call AddExerciseActivity, and m_db = " + m_db);
 					itt = new Intent(this, AddExerciseActivity.class);
 					startActivityForResult(itt, WGlobals.ADDEXERCISEACTIVITY);
 					break;
