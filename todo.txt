@@ -1,6 +1,7 @@
 TODO:
 -----------------
-When editing an exercise, the font for the exercise name is too small.
+When long-clicking on an exercise name, it takes you to the EditExercise
+	Activity directly instead of the EditExercise part of the Tab Activity.
 
 BUG: ASet does not load the DISTANCE form correctly when it fills the
 	forms with the last data.  It truncates the dist, instead of using
@@ -221,6 +222,9 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+When editing an exercise, the font for the exercise name is too small.
+	- fixed
+
 BUG: "Other" no longer works when adding a new exercise!
 	- fixed (I think)
 
