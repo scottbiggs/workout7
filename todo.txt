@@ -1,22 +1,19 @@
 TODO:
 -----------------
+When graphing, have the option of graphing by exercise
+	set or by day (toggle button or menu?).
+
 Do something other than Toasts for errors when adding a
 	new exercise!  See http://android.programmerguru.com/android-custom-toast-example/
 
-Bug: The stress condition does not default to "Just Right"
-	anymore!
+Issue: The stress condition does not default to "Just Right"
+	anymore!  After a set is entered, it STAYS on that
+	setting instead of returning to "just right".
 
 Make the "just right" stress condition have a green check.
 	And you might do something to add more color to the 'too
 	heavy' and 'injury.'  Alternately, you could reduce the
 	color for 'too easy.'
-
-Bug: When typing in a new value (number), the default number
-	is 0.  But if you just click 'done', it uses the
-	LAST value instead of 0 (which can be 'skipped', which
-	is NOT what people want).
-	!!! Also, if you just type a period and press enter, we
-	get a CRASH!!!
 
 Instead of a History tab (which is now removed), have a
 	button in the Inspector that enables a quick view.
@@ -224,6 +221,15 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Bug: When typing in a new value (number), the default number
+	is 0.  But if you just click 'done', it uses the
+	LAST value instead of 0 (which can be 'skipped', which
+	is NOT what people want).
+	!!! Also, if you just type a period and press enter, we
+	get a CRASH!!!
+	- fixed! Now the default is blank, which does nothing
+	if you click 'okay'.
+
 Bug: Edit a set doesn't always reveal the OK/Cancel buttons
 	at the bottom (when there's a lot to change).
 	- fixed

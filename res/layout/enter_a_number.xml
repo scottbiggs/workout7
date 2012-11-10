@@ -132,7 +132,7 @@
 			android:paddingLeft="6dp"
 			android:paddingRight="6dp"
 			android:paddingTop="4dp"
-			android:text="0" />
+			android:text="" />
 
 		<!-- ============= -->
 		<!-- Table         -->

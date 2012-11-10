@@ -116,8 +116,10 @@ public class NumberActivity
 	Button m_cancel, m_done,
 		m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, mdot, mclear;
 
+	/** Holds the number that the user types in */
 	TextView m_number_tv;
 
+	/** Help button (logo) */
 	ImageView m_help;
 
 
@@ -218,8 +220,12 @@ public class NumberActivity
 		switch (id) {
 			case R.id.enter_a_number_ok_butt:
 				if (m_dirty) {
+					CharSequence str = m_number_tv.getText();
+					if (str.equals(".")) {
+						str = "0";
+					}
 					Intent itt = new Intent();
-					itt.putExtra(ITT_KEY_RETURN_VALUE, m_number_tv.getText());
+					itt.putExtra(ITT_KEY_RETURN_VALUE, str);
 					itt.putExtra(ITT_KEY_RETURN_NUM, m_return_num);
 					setResult(RESULT_OK, itt);
 					finish();
@@ -299,7 +305,7 @@ public class NumberActivity
 				break;
 
 			case R.id.enter_a_number_button_clear:
-				m_number_tv.setText("0");
+				m_number_tv.setText("");
 				m_dirty = true;
 				break;
 
@@ -311,6 +317,11 @@ public class NumberActivity
 	/*******************
 	 * Adds the givin digit to the m_number_tv.  That is,
 	 * if there's room.
+	 *
+	 * preconditions:
+	 * 	m_number_tv		The TextView that displays what the
+	 * 					user types.  It holds either "" or
+	 * 					a number string.
 	 *
 	 * @param digit		The digit (or decimal point) to
 	 * 					add.  This is a CHAR, not an INT.
