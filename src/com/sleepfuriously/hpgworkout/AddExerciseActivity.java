@@ -123,7 +123,7 @@ public class AddExerciseActivity
 		m_exer_type_msp.setMySpinnerListener(this);
 		m_exer_type_msp.set_array(R.array.type_array);
 		m_exer_type_msp.set_prompt(R.string.addexer_type_str);
-		m_exer_type_msp.set_icon(R.drawable.hpglogo_36x36);
+		m_exer_type_msp.set_icon(R.drawable.hpglogo_small);
 		m_exer_type_msp.setOnLongClickListener(this);
 
 		// group
@@ -131,7 +131,7 @@ public class AddExerciseActivity
 		m_exer_group_msp.setMySpinnerListener(this);
 		m_exer_group_msp.set_array(R.array.muscle_group_array);
 		m_exer_group_msp.set_prompt(R.string.addexer_musclegroup_str);
-		m_exer_group_msp.set_icon(R.drawable.hpglogo_36x36);
+		m_exer_group_msp.set_icon(R.drawable.hpglogo_small);
 		m_exer_group_msp.setOnLongClickListener(this);
 
 		// reps
@@ -169,7 +169,7 @@ public class AddExerciseActivity
 		m_exer_weight_msp.setMySpinnerListener(this);
 		m_exer_weight_msp.set_array(R.array.weight_unit_array);
 		m_exer_weight_msp.set_prompt(R.string.addexer_weight_unit_title);
-		m_exer_weight_msp.set_icon(R.drawable.hpglogo_36x36);
+		m_exer_weight_msp.set_icon(R.drawable.hpglogo_small);
 		m_exer_weight_msp.setOnLongClickListener(this);
 
 		Intent weight_itt = new Intent();
@@ -177,7 +177,7 @@ public class AddExerciseActivity
 		m_exer_weight_msp.set_user_add(m_exer_weight_msp.length() - 1,
 									weight_itt,
 									m_exer_weight_msp.getId());
-		m_exer_weight_msp.set_icon(R.drawable.hpglogo_36x36);
+		m_exer_weight_msp.set_icon(R.drawable.hpglogo_small);
 		m_exer_weight_msp.set_prompt(R.string.add_weight_item_prompt);
 
 		// distanced
@@ -191,7 +191,7 @@ public class AddExerciseActivity
 		m_exer_dist_msp.setMySpinnerListener(this);
 		m_exer_dist_msp.set_array(R.array.dist_unit_array);
 		m_exer_dist_msp.set_prompt(R.string.addexer_dist_unit_title);
-		m_exer_dist_msp.set_icon(R.drawable.hpglogo_36x36);
+		m_exer_dist_msp.set_icon(R.drawable.hpglogo_small);
 		m_exer_dist_msp.setOnLongClickListener(this);
 
 		Intent dist_itt = new Intent();
@@ -199,7 +199,7 @@ public class AddExerciseActivity
 		m_exer_dist_msp.set_user_add(m_exer_dist_msp.length() - 1,
 									dist_itt,
 									m_exer_dist_msp.getId());
-		m_exer_dist_msp.set_icon(R.drawable.hpglogo_36x36);
+		m_exer_dist_msp.set_icon(R.drawable.hpglogo_small);
 		m_exer_dist_msp.set_prompt(R.string.add_dist_item_prompt);
 
 		// time
@@ -213,7 +213,7 @@ public class AddExerciseActivity
 		m_exer_time_msp.setMySpinnerListener(this);
 		m_exer_time_msp.set_array(R.array.time_unit_array);
 		m_exer_time_msp.set_prompt(R.string.addexer_time_unit_title);
-		m_exer_time_msp.set_icon(R.drawable.hpglogo_36x36);
+		m_exer_time_msp.set_icon(R.drawable.hpglogo_small);
 		m_exer_time_msp.setOnLongClickListener(this);
 
 		Intent time_itt = new Intent();
@@ -221,7 +221,7 @@ public class AddExerciseActivity
 		m_exer_time_msp.set_user_add(m_exer_time_msp.length() - 1,
 									time_itt,
 									m_exer_time_msp.getId());
-		m_exer_time_msp.set_icon(R.drawable.hpglogo_36x36);
+		m_exer_time_msp.set_icon(R.drawable.hpglogo_small);
 		m_exer_time_msp.set_prompt(R.string.add_time_item_prompt);
 
 		// other

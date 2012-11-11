@@ -38,7 +38,7 @@
 			android:layout_marginBottom="3dp"
 			android:layout_marginLeft="5dp"
 			android:layout_marginRight="5dp"
-			android:src="@drawable/hpglogo_36x36" />
+			android:src="@drawable/hpglogo_small" />
 
 	</RelativeLayout>
 
@@ -585,17 +585,17 @@
 							/>
 
 						<EditText
-						    android:id="@+id/addexer_other_name_et"
-						    android:layout_width="wrap_content"
-						    android:layout_height="wrap_content"
-						    android:layout_gravity="center_vertical"
-						    android:layout_marginRight="16dp"
-						    android:clickable="false"
-						    android:enabled="false"
-						    android:focusable="false"
-						    android:focusableInTouchMode="false"
-						    android:gravity="center"
-						    android:hint="@string/name" />
+							android:id="@+id/addexer_other_name_et"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_gravity="center_vertical"
+							android:layout_marginRight="16dp"
+							android:clickable="false"
+							android:enabled="false"
+							android:focusable="false"
+							android:focusableInTouchMode="false"
+							android:gravity="center"
+							android:hint="@string/name" />
 
 						<RadioButton
 							android:id="@+id/addexer_other_rad"
@@ -619,17 +619,17 @@
 							android:visibility="invisible" />
 
 						<EditText
-						    android:id="@+id/addexer_other_unit_et"
-						    android:layout_width="wrap_content"
-						    android:layout_height="wrap_content"
-						    android:layout_gravity="center_vertical"
-						    android:layout_marginRight="16dp"
-						    android:clickable="false"
-						    android:enabled="false"
-						    android:focusable="false"
-						    android:focusableInTouchMode="false"
-						    android:gravity="center"
-						    android:hint="@string/unit" />
+							android:id="@+id/addexer_other_unit_et"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_gravity="center_vertical"
+							android:layout_marginRight="16dp"
+							android:clickable="false"
+							android:enabled="false"
+							android:focusable="false"
+							android:focusableInTouchMode="false"
+							android:gravity="center"
+							android:hint="@string/unit" />
 
 					</TableRow>
 				</TableLayout>

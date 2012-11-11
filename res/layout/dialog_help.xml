@@ -27,7 +27,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="8dp"
         android:layout_marginTop="6dp"
-        android:src="@drawable/hpglogo_36x36" />
+        android:src="@drawable/hpglogo_small" />
 
     <TextView
         android:id="@+id/dialog_help_title_tv"

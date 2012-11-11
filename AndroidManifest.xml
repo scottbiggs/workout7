@@ -16,7 +16,7 @@
 
 	<application
 			android:name=".WGlobals"
-		android:icon="@drawable/hpg_icon"
+		android:icon="@drawable/hpglogo_med"
 		android:label="@string/app_name" >
 
 		<!-- Main Activity -->

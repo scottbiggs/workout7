@@ -32,7 +32,7 @@
         android:layout_marginBottom="3dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:src="@drawable/hpglogo_36x36" />
+        android:src="@drawable/hpglogo_small" />
 
     <Button
         android:id="@+id/row_edit_help_butt"

@@ -1,12 +1,12 @@
 TODO:
 -----------------
+Do something other than Toasts for errors when adding a
+	new exercise!  See http://android.programmerguru.com/android-custom-toast-example/
+
 The Grid doesn't need reloading if I haven't changed anything!
 
 When graphing, have the option of graphing by exercise
 	set or by day (toggle button or menu?).
-
-Do something other than Toasts for errors when adding a
-	new exercise!  See http://android.programmerguru.com/android-custom-toast-example/
 
 Issue: The stress condition does not default to "Just Right"
 	anymore!  After a set is entered, it STAYS on that
