@@ -1,9 +1,5 @@
 TODO:
 -----------------
-BUG: ASet does not load the DISTANCE form correctly when it fills the
-	forms with the last data.  It truncates the dist, instead of using
-	the float value.
-
 When graphing, have the option of graphing by exercise
 	set or by day (toggle button or menu?).
 
@@ -214,6 +210,12 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+BUG: ASet does not load the DISTANCE form correctly when it fills the
+	forms with the last data.  It truncates the dist, instead of using
+	the float value.
+	- fixed.  The same problem happened for ALL the float data; they
+	are now corrected.
+
 When long-clicking on an exercise name, it takes you to the EditExercise
 	Activity directly instead of the EditExercise part of the Tab Activity.
 	- Fixed. You now go to the ExerciseTabHostActivity with the EditExercise

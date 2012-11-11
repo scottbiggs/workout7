@@ -628,7 +628,7 @@ public class ASetActivity
 			if (set_valid) {
 				// Not the first time this set has been added.
 				col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_WEIGHT);
-				float weight = set_cursor.getInt(col);
+				float weight = set_cursor.getFloat(col);
 				if (weight != -1) {
 					m_weight_et.setText("" + weight);
 				}
@@ -658,7 +658,7 @@ public class ASetActivity
 			}
 			if (set_valid) {
 				col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_DIST);
-				float dist = set_cursor.getInt(col);
+				float dist = set_cursor.getFloat(col);
 				if (dist != -1) {
 					m_dist_et.setText("" + dist);
 				}
@@ -688,7 +688,7 @@ public class ASetActivity
 					time_unit));
 			if (set_valid) {
 				col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_TIME);
-				float time = set_cursor.getInt(col);
+				float time = set_cursor.getFloat(col);
 				if (time != -1) {
 					m_time_et.setText("" + time);
 				}
@@ -723,7 +723,7 @@ public class ASetActivity
 			}
 			if (set_valid) {
 				col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_OTHER);
-				float other = set_cursor.getInt(col);
+				float other = set_cursor.getFloat(col);
 				if (other != -1) {
 					m_other_et.setText("" + other);
 				}
