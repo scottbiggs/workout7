@@ -57,6 +57,7 @@
 			android:layout_toRightOf="@id/edit_exer_help_butt"
 			android:background="@drawable/button_shiny_black"
 			android:textColor="@color/ivory"
+			android:enabled="false"
 			android:text="@string/editexer_ok_butt" />
 
 		<!-- ============= -->

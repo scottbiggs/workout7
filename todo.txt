@@ -1,8 +1,5 @@
 TODO:
 -----------------
-Make all the data-entry screens work like the NumberActivity: the 'done'
-	key is disabled until you do something (make it dirty).
-
 When long-clicking on an exercise name, it takes you to the EditExercise
 	Activity directly instead of the EditExercise part of the Tab Activity.
 
@@ -220,6 +217,10 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Make all the data-entry screens work like the NumberActivity: the 'done'
+	key is disabled until you do something (make it dirty).
+	- done
+
 When editing an exercise, the font for the exercise name is too small.
 	- fixed
 
