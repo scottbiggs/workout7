@@ -155,6 +155,7 @@ public class StressActivity
 				m_stress_num = DatabaseHelper.SET_COND_OK;
 				set_radio_buttons(m_stress_num);
 				m_dirty = true;
+				m_done.setEnabled(true);
 			}
 		}
 
@@ -163,6 +164,7 @@ public class StressActivity
 				m_stress_num = DatabaseHelper.SET_COND_PLUS;
 				set_radio_buttons(m_stress_num);
 				m_dirty = true;
+				m_done.setEnabled(true);
 			}
 		}
 
@@ -172,6 +174,7 @@ public class StressActivity
 				m_stress_num = DatabaseHelper.SET_COND_MINUS;
 				set_radio_buttons(m_stress_num);
 				m_dirty = true;
+				m_done.setEnabled(true);
 			}
 		}
 		if (v == m_injury_table) {
@@ -180,6 +183,7 @@ public class StressActivity
 				m_stress_num = DatabaseHelper.SET_COND_INJURY;
 				set_radio_buttons(m_stress_num);
 				m_dirty = true;
+				m_done.setEnabled(true);
 			}
 		}
 
