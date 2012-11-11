@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This is the layout that describes my
+	Custom Toasts!  Cool, hunh?
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/toast2_layout_root"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="horizontal"
+	android:background="@drawable/rounded_edges_light"
+	android:layout_margin="20dp"
+	>
+
+    
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:orientation="vertical"
+		android:background="@drawable/rounded_edges"
+		android:layout_margin="5dp"
+		android:padding="5dp"
+		>
+
+		<LinearLayout
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:orientation="vertical"
+			android:background="@drawable/rounded_edges_dark_blue"
+			android:layout_margin="5dp"
+			android:padding="5dp"
+			>
+		    		<TextView
+			    android:id="@+id/toast2_tv"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_gravity="center_horizontal"
+			    android:layout_marginBottom="8dp"
+			    android:text="test"
+			    android:textAppearance="@style/white_text_medium" />
+	
+			<ImageView
+			    android:id="@+id/toast2_image"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_gravity="center_horizontal"
+			    android:src="@drawable/hpglogo_red_small" />
+	
+		</LinearLayout>
+	</LinearLayout>
+</LinearLayout>

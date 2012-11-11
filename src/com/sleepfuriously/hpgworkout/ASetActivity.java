@@ -894,7 +894,8 @@ public class ASetActivity
 			}
 		}
 
-		Toast.makeText(this, R.string.aset_entered_msg, Toast.LENGTH_SHORT).show();
+		String[] args = {m_exercise_name};
+		my_toast(this, R.string.aset_entered_msg, args);
 		// todo
 		//	Maybe turn the EditTexts into hints???  Go to the History tab???
 		//	DEFINITELY a sound should play (if not in silent mode).

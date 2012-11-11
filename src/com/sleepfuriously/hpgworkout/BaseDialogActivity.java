@@ -22,6 +22,10 @@
  * 		NOTE:	YOU MUST instantiate it yourself in the
  * 				onCreate() or onResume() methods.
  *
+ * MORE!
+ * 		Now this does custom Toasts!  Use it similarly
+ * 		to the regular Toast, except that you now don't
+ * 		have to call show()!  Weeeeee!
  */
 package com.sleepfuriously.hpgworkout;
 
@@ -29,14 +33,19 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class BaseDialogActivity extends Activity {
 
@@ -477,117 +486,71 @@ public class BaseDialogActivity extends Activity {
 
 
 	//--------------------------------------
-	//	Deprecated
+	//	Custom Toasts
 	//--------------------------------------
 
-
-
-	/******************
-	 * Displays a simple help dialog with an "okay" button.
+	/************************
+	 * Makes a custom Toast and shows it.  Just like
+	 * the standard one, but even easier as you don't
+	 * have to call show().
 	 *
-	 * side effects:
-	 * 		m_dialog		I use a class member to hold this dialog
-	 * 					so that it can be properly dismissed
-	 * 					during an orientation change in onPause().
+	 * todo:
+	 * 		Add sound effects (if sound is turned on)
 	 *
-	 * @param	title_id		The resource ID of the title.  Use
-	 * 						-1 for no title.
+	 * @param ctx	The Context of the Activity (use
+	 * 				'this' or getApplicationContext()
+	 * 				or whatever).
 	 *
-	 * @param	msg_id		The ID of the message.  Again, use
-	 * 						-1 for no message.
-	 *
+	 * @param msg	The STRING of the message you want
+	 * 				to Toast!
 	 */
-	protected void show_help_dialog_old (int title_id, int msg_id) {
-			// Build the dialog.
-		AlertDialog.Builder builder =
-			new AlertDialog.Builder (this);
-		builder.setIcon (R.drawable.hpglogo_36x36);
-		if (title_id != -1) {
-			builder.setTitle (getString (title_id));
-		}
-		if (msg_id != -1) {
-			builder.setMessage (getString (msg_id));
-		}
-		builder.setPositiveButton(R.string.ok, null);
+	void my_toast (Context ctx, String msg) {
+		// Make the layout.
+		LayoutInflater inflater = getLayoutInflater();
+		View layout = inflater.inflate(R.layout.toast2,
+				(ViewGroup) findViewById(R.id.toast2_layout_root));
+		TextView toast_tv = (TextView) layout.findViewById(R.id.toast2_tv);
+		toast_tv.setText(msg);
 
-			// And show it.
-		m_dialog = builder.create();
-		m_dialog.show();
-	} // show_help_dialog_old (title_id, msg_id)
+		// Setup the toast and show it.
+		Toast toast = new Toast(ctx);
+		toast.setGravity(Gravity.CENTER_VERTICAL, 0, -40);
+		toast.setDuration(Toast.LENGTH_LONG);
+		toast.setView(layout);	// Connects this Toast to the inflated View
+		toast.show();
+	}
 
-
-	//--------------------------------------
-	//	Dialog Methods
-	//--------------------------------------
-
-
-
-	/******************
-	 * String version of the simple "okay" dialog.
+	/**************************
+	 * Same as the other toast, except that this takes
+	 * a Res ID instead of a string.
 	 *
-	 * Supply null to mean not to use either string.
+	 * @param ctx	The Context of the Activity (use
+	 * 				'this' or getApplicationContext()
+	 * 				or whatever).
+	 *
+	 * @param res_id		ID of a String to display.
 	 */
-	protected void show_help_dialog_old (String title, String msg) {
-			// Build the dialog.
-		AlertDialog.Builder builder =
-			new AlertDialog.Builder (this);
-		builder.setIcon (R.drawable.hpglogo_36x36);
-		if (title != null) {
-			builder.setTitle (title);
-		}
-		if (msg != null) {
-			builder.setMessage (msg);
-		}
-		builder.setPositiveButton(R.string.ok, null);
+	void my_toast (Context ctx, int res_id) {
+		String str = ctx.getString(res_id);
+		my_toast (ctx, str);
+	}
 
-			// And show it.
-		m_dialog = builder.create();
-		m_dialog.show();
-	} // show_help_dialog_old (title, msg)
-
-
-	//--------------------------------------
-	//	Dialog Methods
-	//--------------------------------------
-
-
-
-	/******************
-	 * Shows a simple dialog.  This version allows arguments
-	 * to be in the title and message.  Unfortunately, all
-	 * the arguments must be Strings (no ints, booleans, etc.).
+	/**************************
+	 * Same as the other toast, except that this takes
+	 * a Res ID with arguments.
 	 *
-	 * @param title_id		The string for the title.  Use -1 for
-	 * 						no title.
+	 * @param ctx	The Context of the Activity (use
+	 * 				'this' or getApplicationContext()
+	 * 				or whatever).
 	 *
-	 * @param title_args		Array of arguments to be used with the
-	 * 						title string. It's a lot like the C
-	 * 						printf statement.  Sorry, only allows
-	 * 						String (%s) args.
+	 * @param res_id		ID of a String to display.
 	 *
-	 * @param msg_id			String for the message.
-	 *
-	 * @param msg_ags		Array of arguments for the message.
-	 *
+	 * @param args		Arguments to fill in the variables
+	 * 					in the res_id's string.
 	 */
-	protected void show_help_dialog_old (int title_id, String[] title_args,
-								int msg_id, String[] msg_args) {
-		AlertDialog.Builder builder =
-			new AlertDialog.Builder (this);
-		builder.setIcon (R.drawable.hpglogo_36x36);
-		if (title_id != -1) {
-			String title = getString(title_id, (Object[])title_args);
-			builder.setTitle (title);
-		}
-		if (msg_id != -1) {
-			String msg = getString(msg_id, (Object[])msg_args);
-			builder.setMessage (msg);
-		}
-		builder.setPositiveButton(R.string.ok, null);
-
-			// And show it.
-		m_dialog = builder.create();
-		m_dialog.show();
-	} // show_help_dialog_old (title_id, title_args, msg_id, msg_args)
+	void my_toast (Context ctx, int res_id, String args[]) {
+		String msg = getString(res_id, (Object[])args);
+		my_toast(ctx, msg);
+	}
 
 }

@@ -822,7 +822,8 @@
 	<string name="aset_title">Do a Set!</string>
 
 	<string name="aset_enter_butt">enter set</string>
-	<string name="aset_entered_msg">Entered!</string>
+	<string name="aset_entered_msg">You entered a %s set.
+		Good job!</string>
 
 	<string name="aset_help_title">Enter a Set Help</string>
 	<string name="aset_help_msg">You\'re now working hard,
