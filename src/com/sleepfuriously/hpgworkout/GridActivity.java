@@ -314,13 +314,19 @@ public class GridActivity extends BaseDialogActivity
 		else {
 			// If the ID is odd, they clicked the header
 			if (id % 2 == 1) {
-				// Header.  Show them the details of this
-				// exercise.
-				itt = new Intent (this, EditExerciseActivity.class);
+				// Go to the tab Activity, but tell it to activate
+				// the EditExercise tab.
+				itt = new Intent (this, ExerciseTabHostActivity.class);
 
-				itt.putExtra("name", ((TextView) v).getText());
+				// Put a null for the date.
+				itt.putExtra(ExerciseTabHostActivity.KEY_SET_ID, -1);
+				itt.putExtra(ExerciseTabHostActivity.TAB_START_KEY,
+							 ExerciseTabHostActivity.TAB_EDIT);
 
-				startActivityForResult(itt, WGlobals.EDITEXERCISEACTIVITY);
+				// The name of the exercise is displayed in the textview.
+				itt.putExtra(ExerciseTabHostActivity.KEY_NAME,
+							 ((TextView) v).getText());
+				startActivityForResult(itt, WGlobals.EXERCISETABHOSTACTIVITY);
 			}
 			else {
 				// They clicked on a group of exercises for

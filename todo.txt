@@ -1,8 +1,5 @@
 TODO:
 -----------------
-When long-clicking on an exercise name, it takes you to the EditExercise
-	Activity directly instead of the EditExercise part of the Tab Activity.
-
 BUG: ASet does not load the DISTANCE form correctly when it fills the
 	forms with the last data.  It truncates the dist, instead of using
 	the float value.
@@ -217,6 +214,11 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+When long-clicking on an exercise name, it takes you to the EditExercise
+	Activity directly instead of the EditExercise part of the Tab Activity.
+	- Fixed. You now go to the ExerciseTabHostActivity with the EditExercise
+	tab activated.
+
 Make all the data-entry screens work like the NumberActivity: the 'done'
 	key is disabled until you do something (make it dirty).
 	- done
