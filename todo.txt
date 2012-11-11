@@ -1,5 +1,7 @@
 TODO:
 -----------------
+The Grid doesn't need reloading if I haven't changed anything!
+
 When graphing, have the option of graphing by exercise
 	set or by day (toggle button or menu?).
 
@@ -19,9 +21,6 @@ Instead of a History tab (which is now removed), have a
 	button in the Inspector that enables a quick view.
 	Also a button to reverse the order.
 
-When editing a set, pressing on the label should take
-	you to editing that aspect as well as the data.
-
 Issue:  The graph adds up weight on the same day, that's
 	good.  But it shouldn't add up everything, should it?
 	Like for reps, should it add 'em, show an average,
@@ -32,12 +31,6 @@ Graphs: the x-axis should be by date, not by the quantity of sets.
 Graph by muscle group.
 
 Graph by exercise type.
-
-Get rid of the History Tab!  It's all encapsulated in the Inspector.
-
-Edit a Workout Set: it's possible on small displays for the buttons
-	at the bottom to disappear.  We need to put the info stuff
-	in a ScrollView.
 
 Need to use the new buttons in all the nice dialog/activities
 	when modifying sets (EditSetActivity calls them).
@@ -152,11 +145,6 @@ Check out: http://developer.android.com/resources/articles/faster-screen-orienta
 
 Be nice if users can add a blank to their rows.
 
-BUG - MySpinner as used in EditExerciseActivity: when a custom
-	item for the spinner is loaded directly from the database,
-	it's possible to add another custom item to the list.
-	Everything still works, it's just not as advertised.
-
 How about some very nice sound effects for when the person
 	finishes a set and a workout!
 
@@ -171,11 +159,6 @@ Fix the strings: there are lots of redundant strings for add
 Make the DatabaseHelper.onUpgrade() work properly so that
 	it doesn't delete all their work when upgrading.  Instead,
 	the routine should gracefully update the new format.
-
-Move the SQLite stuff into AsyncTasks.  Shouldn't be too
-	hard.  It's explained a bit at:
-	http://www.youtube.com/watch?v=c4znvD-7VDA (around
-	minute 15:45 - 17:30).  Also see Busy Coder's, chpt 20.
 
 Allow for the option to have the database on the simm card.
 
@@ -210,6 +193,19 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Get rid of the History Tab!  It's all encapsulated in the Inspector.
+	- done
+
+When editing a set, pressing on the label should take
+	you to editing that aspect as well as the data.
+	- done
+
+BUG - MySpinner as used in EditExerciseActivity: when a custom
+	item for the spinner is loaded directly from the database,
+	it's possible to add another custom item to the list.
+	Everything still works, it's just not as advertised.
+	- killed (doesn't cause enough probs to worry about)
+
 BUG: ASet does not load the DISTANCE form correctly when it fills the
 	forms with the last data.  It truncates the dist, instead of using
 	the float value.
@@ -243,6 +239,12 @@ Bug: When typing in a new value (number), the default number
 Bug: Edit a set doesn't always reveal the OK/Cancel buttons
 	at the bottom (when there's a lot to change).
 	- fixed
+
+Edit a Workout Set: it's possible on small displays for the buttons
+	at the bottom to disappear.  We need to put the info stuff
+	in a ScrollView.
+	- fixed, same as above
+
 
 Bug: If you enter a Tiddly and only put up the reps, the
 	warning page scrolls such that the buttons are not
@@ -289,6 +291,12 @@ The "more" button in the History works, but it doesn't stop.  Perhaps
 Make sure that HistoryActivity, GraphActivity (done), and InspectorActivity (done)
 	use ASyncTask to load their data!
 	- done.  Well, I'm going to remove the History, so I don't have to that one.
+
+Move the SQLite stuff into AsyncTasks.  Shouldn't be too
+	hard.  It's explained a bit at:
+	http://www.youtube.com/watch?v=c4znvD-7VDA (around
+	minute 15:45 - 17:30).  Also see Busy Coder's, chpt 20.
+	- done (see above)
 
 The GraphSelectorActivity's buttons are abysmal!  What is "butt"?
 	-fixed
