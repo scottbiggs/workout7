@@ -20,6 +20,8 @@ package com.sleepfuriously.hpgworkout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -80,8 +82,6 @@ public class TextActivity
 	//----------------------------
 
 	/** Has the user touched anything yet? */
-	// todo
-	//	implement the dirty bit!!!
 	boolean m_dirty = false;
 
 
@@ -121,7 +121,29 @@ public class TextActivity
 			// different.
 			prompt_tv.setText(R.string.enter_text_msg_empty);
 			old_note_tv.setVisibility(View.INVISIBLE);
+			m_done.setEnabled(false);	// They gotta make a change
+										// for this to happen.
+
 		}
+
+		// Allows us to see if anything has changed in the
+		// EditText where they are typing.  Just to keep track
+		// of the dirtiness!
+		m_note.addTextChangedListener(new TextWatcher() {
+			public void onTextChanged(CharSequence str, int start,
+									  int before, int count) {
+			}
+
+			public void beforeTextChanged(CharSequence str,
+										  int start, int count,
+										  int after) {
+			}
+
+			public void afterTextChanged(Editable str) {
+				m_dirty = true;
+				m_done.setEnabled(true);
+			}
+		});
 
 	} // onCreate (.)
 
