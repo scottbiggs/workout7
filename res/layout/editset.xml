@@ -616,6 +616,7 @@
 			android:paddingRight="5dp"
 			android:textColor="@color/ivory"
 			android:textSize="@dimen/font_size_button_default"
+			android:enabled="false"
 			android:text="@string/done" />
 	</LinearLayout>
 
