@@ -307,6 +307,7 @@ public class NumberActivity
 			case R.id.enter_a_number_button_clear:
 				m_number_tv.setText("");
 				m_dirty = true;
+				m_done.setEnabled(true);
 				break;
 
 		} // switch
@@ -349,6 +350,7 @@ public class NumberActivity
 			m_number_tv.setText(str);
 		}
 		m_dirty = true;
+		m_done.setEnabled(true);
 	} // add_digit (digit)
 
 

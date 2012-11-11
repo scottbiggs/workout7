@@ -1,5 +1,8 @@
 TODO:
 -----------------
+Make all the data-entry screens work like the NumberActivity: the 'done'
+	key is disabled until you do something (make it dirty).
+
 When long-clicking on an exercise name, it takes you to the EditExercise
 	Activity directly instead of the EditExercise part of the Tab Activity.
 
@@ -65,11 +68,6 @@ The History and Inspector need to display something when there's
 When an exercise is edited, I don't want to be bumped back out to
 	the grid.  If anything, send a message that it's been updated
 	and refresh the EditExerciseACtivity.
-
-When editing a number when editing a set, it's possible to hit "ok"
-	without typing any numbers in.  The EditText says 0, but the
-	value is then displayed in the Inspector and History as "skipped."
-	What's going on there?
 
 In the HistoryActivity, it'd be nice if I put something like horizontal
 	lines between some of the sets to denote different days.
@@ -234,8 +232,8 @@ Bug: When typing in a new value (number), the default number
 	is NOT what people want).
 	!!! Also, if you just type a period and press enter, we
 	get a CRASH!!!
-	- fixed! Now the default is blank, which does nothing
-	if you click 'okay'.
+	- fixed! Now the default is blank.  And 'done' is disabled
+	until you enter something.
 
 Bug: Edit a set doesn't always reveal the OK/Cancel buttons
 	at the bottom (when there's a lot to change).

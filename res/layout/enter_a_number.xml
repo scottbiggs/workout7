@@ -73,6 +73,7 @@
 			android:background="@drawable/button_shiny_black"
 			android:textColor="@color/ivory"
 			android:textSize="@dimen/font_size_button_default"
+			android:enabled="false"
 			android:text="@string/done" />
 
 		<Button
