@@ -1,8 +1,5 @@
 TODO:
 -----------------
-Do something other than Toasts for errors when adding a
-	new exercise!  See http://android.programmerguru.com/android-custom-toast-example/
-
 The Grid doesn't need reloading if I haven't changed anything!
 
 When graphing, have the option of graphing by exercise
@@ -193,6 +190,10 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Do something other than Toasts for errors when adding a
+	new exercise!  See http://android.programmerguru.com/android-custom-toast-example/
+	- done
+
 Get rid of the History Tab!  It's all encapsulated in the Inspector.
 	- done
 
