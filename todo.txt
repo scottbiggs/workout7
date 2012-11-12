@@ -1,5 +1,7 @@
 TODO:
 -----------------
+The program launcher icon looks squashed.
+
 The Grid doesn't need reloading if I haven't changed anything!
 
 When graphing, have the option of graphing by exercise
@@ -190,6 +192,14 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+The Notes in ASet should be ghosted as described in the help
+	message.
+	- done
+
+Hitting the 'clear' button in ASet causes the stress
+	to also completely clear.
+	- fixed
+
 Do something other than Toasts for errors when adding a
 	new exercise!  See http://android.programmerguru.com/android-custom-toast-example/
 	- done

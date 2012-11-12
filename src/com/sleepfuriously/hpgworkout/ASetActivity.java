@@ -468,6 +468,7 @@ public class ASetActivity
 					setup_dist (ex_cursor, set_cursor, is_set);
 					setup_time (ex_cursor, set_cursor, is_set);
 					setup_other (ex_cursor, set_cursor, is_set);
+					setup_notes (ex_cursor, set_cursor, is_set);
 
 				} // try querying a set
 				catch (SQLiteException e) {
@@ -736,6 +737,24 @@ public class ASetActivity
 		}
 	}
 
+	/*************************
+	 * Reads in the note from the database and displays it
+	 * as a hint in the notes EditText.
+	 *
+	 *  This only does anything if set_valid.
+	 */
+	protected void setup_notes (Cursor ex_cursor, Cursor set_cursor,
+								boolean set_valid) {
+		if (set_valid) {
+			int col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_NOTES);
+			String note = set_cursor.getString(col);
+			if (note != null) {
+				m_notes_et.setHint(note);
+				Log.d(tag, "Just set m_notes_et to: " + note);
+			}
+		}
+	}
+
 
 	/*************************
 	 * Just like it says: goes through and counts how many
@@ -785,12 +804,22 @@ public class ASetActivity
 			m_time_et.setText(null);
 		if (m_other_et.isEnabled())
 			m_other_et.setText(null);
-		m_ok_rb.setChecked(false);
+		clear_stress();
+		m_notes_et.setText(null);
+		m_notes_et.setHint(null);
+	} // clear()
+
+	/*************************
+	 * Clears the stress condition radio buttons.
+	 * This is not really a clear, it makes the
+	 * ok button on and the others off.
+	 */
+	void clear_stress() {
+		m_ok_rb.setChecked(true);
 		m_plus_rb.setChecked(false);
 		m_minus_rb.setChecked(false);
 		m_x_rb.setChecked(false);
-		m_notes_et.setText(null);
-	} // clear()
+	}
 
 	/*************************
 	 * Assumes that it's time to save the data (no checks
@@ -906,6 +935,12 @@ public class ASetActivity
 		InspectorActivity2.m_db_dirty = true;
 		HistoryActivity.m_db_dirty = true;
 		GraphActivity.m_db_dirty = true;
+
+		// After the save, clear the stress and cause the note to
+		// turned into a hint.
+		clear_stress();
+		m_notes_et.setHint(m_notes_et.getText());
+		m_notes_et.setText(null);
 	} // save()
 
 
