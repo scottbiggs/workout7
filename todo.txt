@@ -7,10 +7,6 @@ The Grid doesn't need reloading if I haven't changed anything!
 When graphing, have the option of graphing by exercise
 	set or by day (toggle button or menu?).
 
-Issue: The stress condition does not default to "Just Right"
-	anymore!  After a set is entered, it STAYS on that
-	setting instead of returning to "just right".
-
 Make the "just right" stress condition have a green check.
 	And you might do something to add more color to the 'too
 	heavy' and 'injury.'  Alternately, you could reduce the
@@ -198,6 +194,11 @@ The Notes in ASet should be ghosted as described in the help
 
 Hitting the 'clear' button in ASet causes the stress
 	to also completely clear.
+	- fixed
+
+Issue: The stress condition does not default to "Just Right"
+	anymore!  After a set is entered, it STAYS on that
+	setting instead of returning to "just right".
 	- fixed
 
 Do something other than Toasts for errors when adding a
