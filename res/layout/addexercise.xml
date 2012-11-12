@@ -593,7 +593,6 @@
 							android:clickable="false"
 							android:enabled="false"
 							android:focusable="false"
-							android:focusableInTouchMode="false"
 							android:gravity="center"
 							android:hint="@string/name" />
 
@@ -627,7 +626,6 @@
 							android:clickable="false"
 							android:enabled="false"
 							android:focusable="false"
-							android:focusableInTouchMode="false"
 							android:gravity="center"
 							android:hint="@string/unit" />
 
