@@ -1,5 +1,11 @@
 TODO:
 -----------------
+EditExerciseActivity needs a cancel changes button.  See the
+	EditSet layout as a better example.
+
+Many layouts have problems with the graphical layout editor.
+	See what I can do to fix this.
+
 The program launcher icon looks squashed.
 
 The Grid doesn't need reloading if I haven't changed anything!
@@ -188,6 +194,9 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Can't do Other in EditExercise again!!!
+	- fixed (finally!)
+
 The Notes in ASet should be ghosted as described in the help
 	message.
 	- done

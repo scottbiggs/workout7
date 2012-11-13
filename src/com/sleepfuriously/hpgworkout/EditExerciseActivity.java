@@ -102,7 +102,7 @@ public class EditExerciseActivity
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		Log.v(tag, "entering onCreate()");
+//		Log.v(tag, "entering onCreate()");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.editexercise);
 
@@ -244,7 +244,6 @@ public class EditExerciseActivity
 			setResult(RESULT_CANCELED);
 			finish();
 		}
-
 	} // onCreate();
 
 
@@ -263,8 +262,6 @@ public class EditExerciseActivity
 	}
 
 
-
-
 	/**************
 	 * In case there was an orientation change, we
 	 * can retrieve our custom data (from the MySpinners)
@@ -272,6 +269,7 @@ public class EditExerciseActivity
 	 */
 	@Override
 	protected void onRestoreInstanceState(Bundle icicle) {
+//		Log.d(tag, "entering onRestoreInstanceState()");
 		String custom_name;
 		int custom_pos;
 
@@ -306,6 +304,7 @@ public class EditExerciseActivity
 
 		// Restore the state of the 'other' EditTexts.
 		boolean other = icicle.getBoolean(DatabaseHelper.EXERCISE_COL_OTHER);
+//		Log.d(tag, "\tother is " + other + ", setting focus.");
 		m_exer_other_name_et.setEnabled(other);
 		m_exer_other_name_et.setFocusable(other);
 //		m_exer_other_name_et.setFocusableInTouchMode(other);
@@ -377,6 +376,7 @@ public class EditExerciseActivity
 	 * 			false - problems.
 	 */
 	private boolean fill_forms() {
+//		Log.d(tag, "entering fill_forms().");
 		int col;		// used to fill in the views.
 
 		// Get the info from the Intent that GridActivity sent.
@@ -387,8 +387,8 @@ public class EditExerciseActivity
 			return false;
 		}
 
-		Log.v(tag, "fill_forms() received an intent for exercise "
-					+ m_orig_exercise_name);
+//		Log.v(tag, "fill_forms() received an intent for exercise "
+//					+ m_orig_exercise_name);
 
 		// Read in that row from the database.
 		// Here's the select statement:
@@ -529,8 +529,10 @@ public class EditExerciseActivity
 				m_exer_other_rb.setEnabled(other);
 				m_exer_other_name_et.setEnabled(other);
 				m_exer_other_name_et.setFocusable(other);	// Hack to work-around bug in setEnabled() for EditTexts.
+				m_exer_other_name_et.setFocusableInTouchMode(other);
 				m_exer_other_unit_et.setEnabled(other);
 				m_exer_other_unit_et.setFocusable(other);
+				m_exer_other_unit_et.setFocusableInTouchMode(other);
 				if (other) {
 					col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_OTHER_TITLE);
 					String title = cursor.getString(col);
@@ -1297,6 +1299,7 @@ public class EditExerciseActivity
 		}
 	}
 
+	//--------------------------------
 	private void set_other_check (View v) {
 		boolean on = ((CheckBox) v).isChecked();
 		m_exer_other_rb.setEnabled(on);
@@ -1311,11 +1314,11 @@ public class EditExerciseActivity
 		m_exer_other_name_et.setEnabled(on);
 		m_exer_other_name_et.setClickable(on);
 		m_exer_other_name_et.setFocusable(on);
-//		m_exer_other_name_et.setFocusableInTouchMode(on);
+		m_exer_other_name_et.setFocusableInTouchMode(on);
 		m_exer_other_unit_et.setEnabled(on);
 		m_exer_other_unit_et.setClickable(on);
 		m_exer_other_unit_et.setFocusable(on);
-//		m_exer_other_unit_et.setFocusableInTouchMode(on);
+		m_exer_other_unit_et.setFocusableInTouchMode(on);
 	}
 
 	/****************

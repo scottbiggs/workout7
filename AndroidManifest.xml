@@ -32,15 +32,23 @@
 
 		<!-- Secondary Activities -->
 		<activity android:name=".GridActivity" />
-		<activity android:name=".AddExerciseActivity"/>
-		<activity android:name=".EditExerciseActivity"/>
+		<activity android:name=".AddExerciseActivity"
+			android:windowSoftInputMode="stateHidden"
+			/>
+		<activity android:name=".EditExerciseActivity"
+			android:windowSoftInputMode="stateHidden"
+			/>
 		<activity android:name=".RowEditActivity"/>
-		<activity android:name=".ASetActivity"/>
+		<activity android:name=".ASetActivity"
+			android:windowSoftInputMode="stateHidden"
+			/>
 		<activity android:name=".InspectorActivity2"/>
 		<activity android:name=".PrefsActivity"/>
 		<activity android:name=".GraphActivity"/>
 		<activity android:name=".GraphSelectorActivity"/>
-		<activity android:name=".ExerciseTabHostActivity"/>
+		<activity android:name=".ExerciseTabHostActivity"
+			android:windowSoftInputMode="stateHidden"
+			/>
 
 		<!-- These Activities look like Dialogs -->
 		<activity android:name=".AddWeightItemActivity"
