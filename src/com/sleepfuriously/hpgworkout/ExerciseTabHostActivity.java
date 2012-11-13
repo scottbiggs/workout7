@@ -116,7 +116,7 @@ public class ExerciseTabHostActivity
 	//--------------------------------
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		Log.v(tag, "entering onCreate()");
+//		Log.v(tag, "entering onCreate()");
 		m_tab_active = true;
 		super.onCreate(savedInstanceState);
 //		requestWindowFeature(Window.FEATURE_NO_TITLE | Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -148,7 +148,7 @@ public class ExerciseTabHostActivity
 		//	Do the Tabs
 		//------------
 
-		Log.v(tag, "\tbuilding tabs...");
+//		Log.v(tag, "\tbuilding tabs...");
 		Resources res = getResources();	// Used to get Drawables (icons, etc.)
 		TabHost th = getTabHost();	// Gets the TabHost from this Activity
 		TabSpec spec;	// reusable for each tab
@@ -169,7 +169,7 @@ public class ExerciseTabHostActivity
 					res.getDrawable(R.drawable.wheel));
 			th.addTab(spec);
 		}
-		Log.v(tag, "\t\tASet complete...");
+//		Log.v(tag, "\t\tASet complete...");
 
 		// Now the second tab (Inspector = 1)
 		// NOTE:
@@ -185,7 +185,6 @@ public class ExerciseTabHostActivity
 					res.getDrawable(R.drawable.user));
 			th.addTab(spec);
 		}
-		Log.v(tag, "\t\tInspector complete...");
 
 //		// (History = 2)
 //		{
@@ -198,7 +197,6 @@ public class ExerciseTabHostActivity
 //					res.getDrawable(R.drawable.users));
 //			th.addTab(spec);
 //		}
-//		Log.v(tag, "\t\tHistory complete...");
 
 		// (Graph = 2)
 		{
@@ -211,7 +209,6 @@ public class ExerciseTabHostActivity
 					res.getDrawable(R.drawable.web));
 			th.addTab(spec);
 		}
-		Log.v(tag, "\t\tGraph complete...");
 
 		// (EditExercise = 3)
 		{
@@ -224,26 +221,25 @@ public class ExerciseTabHostActivity
 					res.getDrawable(R.drawable.writingpad));
 			th.addTab(spec);
 		}
-		Log.v(tag, "\t\tEdit complete...");
 
-		Log.v(tag, "\t\tAll tabs built.");
+//		Log.v(tag, "\t\tAll tabs built.");
 
 		// Finally set the start tab.
 		th.setCurrentTab(start);
 
-		Log.v(tag, "\tCurrent tab set.");
+//		Log.v(tag, "\tCurrent tab set.");
 
 		th.setOnTabChangedListener(this);
 
 
-		Log.v(tag, "onCreate done.");
+//		Log.v(tag, "onCreate done.");
 	} // onCreate(.)
 
 
 	//--------------------------------
 	@Override
 	protected void onDestroy() {
-		Log.v(tag, "onDestroy()");
+//		Log.v(tag, "onDestroy()");
 		m_tab_active = false;
 		super.onDestroy();
 	}
@@ -252,7 +248,7 @@ public class ExerciseTabHostActivity
 	//--------------------------------
 	@Override
 	protected void onPause() {
-		Log.v(tag, "onPause()");
+//		Log.v(tag, "onPause()");
 		super.onPause();
 	}
 
@@ -260,7 +256,7 @@ public class ExerciseTabHostActivity
 	//--------------------------------
 	@Override
 	protected void onStop() {
-		Log.v(tag, "onStop()");
+//		Log.v(tag, "onStop()");
 		super.onStop();
 	}
 
@@ -307,7 +303,7 @@ public class ExerciseTabHostActivity
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			Log.v (tag, "back key: onKeyDown()");
+//			Log.v (tag, "back key: onKeyDown()");
 		}
 		return super.onKeyDown(keyCode, event);
 	}
@@ -317,7 +313,7 @@ public class ExerciseTabHostActivity
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			Log.v (tag, "back key: onKeyUp()");
+//			Log.v (tag, "back key: onKeyUp()");
 		}
 		return super.onKeyUp(keyCode, event);
 	}
@@ -335,9 +331,8 @@ public class ExerciseTabHostActivity
 	//
 	public void onTabChanged(String tabId) {
 		int tab = getTabHost().getCurrentTab();
-		Log.v(tag, "onTabChanged().  current tab = " + tab);
-
-		Log.v(tag, "onTabChanged().  tabId = " + tabId);
+//		Log.v(tag, "onTabChanged().  current tab = " + tab);
+//		Log.v(tag, "onTabChanged().  tabId = " + tabId);
 	} // onTabChanged(tabId)
 
 
