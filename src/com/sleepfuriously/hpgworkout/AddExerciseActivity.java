@@ -636,6 +636,7 @@ public class AddExerciseActivity
 		// Is it a radio button?
 		if (v.getClass() == RadioButton.class) {
 			m_dirty = true;
+			m_ok.setEnabled(true);
 			if (v == m_exer_rep_rb)
 				set_radio (DatabaseHelper.EXERCISE_COL_REP_NUM);
 
@@ -661,6 +662,7 @@ public class AddExerciseActivity
 		// Is it a check button?
 		else if (v.getClass() == CheckBox.class) {
 			m_dirty = true;
+			m_ok.setEnabled(true);
 			if (v == m_exer_rep_cb)
 				set_rep_check (v);
 
@@ -684,7 +686,7 @@ public class AddExerciseActivity
 
 		} // if checkbox
 
-		// First the main buttons at the bottom.
+		// The main buttons at the bottom.
 		if (v == m_ok) {
 			if (check_good_exercise(true) == false) {
 				return;
@@ -807,6 +809,7 @@ public class AddExerciseActivity
 	 */
 	public void onMySpinnerSelected(MySpinner spinner, int position, boolean new_item) {
 		m_dirty = true;
+		m_ok.setEnabled(true);
 		spinner.setTextFromPos (position);
 		spinner.set_selected(position);
 	} // onMySpinnerSelected (spinner, position, newItem)
@@ -831,6 +834,7 @@ public class AddExerciseActivity
 
 		// The did something.  Note it.
 		m_dirty = true;
+		m_ok.setEnabled(true);
 
 		// Figure out which MySpinner sent this and return it to 'em.
 		if (requestCode == m_exer_weight_msp.getId()) {
@@ -857,7 +861,8 @@ public class AddExerciseActivity
 	}
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
 		if (!m_et_locked) {
-		m_dirty = true;
+			m_dirty = true;
+			m_ok.setEnabled(true);
 		}
 	}
 

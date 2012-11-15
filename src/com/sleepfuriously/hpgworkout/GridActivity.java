@@ -221,15 +221,15 @@ public class GridActivity extends BaseDialogActivity
 		//	cancelled!  Find a way to get a result_code from the
 		//	tabhost!
 
-//		if (result_code == Activity.RESULT_OK) {
-//			Log.v (tag, "A set was added.");
+		if (result_code == RESULT_OK) {
+			Log.v (tag, "A set was added.");
 
 			// Just clean up anyway.
 			m_left_table.removeAllViews();
 			m_main_table.removeAllViews();
 			new GridSyncTask().execute();
 
-//		}
+		}
 
 	} // onActivityResult (request_code, result_code, data)
 
@@ -321,11 +321,11 @@ public class GridActivity extends BaseDialogActivity
 				// Put a null for the date.
 				itt.putExtra(ExerciseTabHostActivity.KEY_SET_ID, -1);
 				itt.putExtra(ExerciseTabHostActivity.TAB_START_KEY,
-							 ExerciseTabHostActivity.TAB_EDIT);
+							ExerciseTabHostActivity.TAB_EDIT);
 
 				// The name of the exercise is displayed in the textview.
 				itt.putExtra(ExerciseTabHostActivity.KEY_NAME,
-							 ((TextView) v).getText());
+							((TextView) v).getText());
 				startActivityForResult(itt, WGlobals.EXERCISETABHOSTACTIVITY);
 			}
 			else {

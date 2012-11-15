@@ -52,7 +52,7 @@
 		<!-- ============= -->
 
 		<Button
-			android:id="@+id/addexer_help_butt"
+			android:id="@+id/addexer_null_butt"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_alignParentBottom="true"
@@ -64,7 +64,7 @@
 			android:background="@drawable/button_shiny_black"
 			android:textColor="@color/ivory"
 			android:visibility="invisible"
-			android:text="@string/question_mark" />
+			android:text="@string/null_string" />
 
 		<Button
 			android:id="@+id/addexer_ok_butt"
@@ -75,7 +75,8 @@
 			android:layout_marginRight="8dp"
 			android:background="@drawable/button_shiny_black"
 			android:textColor="@color/ivory"
-			android:layout_toRightOf="@id/addexer_help_butt"
+			android:layout_toRightOf="@id/addexer_null_butt"
+			android:enabled="false"
 			android:text="@string/ok" />
 
 		<Button
@@ -85,7 +86,7 @@
 			android:layout_alignParentBottom="true"
 			android:layout_alignParentLeft="true"
 			android:layout_marginLeft="8dp"
-			android:layout_toLeftOf="@id/addexer_help_butt"
+			android:layout_toLeftOf="@id/addexer_null_butt"
 			android:background="@drawable/button_shiny_black"
 			android:textColor="@color/ivory"
 			android:text="@string/cancel" />
@@ -121,7 +122,7 @@
 				android:layout_weight="1.0"
 				android:gravity="left|center_vertical"
 				android:hint="@string/addexer_name_hint"
-				android:textSize="18dp"
+				android:textSize="18sp"
 				android:singleLine="true" >
 			</EditText>
 
@@ -130,7 +131,7 @@
 		<ScrollView
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"
-			android:layout_above="@+id/addexer_help_butt"
+			android:layout_above="@+id/addexer_null_butt"
 			android:layout_below="@id/name_ll" >
 
 			<LinearLayout
@@ -141,9 +142,6 @@
 				<TableLayout
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
-					android:layout_above="@id/addexer_help_butt"
-					android:layout_alignParentTop="true"
-					android:layout_centerHorizontal="true"
 					android:layout_marginBottom="6dp"
 					android:layout_marginLeft="8dp"
 					android:layout_marginRight="8dp"
@@ -220,9 +218,6 @@
 				<TableLayout
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
-					android:layout_above="@id/addexer_help_butt"
-					android:layout_alignParentTop="true"
-					android:layout_centerHorizontal="true"
 					android:layout_marginBottom="8dp"
 					android:layout_marginLeft="8dp"
 					android:layout_marginRight="8dp"
@@ -277,8 +272,6 @@
 					<View
 						android:layout_width="fill_parent"
 						android:layout_height="1dp"
-						android:layout_alignParentTop="true"
-						android:layout_centerVertical="true"
 						android:layout_marginBottom="3dp"
 						android:layout_marginLeft="25dp"
 						android:layout_marginRight="25dp"
@@ -333,8 +326,6 @@
 					<View
 						android:layout_width="fill_parent"
 						android:layout_height="1dp"
-						android:layout_alignParentTop="true"
-						android:layout_centerVertical="true"
 						android:layout_marginBottom="3dp"
 						android:layout_marginLeft="25dp"
 						android:layout_marginRight="25dp"
@@ -389,8 +380,6 @@
 					<View
 						android:layout_width="fill_parent"
 						android:layout_height="1dp"
-						android:layout_alignParentTop="true"
-						android:layout_centerVertical="true"
 						android:layout_marginBottom="3dp"
 						android:layout_marginLeft="25dp"
 						android:layout_marginRight="25dp"
@@ -444,8 +433,6 @@
 					<View
 						android:layout_width="fill_parent"
 						android:layout_height="1dp"
-						android:layout_alignParentTop="true"
-						android:layout_centerVertical="true"
 						android:layout_marginBottom="3dp"
 						android:layout_marginLeft="25dp"
 						android:layout_marginRight="25dp"
@@ -499,8 +486,6 @@
 					<View
 						android:layout_width="fill_parent"
 						android:layout_height="1dp"
-						android:layout_alignParentTop="true"
-						android:layout_centerVertical="true"
 						android:layout_marginBottom="3dp"
 						android:layout_marginLeft="25dp"
 						android:layout_marginRight="25dp"
@@ -554,8 +539,6 @@
 					<View
 						android:layout_width="fill_parent"
 						android:layout_height="1dp"
-						android:layout_alignParentTop="true"
-						android:layout_centerVertical="true"
 						android:layout_marginBottom="3dp"
 						android:layout_marginLeft="25dp"
 						android:layout_marginRight="25dp"

@@ -2,7 +2,6 @@ TODO:
 -----------------
 Cancelling 'add' a set should return you back to the Grid
 	without it having to reload the data!
-
 The Grid doesn't need reloading if I haven't changed anything!
 
 EditExerciseActivity needs a cancel changes button.  See the
