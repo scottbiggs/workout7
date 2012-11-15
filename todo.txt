@@ -1,5 +1,13 @@
 TODO:
 -----------------
+Cancelling 'add' a set should return you back to the Grid
+	without it having to reload the data!
+
+The Grid doesn't need reloading if I haven't changed anything!
+
+Remove the "back" button when looking at graphs from the Tab.
+	But keep it when looking at it plain.
+
 EditExerciseActivity needs a cancel changes button.  See the
 	EditSet layout as a better example.
 
@@ -8,8 +16,6 @@ Many layouts have problems with the graphical layout editor.
 
 The program launcher icon looks squashed.
 
-The Grid doesn't need reloading if I haven't changed anything!
-
 When graphing, have the option of graphing by exercise
 	set or by day (toggle button or menu?).
 
@@ -17,6 +23,7 @@ Make the "just right" stress condition have a green check.
 	And you might do something to add more color to the 'too
 	heavy' and 'injury.'  Alternately, you could reduce the
 	color for 'too easy.'
+	- "just right" done.
 
 Instead of a History tab (which is now removed), have a
 	button in the Inspector that enables a quick view.
@@ -194,6 +201,13 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+The enter_text.xml layout is awkward.  The pop-up keypad
+	covers the 'cancel' and 'done' buttons.  aset.xml works
+	better, use it as an example.  Maybe that TextActivity
+	looks like a dialog may have something to do with it?
+	- fixed.  Yes, I made changes to the manifest to make
+	everything work much better.
+
 Can't do Other in EditExercise again!!!
 	- fixed (finally!)
 

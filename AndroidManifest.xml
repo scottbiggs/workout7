@@ -65,6 +65,7 @@
 				/>
 		<activity android:name=".TextActivity"
 				android:theme="@android:style/Theme.Dialog"
+				android:windowSoftInputMode="stateVisible|adjustResize"
 				/>
 		<activity android:name=".StressActivity"
 				android:theme="@android:style/Theme.Dialog"

@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -71,7 +72,8 @@ public class TextActivity
 	//----------------------------
 	//	Widgets
 	//----------------------------
-	Button m_cancel, m_help, m_done;
+	Button m_cancel, m_done;
+	ImageView m_help;
 
 	/** The main thing! */
 	EditText m_note;
@@ -93,7 +95,7 @@ public class TextActivity
 		setContentView(R.layout.enter_text);
 
 		m_cancel = (Button) findViewById(R.id.enter_text_cancel_butt);
-		m_help = (Button) findViewById(R.id.enter_text_help_butt);
+		m_help = (ImageView) findViewById(R.id.enter_text_logo);
 		m_done = (Button) findViewById(R.id.enter_text_ok_butt);
 
 		m_note = (EditText) findViewById(R.id.enter_text_display_et);
@@ -122,7 +124,7 @@ public class TextActivity
 			prompt_tv.setText(R.string.enter_text_msg_empty);
 			old_note_tv.setVisibility(View.INVISIBLE);
 			m_done.setEnabled(false);	// They gotta make a change
-										// for this to happen.
+										// for this button to activate.
 
 		}
 
@@ -131,12 +133,12 @@ public class TextActivity
 		// of the dirtiness!
 		m_note.addTextChangedListener(new TextWatcher() {
 			public void onTextChanged(CharSequence str, int start,
-									  int before, int count) {
+									int before, int count) {
 			}
 
 			public void beforeTextChanged(CharSequence str,
-										  int start, int count,
-										  int after) {
+										int start, int count,
+										int after) {
 			}
 
 			public void afterTextChanged(Editable str) {

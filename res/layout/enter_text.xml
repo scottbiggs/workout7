@@ -5,143 +5,145 @@
 -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" 
-    android:background="@color/darkdark_gray" 
-    >
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical"
+	android:background="@color/darkdark_gray"
+	>
 
 	<RelativeLayout
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="vertical" >
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/enter_text_title_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_gravity="center_vertical"
-            android:layout_marginBottom="3dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="3dp"
-            android:layout_marginTop="5dp"
-            android:text="@string/enter_text_default_title"
-		    style="@style/white_text_large"
-            />
+		<TextView
+			android:id="@+id/enter_text_title_tv"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentLeft="true"
+			android:layout_alignParentTop="true"
+			android:layout_gravity="center_vertical"
+			android:layout_marginBottom="3dp"
+			android:layout_marginLeft="10dp"
+			android:layout_marginRight="3dp"
+			android:layout_marginTop="5dp"
+			android:text="@string/enter_text_default_title"
+			style="@style/white_text_large"
+			/>
 
-	    <ImageView
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentRight="true"
-	        android:layout_marginRight="8dp"
-	        android:layout_marginTop="6dp"
-	        android:src="@drawable/hpglogo_small" />
+		<ImageView
+			android:id="@+id/enter_text_logo"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentRight="true"
+			android:layout_marginRight="8dp"
+			android:layout_marginTop="6dp"
+			android:src="@drawable/hpglogo_small" />
 
-    </RelativeLayout>
+	</RelativeLayout>
+
 
 	<RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent" >
 
+		<!-- ============= -->
+		<!-- Buttons -->
+		<!-- ============= -->
+		<Button
+			android:id="@+id/enter_text_null_butt"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			android:layout_centerHorizontal="true"
+			android:layout_marginLeft="5dp"
+			android:layout_marginRight="5dp"
+			android:paddingLeft="15dp"
+			android:paddingRight="15dp"
+			android:enabled="false"
+			android:visibility="invisible"
+			android:text="@string/null_string"
+			/>
 
-		    <!-- ============= -->
-		    <!-- Buttons -->
-		    <!-- ============= -->
-		
-		    <Button
-		        android:id="@+id/enter_text_help_butt"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_alignParentBottom="true"
-		        android:layout_centerHorizontal="true"
-		        android:layout_marginLeft="5dp"
-		        android:layout_marginRight="5dp"
-		        android:paddingLeft="15dp"
-		        android:paddingRight="15dp"
-		        android:text="@string/question_mark" />
-		
-		    <Button
-		        android:id="@+id/enter_text_ok_butt"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_alignParentBottom="true"
-		        android:layout_alignParentRight="true"
-		        android:layout_marginRight="8dp"
-		        android:layout_toRightOf="@id/enter_text_help_butt"
-		        android:text="@string/done" />
-		
-		    <Button
-		        android:id="@+id/enter_text_cancel_butt"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_alignParentBottom="true"
-		        android:layout_alignParentLeft="true"
-		        android:layout_marginLeft="8dp"
-		        android:layout_toLeftOf="@id/enter_text_help_butt"
-		        android:text="@string/cancel" />
-		
-		    <TextView
-		        android:id="@+id/enter_text_prompt_tv"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_alignParentLeft="true"
-		        android:layout_alignParentTop="true"
-		        android:layout_marginLeft="25dp"
-		        android:layout_marginRight="12dp"
-		        android:layout_marginTop="5dp"
-		        android:text="@string/enter_text_msg_empty"
-			    style="@style/white_text_medium"
-		        />
-		
-		    <ScrollView
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_above="@id/enter_text_help_butt"
-		        android:layout_below="@id/enter_text_prompt_tv"
-		        android:layout_marginBottom="8dp"
-		        android:layout_marginLeft="12dp"
-		        android:layout_marginRight="12dp"
-		        >
-		
-		        <LinearLayout
-		            android:layout_width="fill_parent"
-		            android:layout_height="wrap_content"
-		            android:orientation="vertical" >
-		
-		            <TextView
-		                android:id="@+id/enter_text_old_note_tv"
-		                android:layout_width="wrap_content"
-		                android:layout_height="wrap_content"
-		                android:layout_alignParentLeft="true"
-		                android:layout_below="@id/enter_text_prompt_tv"
-		                android:layout_marginLeft="44dp"
-		                android:layout_marginRight="12dp"
-		                android:layout_marginTop="5dp"
-		                android:text="old note goes here"
-					    style="@style/white_text_small"
-		                />
-		
-		            <EditText
-		                android:id="@+id/enter_text_display_et"
-		                android:layout_width="fill_parent"
-		                android:layout_height="wrap_content"
-		                android:layout_centerHorizontal="true"
-		                android:layout_marginTop="16dp"
-		                android:background="@drawable/rounded_edges2"
-		                android:gravity="center"
-		                android:minLines="1"
-		                android:paddingBottom="4dp"
-		                android:paddingLeft="6dp"
-		                android:paddingRight="6dp"
-		                android:paddingTop="4dp"
-					    style="@style/white_text_medium"
-		                />
+		<Button
+			android:id="@+id/enter_text_ok_butt"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			android:layout_alignParentRight="true"
+			android:layout_marginRight="8dp"
+			android:layout_toRightOf="@id/enter_text_null_butt"
+			style="@style/white_text_small"
+			android:background="@drawable/button_shiny_black"
+			android:text="@string/done" />
 
-		        </LinearLayout>
-		    </ScrollView>
+		<Button
+			android:id="@+id/enter_text_cancel_butt"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			android:layout_alignParentLeft="true"
+			android:layout_marginLeft="8dp"
+			android:layout_toLeftOf="@id/enter_text_null_butt"
+			style="@style/white_text_small"
+			android:background="@drawable/button_shiny_black"
+			android:text="@string/cancel" />
 
-        </RelativeLayout>
+		<TextView
+			android:id="@+id/enter_text_prompt_tv"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentLeft="true"
+			android:layout_alignParentTop="true"
+			android:layout_marginLeft="25dp"
+			android:layout_marginRight="12dp"
+			android:layout_marginTop="5dp"
+			android:text="@string/enter_text_msg_empty"
+			style="@style/white_text_medium"
+			/>
+
+		<ScrollView
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_above="@id/enter_text_null_butt"
+			android:layout_below="@id/enter_text_prompt_tv"
+			android:layout_marginBottom="8dp"
+			android:layout_marginLeft="12dp"
+			android:layout_marginRight="12dp"
+			>
+			<LinearLayout
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical" >
+
+				<TextView
+					android:id="@+id/enter_text_old_note_tv"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="44dp"
+					android:layout_marginRight="12dp"
+					android:layout_marginTop="5dp"
+					android:text="old note goes here"
+					style="@style/white_text_small"
+					/>
+
+				<EditText
+					android:id="@+id/enter_text_display_et"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="16dp"
+					android:background="@drawable/rounded_edges2"
+					android:gravity="center"
+					android:minLines="1"
+					android:paddingBottom="4dp"
+					android:paddingLeft="6dp"
+					android:paddingRight="6dp"
+					android:paddingTop="4dp"
+					style="@style/white_text_medium"
+					/>
+
+			</LinearLayout>
+		</ScrollView>
+	</RelativeLayout>
 
 </LinearLayout>

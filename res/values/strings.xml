@@ -10,11 +10,13 @@
 	<string name="back">back</string>
 	<string name="loading_str">loading...</string>
 	<string name="saving_str">saving...</string>
-	<string name="question_mark">\?</string>
+	<string name="question_mark">\u003f</string>
+	<string name="question_mark_upside_down">\u00bf</string>
 	<string name="done">done</string>
-		<string name="done_title">Done</string>
+	<string name="done_title">Done</string>
 	<string name="decimal_point">.</string>
 	<string name="clear">C</string>
+	<string name="null_string">n</string>	<!-- should never be printed -->
 	<string name="hpg_logo_desc">Logo for the Hyde Park Gym</string>
 
 

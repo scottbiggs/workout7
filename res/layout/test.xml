@@ -1,42 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+	Currently testing the question mark problem.
+	Seems that the graphical layout editor doesn't
+	like question marks in Buttons and ET's.  Bleh!
+-->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/hpg_blue_darkest"
-    android:orientation="vertical" >
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Title"
-        android:textColor="@color/green" />
-
-    <LinearLayout
-        android:id="@+id/LinearLayout02"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/hpg_blue_dark" >
-
-	    <Button
-	        android:id="@+id/Button02"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:gravity="center"
-	        android:text="Übernehmen"
-	        android:textColor="@color/green" />
-
-	    <Button
-	        android:id="@+id/Button03"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:gravity="center"
-	        android:text="Abbrechen"
-	        android:textColor="@color/green" />
-
-	</LinearLayout>
-
-    
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical"
+	>
+	<TextView
+		android:id="@+id/test_title"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/question_mark_upside_down" />
 </LinearLayout>
