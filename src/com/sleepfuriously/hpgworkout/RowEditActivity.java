@@ -14,6 +14,8 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -40,7 +42,9 @@ public class RowEditActivity
 
 	//--------	Widgets  ----------
 
-	private Button m_okay, m_cancel;
+	// Static so it can be accessed through the Adapter. Sigh.
+	protected static Button m_okay;
+	protected Button m_cancel;
 
 	private ImageView m_help;
 
@@ -122,9 +126,6 @@ public class RowEditActivity
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		int col, id, lorder, pos;
-		String name;
-
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.row_edit);
 
@@ -140,45 +141,8 @@ public class RowEditActivity
 		m_listview = (ListView) findViewById(R.id.row_edit_lv);
 
 		// Load the data into our ListView
-		m_db = WGlobals.g_db_helper.getReadableDatabase();
-		Cursor cursor = m_db.query(
-				DatabaseHelper.EXERCISE_TABLE_NAME,	// table
-				new String[] {DatabaseHelper.COL_ID,
-							DatabaseHelper.EXERCISE_COL_NAME,
-							DatabaseHelper.EXERCISE_COL_LORDER},	//	columns[]
-				null,//selection
-				null,// selectionArgs[]
-				null,	//	groupBy
-				null,	//	having
-				DatabaseHelper.EXERCISE_COL_LORDER,	//	orderBy
-				null);	//	limit
+		load_data();
 
-		// Convert the cursor to an arrayList for the adapter
-		// and pop it in.
-//		ArrayList<ViewHolder> cursor_array = new ArrayList<ViewHolder>();
-		m_view_array = new ArrayList<ViewHolder>();
-		while (cursor.moveToNext()) {
-			col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_NAME);
-			name = cursor.getString(col);
-			col = cursor.getColumnIndex(DatabaseHelper.COL_ID);
-			id = cursor.getInt(col);
-			col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_LORDER);
-			lorder = cursor.getInt(col);
-			pos = cursor.getPosition();
-//			Log.i (tag, "name = " + name + ", id = " + id + ", lorder = " + lorder + ", pos = " + pos);
-			m_view_array.add(new ViewHolder (name, id, lorder, pos));
-//			cursor_array.add(new ViewHolder (name, id, lorder, pos));
-		}
-
-		MyAdapter adapter = new MyAdapter (this);
-//		MyAdapter adapter = new MyAdapter (this, cursor_array);
-		m_listview.setAdapter(adapter);
-
-		cursor.close();
-		cursor = null;
-
-		m_db.close();
-		m_db = null;
 
 		m_dirty = false;
 	} // onCreate (.)
@@ -187,19 +151,78 @@ public class RowEditActivity
 	//-----------------------------
 	@Override
 	protected void onDestroy() {
-//		m_cursor.close();
-//		m_cursor = null;
 		if (m_view_array != null) {
 			m_view_array.clear();
 			m_view_array = null;
 		}
-		if (m_db != null) {
-			m_db.close();
-			m_db = null;
-		}
 		super.onDestroy();
 	}
 
+	/*************************
+	 * Called during creation, this loads up the
+	 * data from the database.
+	 */
+	protected void load_data() {
+		int col, id, lorder, pos;
+		String name;
+
+		if (m_db != null) {
+			Log.e(tag, "m_db is NOT null!!! Do something, dammit!");
+		}
+
+		try {
+			m_db = WGlobals.g_db_helper.getReadableDatabase();
+			Cursor cursor = null;
+			try {
+				cursor = m_db.query(
+						DatabaseHelper.EXERCISE_TABLE_NAME,	// table
+						new String[] {DatabaseHelper.COL_ID,
+									DatabaseHelper.EXERCISE_COL_NAME,
+									DatabaseHelper.EXERCISE_COL_LORDER},	//	columns[]
+						null,//selection
+						null,// selectionArgs[]
+						null,	//	groupBy
+						null,	//	having
+						DatabaseHelper.EXERCISE_COL_LORDER,	//	orderBy
+						null);	//	limit
+
+				// Convert the cursor to an arrayList for the adapter
+				// and pop it in.
+				m_view_array = new ArrayList<ViewHolder>();
+				while (cursor.moveToNext()) {
+					col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_NAME);
+					name = cursor.getString(col);
+					col = cursor.getColumnIndex(DatabaseHelper.COL_ID);
+					id = cursor.getInt(col);
+					col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_LORDER);
+					lorder = cursor.getInt(col);
+					pos = cursor.getPosition();
+					m_view_array.add(new ViewHolder (name, id, lorder, pos));
+				}
+
+				MyAdapter adapter = new MyAdapter (this);
+				m_listview.setAdapter(adapter);
+
+			} catch (SQLiteException e) {
+				e.printStackTrace();
+			}
+			finally {
+				if (cursor != null) {
+					cursor.close();
+					cursor = null;
+				}
+			}
+
+		} catch (SQLiteException e) {
+			e.printStackTrace();
+		}
+		finally {
+			if (m_db != null) {
+				m_db.close();
+				m_db = null;
+			}
+		}
+	} // load_data()
 
 	//-----------------------------
 	public void onClick(View v) {
@@ -208,9 +231,6 @@ public class RowEditActivity
 				if (m_dirty) {
 					save();
 					setResult(RESULT_OK);
-				}
-				else {
-					setResult(RESULT_CANCELED);
 				}
 				finish();
 				break;
@@ -281,29 +301,46 @@ public class RowEditActivity
 	 */
 	private void save() {
 
-		m_db = WGlobals.g_db_helper.getWritableDatabase();
-		if (m_db == null) {
-			Log.e(tag, "m_db is null in save()!  Aborting!");
-			return;
+		if (m_db != null) {
+			Log.e(tag, "m_db is NOT null when trying to save!");
 		}
+		
+		try {
+			m_db = WGlobals.g_db_helper.getWritableDatabase();
+			if (m_db == null) {
+				Log.e(tag, "m_db is null in save()!  Aborting!");
+				return;
+			}
 
-		// Update one at a time.
-		for (int i = 0; i < m_view_array.size(); i++) {
+			// Update one at a time.
+			for (int i = 0; i < m_view_array.size(); i++) {
 
-			// Try it the hard way.  Works.
-			String name = m_view_array.get(i).name;
+				// Try it the hard way.  Works.
+				String name = m_view_array.get(i).name;
 
-			String sql_str = "update " +
-				DatabaseHelper.EXERCISE_TABLE_NAME + " " +
-				"set " + DatabaseHelper.EXERCISE_COL_LORDER + " " +
-				"= " + i + " " +
-				"where " + DatabaseHelper.EXERCISE_COL_NAME + " " +
-				"= \"" + name + "\"";
-			m_db.execSQL(sql_str);
+				String sql_str = "update " +
+					DatabaseHelper.EXERCISE_TABLE_NAME + " " +
+					"set " + DatabaseHelper.EXERCISE_COL_LORDER + " " +
+					"= " + i + " " +
+					"where " + DatabaseHelper.EXERCISE_COL_NAME + " " +
+					"= \"" + name + "\"";
+				
+				try {
+					m_db.execSQL(sql_str);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+
+		} catch (SQLiteException e) {
+			e.printStackTrace();
 		}
-
-		m_db.close();
-		m_db = null;
+		finally {
+			if (m_db != null) {
+				m_db.close();
+				m_db = null;
+			}
+		}
 
 	} // save
 
@@ -332,7 +369,8 @@ public class RowEditActivity
 
 		//-----------------------------
 		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
+		public View getView(int position, View convertView,
+							final ViewGroup parent) {
 			ViewHolder holder;
 
 			// Find out if we have to construct (inflate) a new
@@ -368,6 +406,7 @@ public class RowEditActivity
 							// Signal the change.
 							MyAdapter.this.notifyDataSetChanged();
 							m_dirty = true;
+							m_okay.setEnabled(true);
 						}
 					}
 				});
@@ -396,6 +435,7 @@ public class RowEditActivity
 							// Signal the change.
 							MyAdapter.this.notifyDataSetChanged();
 							m_dirty = true;
+							m_okay.setEnabled(true);
 						}
 					}
 				});
