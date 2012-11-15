@@ -52,8 +52,6 @@ public class GraphActivity
 	 */
 	GView m_view;
 
-	Button m_back;
-
 
 	//-------------------------
 	//	Data
@@ -117,8 +115,6 @@ public class GraphActivity
 		setContentView(R.layout.graphs);
 
 		// Init buttons and the main graph View
-		m_back = (Button) findViewById(R.id.graph_back_butt);
-		m_back.setOnClickListener(this);
 		m_view = (GView) findViewById(R.id.graph_view);
 
 		// Make sure we load the database each time onCreate() is called.
@@ -178,9 +174,6 @@ public class GraphActivity
 
 	//-------------------------
 	public void onClick(View v) {
-		if (v == m_back) {
-			finish();
-		}
 	} // onClick (v)
 
 	//-------------------------

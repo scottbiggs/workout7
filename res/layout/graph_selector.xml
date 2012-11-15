@@ -77,23 +77,9 @@
 
 	</LinearLayout>
 
-	<Button
-	    android:id="@+id/graph_selector_back_butt"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_alignParentBottom="true"
-	    android:layout_centerHorizontal="true"
-	    android:layout_marginBottom="5dp"
-	    android:background="@drawable/button_shiny_black"
-	    android:paddingLeft="40dp"
-	    android:paddingRight="40dp"
-	    android:text="@string/back"
-	    android:textColor="@color/ivory" />
-
 	<LinearLayout
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:layout_above="@id/graph_selector_back_butt"
 		android:layout_below="@id/graph_selector_top_buttons_ll"
 		android:layout_marginBottom="10dp"
 		android:layout_marginLeft="5dp"

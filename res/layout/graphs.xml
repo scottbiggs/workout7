@@ -44,25 +44,11 @@
 		android:textColor="@color/off_white"
 		android:textStyle="bold" />
 
-	<Button
-		android:id="@+id/graph_back_butt"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignParentBottom="true"
-		android:layout_centerHorizontal="true"
-		android:layout_marginBottom="5dp"
-		android:background="@drawable/button_shiny_black"
-		android:paddingLeft="40dp"
-		android:paddingRight="40dp"
-		android:text="@string/back"
-		android:textColor="@color/ivory" />
-
 	<com.sleepfuriously.hpgworkout.GView
 		android:id="@+id/graph_view"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
 		android:layout_below="@id/graph_description_tv"
-		android:layout_above="@id/graph_back_butt"
 		android:layout_margin="8dp"
 		android:background="@drawable/rounded_edges_dark_blue"
 		android:padding="25dp"/>

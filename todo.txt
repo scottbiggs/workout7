@@ -5,9 +5,6 @@ Cancelling 'add' a set should return you back to the Grid
 
 The Grid doesn't need reloading if I haven't changed anything!
 
-Remove the "back" button when looking at graphs from the Tab.
-	But keep it when looking at it plain.
-
 EditExerciseActivity needs a cancel changes button.  See the
 	EditSet layout as a better example.
 
@@ -201,6 +198,12 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Remove the "back" button when looking at graphs from the Tab.
+	But keep it when looking at it plain.
+	- Completely removed the 'back' buttons from both the
+	GraphActivity and the GraphSelectorActivity.  Don't need
+	them.
+
 The enter_text.xml layout is awkward.  The pop-up keypad
 	covers the 'cancel' and 'done' buttons.  aset.xml works
 	better, use it as an example.  Maybe that TextActivity

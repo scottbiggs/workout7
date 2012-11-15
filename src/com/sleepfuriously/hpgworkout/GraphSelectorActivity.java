@@ -40,8 +40,6 @@ public class GraphSelectorActivity
 	//------------------------
 	ListView m_lv;
 
-	Button m_back;
-
 	ImageView m_help;
 
 	//------------------------
@@ -63,9 +61,6 @@ public class GraphSelectorActivity
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.graph_selector);
-
-		m_back = (Button) findViewById(R.id.graph_selector_back_butt);
-		m_back.setOnClickListener(this);
 
 		m_help = (ImageView) findViewById(R.id.graph_selector_logo);
 		m_help.setOnClickListener(this);
@@ -90,11 +85,7 @@ public class GraphSelectorActivity
 
 	//----------------------------
 	public void onClick(View v) {
-		if (v == m_back) {
-			finish();
-		}
-
-		else if (v == m_help) {
+		if (v == m_help) {
 			show_help_dialog(R.string.graph_selector_help_title,
 					R.string.graph_selector_help_msg);
 		}
@@ -112,7 +103,7 @@ public class GraphSelectorActivity
 	//	of the ListView).
 	//
 	public void onItemClick(AdapterView<?> parent, View v,
-	                        int pos, long id) {
+							int pos, long id) {
 
 		// Finding the name they clicked on.  This seems oddly tricky.
 		// Because views are recycled, getChildAt() returns the position
