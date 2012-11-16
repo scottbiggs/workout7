@@ -942,9 +942,9 @@
 	<string name="aset_distance_off_label">distance</string>
 		<string name="aset_distance_help_title">Distance Unit</string>
 	<string name="aset_distance_help_msg">Enter the distance
-		that you covered with this set. Decimal points are
-		icky, so just round to the closest or change units
-		(a mile is 5280 feet!).</string>
+		that you covered with this set. Ask a friend for a
+		ruler if necessary.
+		</string>
 	<string name="aset_distance_hint">%s</string>
 
 	<string name="aset_other_label_old">%1$s (%2$s)</string>

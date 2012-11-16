@@ -27,12 +27,12 @@ public class WGlobals extends Application {
 	//---------------------------
 
 		// These are useful for when the Activities call
-		// each other. Alphabetical.
+		// each other.
 	public static final int
-		ADDDISTITEMACTIVITY = 1,
+//		ADDDISTITEMACTIVITY = 1,		// removed
 		ADDEXERCISEACTIVITY = 2,
-		ADDTIMEITEMACTIVITY = 3,
-		ADDWEIGHTITEMACTIVITY = 4,
+//		ADDTIMEITEMACTIVITY = 3,		// removed
+//		ADDWEIGHTITEMACTIVITY = 4,	// removed
 		BASEDIALOGACTIVITY = 5,
 		EDITEXERCISEACTIVITY = 6,
 		GRIDACTIVITY = 7,
@@ -47,7 +47,7 @@ public class WGlobals extends Application {
 		PREFSACTIVITY = 16,
 		GRAPHACTIVITY = 17,
 		GRAPHSELECTORACTIVITY = 18,
-		HISTORYACTIVITY = 19,
+		HISTORYACTIVITY = 19,	// todo: deprecated
 		TESTACTIVITY = 20,		// todo:		Just for debugging!!
 		EXERCISETABHOSTACTIVITY = 21;	// added as they're made
 

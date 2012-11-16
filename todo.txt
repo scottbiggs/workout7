@@ -6,9 +6,6 @@ Should changing the exercise take you back to the grid?  I
 EditExerciseActivity needs a cancel changes button.  See the
 	EditSet layout as a better example.
 
-Many layouts have problems with the graphical layout editor.
-	See what I can do to fix this.
-
 The program launcher icon looks squashed.
 
 When graphing, have the option of graphing by exercise
@@ -196,6 +193,11 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Many layouts have problems with the graphical layout editor.
+	See what I can do to fix this.
+	- Did what I can! You just can't display a question mark
+	all by itself in a Button or a TextView. Reported.
+
 It's confusing when editing a workout set.  Make the back-
 	ground color different during an edit.
 	Same for EditExercise (but a different color?).

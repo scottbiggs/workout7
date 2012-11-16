@@ -51,15 +51,6 @@
 			/>
 
 		<!-- These Activities look like Dialogs -->
-		<activity android:name=".AddWeightItemActivity"
-				android:theme="@android:style/Theme.Dialog"
-				/>
-		<activity android:name=".AddDistItemActivity"
-				android:theme="@android:style/Theme.Dialog"
-				/>
-		<activity android:name=".AddTimeItemActivity"
-				android:theme="@android:style/Theme.Dialog"
-				/>
 		<activity android:name=".NumberActivity"
 				android:theme="@android:style/Theme.Dialog"
 				/>
