@@ -260,24 +260,7 @@ public class ExerciseTabHostActivity
 		super.onStop();
 	}
 
-	//------------------------------
-	//	Allows this Activity to send message to the caller
-	//	when the user hits the back button.
-/*	//
-	@Override
-	public void onBackPressed() {
-		Log.d(tag, "onBackPressed()");
-//		super.onBackPressed();
-		if (m_dirty) {
-			setResult(RESULT_OK);
-		}
-		else {
-			setResult(RESULT_CANCELED);
-		}
-		finish();
-	}
-*/
-
+	
 	//--------------------------------
 	public void onClick(View v) {
 		if (v == m_help) {

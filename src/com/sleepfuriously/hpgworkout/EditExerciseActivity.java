@@ -909,21 +909,14 @@ public class EditExerciseActivity
 	} // is_all_radio_buttons_off()
 
 
-
-	/*********************
-	 * Only intercepting the back key.  It's just to make sure
-	 * the user hasn't accidentally hit it when making changes
-	 * while the page is still dirty.
-	 *
-	 * @param keyCode
-	 * @param event
-	 * @return	True - that this method completely handled
-	 * 			the event.
-	 * 			False - Let other handlers have a crack at this.
-	 */
+	//-----------------------------
+	// Only intercepting the back key.  It's just to make sure
+	// the user hasn't accidentally hit it when making changes
+	// while the page is still dirty.
+	//
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (m_dirty && WGlobals.g_nag && (keyCode == KeyEvent.KEYCODE_BACK)) {
+	public void onBackPressed() {
+		if (m_dirty && WGlobals.g_nag) {
 			show_yes_no_dialog(R.string.editexer_cancel_warning_title, null,
 					R.string.editexer_cancel_warning_msg, null,
 					new View.OnClickListener() {
@@ -934,11 +927,11 @@ public class EditExerciseActivity
 							finish();
 						}
 				});
-		return true;		// We handled this event!
 		}
-
-		return super.onKeyDown(keyCode, event);
-	} // onKeyDown (keyCode, event)
+		else {
+			super.onBackPressed();
+		}
+	} // onBackPressed()
 
 
 	/*********************
