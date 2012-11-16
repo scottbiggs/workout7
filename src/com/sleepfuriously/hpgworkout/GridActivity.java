@@ -215,19 +215,13 @@ public class GridActivity extends BaseDialogActivity
 	protected void onActivityResult(int request_code,
 									int result_code,
 									Intent data) {
+//		Log.d(tag, "onActivityResult (request_code = " + request_code
+//		      + ", result_code = " + result_code
+//		      + ", data = " + data);
 
-		Log.d(tag, "onActivityResult (request_code = " + request_code
-		      + ", result_code = " + result_code
-		      + ", data = " + data);
-		// todo:
-		//	Fix this.  We don't need to reload when something's
-		//	cancelled!  Find a way to get a result_code from the
-		//	tabhost!
-
+		// This means that the Database has changed.  Reload
+		// everything.
 		if (result_code == RESULT_OK) {
-			Log.v (tag, "Something happened, so I'm reloading.");
-
-			// Just clean up anyway.
 			m_left_table.removeAllViews();
 			m_main_table.removeAllViews();
 			new GridSyncTask().execute();
