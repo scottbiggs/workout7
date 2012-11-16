@@ -943,7 +943,7 @@ public class ASetActivity
 		//	other activities to reset.
 		m_db_dirty = true;
 		InspectorActivity2.m_db_dirty = true;
-		HistoryActivity.m_db_dirty = true;
+//		HistoryActivity.m_db_dirty = true;
 		GraphActivity.m_db_dirty = true;
 		ExerciseTabHostActivity.m_dirty = true;
 
