@@ -241,7 +241,7 @@ public class EditExerciseActivity
 
 		if (fill_forms() == false) {
 			Toast.makeText(this, "Problems filling out the forms in EditExercise#onCreate()", Toast.LENGTH_LONG).show();
-			setResult(RESULT_CANCELED);
+			tabbed_set_result(RESULT_CANCELED);
 			finish();
 		}
 	} // onCreate();
@@ -929,7 +929,7 @@ public class EditExerciseActivity
 					new View.OnClickListener() {
 						public void onClick(View v) {
 							// Yes, they want to cancel.
-							setResult(RESULT_CANCELED);
+							tabbed_set_result(RESULT_CANCELED);
 							dismiss_all_dialogs();
 							finish();
 						}
@@ -1002,14 +1002,14 @@ public class EditExerciseActivity
 		// The main buttons at the bottom.
 		if (v == m_ok) {
 			if (!m_dirty) {		// Didn't do anything!
-				setResult(RESULT_CANCELED);
+				tabbed_set_result(RESULT_CANCELED);
 				finish();
 			}
 			if (check_good_exercise(true) == false) {
 				return;
 			}
 			save_data();		// YEAH!!!!!
-			setResult(RESULT_OK);
+			tabbed_set_result(RESULT_OK);
 			finish();
 		}
 
@@ -1024,7 +1024,7 @@ public class EditExerciseActivity
 				public void onClick(View v) {
 					// This happens ONLY if they said YES!
 					delete_entry();
-					setResult(RESULT_OK);
+					tabbed_set_result(RESULT_OK);
 					dismiss_all_dialogs();
 					finish();
 				}
