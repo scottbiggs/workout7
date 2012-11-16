@@ -617,7 +617,7 @@
 		this exercise here.</string>
 
 	<string name="editexer_cancel_title">Cancel Button</string>
-		<string name="editexer_cancel_msg">If you decide to not
+	<string name="editexer_cancel_msg">If you decide to not
 		edit this exercise, hit the \'cancel\' button. The
 		program will forget this whole sordid episode.</string>
 
@@ -633,6 +633,13 @@
 	<string name="editexer_ok_msg">Tap on this button
 		when you are satisfied and done editing this
 		exercise. Yep, that\'ll do it.</string>
+
+	<string name="editexer_reset_butt">reset</string>
+	<string name="editexer_reset_butt_help_title">Reset</string>
+	<string name="editexer_reset_butt_help_msg">
+		Hitting this button resets all the fields to their
+		original values.
+	</string>
 
 	<string name="editexer_delete_button">delete exercise</string>
 	<string name="editexer_delete_help_title">Delete Exercise</string>

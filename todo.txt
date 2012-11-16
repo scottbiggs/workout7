@@ -196,6 +196,11 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+It's confusing when editing a workout set.  Make the back-
+	ground color different during an edit.
+	Same for EditExercise (but a different color?).
+	- done.  they are both dark brown in their background.
+
 Bug: Deleting a set caused a crash!
 	- fixed.  When a set is deleted, no Intent is returned to
 	the Inspector from EditSetActivity.  Thus when it tries to

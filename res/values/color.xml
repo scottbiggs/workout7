@@ -30,7 +30,11 @@
 	<color name="hpg_orange_lightest">#f9bfb0</color>
 	<color name="hpg_orange_dark">#a62300</color>
 	<color name="hpg_orange_darker">#631903</color>
-		<color name="hpg_orange_darkest">#4d1000</color>
+	<color name="hpg_orange_darkest">#4d1000</color>
+
+	<color name="hpg_brown_light">#552b20</color>
+	<color name="hpg_brown">#451104</color>
+	<color name="hpg_brown_dark">#350c01</color>
 
 	<color name="hpg_complement">#13a853</color>
 	<color name="hpg_complement_light">#6cd399</color>

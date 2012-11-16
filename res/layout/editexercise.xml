@@ -4,12 +4,11 @@
 
 	This version uses TABLES
 -->
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
-	android:background="@color/darkdark_gray"
-	android:layout_marginTop="5dp" >
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_marginTop="5dp"
+    android:background="@color/hpg_brown_dark" >
 
 	<!-- ============= -->
 	<!-- Buttons -->
@@ -25,11 +24,11 @@
 		android:layout_marginRight="5dp"
 		android:paddingLeft="15dp"
 		android:paddingRight="15dp"
-		android:text="@string/question_mark"
+		android:text="@string/null_string"
 		android:visibility="invisible" />
 
 	<Button
-		android:id="@+id/edit_exer_delete_butt"
+		android:id="@+id/edit_exer_reset_butt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
@@ -38,7 +37,8 @@
 		android:layout_toLeftOf="@id/edit_exer_help_butt"
 		android:background="@drawable/button_shiny_black"
 		android:textColor="@color/ivory"
-		android:text="@string/editexer_delete_button"
+		android:enabled="false"
+		android:text="@string/editexer_reset_butt"
 		/>
 
 
@@ -580,6 +580,17 @@
 
 				</TableRow>
 			</TableLayout>
+
+			<Button
+				android:id="@+id/edit_exer_delete_butt"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_horizontal"
+				android:layout_marginBottom="5dp"
+				android:layout_marginTop="3dp"
+				android:background="@drawable/button_shiny_black"
+				android:text="@string/editexer_delete_button"
+				android:textColor="@color/ivory" />
 
 		</LinearLayout>
 	</ScrollView>

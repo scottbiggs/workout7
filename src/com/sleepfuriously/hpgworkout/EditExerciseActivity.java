@@ -64,7 +64,7 @@ public class EditExerciseActivity
 	MySpinner m_exer_type_msp, m_exer_group_msp,
 		m_exer_weight_msp, m_exer_dist_msp, m_exer_time_msp;
 
-	Button m_ok, m_delete;
+	Button m_ok, m_delete, m_reset;
 
 
 	//-------------------
@@ -114,6 +114,10 @@ public class EditExerciseActivity
 		m_delete = (Button) findViewById(R.id.edit_exer_delete_butt);
 		m_delete.setOnClickListener(this);
 		m_delete.setOnLongClickListener(this);
+
+		m_reset = (Button) findViewById(R.id.edit_exer_reset_butt);
+		m_reset.setOnClickListener(this);
+		m_reset.setOnLongClickListener(this);
 
 		// name
 		m_exer_name_et = (EditText) findViewById (R.id.editexer_name_et);
@@ -174,7 +178,8 @@ public class EditExerciseActivity
 		m_exer_weight_msp.setOnLongClickListener(this);
 
 		Intent weight_itt = new Intent();
-		weight_itt.setClassName(getPackageName(), AddWeightItemActivity.class.getName());
+		weight_itt.setClassName(getPackageName(),
+								AddWeightItemActivity.class.getName());
 		m_exer_weight_msp.set_user_add(m_exer_weight_msp.length() - 1,
 									weight_itt,
 									m_exer_weight_msp.getId());
@@ -304,7 +309,6 @@ public class EditExerciseActivity
 
 		// Restore the state of the 'other' EditTexts.
 		boolean other = icicle.getBoolean(DatabaseHelper.EXERCISE_COL_OTHER);
-//		Log.d(tag, "\tother is " + other + ", setting focus.");
 		m_exer_other_name_et.setEnabled(other);
 		m_exer_other_name_et.setFocusable(other);
 //		m_exer_other_name_et.setFocusableInTouchMode(other);
@@ -943,6 +947,8 @@ public class EditExerciseActivity
 		if (v.getClass() == RadioButton.class) {
 			m_dirty = true;
 			m_ok.setEnabled(true);
+			m_reset.setEnabled(true);
+			
 			if (v == m_exer_rep_rb)
 				set_radio (DatabaseHelper.EXERCISE_COL_REP_NUM);
 
@@ -963,12 +969,16 @@ public class EditExerciseActivity
 
 			else if (v == m_exer_other_rb)
 				set_radio (DatabaseHelper.EXERCISE_COL_OTHER_NUM);
+
+			return;
 		} // if radio button
 
 		// Is it a check button?
 		else if (v.getClass() == CheckBox.class) {
 			m_dirty = true;
 			m_ok.setEnabled(true);
+			m_reset.setEnabled(true);
+			
 			if (v == m_exer_rep_cb)
 				set_rep_check (v);
 
@@ -990,6 +1000,7 @@ public class EditExerciseActivity
 			else if (v == m_exer_other_cb)
 				set_other_check (v);
 
+			return;
 		} // if checkbox
 
 		// The main buttons at the bottom.
@@ -1004,6 +1015,10 @@ public class EditExerciseActivity
 			save_data();		// YEAH!!!!!
 			tabbed_set_result(RESULT_OK);
 			finish();
+		}
+
+		else if (v == m_reset) {
+			reset();
 		}
 
 		else if (v == m_delete) {
@@ -1026,6 +1041,21 @@ public class EditExerciseActivity
 
 	} // onClick (v)
 
+	/**********************
+	 * Sets the UI so that it's just like at the beginning.
+	 */
+	void reset() {
+		m_exer_weight_msp.setText(null);
+		m_exer_dist_msp.setText(null);
+		m_exer_time_msp.setText(null);
+		m_exer_other_name_et.setText(null);
+		m_exer_other_unit_et.setText(null);
+		fill_forms();
+		m_dirty = false;
+		m_ok.setEnabled(false);
+		m_reset.setEnabled(false);
+	}
+
 
 	/*********************
 	 * Long clicks are used for specific help on specific
@@ -1044,8 +1074,6 @@ public class EditExerciseActivity
 
 		else if (v.getClass() == CheckBox.class) {
 			if (v == m_exer_rep_cb)
-//				showHelpDialog(R.string.addexer_check_help_title,
-//						R.string.addexer_check_help_msg);
 				show_help_dialog(R.string.addexer_rep_help_title,
 						R.string.addexer_rep_help_msg);
 			if (v == m_exer_level_cb)
@@ -1085,7 +1113,6 @@ public class EditExerciseActivity
 			else if (v == m_exer_time_msp)
 				show_help_dialog(R.string.addexer_time_unit_title,
 						R.string.addexer_unit_msg);
-
 		} // MySpinners
 
 		else if (v == m_exer_other_name_et)
@@ -1104,6 +1131,10 @@ public class EditExerciseActivity
 			show_help_dialog(R.string.editexer_delete_help_title,
 					R.string.editexer_delete_help_msg);
 
+		else if (v == m_reset)
+			show_help_dialog(R.string.editexer_reset_butt_help_title,
+					R.string.editexer_reset_butt_help_msg);
+
 		return true;
 	}
 
@@ -1115,6 +1146,8 @@ public class EditExerciseActivity
 	public void onMySpinnerSelected(MySpinner spinner, int position, boolean new_item) {
 		m_dirty = true;
 		m_ok.setEnabled(true);
+		m_reset.setEnabled(true);
+		
 		spinner.setTextFromPos (position);
 		spinner.set_selected(position);
 	} // onMySpinnerSelected (spinner, position, newItem)
@@ -1140,6 +1173,7 @@ public class EditExerciseActivity
 		// The did something.  Note it.
 		m_dirty = true;
 		m_ok.setEnabled(true);
+		m_reset.setEnabled(true);
 
 		// Figure out which MySpinner sent this and return it to 'em.
 		if (requestCode == m_exer_weight_msp.getId()) {
@@ -1168,6 +1202,7 @@ public class EditExerciseActivity
 		if (!m_et_locked) {
 			m_dirty = true;
 			m_ok.setEnabled(true);
+			m_reset.setEnabled(true);
 		}
 	}
 
