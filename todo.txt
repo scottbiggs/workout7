@@ -1,6 +1,7 @@
 TODO:
 -----------------
-The Grid doesn't need reloading if I haven't changed anything!
+Should changing the exercise take you back to the grid?  I
+	think taking you back to the Add tab would be better.
 
 EditExerciseActivity needs a cancel changes button.  See the
 	EditSet layout as a better example.
@@ -200,6 +201,8 @@ Bug: Deleting a set caused a crash!
 	the Inspector from EditSetActivity.  Thus when it tries to
 	figure out the set id, the Intent is null.
 
+The Grid doesn't need reloading if I haven't changed anything!
+	- done
 Cancelling 'add' a set should return you back to the Grid
 	without it having to reload the data!
 	- done, same for 'order'
