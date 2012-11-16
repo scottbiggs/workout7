@@ -57,7 +57,7 @@ public class InspectorActivity2
 	 * set with the given id should be scrolled to when this Activity
 	 * pops up the first time.
 	 */
-	private int m_set_id;
+	private int m_set_id = -1;
 
 
 	//--------------------
@@ -82,6 +82,14 @@ public class InspectorActivity2
 	 * FALSE.
 	 */
 	public static boolean m_db_dirty = true;
+
+	/**
+	 * Similar to m_db_dirty, but this indicates that the
+	 * database itself has changed, not that it *should* change.
+	 * This flag is used to signal to the Grid whether or not
+	 * it needs to reload when this Activity exits.
+	 */
+	protected boolean m_database_changed = false;
 
 	/** A hack to get around scoping rules for scroll_to_child(id). */
 	protected static int s_id;
@@ -135,6 +143,22 @@ public class InspectorActivity2
 
 	} // onResume()
 
+	
+	//------------------------------
+	//	Allows this Activity to send message to the caller
+	//	when the user hits the back button.
+	//
+	@Override
+	public void onBackPressed() {
+		if (m_database_changed) {
+			tabbed_set_result(RESULT_OK);
+		}
+		else {
+			tabbed_set_result(RESULT_CANCELED);
+		}
+		finish();
+	} // onBackPressed()
+
 
 	//------------------------------
 	public boolean onLongClick(View v) {
@@ -153,15 +177,8 @@ public class InspectorActivity2
 
 
 	//------------------------------
-	//	This Activity calls either ASetActivity or
-	//	EditSetActivity.  Both return and cause this method
-	//	to hit.
-	//
-	//	ASetActivity:
-	//		- If the result is OK, then the Database has been
-	//		changed.  Need to add the new exercise set.
-	//		- If the result is CANCEL, then don't do
-	//		anything.
+	//	This Activity calls EditSetActivity.  When it
+	//	returns, this method gets the result.
 	//
 	//	EditSetActivity:
 	//		- If OK, then reload the exercise set.
@@ -183,11 +200,17 @@ public class InspectorActivity2
 
 		// This happens when a set has been edited/deleted.
 		if (requestCode == WGlobals.EDITSETACTIVITY) {
-			m_set_id = data.getIntExtra(EditSetActivity.ID_KEY, -1);
+			if (data == null) {
+				Log.v(tag, "Intent data is NULL in onActivityResult()!");
+				m_set_id = -1;
+			}
+			else {
+				m_set_id = data.getIntExtra(EditSetActivity.ID_KEY, -1);
+			}
 			init_from_db();
 			HistoryActivity.m_db_dirty = true;
 			GraphActivity.m_db_dirty = true;
-			return;
+			m_database_changed = true;	// Used to tell the Grid that the DB changed.
 		}
 
 	} // onActivityResult (requestCode, resultCode, data)

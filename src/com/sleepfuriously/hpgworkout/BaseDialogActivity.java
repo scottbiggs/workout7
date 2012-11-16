@@ -34,6 +34,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
@@ -552,5 +553,42 @@ public class BaseDialogActivity extends Activity {
 		String msg = getString(res_id, (Object[])args);
 		my_toast(ctx, msg);
 	}
+
+
+	/********************
+	 * This is a replacement for the regular setResult().
+	 * Unlike the regular one, this should work for Activities
+	 * that reside within a parent Activity, like a TabHost.
+	 *
+	 * @param result_code	The result code to pass along
+	 * 						when terminating.
+	 */
+	public void tabbed_set_result (int result_code) {
+		if (getParent() == null) {
+			setResult(result_code);
+		} else {
+			getParent().setResult(result_code);
+		}
+	} // my_set_result (result_code)
+
+	/*********************
+	 * This is a replacement for the regular setResult().
+	 * Unlike the regular one, this should work for Activities
+	 * that reside within a parent Activity, like a TabHost.
+	 *
+	 * @param result_code	The result code to pass along
+	 * 						when terminating.
+	 *
+	 * @param itt			The Intent to set with the result.
+	 */
+	public void tabbed_set_result (int result_code, Intent itt) {
+		if (getParent() == null) {
+			setResult(result_code, itt);
+		} else {
+			getParent().setResult(result_code, itt);
+		}
+	}
+
+
 
 }

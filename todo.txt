@@ -1,7 +1,5 @@
 TODO:
 -----------------
-Cancelling 'add' a set should return you back to the Grid
-	without it having to reload the data!
 The Grid doesn't need reloading if I haven't changed anything!
 
 EditExerciseActivity needs a cancel changes button.  See the
@@ -197,6 +195,15 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Bug: Deleting a set caused a crash!
+	- fixed.  When a set is deleted, no Intent is returned to
+	the Inspector from EditSetActivity.  Thus when it tries to
+	figure out the set id, the Intent is null.
+
+Cancelling 'add' a set should return you back to the Grid
+	without it having to reload the data!
+	- done, same for 'order'
+
 Remove the "back" button when looking at graphs from the Tab.
 	But keep it when looking at it plain.
 	- Completely removed the 'back' buttons from both the

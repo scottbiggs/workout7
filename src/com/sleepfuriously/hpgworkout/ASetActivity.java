@@ -225,10 +225,6 @@ public class ASetActivity
 
 		fill_forms();
 
-		// necessary since filling in forms causes this bit
-		// to become true.
-//		m_widgets_dirty = false;
-
 	} // onCreate (.)
 
 
@@ -285,6 +281,20 @@ public class ASetActivity
 	}
 
 
+	//------------------------------
+	//	Allows this Activity to send message to the caller
+	//	when the user hits the back button.
+	//
+	@Override
+	public void onBackPressed() {
+		if (m_db_dirty) {
+			tabbed_set_result(RESULT_OK);
+		}
+		else {
+			tabbed_set_result(RESULT_CANCELED);
+		}
+		finish();
+	}
 
 	//------------------------
 	public void onClick(View v) {
@@ -935,12 +945,14 @@ public class ASetActivity
 		InspectorActivity2.m_db_dirty = true;
 		HistoryActivity.m_db_dirty = true;
 		GraphActivity.m_db_dirty = true;
+		ExerciseTabHostActivity.m_dirty = true;
 
 		// After the save, clear the stress and cause the note to
 		// turned into a hint.
 		clear_stress();
 		m_notes_et.setHint(m_notes_et.getText());
 		m_notes_et.setText(null);
+
 	} // save()
 
 
@@ -1186,21 +1198,34 @@ public class ASetActivity
 	 * @param is_float	true		We're reading a float.
 	 * 					false	int
 	 *
-	 * @return	The int value of str, or -1 if there's an error.
+	 * @return	The int value of str, or -1 if there's an error,
+	 * 			such as an empty or non-existent string.
 	 * 			This is fine, as all my values are non-negative.
 	 */
 	private IntFloat my_parse (String str, boolean is_float) {
 		IntFloat num = new IntFloat(-1);
-		try {
-			if (is_float) {
+
+		// Check for an empty string or null.
+		if ((str == null) || str.contentEquals("")) {
+			Log.v(str, "my_parse trying to parse an empty string!");
+			return num;
+		}
+
+		if (is_float) {
+			try {
 				num.set(Float.parseFloat(str));
-			}
-			else {
-				num.set(Integer.parseInt(str));
+			} catch (NumberFormatException e) {
+				Log.e(tag, "Float Parse exception in my_parse(). The string is '" + str
+					+ "'. ");
 			}
 		}
-		catch (NumberFormatException e) {
-			e.printStackTrace();
+		else {
+			try {
+				num.set(Integer.parseInt(str));
+			} catch (NumberFormatException e) {
+				Log.e(tag, "Integer Parse exception in my_parse(). The string is " + str
+					+ "'. '");
+			}
 		}
 		return num;
 	} // my_parse (str)

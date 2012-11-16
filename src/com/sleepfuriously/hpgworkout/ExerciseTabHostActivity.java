@@ -239,7 +239,7 @@ public class ExerciseTabHostActivity
 	//--------------------------------
 	@Override
 	protected void onDestroy() {
-//		Log.v(tag, "onDestroy()");
+		Log.v(tag, "onDestroy()");
 		m_tab_active = false;
 		super.onDestroy();
 	}
@@ -248,7 +248,7 @@ public class ExerciseTabHostActivity
 	//--------------------------------
 	@Override
 	protected void onPause() {
-//		Log.v(tag, "onPause()");
+		Log.v(tag, "onPause()");
 		super.onPause();
 	}
 
@@ -256,10 +256,27 @@ public class ExerciseTabHostActivity
 	//--------------------------------
 	@Override
 	protected void onStop() {
-//		Log.v(tag, "onStop()");
+		Log.v(tag, "onStop()");
 		super.onStop();
 	}
 
+	//------------------------------
+	//	Allows this Activity to send message to the caller
+	//	when the user hits the back button.
+/*	//
+	@Override
+	public void onBackPressed() {
+		Log.d(tag, "onBackPressed()");
+//		super.onBackPressed();
+		if (m_dirty) {
+			setResult(RESULT_OK);
+		}
+		else {
+			setResult(RESULT_CANCELED);
+		}
+		finish();
+	}
+*/
 
 	//--------------------------------
 	public void onClick(View v) {
