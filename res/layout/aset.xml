@@ -22,7 +22,7 @@
 		android:layout_marginRight="5dp"
 		android:paddingLeft="15dp"
 		android:paddingRight="15dp"
-		android:text="@string/question_mark"
+		android:text="@string/null_string"
 		android:visibility="invisible" />
 
 	<Button
@@ -342,19 +342,19 @@
 					android:paddingTop="3dp" >
 
 					<LinearLayout
-					    android:layout_width="wrap_content"
-					    android:layout_height="fill_parent"
-					    android:layout_gravity="center_horizontal"
-					    android:layout_marginBottom="8dp"
-					    android:orientation="horizontal" >
-				    				    
+						android:layout_width="wrap_content"
+						android:layout_height="fill_parent"
+						android:layout_gravity="center_horizontal"
+						android:layout_marginBottom="8dp"
+						android:orientation="horizontal" >
+
 						<LinearLayout
-						    android:layout_width="wrap_content"
-						    android:layout_height="fill_parent"
-						    android:layout_marginLeft="5dp"
-						    android:layout_marginRight="5dp"
-						    android:background="@drawable/rounded_edges2"
-						    android:orientation="vertical" >
+							android:layout_width="wrap_content"
+							android:layout_height="fill_parent"
+							android:layout_marginLeft="5dp"
+							android:layout_marginRight="5dp"
+							android:background="@drawable/rounded_edges2"
+							android:orientation="vertical" >
 
 							<RadioButton
 								android:id="@+id/aset_cond_ok_rb"
@@ -364,15 +364,15 @@
 								android:drawableRight="@drawable/stress_just_right"
 								/>
 						</LinearLayout>
-	
+
 						<LinearLayout
-						    android:layout_width="wrap_content"
-						    android:layout_height="fill_parent"
-						    android:layout_marginLeft="5dp"
-						    android:layout_marginRight="5dp"
-						    android:background="@drawable/rounded_edges2"
-						    android:orientation="vertical" >
-	
+							android:layout_width="wrap_content"
+							android:layout_height="fill_parent"
+							android:layout_marginLeft="5dp"
+							android:layout_marginRight="5dp"
+							android:background="@drawable/rounded_edges2"
+							android:orientation="vertical" >
+
 							<RadioButton
 								android:id="@+id/aset_cond_plus_rb"
 								android:layout_width="wrap_content"
@@ -383,18 +383,18 @@
 					</LinearLayout>
 
 					<LinearLayout
-					    android:layout_width="wrap_content"
-					    android:layout_height="fill_parent"
-					    android:layout_gravity="center_horizontal"
-					    android:orientation="horizontal" >
-										
+						android:layout_width="wrap_content"
+						android:layout_height="fill_parent"
+						android:layout_gravity="center_horizontal"
+						android:orientation="horizontal" >
+
 					<LinearLayout
-					    android:layout_width="wrap_content"
-					    android:layout_height="fill_parent"
-					    android:layout_marginLeft="5dp"
-					    android:layout_marginRight="5dp"
-					    android:background="@drawable/rounded_edges2"
-					    android:orientation="vertical" >
+						android:layout_width="wrap_content"
+						android:layout_height="fill_parent"
+						android:layout_marginLeft="5dp"
+						android:layout_marginRight="5dp"
+						android:background="@drawable/rounded_edges2"
+						android:orientation="vertical" >
 
 						<RadioButton
 							android:id="@+id/aset_cond_minus_rb"
@@ -404,12 +404,12 @@
 						</LinearLayout>
 
 					<LinearLayout
-					    android:layout_width="wrap_content"
-					    android:layout_height="fill_parent"
-					    android:layout_marginLeft="5dp"
-					    android:layout_marginRight="5dp"
-					    android:background="@drawable/rounded_edges2"
-					    android:orientation="vertical" >
+						android:layout_width="wrap_content"
+						android:layout_height="fill_parent"
+						android:layout_marginLeft="5dp"
+						android:layout_marginRight="5dp"
+						android:background="@drawable/rounded_edges2"
+						android:orientation="vertical" >
 
 						<RadioButton
 							android:id="@+id/aset_cond_injury_rb"
@@ -419,7 +419,7 @@
 						</LinearLayout>
 
 					</LinearLayout>
-										
+
 				</RadioGroup>
 			</LinearLayout>
 
