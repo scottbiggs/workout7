@@ -1,30 +1,29 @@
 TODO:
 -----------------
+Graph needs to be more independent.
+
+Graph needs to handle intermittent data.
+
 Should changing the exercise take you back to the grid?  I
 	think taking you back to the Add tab would be better.
-
-EditExerciseActivity needs a cancel changes button.  See the
-	EditSet layout as a better example.
+When an exercise is edited, I don't want to be bumped back out to
+	the grid.  If anything, send a message that it's been updated
+	and refresh the EditExerciseACtivity.
 
 The program launcher icon looks squashed.
-
-When graphing, have the option of graphing by exercise
-	set or by day (toggle button or menu?).
-
-Make the "just right" stress condition have a green check.
-	And you might do something to add more color to the 'too
-	heavy' and 'injury.'  Alternately, you could reduce the
-	color for 'too easy.'
-	- "just right" done.
 
 Instead of a History tab (which is now removed), have a
 	button in the Inspector that enables a quick view.
 	Also a button to reverse the order.
+Combine the History and Inspector Activities.
 
+When graphing, have the option of graphing by exercise
+	set or by day (toggle button or menu?).
 Issue:  The graph adds up weight on the same day, that's
 	good.  But it shouldn't add up everything, should it?
 	Like for reps, should it add 'em, show an average,
-	or show the max?
+	or show the max?  Or maybe have the user select, as
+	described above?
 
 Graphs: the x-axis should be by date, not by the quantity of sets.
 
@@ -35,57 +34,27 @@ Graph by exercise type.
 Need to use the new buttons in all the nice dialog/activities
 	when modifying sets (EditSetActivity calls them).
 
-Adding a set does not cause the Inspector to update!
-
 Not all the new help dialogs use the new buttons.  The help dialogs
 	for the Tabs, display the old dialog, for example.
 
 In ASet, the notes and stress labels are black, not ivory.
 
-The InspectorActivity needs a major overhaul.  The UI is integrally
-entwined in the database.  Taking it out will be a project.
-
-The History and Inspector need to display something when there's
-	no data.
-
-When an exercise is edited, I don't want to be bumped back out to
-	the grid.  If anything, send a message that it's been updated
-	and refresh the EditExerciseACtivity.
-
-In the HistoryActivity, it'd be nice if I put something like horizontal
-	lines between some of the sets to denote different days.
-
 BUG: When the GraphActivity removes x-axis tick lines because they
 	are too close together, the date on the last tick line can be
 	wrong.
-
-Problem: it seems that I NEED to have my drawables in the
-	"drawable" directory--they are not being found in the
-	respective ?dpi directory.
-	...This could be a problem for running only 1.5.
-
-Combine the History and Inspector Activities.
-
-In ASet, when pre-loading the previous values, floats have a decimal
-	point, even when there's a zero there.
-
-Preferences: put the option to Reset things here.  Clear the workout data, or
-	clear the exercises.
 
 ASetActivity - Change so that the user can add another set without
 	having to go back to the main grid.  This is possible from
 	the Inspector, but not from the regular one.
 
-ASetActivity needs to be modified so that the labels have the appro-
-	priate units.
+TEST the nags.
 
+Preferences: put the option to Reset things here.  Clear the workout data, or
+	clear the exercises.
 Add the ability to clear EVERYTHING.  This is a tabula rasa,
 	so that the person can clear their entire history AND
 	all their exercises at once.  Of course, give appropriate
 	warnings.
-
-TEST the nags.
-
 Need to make a preferences screen.
 	TODO:
 	* Save the database to SIMM card. (http://stackoverflow.com/questions/1209469/storing-android-application-data-on-sd-card,
@@ -95,6 +64,7 @@ Need to make a preferences screen.
 	* Details of the sound (keypad clicks, warnings, nags, successful
 	completions, etc.).
 	* Should the program nag about cancelling.
+	* Allow user to clear EVERYTHING (tabula rasa).  Warn!
 
 	DONE:
 	* Move the whole program to SIMM
@@ -113,14 +83,6 @@ When doing aset, make it obvious which is the significant
 Don't like the buttons on the GridActivity.  They're not
 	intuitive and the layout sucks.
 
-Need to redo the Welcome screen.
-
-Rearrange the buttons so that dismissive buttons (like
-	cancel) are on the left--acceptive buttons (like ok
-	or done) are on the right.  This conforms to Android's
-	UI as defined by google.
-	- Include the dialogs in BaseDialogActivity!
-
 Try some custom Themes to make things look original.
 	http://developer.android.com/guide/topics/ui/themes.html
 
@@ -128,16 +90,6 @@ Click on a date, and get a summary of that day.  You also
 	get the option to edit those sets and even delete them.
 	Long-click to delete that day (with confirmation, of
 	course).
-
-Make a way to increase/decrease the font.
-
-Make the - sign in the ASet.XML layout look better.
-
-When coming back to the grid from Add or Edit exercise,
-	it doesn't look like the loading dialog comes up.
-
-There's something wrong with the waiting dialog: it doesn't seem
-	to animate in the emulator.  Why is that?
 
 Check out: http://developer.android.com/resources/articles/faster-screen-orientation-change.html
 	This should be applied to the grid screen to make
@@ -167,6 +119,14 @@ Make sure that all the drawables are in the correct directories.
 ---------------------------------------------------
 Hmmmmmmmmmmmmmmmmmmmmmm
 ---------------------------------------------------
+Bug: Adding a set does not cause the Grid to reload!!!
+	Didn't I just do that?
+	Having trouble repeating...
+
+There's something wrong with the waiting dialog: it doesn't seem
+	to animate in the emulator.  Why is that?
+	- can't repeat
+
 Not sure if the graph properly graphs the decimal point of data,
 	especially for weights.
 	- can't repeat
@@ -181,6 +141,17 @@ In the graphs, instead of horizontal lines, divide up into
 ---------------------------------------------------
 TABLED (for later versions)
 ---------------------------------------------------
+Need to redo the Welcome screen.
+	- looks ok to me.
+
+Make a way to increase/decrease the font.
+
+When long-clicking a single exercise set on the Grid,
+	it takes us to the EditSetActivity, which is nice.
+	But it'd be even nicer if it went to that activity
+	within the Inspector's tab.
+	- Not that important.
+
 The Graph:
 	* Need to seperate the drawing of a graph from any knowledge of
 	the exercise.  This isolation will allow to have multiple graphs
@@ -193,6 +164,57 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Make the "just right" stress condition have a green check.
+	And you might do something to add more color to the 'too
+	heavy' and 'injury.'  Alternately, you could reduce the
+	color for 'too easy.'
+	- done.
+
+In the HistoryActivity, it'd be nice if I put something like horizontal
+	lines between some of the sets to denote different days.
+	- no more History
+
+Problem: it seems that I NEED to have my drawables in the
+	"drawable" directory--they are not being found in the
+	respective ?dpi directory.
+	...This could be a problem for running only 1.5.
+	- Changed the target api to 8 (2.2).
+
+ASetActivity needs to be modified so that the labels have the appro-
+	priate units.
+	- done a while ago.
+
+The InspectorActivity needs a major overhaul.  The UI is integrally
+entwined in the database.  Taking it out will be a project.
+	- Mostly done when I made the ASync work in Inspector2.
+
+Rearrange the buttons so that dismissive buttons (like
+	cancel) are on the left--acceptive buttons (like ok
+	or done) are on the right.  This conforms to Android's
+	UI as defined by google.
+	- Include the dialogs in BaseDialogActivity!
+	- Done, except for the date and time picker (controlled
+	by the OS).
+
+In ASet, when pre-loading the previous values, floats have a decimal
+	point, even when there's a zero there.
+	- fixed this long ago (closed)
+
+Make the - sign in the ASet.XML layout look better.
+	- fixed this when I made the icons.
+
+When coming back to the grid from Add or Edit exercise,
+	it doesn't look like the loading dialog comes up.
+	- very old.
+
+The History and Inspector need to display something when there's
+	no data.
+	- done
+
+EditExerciseActivity needs a cancel changes button.  See the
+	EditSet layout as a better example.
+	- Changed to have a RESET button.
+
 Many layouts have problems with the graphical layout editor.
 	See what I can do to fix this.
 	- Did what I can! You just can't display a question mark
