@@ -30,16 +30,6 @@
 		style="@style/white_text_large"
 		/>
 
-<!--
-	<ImageView
-		android:id="@+id/inspector_logo"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignParentRight="true"
-		android:layout_marginRight="8dp"
-		android:layout_marginTop="6dp"
-		android:src="@drawable/hpglogo_36x36" />
--->
 
 <!--  no longer used, but kept just in case...
 	<TextView
@@ -58,12 +48,12 @@
 -->
 
 	<ScrollView
-		android:id="@+id/inspector_sv"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_below="@id/inspector_title_tv"
-		android:layout_alignParentBottom="true"
-		android:layout_centerHorizontal="true" >
+	    android:id="@+id/inspector_sv"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentBottom="true"
+	    android:layout_below="@id/inspector_title_tv"
+	    android:layout_centerHorizontal="true" >
 
 		<!--
 			This LinearLayout is where all the tables
