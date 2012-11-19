@@ -1,5 +1,5 @@
 /**
- * This displays a graph!
+ * This Activity displays a/some graph/s!
  */
 package com.sleepfuriously.hpgworkout;
 
@@ -356,8 +356,6 @@ public class GraphActivity
 		protected Void doInBackground(Void... arg0) {
 			int col;	// temp to hold column info.  Should be used briefly.
 
-
-
 			try {
 				test_m_db();
 				m_db = WGlobals.g_db_helper.getReadableDatabase();
@@ -505,6 +503,5 @@ public class GraphActivity
 		} // onPostExecute( result )
 
 	} // class GraphSyncTask
-
 
 }
