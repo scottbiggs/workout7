@@ -18,6 +18,7 @@ package com.sleepfuriously.hpgworkout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -65,6 +66,12 @@ public class WelcomeActivity extends BaseDialogActivity
 		Log.v(tag, "entering onCreate()");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.welcome);
+
+		// Load in the default preferences (but don't
+		// override the user's settings).
+		PreferenceManager.setDefaultValues(this,
+										   R.xml.pref,
+										   false);	// Prevents overriding user's saved preferences.
 
 		m_start_butt = (Button) findViewById(R.id.welcome_start_butt);
 		m_start_butt.setOnClickListener(this);
