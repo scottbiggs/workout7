@@ -372,7 +372,7 @@ public class GraphActivity
 				// Read in all the sets and store that information
 				// in a list.
 				try {
-					set_cursor = DatabaseHelper.getAllSets(m_db, m_ex_name, false);
+					set_cursor = DatabaseHelper.getAllSets(m_db, m_ex_name, true);
 					m_set_count = set_cursor.getCount();
 
 					// If there are not enough sets, don't do anything.
