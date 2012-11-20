@@ -1,145 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 
+<!--
 	The layout of the opening "Welcome" screen.
 
-	Do we need a "center" layout_gravity? 
+	Do we need a "center" layout_gravity?
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@color/darkdark_gray" 
-    xmlns:tools="http://schemas.android.com/tools">
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:background="@color/darkdark_gray"
+	xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
-        android:id="@+id/title_ll"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:orientation="vertical" >
+	<LinearLayout
+		android:id="@+id/title_ll"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentTop="true"
+		android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/welcome_title_tv"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:gravity="left"
-            android:padding="5dp"
-            android:text="@string/welcome_title"
-    		    style="@style/white_text_large"
-            android:typeface="serif" />
+		<TextView
+			android:id="@+id/welcome_title_tv"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="10dp"
+			android:layout_marginTop="10dp"
+			android:gravity="left"
+			android:padding="5dp"
+			android:text="@string/welcome_title"
+				style="@style/white_text_large"
+			android:typeface="serif" />
 
-        <TextView
-            android:id="@+id/welcome_subtitle_tv"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:gravity="fill_horizontal"
-            android:padding="5dp"
-            android:text="@string/welcome_subtitle"
-		    style="@style/white_text_large"
-            android:typeface="sans" />
+		<TextView
+			android:id="@+id/welcome_subtitle_tv"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="10dp"
+			android:gravity="fill_horizontal"
+			android:padding="5dp"
+			android:text="@string/welcome_subtitle"
+			style="@style/white_text_large"
+			android:typeface="sans" />
 
-    </LinearLayout>
+	</LinearLayout>
 
-    <ImageView
-        android:id="@+id/welcome_logo_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_margin="8dp"
-        android:padding="10dp"
-        android:src="@drawable/hpglogo" 
-        tools:ignore="ContentDescription"/>
+	<ImageView
+		android:id="@+id/welcome_logo_id"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:layout_margin="8dp"
+		android:padding="10dp"
+		android:src="@drawable/hpglogo"
+		tools:ignore="ContentDescription"/>
 
-    <Button
-        android:id="@+id/welcome_start_butt"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/welcome_logo_id"
-        android:layout_marginBottom="3dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/button_shiny_black"
-        android:textColor="@color/ivory"
-        android:text="@string/welcome_start_button"
-        android:textSize="@dimen/font_size_default" />
+	<Button
+		android:id="@+id/welcome_start_butt"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/welcome_logo_id"
+		android:layout_marginBottom="3dp"
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp"
+		android:layout_marginTop="10dp"
+		android:background="@drawable/button_shiny_black"
+		android:textColor="@color/ivory"
+		android:text="@string/welcome_start_button"
+		android:textSize="@dimen/font_size_default" />
 
-    <Button
-        android:id="@+id/welcome_settings_butt"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/welcome_start_butt"
-        android:layout_marginBottom="3dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="3dp"
-	    android:background="@drawable/button_shiny_black"
-        android:text="@string/welcome_settings_button"
-        android:textColor="@color/ivory"
-        android:textSize="@dimen/font_size_button_default" />
-
-<!-- 
-    <Button
-        android:id="@+id/welcome_export_butt"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/welcome_settings_butt"
-        android:layout_marginBottom="3dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="3dp"
-        android:background="@drawable/button_shiny_black"
-        android:text="@string/welcome_export_button"
-        android:textColor="@color/black"
-        android:textSize="@dimen/font_size_button_default" />
+<!--
+	<Button
+		android:id="@+id/welcome_export_butt"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/welcome_settings_butt"
+		android:layout_marginBottom="3dp"
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp"
+		android:layout_marginTop="3dp"
+		android:background="@drawable/button_shiny_black"
+		android:text="@string/welcome_export_button"
+		android:textColor="@color/black"
+		android:textSize="@dimen/font_size_button_default" />
 -->
 
 	<Button
-	    android:id="@+id/welcome_graph_butt"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_below="@id/welcome_settings_butt"
-	    android:layout_marginBottom="3dp"
-	    android:layout_marginLeft="10dp"
-	    android:layout_marginRight="10dp"
-	    android:layout_marginTop="3dp"
-	    android:background="@drawable/button_shiny_black"
-	    android:text="@string/welcome_graphs_button"
-	    android:textColor="@color/ivory"
-	    android:textSize="@dimen/font_size_button_default" />
+		android:id="@+id/welcome_graph_butt"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/welcome_start_butt"
+		android:layout_marginBottom="3dp"
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp"
+		android:layout_marginTop="3dp"
+		android:background="@drawable/button_shiny_black"
+		android:text="@string/welcome_graphs_button"
+		android:textColor="@color/ivory"
+		android:textSize="@dimen/font_size_button_default" />
 
 	<Button
-	    android:id="@+id/welcome_exit_butt"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_below="@id/welcome_graph_butt"
-	    android:layout_centerHorizontal="true"
-	    android:layout_marginBottom="3dp"
-	    android:layout_marginTop="3dp"
-	    android:gravity="center"
-	    android:background="@drawable/button_shiny_black"
-	    android:textColor="@color/ivory"
-	    android:paddingLeft="10dp"
-	    android:paddingRight="10dp"
-	    android:text="@string/welcome_exit_button"
-	    android:textSize="@dimen/font_size_button_default" />
+		android:id="@+id/welcome_settings_butt"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/welcome_graph_butt"
+		android:layout_marginBottom="3dp"
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp"
+		android:layout_marginTop="3dp"
+		android:background="@drawable/button_shiny_black"
+		android:text="@string/welcome_settings_button"
+		android:textColor="@color/ivory"
+		android:textSize="@dimen/font_size_button_default" />
+
+
 
 	<Button
-	    android:id="@+id/welcome_help_butt"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_alignParentBottom="true"
-	    android:layout_alignParentRight="true"
-	    android:layout_marginBottom="10dp"
-	    android:layout_marginRight="10dp"
-	    android:paddingLeft="15dp"
-	    android:paddingRight="15dp"
-	    android:background="@drawable/button_shiny_black"
-	    android:textColor="@color/ivory"
-	    android:text="@string/question_mark"
-	    android:textSize="@dimen/font_size_large_default" />
+		android:id="@+id/welcome_exit_butt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/welcome_settings_butt"
+		android:layout_centerHorizontal="true"
+		android:layout_marginBottom="3dp"
+		android:layout_marginTop="3dp"
+		android:gravity="center"
+		android:background="@drawable/button_shiny_black"
+		android:textColor="@color/ivory"
+		android:paddingLeft="10dp"
+		android:paddingRight="10dp"
+		android:text="@string/welcome_exit_button"
+		android:textSize="@dimen/font_size_button_default" />
+
+	<Button
+		android:id="@+id/welcome_help_butt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentRight="true"
+		android:layout_marginBottom="10dp"
+		android:layout_marginRight="10dp"
+		android:background="@drawable/button_shiny_black"
+		android:paddingLeft="15dp"
+		android:paddingRight="15dp"
+		android:text="@string/question_mark"
+		android:textColor="@color/ivory"
+		android:textSize="@dimen/font_size_large_default"
+		android:textStyle="bold"
+		android:typeface="serif" />
 
 </RelativeLayout>

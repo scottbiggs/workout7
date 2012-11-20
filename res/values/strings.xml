@@ -10,7 +10,7 @@
 	<string name="back">back</string>
 	<string name="loading_str">loading...</string>
 	<string name="saving_str">saving...</string>
-	<string name="question_mark">\u003f</string>
+	<string name="question_mark">i</string>
 	<string name="question_mark_upside_down">\u00bf</string>
 	<string name="done">done</string>
 	<string name="done_title">Done</string>
@@ -71,7 +71,7 @@
 		found.
 		\n\nHave fun!</string>
 
-	<string name="welcome_settings_button">preferences</string>
+	<string name="welcome_settings_button">settings</string>
 	<string name="welcome_settings_help_title">Preferences</string>
 	<string name="welcome_settings_help_msg">Tap on this
 		button to change the settings for this program.
@@ -138,7 +138,9 @@
 		offended by some of these help messages. So it goes. But in any
 		event, I hope this app is as useful to you as it has been to me
 		and the people at HPG.
-		\n\nHave a good workout!</string>
+		\n\nHave a good workout!
+		\n\nVersion 0.8 (Alpha)
+		</string>
 
 	<string name="welcome_menu_credits_button">show credits</string>
 	<string name="welcome_menu_credits_title">Show Credits</string>
@@ -1077,6 +1079,9 @@
 	<string name="inspector_title">Set Inspector</string>
 	<string name="inspector_empty">No Sets to Display</string>
 
+	<string name="inspector_oldest_first_msg">chronological order</string>
+	<string name="inspector_newest_first_msg">most recent first</string>
+
 	<string name="inspector_another_set_button">do another</string>
 	<string name="inspector_another_help_title">Do Another Set</string>
 	<string name="inspector_another_help_msg">
@@ -1122,9 +1127,14 @@
 
 	<string name="inspector_help_title">Inspector Help</string>
 	<string name="inspector_help_msg">
-		This screen allows you to inspect and modify specific
-		exercise sets,
-		with the most recent at the top.
+		Want to see all the details of all your workout sets
+		for this exercise? You\'ve come to the right place!
+		\n\nAll your workout sets are listed on this screen. Scroll
+		through to see \'em all.
+		\n\nWant to see them in reverse order? You can do that
+		by selecting from the menu.
+		\n\nTo much? You can turn on a terse listing of your sets
+		in the menu as well. Try it!.
 		\n\nLong click on an exercise set to edit (or even delete)
 		details of that set. This way
 		you can go back
@@ -1132,6 +1142,13 @@
 		we\'re only human.
 	</string>
 	<string name="inspector_set_time_error">no time specified</string>
+
+	<string name="inspector_menu_brief_label">brief</string>
+	<string name="inspector_menu_verbose_label">verbose</string>
+
+	<string name="inspector_menu_old_first_label">oldest first</string>
+	<string name="inspector_menu_newest_first_label">newest first</string>
+
 
 	<!-- ============         ============ -->
 	<!-- ============ EditSet ============ -->
@@ -1272,34 +1289,58 @@
 
 	<!-- ============              ============ -->
 	<!-- ============ Preferences  ============ -->
-		<!-- ============              ============ -->
+	<!-- ============              ============ -->
 
-		<string name="prefs_nag_key">nag</string>
-		<string name="prefs_nag_title">Nagging</string>
-		<string name="prefs_nagging_is_off_msg">Nagging is reduced.
-			\nYou will still get messages that are *really* important!
-			\n\n(I\'m sick and tired of the program asking me to fill
-			out forms and fields that I don\'t have time to fool with!)
+	<string name="prefs_category_general">GENERAL</string>
+	<string name="prefs_category_inspector">HISTORY</string>
+
+	<string name="prefs_nag_key">nag</string>
+	<string name="prefs_nag_title">Nag</string>
+	<string name="prefs_nagging_is_off_msg">Nagging is reduced.
+		\nYou will still get messages that are *really* important!
+		\n\n(I\'m sick and tired of the program asking me to fill
+		out forms and fields that I don\'t have time to fool with!)
 	</string>
-		<string name="prefs_nagging_is_on_msg">Nagging is on.
-			\n\n(I like being reminded of things that I may have
-			forgotten to do.)
-			</string>
+	<string name="prefs_nagging_is_on_msg">Nagging is on.
+		\n\n(I like being reminded of things that I may have
+		forgotten to do.)
+	</string>
 
-		<string name="prefs_sound_key">sound</string>
-		<string name="prefs_sound_title">Play Sounds</string>
+	<string name="prefs_sound_key">sound</string>
+	<string name="prefs_sound_title">Play Sounds</string>
 	<string name="prefs_sound_on_msg">Can you hear that\?
 		Yeah, I think this program is trying to make some noises!</string>
 	<string name="prefs_sound_off_msg">Shhhhh, we\'re playing
 		the quiet game now. Don\'t make a sound.</string>
 
-		<string name="prefs_display_key">display</string>
-		<string name="prefs_display_title">Screen Saver</string>
+	<string name="prefs_display_key">display</string>
+	<string name="prefs_display_title">Disable Screen Saver</string>
 	<string name="prefs_display_keep_on_msg">The display will
 		stay on as long as this app is activie.</string>
 	<string name="prefs_display_save_screen_msg">While using
 		this app, the screen saver will kick in
 		according to your system settings.</string>
+
+	<string name="prefs_inspector_quickview_key">quickview</string>
+	<string name="prefs_inspector_quickview_title">Brief History</string>
+	<string name="prefs_inspector_quickview_on_msg">
+		The Exercise Set Inspector will try to save space when
+		displaying your workout sets.
+	</string>
+	<string name="prefs_inspector_quickview_off_msg">
+		The Exercise Set Inspector will display all details
+		in a large and easy-to-read style (default).
+	</string>
+
+	<string name="prefs_inspector_oldest_first_key">oldest</string>
+	<string name="prefs_inspector_oldest_first_title">Chronological Order</string>
+	<string name="prefs_inspector_oldest_first_on_msg">
+		The oldest workout set will be displayed first (default).
+	</string>
+	<string name="prefs_inspector_oldest_first_off_msg">
+		Your most recent workout set will be at the top.
+	</string>
+
 
 	<!-- ============                 ============ -->
 	<!-- ============ Graph Selector  ============ -->

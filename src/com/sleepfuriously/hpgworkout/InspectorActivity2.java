@@ -11,13 +11,17 @@ package com.sleepfuriously.hpgworkout;
 import java.text.DecimalFormat;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.widget.ImageView;
@@ -37,6 +41,10 @@ public class InspectorActivity2
 
 	private static final String tag = "InspectorActivity";
 
+	/** The id for the 'brief' menu selection */
+	protected static final int MENU_ID_BRIEF = 1;
+	/** Id for the menu item to change the order that sets are listed */
+	protected static final int MENU_ID_ORDER = 2;
 
 	//------------------
 	//	Widgets
@@ -45,6 +53,8 @@ public class InspectorActivity2
 	LinearLayout m_main_ll;
 
 	ScrollView m_sv;
+
+	TextView m_desc_tv;
 
 
 	//------------------
@@ -101,6 +111,11 @@ public class InspectorActivity2
 	 */
 	protected boolean m_layout_initialized = false;
 
+	/** Should we use the quick view or the regular view */
+	protected boolean m_prefs_quick_view = false;
+
+	/** The order that we should sort the workout sets */
+	protected boolean m_prefs_oldest_order = true;
 
 	//------------------------------
 	@Override
@@ -108,6 +123,15 @@ public class InspectorActivity2
 		Log.v(tag, "entering onCreate()");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.inspector);
+
+		// Load in our preferences.
+		SharedPreferences prefs =
+			PreferenceManager.getDefaultSharedPreferences(this);
+		m_prefs_quick_view = prefs.getBoolean(getString(R.string.prefs_inspector_quickview_key),
+											false);
+		m_prefs_oldest_order = prefs.getBoolean(getString(R.string.prefs_inspector_oldest_first_key),
+												true);
+		set_order_msg();
 
 		// Get our Intent and fill in the info that was passed
 		// from the Grid to here (via ExerciseTabHostActivity).
@@ -140,10 +164,8 @@ public class InspectorActivity2
 			init_from_db();
 		}
 
-
 	} // onResume()
 
-	
 	//------------------------------
 	//	Allows this Activity to send message to the caller
 	//	when the user hits the back button.
@@ -158,6 +180,66 @@ public class InspectorActivity2
 		}
 		finish();
 	} // onBackPressed()
+
+
+	//------------------------------
+	//	Initialize the menu.
+	//
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		menu.add(0, MENU_ID_BRIEF, 0, R.string.null_string);
+		menu.add(0, MENU_ID_ORDER, 0, R.string.null_string);
+
+		return super.onCreateOptionsMenu(menu);
+	}
+
+
+	//------------------------------
+	//	I use this method to make sure that the correct
+	//	message is displayed.
+	//
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		menu.findItem(MENU_ID_BRIEF).setTitle(m_prefs_quick_view ?
+							R.string.inspector_menu_verbose_label :
+							R.string.inspector_menu_brief_label);
+
+		menu.findItem(MENU_ID_ORDER).setTitle(m_prefs_oldest_order ?
+							R.string.inspector_menu_newest_first_label :
+							R.string.inspector_menu_old_first_label);
+		return super.onPrepareOptionsMenu(menu);
+	}
+
+
+
+	//------------------------------
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		SharedPreferences prefs;
+		prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+		int id = item.getItemId();
+		switch (id) {
+			case MENU_ID_BRIEF:
+				m_prefs_quick_view = !m_prefs_quick_view;
+				prefs.edit().putBoolean(getString(R.string.prefs_inspector_quickview_key),
+										m_prefs_quick_view)
+								.commit();
+				break;
+
+			case MENU_ID_ORDER:
+				m_prefs_oldest_order = !m_prefs_oldest_order;
+				set_order_msg();
+				init_from_db();
+				break;
+
+			default:
+				Log.e (tag, "Illegal id: " + id + ", in onOptionsItemSelected!");
+				break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
 
 
 	//------------------------------
@@ -272,6 +354,13 @@ public class InspectorActivity2
 	 * stuff can take a while.
 	 */
 	void init_from_db() {
+
+		// Set the order description.
+		m_desc_tv = (TextView) findViewById(R.id.inspector_description_tv);
+		m_desc_tv.setText(m_prefs_oldest_order ?
+							R.string.inspector_oldest_first_msg :
+							R.string.inspector_newest_first_msg);
+
 
 		// Start the AsyncTask.  It'll handle the rest.
 		new InspectorSyncTask().execute();
@@ -395,6 +484,26 @@ public class InspectorActivity2
 		m_main_ll.addView(set_ll, i);
 
 	}  // make_set_layout (layout_values)
+
+	/**************************
+	 * Call this to reset the non-database part of the
+	 * of the UI.
+	 *
+	 * preconditions:
+	 * 	m_prefs_oldest_order		is properly set.
+	 *
+	 */
+	void set_order_msg() {
+		// Make ch
+		if (m_desc_tv == null) {
+			m_desc_tv = (TextView) findViewById(R.id.inspector_description_tv);
+		}
+		m_desc_tv.setText(m_prefs_oldest_order ?
+							R.string.inspector_oldest_first_msg :
+							R.string.inspector_newest_first_msg);
+	} // init_ui()
+
+
 
 	/********************
 	 * Called the first time that make_set_layout() is called.
@@ -819,7 +928,8 @@ public class InspectorActivity2
 				// for that layout.
 				Cursor set_cursor = null;
 				try {
-					set_cursor = DatabaseHelper.getAllSets(m_db, m_ex_name, false);
+					set_cursor = DatabaseHelper.getAllSets(m_db, m_ex_name,
+									m_prefs_oldest_order);
 					m_num_sets = set_cursor.getCount();
 
 					int counter = 0;

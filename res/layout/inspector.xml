@@ -30,30 +30,25 @@
 		style="@style/white_text_large"
 		/>
 
-
-<!--  no longer used, but kept just in case...
 	<TextView
-		android:id="@+id/inspector_description_tv"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_below="@id/inspector_title_tv"
-		android:layout_centerHorizontal="true"
-		android:layout_marginLeft="12dp"
-		android:layout_marginRight="12dp"
-		android:layout_marginTop="6dp"
-		android:gravity="center"
-		android:text="error"
-		style="@style/white_text_small"
-		android:textStyle="bold" />
--->
+	    android:id="@+id/inspector_description_tv"
+	    style="@style/white_text_small"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentRight="true"
+	    android:layout_below="@id/inspector_title_tv"
+	    android:layout_marginRight="24dp"
+	    android:layout_marginTop="5dp"
+	    android:gravity="center"
+	    android:text="error" />
 
 	<ScrollView
-	    android:id="@+id/inspector_sv"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_alignParentBottom="true"
-	    android:layout_below="@id/inspector_title_tv"
-	    android:layout_centerHorizontal="true" >
+		android:id="@+id/inspector_sv"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_below="@id/inspector_description_tv"
+		android:layout_centerHorizontal="true" >
 
 		<!--
 			This LinearLayout is where all the tables
