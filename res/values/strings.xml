@@ -16,7 +16,7 @@
 	<string name="done_title">Done</string>
 	<string name="decimal_point">.</string>
 	<string name="clear">C</string>
-	<string name="null_string">n</string>	<!-- should never be printed -->
+	<string name="null_string">null</string>	<!-- should never be printed -->
 	<string name="hpg_logo_desc">Logo for the Hyde Park Gym</string>
 
 
@@ -1123,7 +1123,7 @@
 
 	<string name="inspector_set_stress_label">stress level</string>
 	<string name="inspector_set_notes_label">notes</string>
-	<string name="inspector_set_notes_data_none">no comment</string>
+	<string name="inspector_set_notes_data_none">\u003cno comment\u003e</string>
 
 	<string name="inspector_help_title">Inspector Help</string>
 	<string name="inspector_help_msg">
@@ -1292,7 +1292,7 @@
 	<!-- ============              ============ -->
 
 	<string name="prefs_category_general">GENERAL</string>
-	<string name="prefs_category_inspector">HISTORY</string>
+	<string name="prefs_category_inspector">WORKOUT HISTORY</string>
 
 	<string name="prefs_nag_key">nag</string>
 	<string name="prefs_nag_title">Nag</string>

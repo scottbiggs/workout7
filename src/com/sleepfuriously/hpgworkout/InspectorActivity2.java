@@ -42,7 +42,7 @@ public class InspectorActivity2
 	private static final String tag = "InspectorActivity";
 
 	/** The id for the 'brief' menu selection */
-	protected static final int MENU_ID_BRIEF = 1;
+//	protected static final int MENU_ID_BRIEF = 1;
 	/** Id for the menu item to change the order that sets are listed */
 	protected static final int MENU_ID_ORDER = 2;
 
@@ -112,7 +112,7 @@ public class InspectorActivity2
 	protected boolean m_layout_initialized = false;
 
 	/** Should we use the quick view or the regular view */
-	protected boolean m_prefs_quick_view = false;
+//	protected boolean m_prefs_quick_view = false;
 
 	/** The order that we should sort the workout sets */
 	protected boolean m_prefs_oldest_order = true;
@@ -127,8 +127,8 @@ public class InspectorActivity2
 		// Load in our preferences.
 		SharedPreferences prefs =
 			PreferenceManager.getDefaultSharedPreferences(this);
-		m_prefs_quick_view = prefs.getBoolean(getString(R.string.prefs_inspector_quickview_key),
-											false);
+//		m_prefs_quick_view = prefs.getBoolean(getString(R.string.prefs_inspector_quickview_key),
+//											false);
 		m_prefs_oldest_order = prefs.getBoolean(getString(R.string.prefs_inspector_oldest_first_key),
 												true);
 		set_order_msg();
@@ -187,7 +187,7 @@ public class InspectorActivity2
 	//
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add(0, MENU_ID_BRIEF, 0, R.string.null_string);
+//		menu.add(0, MENU_ID_BRIEF, 0, R.string.null_string);
 		menu.add(0, MENU_ID_ORDER, 0, R.string.null_string);
 
 		return super.onCreateOptionsMenu(menu);
@@ -200,9 +200,9 @@ public class InspectorActivity2
 	//
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		menu.findItem(MENU_ID_BRIEF).setTitle(m_prefs_quick_view ?
-							R.string.inspector_menu_verbose_label :
-							R.string.inspector_menu_brief_label);
+//		menu.findItem(MENU_ID_BRIEF).setTitle(m_prefs_quick_view ?
+//							R.string.inspector_menu_verbose_label :
+//							R.string.inspector_menu_brief_label);
 
 		menu.findItem(MENU_ID_ORDER).setTitle(m_prefs_oldest_order ?
 							R.string.inspector_menu_newest_first_label :
@@ -220,12 +220,12 @@ public class InspectorActivity2
 
 		int id = item.getItemId();
 		switch (id) {
-			case MENU_ID_BRIEF:
-				m_prefs_quick_view = !m_prefs_quick_view;
-				prefs.edit().putBoolean(getString(R.string.prefs_inspector_quickview_key),
-										m_prefs_quick_view)
-								.commit();
-				break;
+//			case MENU_ID_BRIEF:
+//				m_prefs_quick_view = !m_prefs_quick_view;
+//				prefs.edit().putBoolean(getString(R.string.prefs_inspector_quickview_key),
+//										m_prefs_quick_view)
+//								.commit();
+//				break;
 
 			case MENU_ID_ORDER:
 				m_prefs_oldest_order = !m_prefs_oldest_order;
