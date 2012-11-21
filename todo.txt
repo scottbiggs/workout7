@@ -12,11 +12,6 @@ When an exercise is edited, I don't want to be bumped back out to
 
 The program launcher icon looks squashed.
 
-Instead of a History tab (which is now removed), have a
-	button in the Inspector that enables a quick view.
-	Also a button to reverse the order.
-Combine the History and Inspector Activities.
-
 When graphing, have the option of graphing by exercise
 	set or by day (toggle button or menu?).
 Issue:  The graph adds up weight on the same day, that's
@@ -141,6 +136,12 @@ In the graphs, instead of horizontal lines, divide up into
 ---------------------------------------------------
 TABLED (for later versions)
 ---------------------------------------------------
+Instead of a History tab (which is now removed), have a
+	button in the Inspector that enables a quick view.
+	Also a button to reverse the order.
+Combine the History and Inspector Activities.
+	- Wait for a later version.
+
 Need to redo the Welcome screen.
 	- looks ok to me.
 

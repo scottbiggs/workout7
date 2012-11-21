@@ -26,14 +26,14 @@
 		android:title="@string/prefs_category_inspector"
 		android:summary="category summary will be written here."
 		>
-
+<!--
 		<com.sleepfuriously.hpgworkout.LongCheckboxPreference
 			android:key="@string/prefs_inspector_quickview_key"
 			android:defaultValue="false"
 			android:summaryOff="@string/prefs_inspector_quickview_off_msg"
 			android:summaryOn="@string/prefs_inspector_quickview_on_msg"
 			android:title="@string/prefs_inspector_quickview_title" />
-
+-->
 		<com.sleepfuriously.hpgworkout.LongCheckboxPreference
 			android:key="@string/prefs_inspector_oldest_first_key"
 			android:defaultValue="true"
