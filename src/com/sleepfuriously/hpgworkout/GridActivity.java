@@ -40,6 +40,7 @@ package com.sleepfuriously.hpgworkout;
 import java.util.ArrayList;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -47,6 +48,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.AsyncTask.Status;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -147,6 +149,12 @@ public class GridActivity extends BaseDialogActivity
 	 */
 	protected int m_today_column = -1;
 
+	/**
+	 * Tells the order of the displays in the Inspector.  This
+	 * preference var is needed when the user clicks on a day's
+	 * workout set (so we know which set to send to the Inspector).
+	 */
+	protected boolean m_pref_oldest_first;
 
 	//-------------------
 	//	Methods
@@ -234,6 +242,13 @@ public class GridActivity extends BaseDialogActivity
 	@Override
 	protected void onResume() {
 		super.onResume();
+
+		// Load up the prefs
+		SharedPreferences prefs =
+				PreferenceManager.getDefaultSharedPreferences(this);
+		m_pref_oldest_first =
+				prefs.getBoolean(getString(R.string.prefs_inspector_oldest_first_key),
+								 true);
 
 		if ((m_sync_task != null) &&
 			(m_sync_task.getStatus() == Status.RUNNING)) {
@@ -397,9 +412,14 @@ public class GridActivity extends BaseDialogActivity
 				Log.w(tag, "start_exercise_tabs() could not get an ID for the grid element!");
 				itt.putExtra(ExerciseTabHostActivity.KEY_SET_ID, -1);
 			}
-			itt.putExtra(ExerciseTabHostActivity.KEY_SET_ID, ge.get_first_id());
-//			itt.putExtra(ExerciseTabHostActivity.KEY_SET_ID, ge.get_last_id());
-			Log.d(tag, "Just set the ID to " + ge.get_first_id());
+			if (m_pref_oldest_first) {
+				itt.putExtra(ExerciseTabHostActivity.KEY_SET_ID, ge.get_first_id());
+				Log.d(tag, "Just set the ID to " + ge.get_first_id());
+			}
+			else {
+				itt.putExtra(ExerciseTabHostActivity.KEY_SET_ID, ge.get_last_id());
+				Log.d(tag, "Just set the ID to " + ge.get_last_id());
+			}
 			itt.putExtra(ExerciseTabHostActivity.TAB_START_KEY,
 					ExerciseTabHostActivity.TAB_INSPECTOR);
 			// The name is also in the tag.

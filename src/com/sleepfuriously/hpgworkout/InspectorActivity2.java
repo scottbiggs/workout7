@@ -120,7 +120,7 @@ public class InspectorActivity2
 	//------------------------------
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		Log.v(tag, "entering onCreate()");
+//		Log.v(tag, "entering onCreate()");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.inspector);
 
@@ -158,7 +158,7 @@ public class InspectorActivity2
 	@Override
 	protected void onResume() {
 		super.onResume();
-		Log.i(tag, "onResume()");
+//		Log.i(tag, "onResume()");
 
 		if (m_db_dirty) {
 			init_from_db();
@@ -229,6 +229,14 @@ public class InspectorActivity2
 
 			case MENU_ID_ORDER:
 				m_prefs_oldest_order = !m_prefs_oldest_order;
+				prefs.edit().putBoolean(getString(R.string.prefs_inspector_oldest_first_key),
+										m_prefs_oldest_order)
+								.commit();
+				// todo:
+				//	Need to reset which workout set shows first.
+				//	Should be the default.
+				// Show the default at the top.
+				m_set_id = -1;
 				set_order_msg();
 				init_from_db();
 				break;
@@ -269,7 +277,7 @@ public class InspectorActivity2
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode,
 									Intent data) {
-		Log.i(tag, "onActivityResult()");
+//		Log.i(tag, "onActivityResult()");
 
 		if (resultCode == RESULT_CANCELED) {
 			return;	// don't do anything
@@ -308,17 +316,20 @@ public class InspectorActivity2
 	 * 				-1 means invalid id, so nothing is done.
 	 */
 	protected void scroll_to_child (int id) {
-		// For the times we need to scroll to a given child of the
-		// scrollview.
-		if (id == -1) {
-			return;		// Don't bother!
-		}
+		Log.v (tag, "entering scroll_to_child (" + id + ")");
 
 		// WARNING!  This is a HACK to get around scoping rules!
 		s_id = id;
 
 		// Set the scroll to the right value.
 		m_sv = (ScrollView) findViewById(R.id.inspector_sv);
+
+		// For the times we need to scroll to a given child of the
+		// scrollview.
+		if (id == -1) {
+			m_sv.scrollTo(0, 0);		// Go to the top.
+			return;
+		}
 
 		// Make it scroll, but first we have to wait for
 		// everything to be set up.
@@ -328,15 +339,19 @@ public class InspectorActivity2
 				// children, measuring them until we find the right
 				// id.
 				int height_of_views = 0;
+				
+//				Log.v (tag, "Starting to scroll " + m_main_ll.getChildCount() + " child views.");
+
 				for (int i = 0; i < m_main_ll.getChildCount(); i++) {
 					View child = m_main_ll.getChildAt(i);
 					if (s_id == child.getId()) {
 						break;
 					}
 					height_of_views += child.getHeight();
+//					Log.v(tag, "  - added " + child.getHeight() + " to scroll amount...");
 				}
 
-				Log.v(tag, "Scrolling: " + height_of_views);
+//				Log.v(tag, "Scrolling: " + height_of_views);
 				m_sv.scrollTo(0, height_of_views);
 			}
 		});
@@ -980,9 +995,6 @@ public class InspectorActivity2
 		//	UI thread, not the same thread as doInBackground().  That
 		//	means that if any variables passed into this can be changed
 		//	in doInBackground(), then this is a BIG problem!
-		//
-		//	Yep, the Cursors are changed (especially set_cursor!).
-		//	And that's the bug.
 		//
 		//	input:
 		//		set_array		This is an array of SetLayouts that

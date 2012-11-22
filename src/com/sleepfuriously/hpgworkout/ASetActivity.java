@@ -89,6 +89,14 @@ public class ASetActivity
 	private boolean m_widgets_dirty = false;
 
 	/**
+	 * True means that all the UI needs to be redone.
+	 * This is probably caused by another activity (like
+	 * EditExerciseActivity) making changes.
+	 * It starts true because we need to start somewhere!
+	 */
+	public static boolean m_reset_widgets = true;
+
+	/**
 	 * When true, this indicates that the database has been changed.
 	 * Primarily, this means that when Activity calls finish(),
 	 * it needs to tell GridActivity to reload.
@@ -117,7 +125,7 @@ public class ASetActivity
 	//------------------------
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		Log.v(tag, "entering onCreate()");
+//		Log.v(tag, "entering onCreate()");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.aset);
 
@@ -223,34 +231,36 @@ public class ASetActivity
 		m_clear.setOnClickListener(this);
 		m_clear.setOnLongClickListener(this);
 
-		fill_forms();
+//		fill_forms();	// moved to onResume
 
 	} // onCreate (.)
 
 
-
+	//------------------------
 	@Override
 	protected void onRestart() {
-		Log.v(tag, "onRestart()");
+//		Log.v(tag, "onRestart()");
 		super.onRestart();
 	}
 
+	//------------------------
 	@Override
 	protected void onStart() {
-		Log.v(tag, "onStart()");
+//		Log.v(tag, "onStart()");
 		super.onStart();
 	}
 
 
-
+	//------------------------
 	@Override
 	protected void onResume() {
-		Log.v(tag, "onResume()");
+//		Log.v(tag, "onResume()");
+		if (m_reset_widgets) {
+			Log.d(tag, "Calling fill_forms() from onResume!");
+			fill_forms();
+		}
 		super.onResume();
 	}
-
-
-
 
 
 	//------------------------
@@ -258,7 +268,7 @@ public class ASetActivity
 	//	when the tab is changed.
 	@Override
 	protected void onPause() {
-		Log.v(tag, "onPause()");
+//		Log.v(tag, "onPause()");
 		super.onPause();
 	}
 
@@ -269,14 +279,14 @@ public class ASetActivity
 	//
 	@Override
 	protected void onStop() {
-		Log.v(tag, "onStop()");
+//		Log.v(tag, "onStop()");
 		super.onStop();
 	}
 
 
 	@Override
 	protected void onDestroy() {
-		Log.v(tag, "onDestroy()");
+//		Log.v(tag, "onDestroy()");
 		super.onDestroy();
 	}
 
@@ -514,6 +524,8 @@ public class ASetActivity
 			m_db = null;
 			}
 		}
+
+		m_reset_widgets = false;		// We've done our work here!
 
 	} // fill_forms (row)
 
@@ -760,7 +772,7 @@ public class ASetActivity
 			String note = set_cursor.getString(col);
 			if (note != null) {
 				m_notes_et.setHint(note);
-				Log.d(tag, "Just set m_notes_et to: " + note);
+//				Log.d(tag, "Just set m_notes_et to: " + note);
 			}
 		}
 	}

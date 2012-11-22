@@ -1,14 +1,22 @@
 TODO:
 -----------------
+When the Inspector changes order, reset to default which exercise
+	set appears at the top.
+
+ASetActivity needs a way to reset when the database changes (like,
+	when the Exercise is redefined in EditExerciseActivity).
+	- done
+	Same for Inspector and Graph!
+
+Need a Toast to tell the user they changed the exercise when
+	the 'execute' in EditExerciseActivity.
+
+In EditExerciseActivity, we need to use our more attractive
+	Toasts!
+
 Graph needs to be more independent.
 
 Graph needs to handle intermittent data.
-
-Should changing the exercise take you back to the grid?  I
-	think taking you back to the Add tab would be better.
-When an exercise is edited, I don't want to be bumped back out to
-	the grid.  If anything, send a message that it's been updated
-	and refresh the EditExerciseACtivity.
 
 The program launcher icon looks squashed.
 
@@ -111,6 +119,8 @@ Allow for the option to have the database on the simm card.
 
 Make sure that all the drawables are in the correct directories.
 
+Need to remove the HistoryActivity from the project.
+
 ---------------------------------------------------
 Hmmmmmmmmmmmmmmmmmmmmmm
 ---------------------------------------------------
@@ -165,6 +175,19 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Bug: Looks like the Inspector is not saving the preference changes
+	to how the sets are ordered.
+	- fixed (actually, I hadn't put in the code, so it technically
+	wasn't a bug, but something that wasn't finished).
+
+Should changing the exercise take you back to the grid?  I
+	think taking you back to the Add tab would be better.
+When an exercise is edited, I don't want to be bumped back out to
+	the grid.  If anything, send a message that it's been updated
+	and refresh the EditExerciseACtivity.
+	- Nope, I'm just sending a pretty Toast and disabling the
+	buttons at the bottom.  Looks ok.
+
 Make the "just right" stress condition have a green check.
 	And you might do something to add more color to the 'too
 	heavy' and 'injury.'  Alternately, you could reduce the

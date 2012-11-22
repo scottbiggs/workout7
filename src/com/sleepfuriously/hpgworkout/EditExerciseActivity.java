@@ -11,6 +11,7 @@
  */
 package com.sleepfuriously.hpgworkout;
 
+import android.app.TabActivity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -980,16 +981,38 @@ public class EditExerciseActivity
 
 		// The main buttons at the bottom.
 		if (v == m_ok) {
-			if (!m_dirty) {		// Didn't do anything!
-				tabbed_set_result(RESULT_CANCELED);
-				finish();
-			}
+			// Don't do anything if the settings don't
+			// pass our check.  The Toasts should be
+			// sufficient at warning them about what to
+			// do.
 			if (check_good_exercise(true) == false) {
 				return;
 			}
+
+			// Send a Toast informing them what happened.
+			my_toast(this, R.string.editexer_saved_msg,
+					new String[] {m_exer_name_et.getText().toString()});
+
 			save_data();		// YEAH!!!!!
-			tabbed_set_result(RESULT_OK);
-			finish();
+
+			// Instead of going back to the grid, go to
+			// the ASetActivity (after telling the other
+			// tabs to reset).
+			ASetActivity.m_db_dirty = true;
+			// todo:		Tell ASetActivity to redraw its UI.
+			InspectorActivity2.m_db_dirty = true;
+//			HistoryActivity.m_db_dirty = true;
+			GraphActivity.m_db_dirty = true;
+			ExerciseTabHostActivity.m_dirty = true;
+
+			// Go to the ASetActivity tab.
+//			TabActivity tabs = (TabActivity) getParent();
+//			tabs.getTabHost().setCurrentTab(ExerciseTabHostActivity.TAB_ASET);
+
+			// Clean up.
+			m_dirty = false;
+			m_ok.setEnabled(false);
+			m_reset.setEnabled(false);
 		}
 
 		else if (v == m_reset) {

@@ -667,15 +667,20 @@
 		</string>
 
 	<!-- Error Messages -->
-	<string name="editexer_warning_no_name">Please enter a name for this exercise!</string>
+	<string name="editexer_warning_no_name">Please enter a name for this
+		exercise!</string>
 	<string name="editexer_dup_name_msg">That name is already used!</string>
-	<string name="editexer_warning_no_checked">Please check a measurement for this exercise!</string>
+	<string name="editexer_warning_no_checked">Please check a measurement for t
+		his exercise!</string>
 	<string name="editexer_warning_no_significant">Please select a radio button
 		to indicate most important.</string>
 	<string name="editexer_warning_no_weight_unit">Hey, I need a weight unit!</string>
-	<string name="editexer_warning_no_dist_unit">Uh, what about a measurement of distance\?</string>
-		<string name="editexer_warning_no_time_unit">You forgot to tell me what unit of time (seconds, minutes, hours, etc.)</string>
+	<string name="editexer_warning_no_dist_unit">Uh, what about a measurement
+		of distance\?</string>
+	<string name="editexer_warning_no_time_unit">You forgot to tell me what unit of time
+		(seconds, minutes, hours, etc.)</string>
 
+	<string name="editexer_saved_msg">%s is now updated!</string>
 
 	<!-- ============               ============ -->
 	<!-- ============ AddWeightItem ============ -->
@@ -1133,8 +1138,6 @@
 		through to see \'em all.
 		\n\nWant to see them in reverse order? You can do that
 		by selecting from the menu.
-		\n\nTo much? You can turn on a terse listing of your sets
-		in the menu as well. Try it!.
 		\n\nLong click on an exercise set to edit (or even delete)
 		details of that set. This way
 		you can go back

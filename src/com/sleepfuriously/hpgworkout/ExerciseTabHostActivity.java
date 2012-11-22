@@ -51,13 +51,9 @@ public class ExerciseTabHostActivity
 	 * are the numbers you accompany the TAB_START_KEY with.
 	 */
 	public static final int
-//		TAB_ASET = 0,			// History is no longer used.
-//		TAB_INSPECTOR = 1,
-//		TAB_HISTORY = 2,
-//		TAB_GRAPH = 3,
-//		TAB_EDIT = 4;
 		TAB_ASET = 0,
 		TAB_INSPECTOR = 1,
+//		TAB_HISTORY = 2,		// History is no longer used.
 		TAB_GRAPH = 2,
 		TAB_EDIT = 3;
 
@@ -260,7 +256,7 @@ public class ExerciseTabHostActivity
 		super.onStop();
 	}
 
-	
+
 	//--------------------------------
 	public void onClick(View v) {
 		if (v == m_help) {
