@@ -153,7 +153,6 @@ public class GraphActivity
 	} // onCreate (.)
 
 
-
 	//-------------------------
 	@Override
 	protected void onResume() {
@@ -170,6 +169,16 @@ public class GraphActivity
 
 	} // onResume()
 
+
+	//-------------------------
+	@Override
+	public void onBackPressed() {
+		if (ExerciseTabHostActivity.m_dirty)
+			setResult(RESULT_OK);
+		else
+			setResult(RESULT_CANCELED);
+		finish();
+	}
 
 
 	//-------------------------

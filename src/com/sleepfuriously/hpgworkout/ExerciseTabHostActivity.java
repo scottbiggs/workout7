@@ -306,12 +306,18 @@ public class ExerciseTabHostActivity
 
 
 	//--------------------------------
+	//	todo:
+	//		This never seems to be called.
+	//
 	@Override
-	public boolean onKeyUp(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-//			Log.v (tag, "back key: onKeyUp()");
-		}
-		return super.onKeyUp(keyCode, event);
+	public void onBackPressed() {
+		Log.v(tag, "onBackPressed()");
+		if (m_dirty)
+			setResult(RESULT_OK);
+		else
+			setResult(RESULT_CANCELED);
+		finish();
+//		super.onBackPressed();
 	}
 
 

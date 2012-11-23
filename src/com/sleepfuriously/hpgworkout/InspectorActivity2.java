@@ -172,12 +172,10 @@ public class InspectorActivity2
 	//
 	@Override
 	public void onBackPressed() {
-		if (m_database_changed) {
+		if (ExerciseTabHostActivity.m_dirty)
 			tabbed_set_result(RESULT_OK);
-		}
-		else {
+		else
 			tabbed_set_result(RESULT_CANCELED);
-		}
 		finish();
 	} // onBackPressed()
 
@@ -339,7 +337,7 @@ public class InspectorActivity2
 				// children, measuring them until we find the right
 				// id.
 				int height_of_views = 0;
-				
+
 //				Log.v (tag, "Starting to scroll " + m_main_ll.getChildCount() + " child views.");
 
 				for (int i = 0; i < m_main_ll.getChildCount(); i++) {

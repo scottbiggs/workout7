@@ -129,6 +129,9 @@ public class ASetActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.aset);
 
+		m_reset_widgets = true;	// Fill the forms the first time this
+								// activity is called.
+
 		// Set up all the widgets.
 //		m_name_tv = (TextView) findViewById(R.id.aset_name_tv);
 
@@ -231,24 +234,7 @@ public class ASetActivity
 		m_clear.setOnClickListener(this);
 		m_clear.setOnLongClickListener(this);
 
-//		fill_forms();	// moved to onResume
-
 	} // onCreate (.)
-
-
-	//------------------------
-	@Override
-	protected void onRestart() {
-//		Log.v(tag, "onRestart()");
-		super.onRestart();
-	}
-
-	//------------------------
-	@Override
-	protected void onStart() {
-//		Log.v(tag, "onStart()");
-		super.onStart();
-	}
 
 
 	//------------------------
@@ -256,38 +242,9 @@ public class ASetActivity
 	protected void onResume() {
 //		Log.v(tag, "onResume()");
 		if (m_reset_widgets) {
-			Log.d(tag, "Calling fill_forms() from onResume!");
 			fill_forms();
 		}
 		super.onResume();
-	}
-
-
-	//------------------------
-	//	Called when another Activity comes to the front, like
-	//	when the tab is changed.
-	@Override
-	protected void onPause() {
-//		Log.v(tag, "onPause()");
-		super.onPause();
-	}
-
-
-
-	//------------------------
-	//	Called when this the whole tab system is done.
-	//
-	@Override
-	protected void onStop() {
-//		Log.v(tag, "onStop()");
-		super.onStop();
-	}
-
-
-	@Override
-	protected void onDestroy() {
-//		Log.v(tag, "onDestroy()");
-		super.onDestroy();
 	}
 
 
@@ -297,11 +254,13 @@ public class ASetActivity
 	//
 	@Override
 	public void onBackPressed() {
-		if (m_db_dirty) {
+		if (ExerciseTabHostActivity.m_dirty) {
 			tabbed_set_result(RESULT_OK);
+			Log.v(tag, "onBackPressed: setting result to OK");
 		}
 		else {
 			tabbed_set_result(RESULT_CANCELED);
+			Log.v(tag, "onBackPressed: setting result to CANCEL");
 		}
 		finish();
 	}
@@ -424,12 +383,13 @@ public class ASetActivity
 	 */
 	private void fill_forms() {
 		int col;		// used to fill in the views.
+//		Log.v(tag, "entering fill_forms()");
 
 		// Get the info from the Intent that GridActivity sent.
 		Intent itt = getIntent();
 		m_exercise_name = itt.getStringExtra(ExerciseTabHostActivity.KEY_NAME);
 
-		Log.i(tag, "fill_forms(), exercise name = " + m_exercise_name);
+//		Log.i(tag, "fill_forms(), exercise name = " + m_exercise_name);
 
 		if (m_exercise_name == null) {
 			Toast.makeText(this, "ASetActivity: Problem trying to get the exercise name in fill_forms()", Toast.LENGTH_LONG).show();
@@ -964,7 +924,6 @@ public class ASetActivity
 		clear_stress();
 		m_notes_et.setHint(m_notes_et.getText());
 		m_notes_et.setText(null);
-
 	} // save()
 
 

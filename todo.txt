@@ -1,18 +1,19 @@
 TODO:
 -----------------
-When the Inspector changes order, reset to default which exercise
-	set appears at the top.
+Bug: The GraphActivity doesn't call onBackPressed().  So it can't
+	set the return value via setResult() when it returns
+	directly to the Grid!
 
-ASetActivity needs a way to reset when the database changes (like,
-	when the Exercise is redefined in EditExerciseActivity).
-	- done
-	Same for Inspector and Graph!
+EditExerciseActivity doesn't use the nag part of the preferences.
+	Instead, it references a global in WGlobals.
 
-Need a Toast to tell the user they changed the exercise when
-	the 'execute' in EditExerciseActivity.
+Need better way to enter numbers!  How about one of those sliders?
 
-In EditExerciseActivity, we need to use our more attractive
-	Toasts!
+Need to redo the Order!  Something like "Out of Milk"?
+
+In both Add and Edit Exercise, we need to use our more attractive
+	warning Toasts!
+
 
 Graph needs to be more independent.
 
@@ -146,6 +147,10 @@ In the graphs, instead of horizontal lines, divide up into
 ---------------------------------------------------
 TABLED (for later versions)
 ---------------------------------------------------
+Need a Toast to tell the user they changed the exercise when
+	the 'execute' in EditExerciseActivity.
+	- done
+
 Instead of a History tab (which is now removed), have a
 	button in the Inspector that enables a quick view.
 	Also a button to reverse the order.
@@ -175,6 +180,23 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+ASetActivity needs a way to reset when the database changes (like,
+	when the Exercise is redefined in EditExerciseActivity).
+	- done.  In fact, made lots of changes to all the tab Activities
+	so that they properly update each other and return the right
+	result to the Grid.
+	!!! But there's some weirdness with the GraphActivity; it never
+	calls onBackPressed()!
+
+BUG: ASet no longer works at all!  I took out something and need
+	to put it back in (or put in something that needs to be taken
+	out)!  See the next item for more hints.
+	- fixed
+
+When the Inspector changes order, reset to default which exercise
+	set appears at the top.
+	- done
+
 Bug: Looks like the Inspector is not saving the preference changes
 	to how the sets are ordered.
 	- fixed (actually, I hadn't put in the code, so it technically

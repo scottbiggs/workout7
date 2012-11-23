@@ -896,20 +896,31 @@ public class EditExerciseActivity
 	//
 	@Override
 	public void onBackPressed() {
+
+		// todo:
+		//	Fix this!! It doesn't use the preferences!!!!
+		//
 		if (m_dirty && WGlobals.g_nag) {
 			show_yes_no_dialog(R.string.editexer_cancel_warning_title, null,
 					R.string.editexer_cancel_warning_msg, null,
 					new View.OnClickListener() {
 						public void onClick(View v) {
 							// Yes, they want to cancel.
-							tabbed_set_result(RESULT_CANCELED);
 							dismiss_all_dialogs();
+							if (ExerciseTabHostActivity.m_dirty)
+								tabbed_set_result(RESULT_OK);
+							else
+								tabbed_set_result(RESULT_CANCELED);
 							finish();
 						}
 				});
 		}
 		else {
-			super.onBackPressed();
+			if (ExerciseTabHostActivity.m_dirty)
+				tabbed_set_result(RESULT_OK);
+			else
+				tabbed_set_result(RESULT_CANCELED);
+			finish();
 		}
 	} // onBackPressed()
 
@@ -999,6 +1010,7 @@ public class EditExerciseActivity
 			// the ASetActivity (after telling the other
 			// tabs to reset).
 			ASetActivity.m_db_dirty = true;
+			ASetActivity.m_reset_widgets = true;
 			// todo:		Tell ASetActivity to redraw its UI.
 			InspectorActivity2.m_db_dirty = true;
 //			HistoryActivity.m_db_dirty = true;
