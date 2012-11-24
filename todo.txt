@@ -7,9 +7,6 @@ Need better way to enter numbers!  How about one of those sliders?
 
 Need to redo the Order!  Something like "Out of Milk"?
 
-In both Add and Edit Exercise, we need to use our more attractive
-	warning Toasts!
-
 
 Graph needs to be more independent.
 
@@ -176,6 +173,10 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+In both Add and Edit Exercise, we need to use our more attractive
+	warning Toasts!
+	- done
+
 Bug: The GraphActivity doesn't call onBackPressed().  So it can't
 	set the return value via setResult() when it returns
 	directly to the Grid!

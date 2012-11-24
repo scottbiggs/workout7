@@ -670,8 +670,8 @@
 	<string name="editexer_warning_no_name">Please enter a name for this
 		exercise!</string>
 	<string name="editexer_dup_name_msg">That name is already used!</string>
-	<string name="editexer_warning_no_checked">Please check a measurement for t
-		his exercise!</string>
+	<string name="editexer_warning_no_checked">Please check a measurement for
+		this exercise!</string>
 	<string name="editexer_warning_no_significant">Please select a radio button
 		to indicate most important.</string>
 	<string name="editexer_warning_no_weight_unit">Hey, I need a weight unit!</string>

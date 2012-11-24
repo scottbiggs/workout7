@@ -221,7 +221,7 @@ public class EditExerciseActivity
 		m_exer_other_unit_et.addTextChangedListener(this);
 
 		if (fill_forms() == false) {
-			Toast.makeText(this, "Problems filling out the forms in EditExercise#onCreate()", Toast.LENGTH_LONG).show();
+			Log.e (tag, "Problems filling out the forms in EditExercise#onCreate()");
 			tabbed_set_result(RESULT_CANCELED);
 			finish();
 		}
@@ -363,7 +363,7 @@ public class EditExerciseActivity
 		Intent itt = getIntent();
 		m_orig_exercise_name = itt.getStringExtra("name");
 		if (m_orig_exercise_name == null) {
-			Toast.makeText(this, "Problem trying to get the exercise name: " + m_orig_exercise_name + " in fill_forms()", Toast.LENGTH_LONG).show();
+			Log.e(tag, "Problem trying to get the exercise name: " + m_orig_exercise_name + " in fill_forms()");
 			return false;
 		}
 
@@ -583,7 +583,7 @@ public class EditExerciseActivity
 				DatabaseHelper.EXERCISE_COL_NAME + "=?",
 				new String[] {m_orig_exercise_name})
 				== 0) {
-			Toast.makeText(this, "Error deleting row in save_data()!", Toast.LENGTH_LONG).show();
+			Log.e(tag, "Error deleting row in save_data()!");
 			return;
 		}
 
@@ -698,7 +698,6 @@ public class EditExerciseActivity
 					new String[] {m_orig_exercise_name})
 					== 0) {
 				Log.e(tag, "Error deleting row in delete_entry()!  m_orig_exercise_name = " + m_orig_exercise_name);
-				Toast.makeText(this, "Error deleting row in delete_entry()!", Toast.LENGTH_LONG).show();
 				return;
 			}
 
@@ -833,7 +832,7 @@ public class EditExerciseActivity
 				break;
 
 			default:
-				Toast.makeText(this, "ILLEGAL column in set_radio (" + which + ")", Toast.LENGTH_LONG).show();
+				Log.e(tag, "ILLEGAL column in set_radio (" + which + ")");
 				break;
 		}
 	} // set_radio (which)
@@ -1175,7 +1174,6 @@ public class EditExerciseActivity
 		}
 
 		if (data == null) {
-			Toast.makeText(this, "onActivityResult(), but data == null!!  (requestCode = " + requestCode + ", resultCode = " + resultCode + ")", Toast.LENGTH_LONG).show();
 			Log.e (tag, "onActivityResult(), but data == null!!  (requestCode = " + requestCode + ", resultCode = " + resultCode + ")");
 			return;
 		}
@@ -1385,7 +1383,7 @@ public class EditExerciseActivity
 		if (name.length() == 0) {
 			if (warn) {
 				msg = getString(R.string.editexer_warning_no_name);
-				Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+				my_toast(this, msg);
 			}
 			return false;
 		}
@@ -1395,7 +1393,7 @@ public class EditExerciseActivity
 		if (selection < 0) {
 			if (warn) {
 				msg = getString(R.string.addexer_type_complaint);
-				Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+				my_toast(this, msg);
 			}
 			return false;
 		}
@@ -1403,7 +1401,7 @@ public class EditExerciseActivity
 		if (selection < 0) {
 			if (warn) {
 				msg = getString(R.string.addexer_musclegroup_complaint);
-				Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+				my_toast(this, msg);
 			}
 			return false;
 		}
@@ -1418,7 +1416,7 @@ public class EditExerciseActivity
 			!m_exer_other_cb.isChecked()) {
 			if (warn) {
 				msg = getString(R.string.editexer_warning_no_checked);
-				Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+				my_toast(this, msg);
 			}
 			return false;
 		}
@@ -1429,7 +1427,7 @@ public class EditExerciseActivity
 				(m_exer_other_unit_et.length() == 0)) {
 				if (warn) {
 					msg = getString (R.string.addexer_other_complaint);
-					Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+					my_toast(this, msg);
 				}
 				return false;
 			}
@@ -1440,7 +1438,7 @@ public class EditExerciseActivity
 			(m_exer_weight_msp.get_current_selection() == -1)) {
 			if (warn) {
 				msg = getString (R.string.editexer_warning_no_weight_unit);
-				Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+				my_toast(this, msg);
 			}
 			return false;
 		}
@@ -1450,7 +1448,7 @@ public class EditExerciseActivity
 			(m_exer_dist_msp.get_current_selection() == -1)) {
 			if (warn) {
 				msg = getString (R.string.editexer_warning_no_dist_unit);
-				Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+				my_toast(this, msg);
 			}
 			return false;
 		}
@@ -1460,7 +1458,7 @@ public class EditExerciseActivity
 			(m_exer_time_msp.get_current_selection() == -1)) {
 			if (warn) {
 				msg = getString (R.string.editexer_warning_no_time_unit);
-				Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+				my_toast(this, msg);
 			}
 			return false;
 		}
@@ -1469,7 +1467,7 @@ public class EditExerciseActivity
 		if (is_all_radio_buttons_off()) {
 			if (warn) {
 				msg = getString(R.string.editexer_warning_no_significant);
-				Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+				my_toast(this, msg);
 			}
 			return false;
 		}
