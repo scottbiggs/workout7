@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
@@ -22,10 +23,7 @@ import android.widget.Toast;
 
 public class GraphActivity
 					extends
-						BaseDialogActivity
-					implements
-						OnClickListener,
-						OnLongClickListener {
+						BaseDialogActivity {
 
 	//-------------------------
 	//	Constants
@@ -173,6 +171,7 @@ public class GraphActivity
 	//-------------------------
 	@Override
 	public void onBackPressed() {
+		Log.d(tag, "entering onBackPressed()");
 		if (ExerciseTabHostActivity.m_dirty)
 			setResult(RESULT_OK);
 		else
@@ -181,14 +180,48 @@ public class GraphActivity
 	}
 
 
-	//-------------------------
-	public void onClick(View v) {
-	} // onClick (v)
 
 	//-------------------------
-	public boolean onLongClick(View v) {
-		return false;
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		Log.d(tag, "entering onKeyUp()");
+
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if (ExerciseTabHostActivity.m_dirty) {
+				Log.d(tag, "ExerciseTabHostActivity.m_dirty is true");
+				setResult(RESULT_OK);
+			}
+			else {
+				Log.d(tag, "ExerciseTabHostActivity.m_dirty is false");
+				setResult(RESULT_CANCELED);
+			}
+			finish();
+			return true;
+		}
+
+		return super.onKeyUp(keyCode, event);
 	}
+
+	//-------------------------
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+//		Log.d(tag, "entering onKeyDown()");
+
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if (ExerciseTabHostActivity.m_dirty) {
+				tabbed_set_result(RESULT_OK);
+			}
+			else {
+				tabbed_set_result(RESULT_CANCELED);
+			}
+			finish();
+			return true;
+		}
+
+		return super.onKeyDown(keyCode, event);
+	}
+
+
 
 	/************************
 	 * Part of onCreate(), this looks into the database and figures

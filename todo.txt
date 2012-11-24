@@ -1,9 +1,5 @@
 TODO:
 -----------------
-Bug: The GraphActivity doesn't call onBackPressed().  So it can't
-	set the return value via setResult() when it returns
-	directly to the Grid!
-
 EditExerciseActivity doesn't use the nag part of the preferences.
 	Instead, it references a global in WGlobals.
 
@@ -180,6 +176,12 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Bug: The GraphActivity doesn't call onBackPressed().  So it can't
+	set the return value via setResult() when it returns
+	directly to the Grid!
+	- fixed.  I was using setResult() instead of tabbed_set_result().
+	All that work and I forgot to use it!
+
 ASetActivity needs a way to reset when the database changes (like,
 	when the Exercise is redefined in EditExerciseActivity).
 	- done.  In fact, made lots of changes to all the tab Activities
