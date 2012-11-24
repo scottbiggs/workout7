@@ -896,9 +896,6 @@ public class EditExerciseActivity
 	@Override
 	public void onBackPressed() {
 
-		// todo:
-		//	Fix this!! It doesn't use the preferences!!!!
-		//
 		if (m_dirty && WGlobals.g_nag) {
 			show_yes_no_dialog(R.string.editexer_cancel_warning_title, null,
 					R.string.editexer_cancel_warning_msg, null,
@@ -1005,18 +1002,15 @@ public class EditExerciseActivity
 
 			save_data();		// YEAH!!!!!
 
-			// Instead of going back to the grid, go to
-			// the ASetActivity (after telling the other
-			// tabs to reset).
 			ASetActivity.m_db_dirty = true;
 			ASetActivity.m_reset_widgets = true;
-			// todo:		Tell ASetActivity to redraw its UI.
 			InspectorActivity2.m_db_dirty = true;
 //			HistoryActivity.m_db_dirty = true;
 			GraphActivity.m_db_dirty = true;
 			ExerciseTabHostActivity.m_dirty = true;
 
-			// Go to the ASetActivity tab.
+			// Go to the ASetActivity tab. --Nope, staying
+			// here! (sb)
 //			TabActivity tabs = (TabActivity) getParent();
 //			tabs.getTabHost().setCurrentTab(ExerciseTabHostActivity.TAB_ASET);
 

@@ -1,8 +1,5 @@
 TODO:
 -----------------
-EditExerciseActivity doesn't use the nag part of the preferences.
-	Instead, it references a global in WGlobals.
-
 Need better way to enter numbers!  How about one of those sliders?
 
 Need to redo the Order!  Something like "Out of Milk"?
@@ -173,6 +170,11 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+EditExerciseActivity doesn't use the nag part of the preferences.
+	Instead, it references a global in WGlobals.
+	- Not a bug!  This is how it's SUPPOSED to work.  Look at the
+	code.
+
 In both Add and Edit Exercise, we need to use our more attractive
 	warning Toasts!
 	- done
