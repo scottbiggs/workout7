@@ -1,9 +1,15 @@
 TODO:
 -----------------
+Don't like the buttons on the GridActivity.  They're not
+	intuitive and the layout sucks.
+
+Bug: Something's wrong with the graph sometimes.  Looks
+	like it happens more often with just a few items.
+	Test it for weird cases (where numbers are missing?).
+
 Need better way to enter numbers!  How about one of those sliders?
 
 Need to redo the Order!  Something like "Out of Milk"?
-
 
 Graph needs to be more independent.
 
@@ -37,10 +43,6 @@ BUG: When the GraphActivity removes x-axis tick lines because they
 	are too close together, the date on the last tick line can be
 	wrong.
 
-ASetActivity - Change so that the user can add another set without
-	having to go back to the main grid.  This is possible from
-	the Inspector, but not from the regular one.
-
 TEST the nags.
 
 Preferences: put the option to Reset things here.  Clear the workout data, or
@@ -73,9 +75,6 @@ When doing aset, make it obvious which is the significant
 	Also, it might be nice to start with that one on top (or at
 	least have the cursor begin in that EditText).
 	-- partially done...
-
-Don't like the buttons on the GridActivity.  They're not
-	intuitive and the layout sucks.
 
 Try some custom Themes to make things look original.
 	http://developer.android.com/guide/topics/ui/themes.html
@@ -170,6 +169,11 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+ASetActivity - Change so that the user can add another set without
+	having to go back to the main grid.  This is possible from
+	the Inspector, but not from the regular one.
+	- done a long time ago.
+
 EditExerciseActivity doesn't use the nag part of the preferences.
 	Instead, it references a global in WGlobals.
 	- Not a bug!  This is how it's SUPPOSED to work.  Look at the

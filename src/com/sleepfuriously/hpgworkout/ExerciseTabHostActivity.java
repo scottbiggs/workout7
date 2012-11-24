@@ -119,6 +119,10 @@ public class ExerciseTabHostActivity
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.exercise_tabhost);
 
+		// Do the preferences.
+		WGlobals.load_prefs(this);
+		WGlobals.act_on_prefs (this);
+
 		m_dirty = false;		// Reset when creating.
 
 		m_help = (ImageView) findViewById(R.id.exercise_tabhost_logo);
