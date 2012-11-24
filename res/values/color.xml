@@ -2,7 +2,6 @@
 <resources>
 	<color name="transparent">#00000000</color>
 
-	<color name="darkdark_gray">#202020</color>
 	<color name="black">#000000</color>
 	<color name="red">#ff0000</color>
 	<color name="green">#00ff00</color>
@@ -18,12 +17,12 @@
 	<color name="floral_white">#fffaf0</color>
 
 	<!-- Grays -->
-	<color name="rounded_bg_gray1">#404040</color>
-		<!-- a little lighter -->
-	<color name="rounded_bg_gray2">#707070</color>
-	<color name="very_light_warm_gray">#c4c0c0</color>
+	<color name="warm_gray_lightest">#c4c0c0</color>
+	<color name="gray_medium">#707070</color>
+	<color name="gray_dark">#404040</color>
+	<color name="gray_darkest">#202020</color>
 
-	<!-- HPG Colors -->
+	<!-- HPG Orange -->
 	<color name="hpg_orange">#EB461A</color>
 	<color name="hpg_orange_light">#ff6840</color>
 	<color name="hpg_orange_lighter">#ff9073</color>
@@ -32,42 +31,44 @@
 	<color name="hpg_orange_darker">#631903</color>
 	<color name="hpg_orange_darkest">#4d1000</color>
 
+	<color name="hpg_orange_desaturated1">#eb856a</color>
+	<color name="hpg_orange_light_desaturated1">#f5af90</color>
+	<color name="hpg_orange_lighter_desaturated1">#f5baab</color>
+	<color name="hpg_orange_dark_desaturated1">#993b23</color>
+
+	<color name="hpg_orange_desaturated2">#edb0a0</color>
+	<color name="hpg_orange_light_desaturated2">#f6c7ba</color>
+	<color name="hpg_orange_lighter_desaturated2">#f6d3ca</color>
+	<color name="hpg_orange_dark_desaturated2">#9a4934</color>
+
+	<color name="hpg_orange_desaturated3">#efcec6</color>
+	<color name="hpg_orange_light_desaturated3">#f7ded7</color>
+	<color name="hpg_orange_lighter_desaturated3">#f7e4e0</color>
+	<color name="hpg_orange_dark_desaturated3">#9b5340</color>
+
+	<color name="hpg_orange_desaturated4">#d4cac8</color>
+	<color name="hpg_orange_light_desaturated4">#eae1df</color>
+	<color name="hpg_orange_dark_desaturated4">#8a5041</color>
+
+	<!-- Browns -->
 	<color name="hpg_brown_light">#552b20</color>
 	<color name="hpg_brown">#451104</color>
 	<color name="hpg_brown_dark">#350c01</color>
 
+	<!-- HPG Complement -->
 	<color name="hpg_complement">#13a853</color>
 	<color name="hpg_complement_light">#6cd399</color>
 	<color name="hpg_complement_lighter">#8ee0b2</color>
 	<color name="hpg_complement_lightest">#e6fff1</color>
-		<color name="hpg_complement_dark">#007633</color>
-		<color name="hpg_complement_darker">#004d21</color>
-		<color name="hpg_complement_darkest">#00220f</color>
+	<color name="hpg_complement_dark">#007633</color>
+	<color name="hpg_complement_darker">#004d21</color>
+	<color name="hpg_complement_darkest">#00220f</color>
 
 	<color name="hpg_blue">#176c95</color>
 	<color name="hpg_blue_light">#6cabca</color>
 	<color name="hpg_blue_dark">#074461</color>
 	<color name="hpg_blue_darker">#053b55</color>
-		<color name="hpg_blue_darker_still">#022c40</color>
-		<color name="hpg_blue_darkest">#01263b</color>
-
-	<color name="hpg_orange_desaturated1">#eb856a</color>
-	<color name="hpg_orange_light_desaturated1">#f5af90</color>
-		<color name="hpg_orange_lighter_desaturated1">#f5baab</color>
-		<color name="hpg_orange_dark_desaturated1">#993b23</color>
-
-	<color name="hpg_orange_desaturated2">#edb0a0</color>
-	<color name="hpg_orange_light_desaturated2">#f6c7ba</color>
-		<color name="hpg_orange_lighter_desaturated2">#f6d3ca</color>
-		<color name="hpg_orange_dark_desaturated2">#9a4934</color>
-
-	<color name="hpg_orange_desaturated3">#efcec6</color>
-	<color name="hpg_orange_light_desaturated3">#f7ded7</color>
-		<color name="hpg_orange_lighter_desaturated3">#f7e4e0</color>
-		<color name="hpg_orange_dark_desaturated3">#9b5340</color>
-
-	<color name="hpg_orange_desaturated4">#d4cac8</color>
-	<color name="hpg_orange_light_desaturated4">#eae1df</color>
-		<color name="hpg_orange_dark_desaturated4">#8a5041</color>
+	<color name="hpg_blue_darker_still">#022c40</color>
+	<color name="hpg_blue_darkest">#01263b</color>
 
 </resources>

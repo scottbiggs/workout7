@@ -7,7 +7,7 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
 	android:orientation="vertical"
-	android:background="@color/darkdark_gray"
+	android:background="@color/gray_darkest"
 	>
 
 	<RelativeLayout
@@ -130,7 +130,7 @@
 				android:layout_marginLeft="5dp"
 				android:layout_marginRight="5dp"
 				android:layout_marginTop="8dp"
-				android:background="@drawable/rounded_edges"
+				android:background="@drawable/rounded_edges_dark"
 				android:clickable="true"
 				android:gravity="center_horizontal"
 				android:padding="3dp" >
@@ -156,7 +156,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_gravity="center_vertical"
-					android:background="@drawable/rounded_edges2"
+					android:background="@drawable/rounded_edges_medium"
 					android:src="@drawable/stress_just_right" />
 
 			</TableRow>
@@ -169,7 +169,7 @@
 				android:layout_marginLeft="5dp"
 				android:layout_marginRight="5dp"
 				android:layout_marginTop="4dp"
-				android:background="@drawable/rounded_edges"
+				android:background="@drawable/rounded_edges_dark"
 				android:clickable="true"
 				android:gravity="center_horizontal"
 				android:padding="3dp" >
@@ -195,7 +195,7 @@
 					android:src="@drawable/stress_too_easy"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:background="@drawable/rounded_edges2"
+					android:background="@drawable/rounded_edges_medium"
 					android:layout_gravity="center_vertical"
 					/>
 			</TableRow>
@@ -208,7 +208,7 @@
 				android:layout_marginLeft="5dp"
 				android:layout_marginRight="5dp"
 				android:layout_marginTop="4dp"
-				android:background="@drawable/rounded_edges"
+				android:background="@drawable/rounded_edges_dark"
 				android:clickable="true"
 				android:gravity="center_horizontal"
 				android:padding="3dp" >
@@ -234,7 +234,7 @@
 					android:src="@drawable/stress_too_heavy"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:background="@drawable/rounded_edges2"
+					android:background="@drawable/rounded_edges_medium"
 					android:layout_gravity="center_vertical"
 					/>
 			</TableRow>
@@ -247,7 +247,7 @@
 				android:layout_marginLeft="5dp"
 				android:layout_marginRight="5dp"
 				android:layout_marginTop="4dp"
-				android:background="@drawable/rounded_edges"
+				android:background="@drawable/rounded_edges_dark"
 				android:clickable="true"
 				android:gravity="center_horizontal"
 				android:padding="3dp" >
@@ -273,7 +273,7 @@
 					android:src="@drawable/stress_injury"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:background="@drawable/rounded_edges2"
+					android:background="@drawable/rounded_edges_medium"
 					android:layout_gravity="center_vertical"
 					/>
 			</TableRow>

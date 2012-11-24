@@ -472,7 +472,7 @@
 		easy; try it!
 		</string>
 
-	<string name="grid_order_button">order</string>
+	<string name="grid_order_button">change order</string>
 	<string name="grid_order_title">Rearrange Exercise Order</string>
 	<string name="grid_order_msg">All your exercises appear in
 		the order you entered them. This ain\'t always the way
@@ -480,14 +480,14 @@
 		modify the order to make it juuuust right.
 		</string>
 
-
+<!--
 	<string name="grid_done_title">Done Working Out</string>
 	<string name="grid_done_msg">When you have completed all
 		your sets of all your exercises (as well as any cool-down
 		routines) tap this button to signal you\'re done. Grab a
 		smoothie, you deserve it!
 		</string>
-
+-->
 
 	<!-- Lastly the context menus on the exercise selections -->
 	<string name="grid_select_help_title">Select Exercise</string>

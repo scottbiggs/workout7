@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-	Defines a shape with rounded edges.
+	Defines a shape with black rounded edges.
 
 	I use it to make the groups look better.
 
@@ -9,10 +9,10 @@
 -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android" >
 
-	<solid android:color="@color/rounded_bg_gray2" />
+	<solid android:color="@color/black" />
 
 	<corners
-		android:radius="4dp"
+		android:radius="12dp"
 		/>
 
 	<padding

@@ -9,7 +9,7 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
-	android:background="@color/darkdark_gray"
+	android:background="@color/gray_darkest"
 	tools:ignore="ContentDescription" >
 
 	<ImageView
@@ -45,7 +45,7 @@
 		android:layout_marginLeft="5dp"
 		android:layout_marginRight="5dp"
 		android:layout_marginTop="17dp"
-		android:background="@drawable/rounded_edges"
+		android:background="@drawable/rounded_edges_dark"
 		android:orientation="vertical" >
 
 		<Button
@@ -85,7 +85,7 @@
 		android:layout_marginLeft="5dp"
 		android:layout_marginRight="5dp"
 		android:layout_marginTop="18dp"
-		android:background="@drawable/rounded_edges"
+		android:background="@drawable/rounded_edges_dark"
 		android:orientation="vertical" >
 
 		<TextView
@@ -106,8 +106,8 @@
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_margin="5dp"
-			android:background="@drawable/rounded_edges2"
-			android:cacheColorHint="@color/rounded_bg_gray1"
+			android:background="@drawable/rounded_edges_medium"
+			android:cacheColorHint="@color/gray_dark"
 			android:padding="3dp" >
 
 		</ListView>

@@ -103,7 +103,7 @@ public class GridActivity extends BaseDialogActivity
 	//-------------------
 
 	/** The buttons for this screen. */
-	private Button m_add, m_done, m_order;
+	private Button m_add, m_order;
 
 	private ImageView m_help;
 
@@ -171,10 +171,6 @@ public class GridActivity extends BaseDialogActivity
 		m_add = (Button) findViewById(R.id.grid_add_exercise_button);
 		m_add.setOnClickListener(this);
 		m_add.setOnLongClickListener(this);
-
-		m_done = (Button) findViewById(R.id.grid_done_button);
-		m_done.setOnClickListener(this);
-		m_done.setOnLongClickListener(this);
 
 		m_order = (Button) findViewById(R.id.grid_order_button);
 		m_order.setOnClickListener(this);
@@ -248,7 +244,7 @@ public class GridActivity extends BaseDialogActivity
 				PreferenceManager.getDefaultSharedPreferences(this);
 		m_pref_oldest_first =
 				prefs.getBoolean(getString(R.string.prefs_inspector_oldest_first_key),
-								 true);
+								true);
 
 		if ((m_sync_task != null) &&
 			(m_sync_task.getStatus() == Status.RUNNING)) {
@@ -270,10 +266,6 @@ public class GridActivity extends BaseDialogActivity
 
 		else {
 			switch (v.getId()) {
-				case R.id.grid_done_button:
-					finish();
-					break;
-
 				case R.id.grid_add_exercise_button:
 					// todo:
 					//	debug
@@ -315,10 +307,6 @@ public class GridActivity extends BaseDialogActivity
 
 		else if (id == m_order.getId()) {
 			show_help_dialog(R.string.grid_order_title, R.string.grid_order_msg);
-		}
-
-		else if (id == m_done.getId()) {
-			show_help_dialog(R.string.grid_done_title, R.string.grid_done_msg);
 		}
 
 		// Must be something in the grid
@@ -469,7 +457,9 @@ public class GridActivity extends BaseDialogActivity
 
 			// Do we want to make lines between items?
 			if (lines) {
-				TableRow.LayoutParams lp = new TableRow.LayoutParams (1, TableRow.LayoutParams.FILL_PARENT);
+				TableRow.LayoutParams lp =
+						new TableRow.LayoutParams (1,
+								   TableRow.LayoutParams.FILL_PARENT);
 				View line = new View(this);
 				line.setLayoutParams(lp);
 				line.setBackgroundColor(Color.WHITE);
@@ -552,7 +542,9 @@ public class GridActivity extends BaseDialogActivity
 
 			// Do we want to make lines between items?
 			if (lines) {
-				TableRow.LayoutParams lp = new TableRow.LayoutParams (1, TableRow.LayoutParams.FILL_PARENT);
+				TableRow.LayoutParams lp =
+						new TableRow.LayoutParams (1,
+								   TableRow.LayoutParams.FILL_PARENT);
 				View line = new View(this);
 				line.setLayoutParams(lp);
 				line.setBackgroundColor(Color.WHITE);

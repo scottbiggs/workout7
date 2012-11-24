@@ -1,8 +1,5 @@
 TODO:
 -----------------
-Don't like the buttons on the GridActivity.  They're not
-	intuitive and the layout sucks.
-
 Bug: Something's wrong with the graph sometimes.  Looks
 	like it happens more often with just a few items.
 	Test it for weird cases (where numbers are missing?).
@@ -169,6 +166,10 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Don't like the buttons on the GridActivity.  They're not
+	intuitive and the layout sucks.
+	- improved (and I removed the "done" button).
+
 ASetActivity - Change so that the user can add another set without
 	having to go back to the main grid.  This is possible from
 	the Inspector, but not from the regular one.

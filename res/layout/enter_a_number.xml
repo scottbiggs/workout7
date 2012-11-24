@@ -7,7 +7,7 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
 	android:orientation="vertical"
-	android:background="@color/darkdark_gray"
+	android:background="@color/gray_darkest"
 	>
 
 	<RelativeLayout
@@ -128,7 +128,7 @@
 			android:layout_below="@+id/enter_a_number_value_tv"
 			android:layout_centerHorizontal="true"
 			android:layout_marginTop="3dp"
-			android:background="@drawable/rounded_edges2"
+			android:background="@drawable/rounded_edges_medium"
 			android:paddingBottom="4dp"
 			android:paddingLeft="6dp"
 			android:paddingRight="6dp"

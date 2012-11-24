@@ -6,7 +6,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
-	android:background="@color/darkdark_gray"
+	android:background="@color/gray_darkest"
 	>
 
 	<TextView
@@ -81,7 +81,7 @@
 		android:layout_marginBottom="5dp"
 		android:layout_marginLeft="10dp"
 		android:layout_marginRight="10dp"
-		android:background="@drawable/rounded_edges"
+		android:background="@drawable/rounded_edges_dark"
 		android:gravity="center_horizontal"
 		android:paddingBottom="3dp"
 		android:paddingLeft="8dp"

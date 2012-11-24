@@ -5,10 +5,10 @@
 	This version uses TABLES
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:layout_marginTop="5dp"
-    android:background="@color/hpg_brown_dark" >
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:layout_marginTop="5dp"
+	android:background="@color/hpg_brown_dark" >
 
 	<!-- ============= -->
 	<!-- Buttons -->
@@ -22,8 +22,6 @@
 		android:layout_centerHorizontal="true"
 		android:layout_marginLeft="5dp"
 		android:layout_marginRight="5dp"
-		android:paddingLeft="15dp"
-		android:paddingRight="15dp"
 		android:text="@string/null_string"
 		android:visibility="invisible" />
 
@@ -105,7 +103,7 @@
 				android:layout_marginLeft="8dp"
 				android:layout_marginRight="8dp"
 				android:layout_marginTop="8dp"
-				android:background="@drawable/rounded_edges"
+				android:background="@drawable/rounded_edges_dark"
 				android:shrinkColumns="1"
 				android:stretchColumns="1" >
 
@@ -181,7 +179,7 @@
 				android:layout_marginLeft="8dp"
 				android:layout_marginRight="8dp"
 				android:layout_marginTop="6dp"
-				android:background="@drawable/rounded_edges"
+				android:background="@drawable/rounded_edges_dark"
 				android:shrinkColumns="0"
 				android:stretchColumns="1" >
 

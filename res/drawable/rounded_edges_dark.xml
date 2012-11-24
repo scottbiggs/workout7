@@ -9,10 +9,10 @@
 -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android" >
 
-	<solid android:color="@color/warm_gray_lightest" />
+	<solid android:color="@color/gray_dark" />
 
 	<corners
-		android:radius="4dp"
+		android:radius="12dp"
 		/>
 
 	<padding

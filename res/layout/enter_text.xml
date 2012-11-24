@@ -8,7 +8,7 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
 	android:orientation="vertical"
-	android:background="@color/darkdark_gray"
+	android:background="@color/gray_darkest"
 	>
 
 	<RelativeLayout
@@ -132,7 +132,7 @@
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
 					android:layout_marginTop="16dp"
-					android:background="@drawable/rounded_edges2"
+					android:background="@drawable/rounded_edges_medium"
 					android:gravity="center"
 					android:minLines="1"
 					android:paddingBottom="4dp"
