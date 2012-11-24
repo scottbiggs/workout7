@@ -125,6 +125,14 @@ public class WGlobals extends Application {
 	//	Set the default and use this.
 	public static int g_sound_volume;
 
+	/**
+	 * When TRUE, the history/inspector lists all the
+	 * exercise sets in chronological order.  When
+	 * FALSE, it lists them as most recent-first.
+	 */
+	public static boolean g_hist_chron;
+
+
 	//----------------------------------
 	//	Instance Methods
 	//----------------------------------
@@ -160,17 +168,28 @@ public class WGlobals extends Application {
 				true);
 		g_nag = prefs.getBoolean(activity.getString(R.string.prefs_nag_key),
 				true);
+		g_hist_chron = prefs.getBoolean(activity.getString(R.string.prefs_inspector_oldest_first_key),
+				true);
 
 	} // load_prefs()
 
 
 	/************************
+	 * This method does all the system changes as demanded by
+	 * the various preferences.  For example, if the user (in
+	 * the preferences screen) tells the screen-saver to NOT
+	 * turn off, this executes that command.
+	 *
 	 * Each Activity should call this during its onCreate().
 	 *
 	 * Also, call this anytime the prefs have been changed,
 	 * but AFTER calling load_prefs().
 	 *
-	 * NOTE:		This has to be static because of the Activity
+	 * NOTE:		This is automatically during onCreate()
+	 * 			with any activity that inherits from
+	 * 			BaseDialogActivity and calls super.onCreate().
+	 *
+	 * NOTE2:	This has to be static because of the Activity
 	 * 			parameter.
 	 *
 	 * preconditions:
