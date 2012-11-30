@@ -878,10 +878,12 @@ public class ASetActivity
 	protected void setup_weights (Cursor ex_cursor, Cursor set_cursor,
 								boolean set_valid) {
 		TextView weight_label_tv;
-		if (WGlobals.g_wheel)
+		if (WGlobals.g_wheel) {
 			weight_label_tv = (TextView) findViewById(R.id.aset_wheel_weight_label_tv);
-		else
+		}
+		else {
 			weight_label_tv = (TextView) findViewById(R.id.aset_weight_label_tv);
+		}
 
 		int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_WEIGHT);
 		m_weight = ex_cursor.getInt(col) == 1 ? true : false;
@@ -891,7 +893,7 @@ public class ASetActivity
 			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_WEIGHT_UNIT);
 			String weight_unit = getString(R.string.aset_weight_hint,
 					ex_cursor.getString(col));
-			m_weight_et.setHint(weight_unit);
+//			m_weight_et.setHint(weight_unit);	// causes problems!!!
 			weight_label_tv.setText(getString(R.string.aset_weight_label,
 					weight_unit));
 			if (m_significant == DatabaseHelper.EXERCISE_COL_WEIGHT_NUM) {
@@ -936,7 +938,7 @@ public class ASetActivity
 			m_dist_et.setFocusable(m_distanced);
 			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_DIST_UNIT);
 			String dist_unit = getString(R.string.aset_distance_hint, ex_cursor.getString(col));
-			m_dist_et.setHint(dist_unit);
+//			m_dist_et.setHint(dist_unit);
 			dist_label_tv.setText(getString(R.string.aset_distance_label,
 					dist_unit));
 			if (m_significant == DatabaseHelper.EXERCISE_COL_DIST_NUM) {
@@ -976,7 +978,7 @@ public class ASetActivity
 			m_time_et.setFocusable(m_timed);
 			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_TIME_UNIT);
 			String time_unit = getString(R.string.aset_time_hint, ex_cursor.getString(col));
-			m_time_et.setHint(time_unit);
+//			m_time_et.setHint(time_unit);
 			if (m_significant == DatabaseHelper.EXERCISE_COL_TIME_NUM) {
 				time_label_tv.setTypeface(null, Typeface.BOLD);
 			}
@@ -1021,7 +1023,7 @@ public class ASetActivity
 			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_OTHER_UNIT);
 			m_other_unit = ex_cursor.getString(col);
 			String final_other_label = getString (R.string.aset_other_hint, m_other_unit);
-			m_other_et.setHint(final_other_label);
+//			m_other_et.setHint(final_other_label);
 			other_label_tv.setText(getString(R.string.aset_other_label_old,
 					m_other_title, m_other_unit));
 			if (m_significant == DatabaseHelper.EXERCISE_COL_OTHER_NUM) {
