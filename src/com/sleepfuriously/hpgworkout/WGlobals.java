@@ -132,6 +132,11 @@ public class WGlobals extends Application {
 	 */
 	public static boolean g_hist_chron;
 
+	/**
+	 * This user preference tells us whether they want
+	 * to use the number wheels or not.
+	 */
+	public static boolean g_wheel;
 
 	//----------------------------------
 	//	Instance Methods
@@ -169,6 +174,8 @@ public class WGlobals extends Application {
 		g_nag = prefs.getBoolean(activity.getString(R.string.prefs_nag_key),
 				true);
 		g_hist_chron = prefs.getBoolean(activity.getString(R.string.prefs_inspector_oldest_first_key),
+				true);
+		g_wheel = prefs.getBoolean(activity.getString(R.string.prefs_wheel_key),
 				true);
 
 	} // load_prefs()

@@ -1,5 +1,16 @@
 TODO:
 -----------------
+Need to have a loading dialog when going to the tabs from
+	the grid.
+
+Shouldn't the styles text sizes use sp instead of dp?
+
+Minor bug: When an exercise has changed its significant aspect,
+	the ASet still draws the old aspect as bold (if it has
+	already been created).
+
+Bug: Custom units no longer work! Sigh.
+
 Bug: Something's wrong with the graph sometimes.  Looks
 	like it happens more often with just a few items.
 	Test it for weird cases (where numbers are missing?).
@@ -44,10 +55,12 @@ TEST the nags.
 
 Preferences: put the option to Reset things here.  Clear the workout data, or
 	clear the exercises.
+
 Add the ability to clear EVERYTHING.  This is a tabula rasa,
 	so that the person can clear their entire history AND
 	all their exercises at once.  Of course, give appropriate
 	warnings.
+
 Need to make a preferences screen.
 	TODO:
 	* Save the database to SIMM card. (http://stackoverflow.com/questions/1209469/storing-android-application-data-on-sd-card,
@@ -107,6 +120,25 @@ Allow for the option to have the database on the simm card.
 Make sure that all the drawables are in the correct directories.
 
 Need to remove the HistoryActivity from the project.
+
+Bug: Sometimes, when an edittext for a number wheel doesn't have
+	enough room to wrap properly, it gets bigger (the top & bottom
+	padding seems increased).  While this makes the UI look a little
+	odd, it also causes memory leaks within the EditText when it's
+	updated often, as in when the number wheel spins.
+	Also, the wheel is not nearly as responsive to gestures and
+	does not get focus easily (requires more than one touch).
+	- This happens when on the Read3D_LGE emulator when the Distance
+	is set to nanometers (and a few other settings).
+	- partially worked around: I have the edittext only update when
+	the wheel is finished scrolling, which greatly reduces the number
+	of hits to the EditText.  But it's STILL very buggy and slow.
+	- Worktaround #1: change EditText to TextView.  It looks different,
+	but the memory leak and garbage collection are still there, slowing
+	the app down.  Yuck!
+	- Also happens on the default emulater (level 8) for the
+	weight when the unit is kilograms.
+
 
 ---------------------------------------------------
 Hmmmmmmmmmmmmmmmmmmmmmm

@@ -891,8 +891,9 @@
 		abandon all entries you\'ve made here.</string>
 
 	<string name="aset_weight_label">weight (%s)</string>
+
 	<string name="aset_weight_off_label">weight</string>
-		<string name="aset_weight_help_title">Weight</string>
+	<string name="aset_weight_help_title">Weight</string>
 	<string name="aset_weight_help_msg">Enter the weight
 		that you\'re using on this set.  Please note that if you change
 		weights, you are really starting a new set.</string>
@@ -942,26 +943,26 @@
 		calorie: \"Hey, George!  You\'re gonna have to
 		jog a long time to match the 300,000 calories from that
 		candy bar!\"
-		</string>
+	</string>
 	<string name="aset_calorie_hint">how many calories\?</string>
 
-		<string name="aset_distance_label">distance (%s)</string>
+	<string name="aset_distance_label">distance (%s)</string>
 	<string name="aset_distance_off_label">distance</string>
-		<string name="aset_distance_help_title">Distance Unit</string>
+	<string name="aset_distance_help_title">Distance Unit</string>
 	<string name="aset_distance_help_msg">Enter the distance
 		that you covered with this set. Ask a friend for a
 		ruler if necessary.
-		</string>
+	</string>
 	<string name="aset_distance_hint">%s</string>
 
 	<string name="aset_other_label_old">%1$s (%2$s)</string>
 	<string name="aset_other_label">%s</string>
-		<string name="aset_other_off_label">other</string>
-		<string name="aset_other_help_title">Other</string>
+	<string name="aset_other_off_label">other</string>
+	<string name="aset_other_help_title">Other</string>
 	<string name="aset_other_help_msg">While doing your
 		%1$s exercise, enter the number of %2$s here. Hope that
 		sentence makes sense.
-		</string>
+	</string>
 	<string name="aset_other_hint">%s</string>
 
 	<string name="aset_cond_label">stress condition</string>
@@ -1342,6 +1343,17 @@
 	</string>
 	<string name="prefs_inspector_oldest_first_off_msg">
 		Your most recent workout set will be at the top.
+	</string>
+
+	<string name="prefs_wheel_key">wheel_on</string>
+	<string name="prefs_wheel_title">Enable Number Wheels</string>
+	<string name="prefs_wheel_on_msg">
+		When adding a workout set, we want to use those nifty
+		number wheels (default).
+	</string>
+	<string name="prefs_wheel_off_msg">
+		I find those number wheels annoying, so they are
+		now gone. Good riddance!
 	</string>
 
 

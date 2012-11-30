@@ -22,6 +22,14 @@
 		android:summaryOn="@string/prefs_display_keep_on_msg"
 		android:title="@string/prefs_display_title" />
 
+	<com.sleepfuriously.hpgworkout.LongCheckboxPreference
+		android:key="@string/prefs_wheel_key"
+		android:defaultValue="true"
+		android:summaryOff="@string/prefs_wheel_off_msg"
+		android:summaryOn="@string/prefs_wheel_on_msg"
+		android:title="@string/prefs_wheel_title" />
+
+
 	<PreferenceCategory
 		android:title="@string/prefs_category_inspector"
 		android:summary="category summary will be written here."

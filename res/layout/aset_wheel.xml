@@ -1,0 +1,813 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	The layout for entering data for a single set of a workout.
+
+	This version uses WheelViews to assist in entering
+	numbers.
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:background="@color/gray_darkest"
+	>
+
+	<!-- ============= -->
+	<!-- Buttons -->
+	<!-- ============= -->
+
+	<Button
+		android:id="@+id/aset_wheel_null_butt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_centerHorizontal="true"
+		android:layout_marginLeft="5dp"
+		android:layout_marginRight="5dp"
+		android:paddingLeft="15dp"
+		android:paddingRight="15dp"
+		android:text="@string/null_string"
+		android:visibility="invisible" />
+
+	<Button
+		android:id="@+id/aset_wheel_enter_butt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentRight="true"
+		android:layout_marginRight="8dp"
+		android:layout_toRightOf="@id/aset_wheel_null_butt"
+		android:background="@drawable/button_shiny_black"
+		android:textColor="@color/ivory"
+		android:text="@string/aset_enter_butt" />
+
+	<Button
+		android:id="@+id/aset_wheel_clear_butt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentLeft="true"
+		android:layout_marginLeft="8dp"
+		android:layout_toLeftOf="@id/aset_wheel_null_butt"
+		android:background="@drawable/button_shiny_black"
+		android:textColor="@color/ivory"
+		android:text="@string/aset_clear_button" />
+
+	<ScrollView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_above="@id/aset_wheel_clear_butt"
+		android:layout_alignParentTop="true"
+		android:layout_marginTop="3dp" >
+
+		<LinearLayout
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical" >
+
+			<TableLayout
+				android:id="@+id/aset_wheel_tableLayout1"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="8dp"
+				android:layout_marginRight="8dp"
+				android:layout_marginTop="5dp"
+				android:background="@drawable/rounded_edges_dark"
+				android:shrinkColumns="1"
+				android:stretchColumns="1"
+				>
+
+				<!-- REPS -->
+
+				<TableRow
+					android:id="@+id/aset_wheel_reps_row"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="3dp"
+					android:layout_marginLeft="8dp"
+					android:layout_marginRight="8dp"
+					android:layout_marginTop="5dp" >
+
+					<LinearLayout
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:layout_weight=".4"
+						android:orientation="vertical" >
+
+						<TextView
+							android:id="@+id/aset_wheel_reps_label_tv"
+							style="@style/white_text_medium"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_gravity="bottom|left"
+							android:text="@string/aset_reps_label" />
+
+						<EditText
+							android:id="@+id/aset_wheel_reps_result_et"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_gravity="top|left"
+							android:layout_marginLeft="16dp"
+							android:enabled="false"
+							android:gravity="right|center_vertical"
+							android:inputType="number"
+							android:ems="4"
+							android:singleLine="true"
+							/>
+
+					</LinearLayout>
+
+					<LinearLayout
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:layout_weight=".6"
+						android:gravity="center"
+						android:orientation="horizontal" >
+
+						<kankan.wheel.widget.WheelView
+							android:id="@+id/aset_wheel_reps_1000"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							/>
+						<kankan.wheel.widget.WheelView
+							android:id="@+id/aset_wheel_reps_100"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							/>
+						<kankan.wheel.widget.WheelView
+							android:id="@+id/aset_wheel_reps_10"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							/>
+						<kankan.wheel.widget.WheelView
+							android:id="@+id/aset_wheel_reps_1"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							/>
+					</LinearLayout>
+
+				</TableRow>
+
+				<!-- WEIGHT -->
+				<View
+					android:id="@+id/aset_wheel_weight_bar"
+					android:layout_width="fill_parent"
+					android:layout_height="1dp"
+					android:layout_marginBottom="3dp"
+					android:layout_marginLeft="14dp"
+					android:layout_marginRight="14dp"
+					android:layout_marginTop="3dp"
+					android:background="@color/hpg_orange_dark_desaturated4" />
+
+				<TableRow
+					android:id="@+id/aset_wheel_weight_row"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="3dp"
+					android:layout_marginLeft="8dp"
+					android:layout_marginRight="8dp"
+					android:layout_marginTop="3dp" >
+
+					<LinearLayout
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:layout_weight=".4"
+						android:orientation="vertical" >
+
+						<TextView
+							android:id="@+id/aset_wheel_weight_label_tv"
+							style="@style/white_text_medium"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_gravity="bottom|left"
+							android:text="@string/aset_weight_label" />
+
+						<EditText
+							android:id="@+id/aset_wheel_weight_et"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_gravity="top|left"
+							android:layout_marginLeft="16dp"
+							android:enabled="false"
+							android:gravity="right|center_vertical"
+							android:inputType="numberDecimal"
+							android:ems="4"
+							android:singleLine="true" />
+					</LinearLayout>
+
+					<LinearLayout
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:layout_weight=".6"
+						android:layout_gravity="center"
+						android:gravity="center"
+						android:orientation="horizontal" >
+
+						<kankan.wheel.widget.WheelView
+							android:id="@+id/aset_wheel_weight_1000"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							/>
+						<kankan.wheel.widget.WheelView
+							android:id="@+id/aset_wheel_weight_100"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							/>
+						<kankan.wheel.widget.WheelView
+							android:id="@+id/aset_wheel_weight_10"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							/>
+						<kankan.wheel.widget.WheelView
+							android:id="@+id/aset_wheel_weight_1"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							/>
+						<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:text="."
+							/>
+						<kankan.wheel.widget.WheelView
+							android:id="@+id/aset_wheel_weight_point"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							/>
+
+					</LinearLayout>
+
+				</TableRow>
+
+				<!-- Level -->
+				<View
+					android:id="@+id/aset_wheel_level_bar"
+					android:layout_width="fill_parent"
+					android:layout_height="1dp"
+					android:layout_marginBottom="3dp"
+					android:layout_marginLeft="14dp"
+					android:layout_marginRight="14dp"
+					android:layout_marginTop="3dp"
+					android:background="@color/hpg_orange_dark_desaturated4" />
+
+				<TableRow
+					android:id="@+id/aset_wheel_level_row"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="3dp"
+					android:layout_marginLeft="8dp"
+					android:layout_marginRight="8dp"
+					android:layout_marginTop="3dp" >
+
+					<LinearLayout
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:layout_weight=".4"
+						android:orientation="vertical" >
+
+						<TextView
+							android:id="@+id/aset_wheel_level_label_tv"
+							style="@style/white_text_medium"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_gravity="bottom|left"
+							android:text="@string/aset_level_label" />
+
+						<EditText
+							android:id="@+id/aset_wheel_level_et"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_gravity="top|left"
+							android:layout_marginLeft="16dp"
+							android:enabled="false"
+							android:gravity="right|center_vertical"
+							android:inputType="number"
+							android:ems="4"
+							android:singleLine="true"
+							/>
+
+					</LinearLayout>
+
+					<LinearLayout
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:layout_weight=".6"
+						android:gravity="center"
+						android:orientation="horizontal" >
+
+						<kankan.wheel.widget.WheelView
+							android:id="@+id/aset_wheel_level_1000"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							/>
+						<kankan.wheel.widget.WheelView
+							android:id="@+id/aset_wheel_level_100"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							/>
+						<kankan.wheel.widget.WheelView
+							android:id="@+id/aset_wheel_level_10"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							/>
+						<kankan.wheel.widget.WheelView
+							android:id="@+id/aset_wheel_level_1"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							/>
+					</LinearLayout>
+
+				</TableRow>
+
+				<!-- Calories -->
+				<View
+					android:id="@+id/aset_wheel_cals_bar"
+					android:layout_width="fill_parent"
+					android:layout_height="1dp"
+					android:layout_marginBottom="3dp"
+					android:layout_marginLeft="14dp"
+					android:layout_marginRight="14dp"
+					android:layout_marginTop="3dp"
+					android:background="@color/hpg_orange_dark_desaturated4" />
+
+				<TableRow
+					android:id="@+id/aset_wheel_cals_row"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="3dp"
+					android:layout_marginLeft="8dp"
+					android:layout_marginRight="8dp"
+					android:layout_marginTop="3dp" >
+
+					<LinearLayout
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:layout_weight=".4"
+						android:orientation="vertical" >
+
+						<TextView
+							android:id="@+id/aset_wheel_calorie_label_tv"
+							style="@style/white_text_medium"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_gravity="bottom|left"
+							android:text="@string/aset_calorie_label" />
+
+						<EditText
+							android:id="@+id/aset_wheel_calorie_et"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_gravity="top|left"
+							android:layout_marginLeft="16dp"
+							android:enabled="false"
+							android:gravity="right|center_vertical"
+							android:inputType="number"
+							android:ems="4"
+							android:singleLine="true"
+							/>
+
+					</LinearLayout>
+
+					<LinearLayout
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:layout_weight=".6"
+						android:gravity="center"
+						android:orientation="horizontal" >
+
+						<kankan.wheel.widget.WheelView
+							android:id="@+id/aset_wheel_calorie_1000"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							/>
+						<kankan.wheel.widget.WheelView
+							android:id="@+id/aset_wheel_calorie_100"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							/>
+						<kankan.wheel.widget.WheelView
+							android:id="@+id/aset_wheel_calorie_10"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							/>
+						<kankan.wheel.widget.WheelView
+							android:id="@+id/aset_wheel_calorie_1"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							/>
+					</LinearLayout>
+
+				</TableRow>
+
+
+				<!-- Distance -->
+				<View
+					android:id="@+id/aset_wheel_dist_bar"
+					android:layout_width="fill_parent"
+					android:layout_height="1dp"
+					android:layout_marginBottom="3dp"
+					android:layout_marginLeft="14dp"
+					android:layout_marginRight="14dp"
+					android:layout_marginTop="3dp"
+					android:background="@color/hpg_orange_dark_desaturated4" />
+
+				<TableRow
+					android:id="@+id/aset_wheel_dist_row"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="3dp"
+					android:layout_marginLeft="8dp"
+					android:layout_marginRight="8dp"
+					android:layout_marginTop="3dp" >
+
+					<LinearLayout
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:layout_weight=".4"
+						android:orientation="vertical" >
+
+						<TextView
+							android:id="@+id/aset_wheel_dist_label_tv"
+							style="@style/white_text_medium"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_gravity="bottom|left"
+							android:text="@string/aset_distance_off_label" />
+
+						<EditText
+							android:id="@+id/aset_wheel_dist_et"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_gravity="top|left"
+							android:layout_marginLeft="16dp"
+							android:enabled="false"
+							android:gravity="right|center_vertical"
+							android:inputType="number"
+							android:ems="4"
+							android:singleLine="true"
+							/>
+
+					</LinearLayout>
+
+					<LinearLayout
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:layout_weight=".6"
+						android:layout_gravity="center"
+						android:gravity="center"
+						android:orientation="horizontal" >
+
+						<kankan.wheel.widget.WheelView
+							android:id="@+id/aset_wheel_dist_1000"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							/>
+						<kankan.wheel.widget.WheelView
+							android:id="@+id/aset_wheel_dist_100"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							/>
+						<kankan.wheel.widget.WheelView
+							android:id="@+id/aset_wheel_dist_10"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							/>
+						<kankan.wheel.widget.WheelView
+							android:id="@+id/aset_wheel_dist_1"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							/>
+						<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:text="."
+							/>
+						<kankan.wheel.widget.WheelView
+							android:id="@+id/aset_wheel_dist_point"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							/>
+
+					</LinearLayout>
+
+				</TableRow>
+
+				<!-- Time -->
+				<View
+					android:id="@+id/aset_wheel_time_bar"
+					android:layout_width="fill_parent"
+					android:layout_height="1dp"
+					android:layout_marginBottom="3dp"
+					android:layout_marginLeft="14dp"
+					android:layout_marginRight="14dp"
+					android:layout_marginTop="3dp"
+					android:background="@color/hpg_orange_dark_desaturated4" />
+
+				<TableRow
+					android:id="@+id/aset_wheel_time_row"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="3dp"
+					android:layout_marginLeft="8dp"
+					android:layout_marginRight="8dp"
+					android:layout_marginTop="3dp" >
+
+					<LinearLayout
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:layout_weight=".4"
+						android:orientation="vertical" >
+
+						<TextView
+							android:id="@+id/aset_wheel_time_label_tv"
+							style="@style/white_text_medium"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_gravity="bottom|left"
+							android:text="@string/aset_time_off_label" />
+
+						<EditText
+							android:id="@+id/aset_wheel_time_et"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_gravity="top|left"
+							android:layout_marginLeft="16dp"
+							android:enabled="false"
+							android:gravity="right|center_vertical"
+							android:inputType="number"
+							android:ems="4"
+							android:singleLine="true"
+							/>
+
+					</LinearLayout>
+
+					<LinearLayout
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:layout_weight=".6"
+						android:layout_gravity="center"
+						android:gravity="center"
+						android:orientation="horizontal" >
+
+						<kankan.wheel.widget.WheelView
+							android:id="@+id/aset_wheel_time_1000"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							/>
+						<kankan.wheel.widget.WheelView
+							android:id="@+id/aset_wheel_time_100"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							/>
+						<kankan.wheel.widget.WheelView
+							android:id="@+id/aset_wheel_time_10"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							/>
+						<kankan.wheel.widget.WheelView
+							android:id="@+id/aset_wheel_time_1"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							/>
+						<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:text="."
+							/>
+						<kankan.wheel.widget.WheelView
+							android:id="@+id/aset_wheel_time_point"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							/>
+
+					</LinearLayout>
+
+				</TableRow>
+
+
+				<!-- Other -->
+				<View
+					android:id="@+id/aset_wheel_other_bar"
+					android:layout_width="fill_parent"
+					android:layout_height="1dp"
+					android:layout_marginBottom="3dp"
+					android:layout_marginLeft="14dp"
+					android:layout_marginRight="14dp"
+					android:layout_marginTop="3dp"
+					android:background="@color/hpg_orange_dark_desaturated4" />
+
+				<TableRow
+					android:id="@+id/aset_wheel_other_row"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="5dp"
+					android:layout_marginLeft="8dp"
+					android:layout_marginRight="8dp"
+					android:layout_marginTop="3dp" >
+
+					<LinearLayout
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:layout_weight=".4"
+						android:orientation="vertical" >
+
+						<TextView
+							android:id="@+id/aset_wheel_other_label_tv"
+							style="@style/white_text_medium"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_gravity="bottom|left"
+							android:text="@string/aset_other_off_label" />
+
+						<EditText
+							android:id="@+id/aset_wheel_other_et"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_gravity="top|left"
+							android:layout_marginLeft="16dp"
+							android:enabled="false"
+							android:gravity="right|center_vertical"
+							android:inputType="number"
+							android:ems="4"
+							android:singleLine="true"
+							/>
+
+					</LinearLayout>
+
+					<LinearLayout
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:layout_weight=".6"
+						android:layout_gravity="center"
+						android:gravity="center"
+						android:orientation="horizontal" >
+
+						<kankan.wheel.widget.WheelView
+							android:id="@+id/aset_wheel_other_1000"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							/>
+						<kankan.wheel.widget.WheelView
+							android:id="@+id/aset_wheel_other_100"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							/>
+						<kankan.wheel.widget.WheelView
+							android:id="@+id/aset_wheel_other_10"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							/>
+						<kankan.wheel.widget.WheelView
+							android:id="@+id/aset_wheel_other_1"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							/>
+						<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:text="."
+							/>
+						<kankan.wheel.widget.WheelView
+							android:id="@+id/aset_wheel_other_point"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							/>
+
+					</LinearLayout>
+
+				</TableRow>
+
+			</TableLayout>
+
+			<LinearLayout
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="8dp"
+				android:layout_marginRight="8dp"
+				android:layout_marginTop="8dp"
+				android:background="@drawable/rounded_edges_dark"
+				android:orientation="vertical" >
+
+				<TextView
+					android:id="@+id/aset_wheel_cond_label"
+					style="@style/white_text_medium"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="15dp"
+					android:text="@string/aset_cond_label" />
+
+				<RadioGroup
+					android:id="@+id/aset_wheel_cond_rg"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="8dp"
+					android:layout_marginRight="8dp"
+					android:gravity="fill"
+					android:orientation="vertical"
+					android:paddingBottom="3dp"
+					android:paddingTop="3dp" >
+
+					<LinearLayout
+						android:layout_width="wrap_content"
+						android:layout_height="fill_parent"
+						android:layout_gravity="center_horizontal"
+						android:layout_marginBottom="8dp"
+						android:orientation="horizontal" >
+
+						<LinearLayout
+							android:layout_width="wrap_content"
+							android:layout_height="fill_parent"
+							android:layout_marginLeft="5dp"
+							android:layout_marginRight="5dp"
+							android:background="@drawable/rounded_edges_medium"
+							android:orientation="vertical" >
+
+							<RadioButton
+								android:id="@+id/aset_wheel_cond_ok_rb"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:checked="true"
+								android:drawableRight="@drawable/stress_just_right"
+								/>
+						</LinearLayout>
+
+						<LinearLayout
+							android:layout_width="wrap_content"
+							android:layout_height="fill_parent"
+							android:layout_marginLeft="5dp"
+							android:layout_marginRight="5dp"
+							android:background="@drawable/rounded_edges_medium"
+							android:orientation="vertical" >
+
+							<RadioButton
+								android:id="@+id/aset_wheel_cond_plus_rb"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:drawableRight="@drawable/stress_too_easy" />
+							</LinearLayout>
+
+					</LinearLayout>
+
+					<LinearLayout
+						android:layout_width="wrap_content"
+						android:layout_height="fill_parent"
+						android:layout_gravity="center_horizontal"
+						android:orientation="horizontal" >
+
+					<LinearLayout
+						android:layout_width="wrap_content"
+						android:layout_height="fill_parent"
+						android:layout_marginLeft="5dp"
+						android:layout_marginRight="5dp"
+						android:background="@drawable/rounded_edges_medium"
+						android:orientation="vertical" >
+
+						<RadioButton
+							android:id="@+id/aset_wheel_cond_minus_rb"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:drawableRight="@drawable/stress_too_heavy" />
+						</LinearLayout>
+
+					<LinearLayout
+						android:layout_width="wrap_content"
+						android:layout_height="fill_parent"
+						android:layout_marginLeft="5dp"
+						android:layout_marginRight="5dp"
+						android:background="@drawable/rounded_edges_medium"
+						android:orientation="vertical" >
+
+						<RadioButton
+							android:id="@+id/aset_wheel_cond_injury_rb"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:drawableRight="@drawable/stress_injury" />
+						</LinearLayout>
+
+					</LinearLayout>
+
+				</RadioGroup>
+			</LinearLayout>
+
+			<TextView
+				android:id="@+id/aset_wheel_notes_label_tv"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="8dp"
+				android:layout_marginTop="8dp"
+				android:text="@string/aset_notes_label"
+				style="@style/white_text_medium"
+				/>
+
+			<EditText
+				android:id="@+id/aset_wheel_notes_et"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="8dp"
+				android:layout_marginLeft="8dp"
+				android:layout_marginRight="8dp"
+				android:inputType="textMultiLine"
+				android:maxLines="4" >
+			</EditText>
+		</LinearLayout>
+	</ScrollView>
+
+</RelativeLayout>

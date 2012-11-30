@@ -28,6 +28,8 @@
 	<!-- =============================================== -->
 	<!-- Text Styles										-->
 	<!-- =============================================== -->
+
+	<!-- Note: shouldn't these be size sp instead of dp? -->
 	<style
 		name="white_text_small"
 		parent="@android:style/TextAppearance">

@@ -106,6 +106,15 @@
 				</TableRow>
 
 				<!-- WEIGHT -->
+				<View
+					android:id="@+id/aset_weight_bar"
+					android:layout_width="fill_parent"
+					android:layout_height="1dp"
+					android:layout_marginBottom="3dp"
+					android:layout_marginLeft="24dp"
+					android:layout_marginRight="24dp"
+					android:layout_marginTop="3dp"
+					android:background="@color/hpg_orange_dark_desaturated4" />
 
 				<TableRow
 					android:id="@+id/aset_weight_row"
@@ -140,6 +149,15 @@
 				</TableRow>
 
 				<!-- Level -->
+				<View
+					android:id="@+id/aset_level_bar"
+					android:layout_width="fill_parent"
+					android:layout_height="1dp"
+					android:layout_marginBottom="3dp"
+					android:layout_marginLeft="24dp"
+					android:layout_marginRight="24dp"
+					android:layout_marginTop="3dp"
+					android:background="@color/hpg_orange_dark_desaturated4" />
 
 				<TableRow
 					android:id="@+id/aset_level_row"
@@ -176,6 +194,15 @@
 
 
 				<!-- Calories -->
+				<View
+					android:id="@+id/aset_cals_bar"
+					android:layout_width="fill_parent"
+					android:layout_height="1dp"
+					android:layout_marginBottom="3dp"
+					android:layout_marginLeft="24dp"
+					android:layout_marginRight="24dp"
+					android:layout_marginTop="3dp"
+					android:background="@color/hpg_orange_dark_desaturated4" />
 
 				<TableRow
 					android:id="@+id/aset_cals_row"
@@ -211,6 +238,15 @@
 				</TableRow>
 
 				<!-- Distance -->
+				<View
+					android:id="@+id/aset_dist_bar"
+					android:layout_width="fill_parent"
+					android:layout_height="1dp"
+					android:layout_marginBottom="3dp"
+					android:layout_marginLeft="24dp"
+					android:layout_marginRight="24dp"
+					android:layout_marginTop="3dp"
+					android:background="@color/hpg_orange_dark_desaturated4" />
 
 				<TableRow
 					android:id="@+id/aset_dist_row"
@@ -245,6 +281,15 @@
 				</TableRow>
 
 				<!-- Time -->
+				<View
+					android:id="@+id/aset_time_bar"
+					android:layout_width="fill_parent"
+					android:layout_height="1dp"
+					android:layout_marginBottom="3dp"
+					android:layout_marginLeft="24dp"
+					android:layout_marginRight="24dp"
+					android:layout_marginTop="3dp"
+					android:background="@color/hpg_orange_dark_desaturated4" />
 
 				<TableRow
 					android:id="@+id/aset_time_row"
@@ -279,6 +324,15 @@
 				</TableRow>
 
 				<!-- Other -->
+				<View
+					android:id="@+id/aset_other_bar"
+					android:layout_width="fill_parent"
+					android:layout_height="1dp"
+					android:layout_marginBottom="3dp"
+					android:layout_marginLeft="24dp"
+					android:layout_marginRight="24dp"
+					android:layout_marginTop="3dp"
+					android:background="@color/hpg_orange_dark_desaturated4" />
 
 				<TableRow
 					android:id="@+id/aset_other_row"

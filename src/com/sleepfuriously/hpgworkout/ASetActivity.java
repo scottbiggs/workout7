@@ -24,6 +24,7 @@ package com.sleepfuriously.hpgworkout;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -38,12 +39,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.View.OnLongClickListener;
+import android.view.animation.AnticipateOvershootInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 public class ASetActivity
 				extends BaseDialogActivity
@@ -60,6 +63,9 @@ public class ASetActivity
 
 	private static final String tag = "ASetActivity";
 
+	/** The custom width of each wheel. */
+	public static final int WHEEL_DEFAULT_CUSTOM_WIDTH = 10;
+
 
 	//------------------------
 	//	Widget Data
@@ -67,16 +73,19 @@ public class ASetActivity
 
 	Button m_done, m_clear;
 
-	TextView // m_name_tv,
-		m_reps_label_tv, m_weight_label_tv, m_level_label_tv,
-		m_dist_label_tv, m_time_label_tv, m_other_label_tv,
-		m_calorie_label_tv;
-
 	EditText m_reps_et, m_weight_et, m_level_et,
-		m_dist_et, m_time_et, m_other_et,
+		m_dist_et,
+		m_time_et,
+		m_other_et,
 		m_notes_et, m_calorie_et;
 
+
 	RadioButton m_ok_rb, m_plus_rb, m_minus_rb, m_x_rb;
+
+	WheelInt m_reps_wheels, m_level_wheels, m_calorie_wheels;
+
+	WheelFloat m_weight_wheels, m_dist_wheels, m_time_wheels, m_other_wheels;
+
 
 	//------------------------
 	//	Class Data
@@ -122,56 +131,66 @@ public class ASetActivity
 	 */
 	protected boolean m_first_time = false;
 
+
+	//------------------------
+	//	Methods
 	//------------------------
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 //		Log.v(tag, "entering onCreate()");
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.aset);
+
+		if (WGlobals.g_wheel) {
+			setContentView(R.layout.aset_wheel);
+			init_widgets_with_wheels();
+			init_wheels();
+		}
+		else {
+			setContentView(R.layout.aset);
+			init_widgets_no_wheels();
+		}
 
 		m_reset_widgets = true;	// Fill the forms the first time this
 								// activity is called.
 
-		// Set up all the widgets.
-//		m_name_tv = (TextView) findViewById(R.id.aset_name_tv);
 
-		m_reps_label_tv = (TextView) findViewById(R.id.aset_reps_label_tv);
+	} // onCreate (.)
+
+	/***********************
+	 * Sets up all the global widgets variables for
+	 * the layout that does NOT contain wheels.
+	 */
+	protected void init_widgets_no_wheels() {
 		m_reps_et = (EditText) findViewById(R.id.aset_reps_et);
 		m_reps_et.setOnLongClickListener(this);
 		m_reps_et.setOnKeyListener(this);
 		m_reps_et.addTextChangedListener(this);
 
-		m_weight_label_tv = (TextView) findViewById(R.id.aset_weight_label_tv);
 		m_weight_et = (EditText) findViewById(R.id.aset_weight_et);
 		m_weight_et.setOnLongClickListener(this);
 		m_weight_et.setOnKeyListener(this);
 		m_weight_et.addTextChangedListener(this);
 
-		m_level_label_tv = (TextView) findViewById(R.id.aset_level_label_tv);
 		m_level_et = (EditText) findViewById(R.id.aset_level_et);
 		m_level_et.setOnLongClickListener(this);
 		m_level_et.setOnKeyListener(this);
 		m_level_et.addTextChangedListener(this);
 
-		m_calorie_label_tv = (TextView) findViewById(R.id.aset_calorie_label_tv);
 		m_calorie_et = (EditText) findViewById(R.id.aset_calorie_et);
 		m_calorie_et.setOnLongClickListener(this);
 		m_calorie_et.setOnKeyListener(this);
 		m_calorie_et.addTextChangedListener(this);
 
-		m_dist_label_tv = (TextView) findViewById(R.id.aset_dist_label_tv);
 		m_dist_et = (EditText) findViewById(R.id.aset_dist_et);
 		m_dist_et.setOnLongClickListener(this);
 		m_dist_et.setOnKeyListener(this);
 		m_dist_et.addTextChangedListener(this);
 
-		m_time_label_tv = (TextView) findViewById(R.id.aset_time_label_tv);
 		m_time_et = (EditText) findViewById(R.id.aset_time_et);
 		m_time_et.setOnLongClickListener(this);
 		m_time_et.setOnKeyListener(this);
 		m_time_et.addTextChangedListener(this);
 
-		m_other_label_tv = (TextView) findViewById(R.id.aset_other_label_tv);
 		m_other_et = (EditText) findViewById(R.id.aset_other_et);
 		m_other_et.setOnLongClickListener(this);
 		m_other_et.setOnKeyListener(this);
@@ -185,6 +204,7 @@ public class ASetActivity
 		m_ok_rb = (RadioButton) findViewById(R.id.aset_cond_ok_rb);
 		m_ok_rb.setOnLongClickListener(this);
 		m_ok_rb.setOnClickListener(new OnClickListener() {
+			@Override
 			public void onClick(View v) {
 				m_ok_rb.setChecked(true);
 				m_plus_rb.setChecked(false);
@@ -196,6 +216,7 @@ public class ASetActivity
 		m_plus_rb = (RadioButton) findViewById(R.id.aset_cond_plus_rb);
 		m_plus_rb.setOnLongClickListener(this);
 		m_plus_rb.setOnClickListener(new OnClickListener() {
+			@Override
 			public void onClick(View v) {
 				m_ok_rb.setChecked(false);
 				m_plus_rb.setChecked(true);
@@ -207,6 +228,7 @@ public class ASetActivity
 		m_minus_rb = (RadioButton) findViewById(R.id.aset_cond_minus_rb);
 		m_minus_rb.setOnLongClickListener(this);
 		m_minus_rb.setOnClickListener(new OnClickListener() {
+			@Override
 			public void onClick(View v) {
 				m_ok_rb.setChecked(false);
 				m_plus_rb.setChecked(false);
@@ -218,6 +240,7 @@ public class ASetActivity
 		m_x_rb = (RadioButton) findViewById(R.id.aset_cond_injury_rb);
 		m_x_rb.setOnLongClickListener(this);
 		m_x_rb.setOnClickListener(new OnClickListener() {
+			@Override
 			public void onClick(View v) {
 				m_ok_rb.setChecked(false);
 				m_plus_rb.setChecked(false);
@@ -234,8 +257,110 @@ public class ASetActivity
 		m_clear.setOnClickListener(this);
 		m_clear.setOnLongClickListener(this);
 
-	} // onCreate (.)
+	} // init_widgets_no_wheels()
 
+	/***********************
+	 * Sets up all the global widgets variables for
+	 * the layout that DOES contain wheels.
+	 */
+	protected void init_widgets_with_wheels() {
+		m_reps_et = (EditText) findViewById(R.id.aset_wheel_reps_result_et);
+		m_reps_et.setOnLongClickListener(this);
+		m_reps_et.setOnKeyListener(this);
+		m_reps_et.addTextChangedListener(this);
+
+		m_weight_et = (EditText) findViewById(R.id.aset_wheel_weight_et);
+		m_weight_et.setOnLongClickListener(this);
+		m_weight_et.setOnKeyListener(this);
+		m_weight_et.addTextChangedListener(this);
+
+		m_level_et = (EditText) findViewById(R.id.aset_wheel_level_et);
+		m_level_et.setOnLongClickListener(this);
+		m_level_et.setOnKeyListener(this);
+		m_level_et.addTextChangedListener(this);
+
+		m_calorie_et = (EditText) findViewById(R.id.aset_wheel_calorie_et);
+		m_calorie_et.setOnLongClickListener(this);
+		m_calorie_et.setOnKeyListener(this);
+		m_calorie_et.addTextChangedListener(this);
+
+		m_dist_et = (EditText) findViewById(R.id.aset_wheel_dist_et);
+		m_dist_et.setOnLongClickListener(this);
+		m_dist_et.setOnKeyListener(this);
+		m_dist_et.addTextChangedListener(this);
+
+		m_time_et = (EditText) findViewById(R.id.aset_wheel_time_et);
+		m_time_et.setOnLongClickListener(this);
+		m_time_et.setOnKeyListener(this);
+		m_time_et.addTextChangedListener(this);
+
+		m_other_et = (EditText) findViewById(R.id.aset_wheel_other_et);
+		m_other_et.setOnLongClickListener(this);
+		m_other_et.setOnKeyListener(this);
+		m_other_et.addTextChangedListener(this);
+
+		m_notes_et = (EditText) findViewById(R.id.aset_wheel_notes_et);
+		m_notes_et.setOnLongClickListener(this);
+		m_notes_et.setOnKeyListener(this);
+		m_notes_et.addTextChangedListener(this);
+
+		m_ok_rb = (RadioButton) findViewById(R.id.aset_wheel_cond_ok_rb);
+		m_ok_rb.setOnLongClickListener(this);
+		m_ok_rb.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				m_ok_rb.setChecked(true);
+				m_plus_rb.setChecked(false);
+				m_minus_rb.setChecked(false);
+				m_x_rb.setChecked(false);
+			}
+		});
+
+		m_plus_rb = (RadioButton) findViewById(R.id.aset_wheel_cond_plus_rb);
+		m_plus_rb.setOnLongClickListener(this);
+		m_plus_rb.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				m_ok_rb.setChecked(false);
+				m_plus_rb.setChecked(true);
+				m_minus_rb.setChecked(false);
+				m_x_rb.setChecked(false);
+			}
+		});
+
+		m_minus_rb = (RadioButton) findViewById(R.id.aset_wheel_cond_minus_rb);
+		m_minus_rb.setOnLongClickListener(this);
+		m_minus_rb.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				m_ok_rb.setChecked(false);
+				m_plus_rb.setChecked(false);
+				m_minus_rb.setChecked(true);
+				m_x_rb.setChecked(false);
+			}
+		});
+
+		m_x_rb = (RadioButton) findViewById(R.id.aset_wheel_cond_injury_rb);
+		m_x_rb.setOnLongClickListener(this);
+		m_x_rb.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				m_ok_rb.setChecked(false);
+				m_plus_rb.setChecked(false);
+				m_minus_rb.setChecked(false);
+				m_x_rb.setChecked(true);
+			}
+		});
+
+		m_done = (Button) findViewById(R.id.aset_wheel_enter_butt);
+		m_done.setOnClickListener(this);
+		m_done.setOnLongClickListener(this);
+
+		m_clear = (Button) findViewById(R.id.aset_wheel_clear_butt);
+		m_clear.setOnClickListener(this);
+		m_clear.setOnLongClickListener(this);
+
+	} // init_widgets_with_wheels()
 
 	//------------------------
 	@Override
@@ -266,6 +391,7 @@ public class ASetActivity
 	}
 
 	//------------------------
+	@Override
 	public void onClick(View v) {
 		if (v == m_done) {
 			test_to_save();
@@ -279,6 +405,7 @@ public class ASetActivity
 
 
 	//------------------------
+	@Override
 	public boolean onLongClick(View v) {
 		if (v == m_reps_et) {
 			show_help_dialog (R.string.aset_reps_help_title,
@@ -355,6 +482,7 @@ public class ASetActivity
 
 
 	//------------------------
+	@Override
 	public boolean onKey(View v, int keyCode, KeyEvent event) {
 //		Log.v (tag, "onKey() was hit!");
 		m_widgets_dirty = true;
@@ -365,15 +493,104 @@ public class ASetActivity
 	// Since soft keyboards don't fire onKey(), this is needed
 	// to see if a software keyboard made any changes.
 	//
+	@Override
 	public void afterTextChanged(Editable s) {
 		m_widgets_dirty = true;
 	}
 
+	@Override
 	public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 	}
 
+	@Override
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
 	}
+
+
+	/********************
+	 * Sets up the NumberWheel widgets, which require a bit
+	 * of code to look and work correctly.
+	 *
+	 * preconditions:
+	 * 		The wheel version of the ASet layout has already
+	 * 		been loaded.
+	 */
+	private void init_wheels() {
+		// The ints first
+		m_reps_wheels = new WheelInt(this, new int[]
+						{
+						R.id.aset_wheel_reps_1,
+						R.id.aset_wheel_reps_10,
+						R.id.aset_wheel_reps_100,
+						R.id.aset_wheel_reps_1000
+						});
+		m_reps_wheels.set_tv(m_reps_et);
+
+		m_level_wheels = new WheelInt(this, new int[]
+						{
+						R.id.aset_wheel_level_1,
+						R.id.aset_wheel_level_10,
+						R.id.aset_wheel_level_100,
+						R.id.aset_wheel_level_1000
+						});
+		m_level_wheels.set_tv(m_level_et);
+
+		m_calorie_wheels = new WheelInt(this, new int[]
+						{
+						R.id.aset_wheel_calorie_1,
+						R.id.aset_wheel_calorie_10,
+						R.id.aset_wheel_calorie_100,
+						R.id.aset_wheel_calorie_1000
+						});
+		m_calorie_wheels.set_tv(m_calorie_et);
+
+
+		// The floats
+		m_weight_wheels = new WheelFloat (this, new int[]
+						{
+						R.id.aset_wheel_weight_point,
+						R.id.aset_wheel_weight_1,
+						R.id.aset_wheel_weight_10,
+						R.id.aset_wheel_weight_100,
+						R.id.aset_wheel_weight_1000
+						},
+						1);
+		m_weight_wheels.set_tv(m_weight_et);
+
+		m_dist_wheels = new WheelFloat (this, new int[]
+						{
+						R.id.aset_wheel_dist_point,
+						R.id.aset_wheel_dist_1,
+						R.id.aset_wheel_dist_10,
+						R.id.aset_wheel_dist_100,
+						R.id.aset_wheel_dist_1000
+						},
+						1);
+		m_dist_wheels.set_tv(m_dist_et);
+
+		m_time_wheels = new WheelFloat (this, new int[]
+						{
+						R.id.aset_wheel_time_point,
+						R.id.aset_wheel_time_1,
+						R.id.aset_wheel_time_10,
+						R.id.aset_wheel_time_100,
+						R.id.aset_wheel_time_1000
+						},
+						1);
+		m_time_wheels.set_tv(m_time_et);
+
+		m_other_wheels = new WheelFloat (this, new int[]
+						{
+						R.id.aset_wheel_other_point,
+						R.id.aset_wheel_other_1,
+						R.id.aset_wheel_other_10,
+						R.id.aset_wheel_other_100,
+						R.id.aset_wheel_other_1000
+						},
+						1);
+		m_other_wheels.set_tv(m_other_et);
+
+	} // init_wheels()
 
 
 	/********************
@@ -382,6 +599,12 @@ public class ASetActivity
 	 * them as needed.
 	 */
 	private void fill_forms() {
+		/**
+		 * Indicates if we should draw a bar separating the
+		 * row from the one above it.
+		 */
+		boolean need_bar = false;
+
 		int col;		// used to fill in the views.
 //		Log.v(tag, "entering fill_forms()");
 
@@ -442,12 +665,44 @@ public class ASetActivity
 
 					// Fill in the aspects.
 					setup_reps (ex_cursor, set_cursor, is_set);
+					need_bar = m_reps;
+
 					setup_weights (ex_cursor, set_cursor, is_set);
+					need_bar = turn_off_bar(WGlobals.g_wheel ?
+												R.id.aset_wheel_weight_bar :
+												R.id.aset_weight_bar,
+											m_weight, need_bar);
+
 					setup_levels (ex_cursor, set_cursor, is_set);
+					need_bar = turn_off_bar(WGlobals.g_wheel ?
+												R.id.aset_wheel_level_bar :
+												R.id.aset_level_bar,
+											m_levels, need_bar);
+
 					setup_calories (ex_cursor, set_cursor, is_set);
+					need_bar = turn_off_bar(WGlobals.g_wheel ?
+												R.id.aset_wheel_cals_bar :
+												R.id.aset_cals_bar,
+											m_calories, need_bar);
+
 					setup_dist (ex_cursor, set_cursor, is_set);
+					need_bar = turn_off_bar(WGlobals.g_wheel ?
+												R.id.aset_wheel_dist_bar :
+												R.id.aset_dist_bar,
+											m_distanced, need_bar);
+
 					setup_time (ex_cursor, set_cursor, is_set);
+					need_bar = turn_off_bar(WGlobals.g_wheel ?
+												R.id.aset_wheel_time_bar :
+												R.id.aset_time_bar,
+											m_timed, need_bar);
+
 					setup_other (ex_cursor, set_cursor, is_set);
+					need_bar = turn_off_bar(WGlobals.g_wheel ?
+												R.id.aset_wheel_other_bar :
+												R.id.aset_other_bar,
+											m_other, need_bar);
+
 					setup_notes (ex_cursor, set_cursor, is_set);
 
 				} // try querying a set
@@ -502,13 +757,19 @@ public class ASetActivity
 	 */
 	protected void setup_reps (Cursor ex_cursor, Cursor set_cursor,
 							boolean set_valid) {
+		TextView reps_label_tv;
+		if (WGlobals.g_wheel)
+			reps_label_tv = (TextView) findViewById(R.id.aset_wheel_reps_label_tv);
+		else
+			reps_label_tv = (TextView) findViewById(R.id.aset_reps_label_tv);
+
 		int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_REP);
 		m_reps = ex_cursor.getInt(col) == 1 ? true : false;
 		if (m_reps) {
 			m_reps_et.setEnabled(m_reps);
 			m_reps_et.setFocusable(m_reps);
 			if (m_significant == DatabaseHelper.EXERCISE_COL_REP_NUM) {
-				m_reps_label_tv.setTypeface(null, Typeface.BOLD);
+				reps_label_tv.setTypeface(null, Typeface.BOLD);
 			}
 
 			if (set_valid) {
@@ -516,28 +777,39 @@ public class ASetActivity
 				int reps = set_cursor.getInt(col);
 				if (reps != -1) {
 					m_reps_et.setText("" + reps);
+					if (WGlobals.g_wheel)
+						m_reps_wheels.set_value(reps);
 				}
 			}
 		}
 		else {
-			TableRow reps_row = (TableRow)
-					findViewById(R.id.aset_reps_row);
+			// Reps aren't there, so get rid of this row!
+			int id = WGlobals.g_wheel ?
+					R.id.aset_wheel_reps_row :
+						R.id.aset_reps_row;
+			TableRow reps_row = (TableRow)findViewById(id);
 			reps_row.setVisibility(View.GONE);
 		}
-	}
+	} // setup_reps (...)
 
 	/************************
 	 * Similar to above
 	 */
 	protected void setup_levels (Cursor ex_cursor, Cursor set_cursor,
 								boolean set_valid) {
+		TextView level_label_tv;
+		if (WGlobals.g_wheel)
+			level_label_tv = (TextView) findViewById(R.id.aset_level_label_tv);
+		else
+			level_label_tv = (TextView) findViewById(R.id.aset_wheel_level_label_tv);
+
 		int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_LEVEL);
 		m_levels = ex_cursor.getInt(col) == 1 ? true : false;
 		if (m_levels) {
 			m_level_et.setEnabled(m_levels);
 			m_level_et.setFocusable(m_levels);
 			if (m_significant == DatabaseHelper.EXERCISE_COL_LEVEL_NUM) {
-				m_level_label_tv.setTypeface(null, Typeface.BOLD);
+				level_label_tv.setTypeface(null, Typeface.BOLD);
 			}
 			if (set_valid) {
 				col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_LEVELS);
@@ -548,21 +820,31 @@ public class ASetActivity
 			}
 		}
 		else {
+			int id = WGlobals.g_wheel ?
+					R.id.aset_wheel_level_row :
+						R.id.aset_level_row;
 			TableRow levels_row = (TableRow)
-					findViewById(R.id.aset_level_row);
+					findViewById(id);
 			levels_row.setVisibility(View.GONE);
 		}
-	}
+	} // setup_levels (...)
 
+	//-------------------------------
 	protected void setup_calories (Cursor ex_cursor, Cursor set_cursor,
 								boolean set_valid) {
+		TextView calorie_label_tv;
+		if (WGlobals.g_wheel)
+			calorie_label_tv = (TextView) findViewById(R.id.aset_wheel_calorie_label_tv);
+		else
+			calorie_label_tv = (TextView) findViewById(R.id.aset_calorie_label_tv);
+
 		int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_CALORIES);
 		m_calories = ex_cursor.getInt(col) == 1 ? true : false;
 		if (m_calories) {
 			m_calorie_et.setEnabled(m_calories);
 			m_calorie_et.setFocusable(m_calories);
 			if (m_significant == DatabaseHelper.EXERCISE_COL_CALORIE_NUM) {
-				m_calorie_label_tv.setTypeface(null, Typeface.BOLD);
+				calorie_label_tv.setTypeface(null, Typeface.BOLD);
 			}
 			if (set_valid) {
 				col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_CALORIES);
@@ -573,11 +855,14 @@ public class ASetActivity
 			}
 		}
 		else {
+			int id = WGlobals.g_wheel ?
+					R.id.aset_wheel_cals_row :
+						R.id.aset_cals_row;
 			TableRow cals_row = (TableRow)
-					findViewById(R.id.aset_cals_row);
+					findViewById(id);
 			cals_row.setVisibility(View.GONE);
 		}
-	}
+	} // setup_calories(...)
 
 	/********************
 	 * Simply fills in the information for the weight aspect of
@@ -592,6 +877,12 @@ public class ASetActivity
 	 */
 	protected void setup_weights (Cursor ex_cursor, Cursor set_cursor,
 								boolean set_valid) {
+		TextView weight_label_tv;
+		if (WGlobals.g_wheel)
+			weight_label_tv = (TextView) findViewById(R.id.aset_wheel_weight_label_tv);
+		else
+			weight_label_tv = (TextView) findViewById(R.id.aset_weight_label_tv);
+
 		int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_WEIGHT);
 		m_weight = ex_cursor.getInt(col) == 1 ? true : false;
 		if (m_weight) {
@@ -601,10 +892,10 @@ public class ASetActivity
 			String weight_unit = getString(R.string.aset_weight_hint,
 					ex_cursor.getString(col));
 			m_weight_et.setHint(weight_unit);
-			m_weight_label_tv.setText(getString(R.string.aset_weight_label,
+			weight_label_tv.setText(getString(R.string.aset_weight_label,
 					weight_unit));
 			if (m_significant == DatabaseHelper.EXERCISE_COL_WEIGHT_NUM) {
-				m_weight_label_tv.setTypeface(null,
+				weight_label_tv.setTypeface(null,
 						Typeface.BOLD);
 			}
 
@@ -614,18 +905,30 @@ public class ASetActivity
 				float weight = set_cursor.getFloat(col);
 				if (weight != -1) {
 					m_weight_et.setText("" + weight);
+					if (WGlobals.g_wheel)
+						m_weight_wheels.set_value(weight);
 				}
 			}
 		}
 		else {
+			int id = WGlobals.g_wheel ?
+					R.id.aset_wheel_weight_row :
+						R.id.aset_weight_row;
 			TableRow weight_row = (TableRow)
-					findViewById(R.id.aset_weight_row);
+					findViewById(id);
 			weight_row.setVisibility(View.GONE);
 		}
-	}
+	} // setup_weights(...)
 
+	//-------------------------------
 	protected void setup_dist (Cursor ex_cursor, Cursor set_cursor,
 							boolean set_valid) {
+		TextView dist_label_tv;
+		if (WGlobals.g_wheel)
+			dist_label_tv = (TextView) findViewById(R.id.aset_wheel_dist_label_tv);
+		else
+			dist_label_tv = (TextView) findViewById(R.id.aset_dist_label_tv);
+
 		int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_DIST);
 		m_distanced = ex_cursor.getInt(col) == 1 ? true : false;
 		if (m_distanced) {
@@ -634,10 +937,10 @@ public class ASetActivity
 			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_DIST_UNIT);
 			String dist_unit = getString(R.string.aset_distance_hint, ex_cursor.getString(col));
 			m_dist_et.setHint(dist_unit);
-			m_dist_label_tv.setText(getString(R.string.aset_distance_label,
+			dist_label_tv.setText(getString(R.string.aset_distance_label,
 					dist_unit));
 			if (m_significant == DatabaseHelper.EXERCISE_COL_DIST_NUM) {
-				m_dist_label_tv.setTypeface(null, Typeface.BOLD);
+				dist_label_tv.setTypeface(null, Typeface.BOLD);
 			}
 			if (set_valid) {
 				col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_DIST);
@@ -648,14 +951,24 @@ public class ASetActivity
 			}
 		}
 		else {
+			int id = WGlobals.g_wheel ?
+					R.id.aset_wheel_dist_row :
+						R.id.aset_dist_row;
 			TableRow dist_row = (TableRow)
-					findViewById(R.id.aset_dist_row);
+					findViewById(id);
 			dist_row.setVisibility(View.GONE);
 		}
-	}
+	} // setup_dist(...)
 
+	//-------------------------------
 	protected void setup_time (Cursor ex_cursor, Cursor set_cursor,
 							boolean set_valid) {
+		TextView time_label_tv;
+		if (WGlobals.g_wheel)
+			time_label_tv = (TextView) findViewById(R.id.aset_wheel_time_label_tv);
+		else
+			time_label_tv = (TextView) findViewById(R.id.aset_time_label_tv);
+
 		int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_TIME);
 		m_timed = ex_cursor.getInt(col) == 1 ? true : false;
 		if (m_timed) {
@@ -665,9 +978,9 @@ public class ASetActivity
 			String time_unit = getString(R.string.aset_time_hint, ex_cursor.getString(col));
 			m_time_et.setHint(time_unit);
 			if (m_significant == DatabaseHelper.EXERCISE_COL_TIME_NUM) {
-				m_time_label_tv.setTypeface(null, Typeface.BOLD);
+				time_label_tv.setTypeface(null, Typeface.BOLD);
 			}
-			m_time_label_tv.setText(getString(R.string.aset_time_label,
+			time_label_tv.setText(getString(R.string.aset_time_label,
 					time_unit));
 			if (set_valid) {
 				col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_TIME);
@@ -678,14 +991,24 @@ public class ASetActivity
 			}
 		}
 		else {
+			int id = WGlobals.g_wheel ?
+					R.id.aset_wheel_time_row :
+						R.id.aset_time_row;
 			TableRow time_row = (TableRow)
-					findViewById(R.id.aset_time_row);
+					findViewById(id);
 			time_row.setVisibility(View.GONE);
 		}
-	}
+	} // setup_time(...)
 
+	//-------------------------------
 	protected void setup_other (Cursor ex_cursor, Cursor set_cursor,
 								boolean set_valid) {
+		TextView other_label_tv;
+		if (WGlobals.g_wheel)
+			other_label_tv = (TextView) findViewById(R.id.aset_wheel_other_label_tv);
+		else
+			other_label_tv = (TextView) findViewById(R.id.aset_other_label_tv);
+
 		int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_OTHER);
 		m_other = ex_cursor.getInt(col) == 1 ? true : false;
 		if (m_other) {
@@ -699,10 +1022,10 @@ public class ASetActivity
 			m_other_unit = ex_cursor.getString(col);
 			String final_other_label = getString (R.string.aset_other_hint, m_other_unit);
 			m_other_et.setHint(final_other_label);
-			m_other_label_tv.setText(getString(R.string.aset_other_label_old,
+			other_label_tv.setText(getString(R.string.aset_other_label_old,
 					m_other_title, m_other_unit));
 			if (m_significant == DatabaseHelper.EXERCISE_COL_OTHER_NUM) {
-				m_other_label_tv.setTypeface(null, Typeface.BOLD);
+				other_label_tv.setTypeface(null, Typeface.BOLD);
 			}
 			if (set_valid) {
 				col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_OTHER);
@@ -713,11 +1036,14 @@ public class ASetActivity
 			}
 		}
 		else {
+			int id = WGlobals.g_wheel ?
+					R.id.aset_wheel_other_row :
+						R.id.aset_other_row;
 			TableRow other_row = (TableRow)
-					findViewById(R.id.aset_other_row);
+					findViewById(id);
 			other_row.setVisibility(View.GONE);
 		}
-	}
+	} // setup_other(...)
 
 	/*************************
 	 * Reads in the note from the database and displays it
@@ -735,6 +1061,39 @@ public class ASetActivity
 //				Log.d(tag, "Just set m_notes_et to: " + note);
 			}
 		}
+	}
+
+	/***********************
+	 * This is a convenice method, doing several things
+	 * and using some side effects.  The main part is
+	 * to turn off unnecessary separator bars between
+	 * the exercise aspects.
+	 *
+	 * @param id			The id of the bar in question.
+	 * @param exists		Does the exercise BELOW the bar exist?
+	 * @param above		Have we displayed an exercise above?
+	 * 					This is the result from previous calls
+	 * 					to this method.
+	 *
+	 * @return		This simply returns exists OR above.  It's
+	 * 				used to call the next iteration of this
+	 * 				method (it'll be the above parameter).
+	 */
+	protected boolean turn_off_bar (int id,
+									boolean exists,
+									boolean above) {
+		if (!(exists && above)) {
+			turn_off_widget (id);
+		}
+		return exists || above;
+	}
+
+	/***********************
+	 * Turns the given widget to GONE.
+	 */
+	protected void turn_off_widget (int id) {
+		View widget = findViewById(id);
+		widget.setVisibility(View.GONE);
 	}
 
 
@@ -787,6 +1146,7 @@ public class ASetActivity
 		if (m_other_et.isEnabled())
 			m_other_et.setText(null);
 		clear_stress();
+		clear_wheels();
 		m_notes_et.setText(null);
 		m_notes_et.setHint(null);
 	} // clear()
@@ -801,6 +1161,21 @@ public class ASetActivity
 		m_plus_rb.setChecked(false);
 		m_minus_rb.setChecked(false);
 		m_x_rb.setChecked(false);
+	}
+
+	/*************************
+	 * If any wheels are displayed, this sets them all
+	 * to zero.
+	 */
+	void clear_wheels() {
+		if (WGlobals.g_wheel) {
+			if (m_reps) {
+				m_reps_wheels.reset();
+			}
+			if (m_weight) {
+				m_weight_wheels.reset();
+			}
+		}
 	}
 
 	/*************************
@@ -971,6 +1346,7 @@ public class ASetActivity
 				show_yes_no_dialog(R.string.aset_nag_no_changes_title,
 						R.string.aset_nag_no_changes_msg,
 						new View.OnClickListener() {
+							@Override
 							public void onClick(View v) {
 								save();
 								dismiss_all_dialogs();
@@ -1063,13 +1439,19 @@ public class ASetActivity
 			if ((str == null) || (str.length() == 0)) {
 				// The other is a little different.  So do it man-
 				// ually here.
+				TextView other_label_tv =
+						(TextView) findViewById(WGlobals.g_wheel ?
+								R.id.aset_wheel_other_label_tv :
+								R.id.aset_other_label_tv);
+
 				if (m_significant == DatabaseHelper.EXERCISE_COL_OTHER_NUM) {
-					String args[] = {m_other_label_tv.getText().toString(), m_other_label_tv.getText().toString(), m_exercise_name};
+					String args[] = {other_label_tv.getText().toString(),
+									other_label_tv.getText().toString(), m_exercise_name};
 					show_help_dialog(R.string.aset_nag_significant_title, null,
 							R.string.aset_nag_significant_msg, args);
 					return;
 				}
-				blank_forms.add(m_other_label_tv.getText().toString());
+				blank_forms.add(other_label_tv.getText().toString());
 			}
 		}
 
@@ -1109,19 +1491,13 @@ public class ASetActivity
 			}
 
 			show_yes_no_dialog (title, msg, new OnClickListener() {
+				@Override
 				public void onClick(View v) {
 					// They said yes, so
 					save();
 					dismiss_all_dialogs();
 				}
 			});
-
-//			show_yes_no_dialog(title, msg, new DialogInterface.OnClickListener() {
-//				public void onClick(DialogInterface dialog, int which) {
-//					// They said yes, so...
-//					save();
-//				}
-//			});
 		}
 		else {
 			save();
