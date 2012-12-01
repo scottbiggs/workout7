@@ -63,6 +63,8 @@ public class WheelInt implements OnWheelScrollListener {
 	/** Optionally displays the results of this widget */
 	TextView m_result_tv = null;
 
+	/** The max & mins that this wheel can display */
+	final long m_max_val, m_min_val;
 
 	//--------------------
 	//	Methods
@@ -95,8 +97,12 @@ public class WheelInt implements OnWheelScrollListener {
 			m_wheels[i].setMinimumWidth(DEFAULT_WHEEL_WIDTH);
 		}
 
+		// Set the mins and maxs for this instance.
+		m_min_val = 0;
+		m_max_val = powers_of_ten(m_wheels.length) - 1;
+
 		// Finish by zeroing out the number.
-		reset();
+		reset(false);
 	} // constructor
 
 	/********************
@@ -122,9 +128,11 @@ public class WheelInt implements OnWheelScrollListener {
 	 * 						to change
 	 *
 	 * @param	val			The number to set the wheel to.
+	 *
+	 * @param	anim			TRUE = show animation.
 	 */
-	public void set_ind_wheel (int index, int val) {
-		m_wheels[index].setCurrentItem(val);
+	public void set_ind_wheel (int index, int val, boolean anim) {
+		m_wheels[index].setCurrentItem(val, anim);
 		if (m_result_tv != null) {
 			m_result_tv.setText("" + get_value());
 		}
@@ -154,10 +162,12 @@ public class WheelInt implements OnWheelScrollListener {
 	 * side effects:
 	 * 		If there's a TextView attached, it goes
 	 * 		to zero as well.
+	 *
+	 * @param	anim		Animate or not.
 	 */
-	public void reset() {
+	public void reset (boolean anim) {
 		for (int i = 0; i < m_wheels.length; i++) {
-			set_ind_wheel(i, 0);
+			set_ind_wheel(i, 0, anim);
 		}
 		if (m_result_tv != null) {
 			m_result_tv.setText("0");
@@ -170,44 +180,51 @@ public class WheelInt implements OnWheelScrollListener {
 	 *
 	 * @param val	We'll do our best to set the number
 	 * 				to this value.
+	 *
+	 * @parm anim	Animate the setting change?
 	 */
-	public void set_value (int val) {
+	public void set_value (int val, boolean anim) {
 		// Easy case first.
 		if (val == 0) {
-			reset();
+			reset(anim);
 			return;
 		}
 
+		// Test, set the first wheel to 8.
+//		m_wheels[0].setCurrentItem(8);		that worked
+
 		if (val > max_val()) {
-			val = max_val();
+			val = (int) max_val();
 		}
 		else if (val < min_val()) {
-			val = min_val();
+			val = (int) min_val();
 		}
 		for (int i = 0; i < m_wheels.length; i++) {
-			int digit = val / (10 ^ i) - (val / (10 ^ (i + 1))) * 10; // http://www.vbforums.com/showthread.php?375620-Finding-the-value-of-the-nth-digit-of-a-number
-//			int digit = (val / (10 ^ i)) % 10;	// http://stackoverflow.com/questions/203854/how-to-get-the-nth-digit-of-an-integer-with-bit-wise-operations
-			m_wheels[i].setCurrentItem(digit, true);
+			int tens = (int) powers_of_ten(i);
+//			int digit = val / (10 ^ i) - (val / (10 ^ (i + 1))) * 10; // http://www.vbforums.com/showthread.php?375620-Finding-the-value-of-the-nth-digit-of-a-number
+			int digit = (val / tens) % 10;	// http://stackoverflow.com/questions/203854/how-to-get-the-nth-digit-of-an-integer-with-bit-wise-operations
+			m_wheels[i].setCurrentItem(digit, anim);
 		}
 		if (m_result_tv != null) {
 			m_result_tv.setText("" + val);
 		}
-	} // set_value (val)
+
+	} // set_value (val, anim)
 
 	/************************
 	 * Returns the maximum value that this widget
 	 * can display.
 	 */
-	public int max_val() {
-		return (10 ^ m_wheels.length) - 1;
+	public long max_val() {
+		return m_max_val;
 	}
 
 	/************************
 	 * Returns the minimum value that this widget
 	 * can display.
 	 */
-	public int min_val() {
-		return 0;
+	public long min_val() {
+		return m_min_val;
 	}
 
 	// Not used
@@ -226,18 +243,16 @@ public class WheelInt implements OnWheelScrollListener {
 		}
 	}
 
-	/*********************
-	 * Hits when a wheel changes.
+	/***********************
+	 * Returns simply 10 ^ x.  Only works with
+	 * positive values of x.
 	 */
-//	@Override
-//	public void onChanged(WheelView wheel, int old_val, int new_val) {
-//		int val = get_value();
-//		Log.d(tag, "onChanged(). get_value() is " + val);
-//
-//		if (m_result_tv != null) {
-//			m_result_tv.setText(Integer.toString(val));
-//		}
-//	} // onChanged(wheel, old_val, new_val)
-//
+	public long powers_of_ten (int x) {
+		long val = 1;
+		for (int i = 0; i < x; i++) {
+			val *= 10;
+		}
+		return val;
+	}
 
 }

@@ -778,7 +778,7 @@ public class ASetActivity
 				if (reps != -1) {
 					m_reps_et.setText("" + reps);
 					if (WGlobals.g_wheel)
-						m_reps_wheels.set_value(reps);
+						m_reps_wheels.set_value(reps, false);
 				}
 			}
 		}
@@ -816,6 +816,8 @@ public class ASetActivity
 				int level = set_cursor.getInt(col);
 				if (level != -1) {
 					m_level_et.setText("" + level);
+					if (WGlobals.g_wheel)
+						m_level_wheels.set_value(level, false);
 				}
 			}
 		}
@@ -851,6 +853,8 @@ public class ASetActivity
 				int cals = set_cursor.getInt(col);
 				if (cals != -1) {
 					m_calorie_et.setText("" + cals);
+					if (WGlobals.g_wheel)
+						m_calorie_wheels.set_value(cals, false);
 				}
 			}
 		}
@@ -908,7 +912,7 @@ public class ASetActivity
 				if (weight != -1) {
 					m_weight_et.setText("" + weight);
 					if (WGlobals.g_wheel)
-						m_weight_wheels.set_value(weight);
+						m_weight_wheels.set_value(weight, false);
 				}
 			}
 		}
@@ -949,6 +953,8 @@ public class ASetActivity
 				float dist = set_cursor.getFloat(col);
 				if (dist != -1) {
 					m_dist_et.setText("" + dist);
+					if (WGlobals.g_wheel)
+						m_dist_wheels.set_value(dist, false);
 				}
 			}
 		}
@@ -989,6 +995,8 @@ public class ASetActivity
 				float time = set_cursor.getFloat(col);
 				if (time != -1) {
 					m_time_et.setText("" + time);
+					if (WGlobals.g_wheel)
+						m_time_wheels.set_value(time, false);
 				}
 			}
 		}
@@ -1034,6 +1042,8 @@ public class ASetActivity
 				float other = set_cursor.getFloat(col);
 				if (other != -1) {
 					m_other_et.setText("" + other);
+					if (WGlobals.g_wheel)
+						m_other_wheels.set_value(other, false);
 				}
 			}
 		}
@@ -1171,12 +1181,20 @@ public class ASetActivity
 	 */
 	void clear_wheels() {
 		if (WGlobals.g_wheel) {
-			if (m_reps) {
-				m_reps_wheels.reset();
-			}
-			if (m_weight) {
-				m_weight_wheels.reset();
-			}
+			if (m_reps)
+				m_reps_wheels.reset(true);
+			if (m_levels)
+				m_level_wheels.reset(true);
+			if (m_calories)
+				m_calorie_wheels.reset(true);
+			if (m_weight)
+				m_weight_wheels.reset(true);
+			if (m_distanced)
+				m_dist_wheels.reset(true);
+			if (m_timed)
+				m_time_wheels.reset(true);
+			if (m_other)
+				m_other_wheels.reset(true);
 		}
 	}
 

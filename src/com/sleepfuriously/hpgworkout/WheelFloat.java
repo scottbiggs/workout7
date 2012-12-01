@@ -10,6 +10,7 @@
 package com.sleepfuriously.hpgworkout;
 
 import android.app.Activity;
+import android.os.PowerManager;
 import android.util.Log;
 import android.view.animation.AnticipateOvershootInterpolator;
 import android.widget.TextView;
@@ -69,6 +70,8 @@ public class WheelFloat implements OnWheelScrollListener {
 	/** Optionally displays the results of this widget */
 	TextView m_result_tv = null;
 
+	/** The max & mins that this wheel can display */
+	final float m_max_val, m_min_val;
 
 	//--------------------
 	//	Methods
@@ -105,8 +108,13 @@ public class WheelFloat implements OnWheelScrollListener {
 			m_wheels[i].setMinimumWidth(DEFAULT_WHEEL_WIDTH);
 		}
 
+		// Set the mins and maxs for this instance.
+		m_min_val = 0;
+		m_max_val = powers_of_ten(m_wheels.length - m_num_dec_places)
+							- (1 / powers_of_ten(m_num_dec_places));
+
 		// Finish by zeroing out the number.
-		reset();
+		reset(false);
 	} // constructor
 
 	/********************
@@ -132,9 +140,11 @@ public class WheelFloat implements OnWheelScrollListener {
 	 * 						to change
 	 *
 	 * @param	val			The number to set the wheel to.
+	 *
+	 * @param	anim			TRUE = show animation
 	 */
-	public void set_ind_wheel (int index, int val) {
-		m_wheels[index].setCurrentItem(val);
+	public void set_ind_wheel (int index, int val, boolean anim) {
+		m_wheels[index].setCurrentItem(val, anim);
 		if (m_result_tv != null) {
 			m_result_tv.setText("" + get_value());
 		}
@@ -165,10 +175,12 @@ public class WheelFloat implements OnWheelScrollListener {
 	 * side effects:
 	 * 		If there's a TextView attached, it goes
 	 * 		to zero as well.
+	 *
+	 * @param	anim		Show animation or not.
 	 */
-	public void reset() {
+	public void reset (boolean anim) {
 		for (int i = 0; i < m_wheels.length; i++) {
-			set_ind_wheel(i, 0);
+			set_ind_wheel(i, 0, anim);
 		}
 		if (m_result_tv != null) {
 			m_result_tv.setText("0");
@@ -182,10 +194,10 @@ public class WheelFloat implements OnWheelScrollListener {
 	 * @param val	We'll do our best to set the number
 	 * 				to this value.
 	 */
-	public void set_value (float val) {
+	public void set_value (float val, boolean anim) {
 		// Easy case first.
 		if (val == 0f) {
-			reset();
+			reset(anim);
 			return;
 		}
 
@@ -227,11 +239,12 @@ public class WheelFloat implements OnWheelScrollListener {
 			if (decrementer < 0) {
 				// Put zeros in the wheels for values not
 				// specified (higher order).
-				m_wheels[i].setCurrentItem(0, true);
+				m_wheels[i].setCurrentItem(0, anim);
 			}
 			else {
 				// The normal.
-				m_wheels[i].setCurrentItem(whole_str.charAt(decrementer) - '0', true);
+				m_wheels[i].setCurrentItem(whole_str.charAt(decrementer) - '0',
+										   anim);
 			}
 
 			i++;
@@ -243,10 +256,11 @@ public class WheelFloat implements OnWheelScrollListener {
 		decrementer = frac_str.length() - 1;
 		while (i < m_num_dec_places) {
 			if (decrementer < 0) {
-				m_wheels[i].setCurrentItem(0, true);
+				m_wheels[i].setCurrentItem(0, anim);
 			}
 			else {
-				m_wheels[i].setCurrentItem(frac_str.charAt(decrementer) - '0', true);
+				m_wheels[i].setCurrentItem(frac_str.charAt(decrementer) - '0',
+										   anim);
 			}
 			i++;
 			decrementer--;
@@ -263,19 +277,15 @@ public class WheelFloat implements OnWheelScrollListener {
 	 * can display.
 	 */
 	public float max_val() {
-		// Doing this in steps, in case I get it wrong.
-		float divisor = 10 ^ m_num_dec_places;
-		float frac = ((float)(10 ^ m_num_dec_places) - 1f) / divisor;
-		float whole = (10 ^ (m_wheels.length - m_num_dec_places)) - 1;
-		return whole + frac;
+		return m_max_val;
 	}
 
 	/************************
 	 * Returns the minimum value that this widget
 	 * can display.
 	 */
-	public int min_val() {
-		return 0;
+	public float min_val() {
+		return 0f;
 	}
 
 	/*********************
@@ -290,8 +300,8 @@ public class WheelFloat implements OnWheelScrollListener {
 //		}
 //	} // onChanged(wheel, old_val, new_val)
 
-	
-	
+
+
 	// Not used
 	@Override
 	public void onScrollingStarted(WheelView wheel) {
@@ -307,5 +317,16 @@ public class WheelFloat implements OnWheelScrollListener {
 	}
 
 
-	
+	/***********************
+	 * Returns simply 10 ^ x.  Only works with
+	 * positive values of x.
+	 */
+	public long powers_of_ten (int x) {
+		long val = 1;
+		for (int i = 0; i < x; i++) {
+			val *= 10;
+		}
+		return val;
+	}
+
 }
