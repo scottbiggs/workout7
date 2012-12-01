@@ -37,11 +37,6 @@ public class WheelInt implements OnWheelScrollListener {
 
 	private static final String tag = "WheelInt";
 
-	/** The size of the text in the wheels. */
-	public static final int DEFAULT_WHEEL_TEXT_SIZE = 12;
-
-	/** Width of each wheel */
-	public static final int DEFAULT_WHEEL_WIDTH = 40;
 
 	//--------------------
 	//	Data
@@ -87,14 +82,14 @@ public class WheelInt implements OnWheelScrollListener {
 		for (int i = 0; i < m_wheels.length; i++) {
 			m_wheels[i] = (WheelView) m_activity.findViewById(wheel_id_array[i]);
 			NumericWheelAdapter adapter = new NumericWheelAdapter(m_activity, 0, 9);
-			adapter.setTextSize(DEFAULT_WHEEL_TEXT_SIZE);
+			adapter.setTextSize(WGlobals.g_wheel_text_size);
 			m_wheels[i].setViewAdapter(adapter);
 
 			m_wheels[i].addScrollingListener(this);
 //			m_wheels[i].addScrollingListener(m_scrolledListener);
 			m_wheels[i].setCyclic(true);
 			m_wheels[i].setInterpolator(new AnticipateOvershootInterpolator());
-			m_wheels[i].setMinimumWidth(DEFAULT_WHEEL_WIDTH);
+			m_wheels[i].setMinimumWidth(WGlobals.g_wheel_width);
 		}
 
 		// Set the mins and maxs for this instance.

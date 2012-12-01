@@ -1,5 +1,7 @@
 TODO:
 -----------------
+ASet doesn't reload after changes from the Inspector.
+
 Need to have a loading dialog when going to the tabs from
 	the grid.
 

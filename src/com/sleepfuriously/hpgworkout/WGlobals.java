@@ -62,6 +62,17 @@ public class WGlobals extends Application {
 	 */
 //	public static final String PREFS_FILE_NAME = "hpg_prefs.xml";
 
+	/** How many wheels to the left of the decimal point */
+	public static final int DEFAULT_WHEELS_NUM_LEFT = 4;
+
+	/** How many wheels to the right of the decimal point */
+	public static final int DEFAULT_WHEELS_NUM_RIGHT = 1;
+
+	/** How many pixels wide for each wheel */
+	public static final int DEFAULT_WHEEL_WIDTH = 10;
+
+	/** Size of the text for the number wheels. */
+	public static final int DEFAULT_WHEEL_TEXT_SIZE = 12;
 
 	//---------------------------
 	//	WORKOUT CONSTANTS
@@ -138,6 +149,32 @@ public class WGlobals extends Application {
 	 */
 	public static boolean g_wheel;
 
+	/**
+	 * How many wheels to the left of the decimal point
+	 * to represent a given number.  Can be modified
+	 * via preferences.  Works for both integer and
+	 * float wheels.
+	 */
+	public static int g_wheel_num_left = 4;
+
+	/**
+	 * The number of wheels to the right of a decimal
+	 * point for float wheels.
+	 */
+	public static int g_wheel_num_right = 1;
+
+	/**
+	 * The number of pixels wide for each wheel.  Also
+	 * set via preferences.
+	 */
+	public static int g_wheel_width = 10;
+
+	/**
+	 * Size of the text for the wheels.
+	 */
+	public static int g_wheel_text_size = 12;
+
+
 	//----------------------------------
 	//	Instance Methods
 	//----------------------------------
@@ -175,9 +212,20 @@ public class WGlobals extends Application {
 				true);
 		g_hist_chron = prefs.getBoolean(activity.getString(R.string.prefs_inspector_oldest_first_key),
 				true);
+
 		g_wheel = prefs.getBoolean(activity.getString(R.string.prefs_wheel_key),
 				true);
+		g_wheel_num_left = Integer.parseInt(prefs.getString(activity.getString(R.string.prefs_wheel_left_key),
+															"" + DEFAULT_WHEELS_NUM_LEFT));
 
+		g_wheel_num_right = Integer.parseInt(prefs.getString(activity.getString(R.string.prefs_wheel_right_key),
+															 "" + DEFAULT_WHEELS_NUM_RIGHT));
+
+		g_wheel_width = Integer.parseInt(prefs.getString(activity.getString(R.string.prefs_wheel_width_key),
+														 "" + DEFAULT_WHEELS_NUM_RIGHT));
+
+		g_wheel_text_size = Integer.parseInt(prefs.getString(activity.getString(R.string.prefs_wheel_text_size_key),
+															 "" + DEFAULT_WHEEL_TEXT_SIZE));
 	} // load_prefs()
 
 

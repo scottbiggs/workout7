@@ -63,9 +63,6 @@ public class ASetActivity
 
 	private static final String tag = "ASetActivity";
 
-	/** The custom width of each wheel. */
-	public static final int WHEEL_DEFAULT_CUSTOM_WIDTH = 10;
-
 
 	//------------------------
 	//	Widget Data

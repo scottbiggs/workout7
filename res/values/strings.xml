@@ -1297,6 +1297,7 @@
 
 	<string name="prefs_category_general">GENERAL</string>
 	<string name="prefs_category_inspector">WORKOUT HISTORY</string>
+	<string name="prefs_category_wheels">WHEELS</string>
 
 	<string name="prefs_nag_key">nag</string>
 	<string name="prefs_nag_title">Nag</string>
@@ -1354,6 +1355,59 @@
 	<string name="prefs_wheel_off_msg">
 		I find those number wheels annoying, so they are
 		now gone. Good riddance!
+	</string>
+
+	<string name="prefs_wheel_left_key">wheel_left</string>
+	<string name="prefs_wheel_left_title">Number of Wheels</string>
+	<string name="prefs_wheel_left_msg">
+		How many wheels do you want to display your numbers?
+	</string>
+	<string name="prefs_wheel_left_dialog_title">
+		How many wheels per number?
+	</string>
+	<string name="prefs_wheel_left_dialog_msg">
+		Enter the number of wheels to the left of the decimal
+		point. Valid numbers are between 1 and 6 (4 is default).
+	</string>
+
+	<string name="prefs_wheel_right_key">wheel_right</string>
+	<string name="prefs_wheel_right_title">Number of Decimal Point Wheels</string>
+	<string name="prefs_wheel_right_msg">
+		How many decimal places do you want wheels to represent?
+	</string>
+	<string name="prefs_wheel_right_dialog_title">
+		How many decimal places?
+	</string>
+	<string name="prefs_wheel_right_dialog_msg">
+		Enter the number of wheels to the right of the decimal
+		point. Valid numbers are between 0 and 3 (1 is default).
+	</string>
+
+	<string name="prefs_wheel_width_key">wheel_width</string>
+	<string name="prefs_wheel_width_title">Wheel Width</string>
+	<string name="prefs_wheel_width_msg">
+		Set the width of of the each wheel (default is 10).
+	</string>
+	<string name="prefs_wheel_width_dialog_title">
+		How wide should each wheel be?
+	</string>
+	<string name="prefs_wheel_width_dialog_msg">
+		Here you set the width of the wheels in pixels. Since
+		phones and fingers vary in size, you get to set what
+		works best for you. Default is 10.
+	</string>
+
+	<string name="prefs_wheel_text_size_key">wheel_text_size</string>
+	<string name="prefs_wheel_text_size_title">Wheel Text Size</string>
+	<string name="prefs_wheel_text_size_msg">
+		Set the size of the wheel text (default 12).
+	</string>
+	<string name="prefs_wheel_text_size_dialog_title">
+		Wheel Text Size
+	</string>
+	<string name="prefs_wheel_text_size_dialog_msg">
+		Here you adjust the size of the text in the wheels
+		to suit your tastes. Default is 12.
 	</string>
 
 
@@ -1432,7 +1486,7 @@
 	<!-- ============ Exercise TabHost  ============ -->
 	<!-- ============              	   ============ -->
 
-		<string name="exercise_tabhost_to_grid_butt">back to grid</string>
+	<string name="exercise_tabhost_to_grid_butt">back to grid</string>
 	<string name="exer_tabhost_tab_aset">do a set</string>
 	<string name="exer_tabhost_tab_edit_exercise">edit exercise</string>
 	<string name="exer_tabhost_tab_inspector">inspector</string>
