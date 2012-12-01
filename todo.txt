@@ -3,7 +3,7 @@ TODO:
 ASet doesn't reload after changes from the Inspector.
 
 Need to have a loading dialog when going to the tabs from
-	the grid.
+	the grid (ASet and EditExercise; Inspector already does this).
 
 Shouldn't the styles text sizes use sp instead of dp?
 
@@ -24,8 +24,6 @@ Need to redo the Order!  Something like "Out of Milk"?
 Graph needs to be more independent.
 
 Graph needs to handle intermittent data.
-
-The program launcher icon looks squashed.
 
 When graphing, have the option of graphing by exercise
 	set or by day (toggle button or menu?).
@@ -182,6 +180,9 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+The program launcher icon looks squashed.
+	- fixed
+
 Bug: Sometimes, when an edittext for a number wheel doesn't have
 	enough room to wrap properly, it gets bigger (the top & bottom
 	padding seems increased).  While this makes the UI look a little
