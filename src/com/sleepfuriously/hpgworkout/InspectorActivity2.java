@@ -73,6 +73,7 @@ public class InspectorActivity2
 	//--------------------
 	//	All from the exercise database
 	//--------------------
+
 	/** Holds all info about this exercise. */
 	protected ExerciseData m_ex_data = null;
 
