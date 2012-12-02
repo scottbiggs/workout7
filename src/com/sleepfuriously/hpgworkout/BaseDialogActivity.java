@@ -440,12 +440,15 @@ public class BaseDialogActivity extends Activity {
 	 * it otherwise.
 	 */
 	public void stop_progress_dialog() {
+//		Log.d(tag, "stop_progress_dialog()");
 		if (m_prog_dialog != null) {
 			m_prog_dialog.dismiss();
 			m_prog_dialog = null;
 		}
 		else {
 			Log.e(tag, "Tried to stop a dialog that was already null!");
+			Throwable e = new Throwable();
+			e.printStackTrace();
 		}
 	} // stop_progress_dialog()
 
