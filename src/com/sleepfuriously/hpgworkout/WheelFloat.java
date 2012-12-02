@@ -29,8 +29,8 @@ import kankan.wheel.widget.adapters.NumericWheelAdapter;
  *
  */
 
-//public class WheelFloat implements OnWheelChangedListener {
-public class WheelFloat implements OnWheelScrollListener {
+public class WheelFloat implements OnWheelChangedListener {
+//public class WheelFloat implements OnWheelScrollListener {
 
 	//--------------------
 	//	Constants
@@ -96,8 +96,8 @@ public class WheelFloat implements OnWheelScrollListener {
 			adapter.setTextSize(WGlobals.g_wheel_text_size);
 			m_wheels[i].setViewAdapter(adapter);
 
-			m_wheels[i].addScrollingListener(this);
-//			m_wheels[i].addScrollingListener(m_scrolledListener);
+//			m_wheels[i].addScrollingListener(this);
+			m_wheels[i].addChangingListener(this);
 			m_wheels[i].setCyclic(true);
 			m_wheels[i].setInterpolator(new AnticipateOvershootInterpolator());
 			m_wheels[i].setMinimumWidth(WGlobals.g_wheel_width);
@@ -286,30 +286,16 @@ public class WheelFloat implements OnWheelScrollListener {
 	/*********************
 	 * Hits when a wheel changes.
 	 */
-//	@Override
-//	public void onChanged(WheelView wheel, int old_val, int new_val) {
-//		float value = get_value();
-//		Log.d(tag, "onChanged(), value is " + value);
-//		if (m_result_tv != null) {
-//			m_result_tv.setText(Float.toString(value));
-//		}
-//	} // onChanged(wheel, old_val, new_val)
-
-
-
-	// Not used
 	@Override
-	public void onScrollingStarted(WheelView wheel) {
-	}
-
-	@Override
-	public void onScrollingFinished(WheelView wheel) {
+	public void onChanged(WheelView wheel, int old_val, int new_val) {
 		float value = get_value();
 		Log.d(tag, "onChanged(), value is " + value);
 		if (m_result_tv != null) {
 			m_result_tv.setText(Float.toString(value));
 		}
-	}
+	} // onChanged(wheel, old_val, new_val)
+
+
 
 
 	/***********************

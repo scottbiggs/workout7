@@ -178,6 +178,10 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+With the wheels, go back to having the EditTexts update whenever
+	the number passes by.  It's a much nicer UI experience.
+	- done
+
 Need to have a loading dialog when going to the tabs from
 	the grid (ASet and EditExercise; Inspector already does this).
 	- fixed, but this was weird.  Seems like most of the hesitation

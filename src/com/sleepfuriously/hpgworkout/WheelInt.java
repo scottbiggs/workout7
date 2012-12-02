@@ -28,8 +28,8 @@ import kankan.wheel.widget.adapters.NumericWheelAdapter;
  *
  */
 
-//public class WheelInt implements OnWheelChangedListener {
-public class WheelInt implements OnWheelScrollListener {
+public class WheelInt implements OnWheelChangedListener {
+//public class WheelInt implements OnWheelScrollListener {
 
 	//--------------------
 	//	Constants
@@ -85,8 +85,7 @@ public class WheelInt implements OnWheelScrollListener {
 			adapter.setTextSize(WGlobals.g_wheel_text_size);
 			m_wheels[i].setViewAdapter(adapter);
 
-			m_wheels[i].addScrollingListener(this);
-//			m_wheels[i].addScrollingListener(m_scrolledListener);
+			m_wheels[i].addChangingListener(this);
 			m_wheels[i].setCyclic(true);
 			m_wheels[i].setInterpolator(new AnticipateOvershootInterpolator());
 			m_wheels[i].setMinimumWidth(WGlobals.g_wheel_width);
@@ -222,21 +221,6 @@ public class WheelInt implements OnWheelScrollListener {
 		return m_min_val;
 	}
 
-	// Not used
-	@Override
-	public void onScrollingStarted(WheelView wheel) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void onScrollingFinished(WheelView wheel) {
-		int val = get_value();
-		Log.d(tag, "onChanged(). get_value() is " + val);
-
-		if (m_result_tv != null) {
-			m_result_tv.setText(Integer.toString(val));
-		}
-	}
 
 	/***********************
 	 * Returns simply 10 ^ x.  Only works with
@@ -248,6 +232,17 @@ public class WheelInt implements OnWheelScrollListener {
 			val *= 10;
 		}
 		return val;
+	}
+
+	//--------------------------------
+	@Override
+	public void onChanged(WheelView wheel, int oldValue, int newValue) {
+		int val = get_value();
+		Log.d(tag, "onChanged(). get_value() is " + val);
+
+		if (m_result_tv != null) {
+			m_result_tv.setText(Integer.toString(val));
+		}
 	}
 
 }
