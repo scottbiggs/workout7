@@ -380,6 +380,9 @@ public class GridActivity extends BaseDialogActivity
 		// Is this a row header (and therefore a click on an exercise)
 		// or a grid cell (and therefore call up the Inspector)?
 		if (id % 2 == 1) {
+			// Start a loading dialog
+			start_progress_dialog(R.string.loading_str);
+			
 			// If the id is odd, they clicked the header.  So we'll
 			// go directly to the ASet tab.
 			itt.putExtra(ExerciseTabHostActivity.KEY_SET_ID, -1);

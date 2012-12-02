@@ -1,9 +1,10 @@
 TODO:
 -----------------
-ASet doesn't reload after changes from the Inspector.
+Minor Bug: I get warnings from SQLite when loading the Grid
+	and there are LOTS of exercises.  Seems it runs out of
+	memory and requests a different way to do some things.
 
-Need to have a loading dialog when going to the tabs from
-	the grid (ASet and EditExercise; Inspector already does this).
+ASet doesn't reload after changes from the Inspector.
 
 Shouldn't the styles text sizes use sp instead of dp?
 
@@ -38,9 +39,6 @@ Graphs: the x-axis should be by date, not by the quantity of sets.
 Graph by muscle group.
 
 Graph by exercise type.
-
-Need to use the new buttons in all the nice dialog/activities
-	when modifying sets (EditSetActivity calls them).
 
 Not all the new help dialogs use the new buttons.  The help dialogs
 	for the Tabs, display the old dialog, for example.
@@ -180,6 +178,17 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Need to have a loading dialog when going to the tabs from
+	the grid (ASet and EditExercise; Inspector already does this).
+	- fixed, but this was weird.  Seems like most of the hesitation
+	was in GridActivity while calling ASetActivity.  Strange as
+	there's no such hesitation when calling the other tabbed
+	Activities.
+
+Need to use the new buttons in all the nice dialog/activities
+	when modifying sets (EditSetActivity calls them).
+	- done a while ago
+
 The program launcher icon looks squashed.
 	- fixed
 
