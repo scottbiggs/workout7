@@ -132,15 +132,18 @@ public class TextActivity
 		// EditText where they are typing.  Just to keep track
 		// of the dirtiness!
 		m_note.addTextChangedListener(new TextWatcher() {
+			@Override
 			public void onTextChanged(CharSequence str, int start,
 									int before, int count) {
 			}
 
+			@Override
 			public void beforeTextChanged(CharSequence str,
 										int start, int count,
 										int after) {
 			}
 
+			@Override
 			public void afterTextChanged(Editable str) {
 				m_dirty = true;
 				m_done.setEnabled(true);
@@ -151,6 +154,7 @@ public class TextActivity
 
 
 	//----------------------------
+	@Override
 	public void onClick(View v) {
 		if (v == m_done) {
 			Intent itt = new Intent();
