@@ -1,5 +1,10 @@
 TODO:
 -----------------
+Shifting to the ASet tab when it needs to reload is still
+	very slow.  The dialog doesn't have time to hit, so
+	that means that the slowness happens BEFORE the asynch-
+	task fires in ASet.  Maybe something in ExerciseTabHostActivity?
+
 Remember to make Grid and the Inspector only load so many
 	dates.  Need to provide buttons (or swipes) to load
 	the rest in groups.
@@ -13,8 +18,6 @@ Bug: Something's wrong with the graph sometimes.  Looks
 Minor Bug: I get warnings from SQLite when loading the Grid
 	and there are LOTS of exercises.  Seems it runs out of
 	memory and requests a different way to do some things.
-
-ASet doesn't reload after changes from the Inspector.
 
 Minor bug: When an exercise has changed its significant aspect,
 	the ASet still draws the old aspect as bold (if it has
@@ -180,6 +183,9 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+ASet doesn't reload after changes from the Inspector.
+	- now it does
+
 Shouldn't the styles text sizes use sp instead of dp?
 	- changed to sp
 
