@@ -590,6 +590,7 @@ public class AddExerciseActivity
 			show_yes_no_dialog(R.string.addexer_cancel_warning_title, null,
 					R.string.addexer_cancel_warning_msg, null,
 					new View.OnClickListener() {
+				@Override
 				public void onClick(View v) {
 					// Yes, they want to cancel.
 					setResult(RESULT_CANCELED);
@@ -607,6 +608,7 @@ public class AddExerciseActivity
 	/*********************
 	 * Handles all the click events.
 	 */
+	@Override
 	public void onClick(View v) {
 
 		// Is it a radio button?
@@ -677,6 +679,7 @@ public class AddExerciseActivity
 				show_yes_no_dialog(R.string.addexer_cancel_warning_title, null,
 						R.string.addexer_cancel_warning_msg, null,
 						new View.OnClickListener() {
+					@Override
 					public void onClick(View v) {
 						// Yes, they want to cancel.
 						setResult(RESULT_CANCELED);
@@ -705,6 +708,7 @@ public class AddExerciseActivity
 	 * We return true so that the OS won't try to do anything
 	 * after the long-click.
 	 */
+	@Override
 	public boolean onLongClick(View v) {
 
 		// All the Radio Buttons have the same help.
@@ -783,6 +787,7 @@ public class AddExerciseActivity
 	 * This is called whenever the user selects an
 	 * item from a MySpinner.
 	 */
+	@Override
 	public void onMySpinnerSelected(MySpinner spinner, int position, boolean new_item) {
 		m_dirty = true;
 		m_ok.setEnabled(true);
@@ -828,12 +833,15 @@ public class AddExerciseActivity
 	//--------------------------------------
 	//	To implement the TextWatcher interface.
 	//--------------------------------------
+	@Override
 	public void afterTextChanged(Editable s) {
 		// not used
 	}
+	@Override
 	public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 		// not used
 	}
+	@Override
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
 		if (!m_et_locked) {
 			m_dirty = true;
