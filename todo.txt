@@ -1,5 +1,9 @@
 TODO:
 -----------------
+Remember to make Grid and the Inspector only load so many
+	dates.  Need to provide buttons (or swipes) to load
+	the rest in groups.
+
 Bug: The graph doesn't seem to like entries with the same date
 	on just one day.
 Bug: Something's wrong with the graph sometimes.  Looks
@@ -11,8 +15,6 @@ Minor Bug: I get warnings from SQLite when loading the Grid
 	memory and requests a different way to do some things.
 
 ASet doesn't reload after changes from the Inspector.
-
-Shouldn't the styles text sizes use sp instead of dp?
 
 Minor bug: When an exercise has changed its significant aspect,
 	the ASet still draws the old aspect as bold (if it has
@@ -178,6 +180,9 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Shouldn't the styles text sizes use sp instead of dp?
+	- changed to sp
+
 Need a Toast to tell the user they changed the exercise when
 	the 'execute' in EditExerciseActivity.
 	- done

@@ -14,7 +14,7 @@
 		<item name="android:focusable">true</item>
 		<item name="android:clickable">true</item>
 			<!-- Perhaps this should reference some global string? -->
-		<item name="android:textSize">14dip</item>
+		<item name="android:textSize">14sp</item>
 		<item name="android:textStyle">bold</item>
 		<item name="android:paddingBottom">10px</item>
 		<item name="android:paddingTop">10px</item>
@@ -34,56 +34,56 @@
 		name="white_text_small"
 		parent="@android:style/TextAppearance">
 		<item name="android:textColor">@color/ivory</item>
-		<item name="android:textSize">15dp</item>
+		<item name="android:textSize">15sp</item>
 	</style>
 
 	<style
 		name="white_text_medium"
 		parent="@android:style/TextAppearance">
 		<item name="android:textColor">@color/ivory</item>
-		<item name="android:textSize">18dp</item>
+		<item name="android:textSize">18sp</item>
 	</style>
 
 	<style
 		name="white_text_large"
 		parent="@android:style/TextAppearance">
 		<item name="android:textColor">@color/ivory</item>
-		<item name="android:textSize">20dp</item>
+		<item name="android:textSize">20sp</item>
 	</style>
 
 	<style
 		name="white_text_extra_large"
 		parent="@android:style/TextAppearance">
 		<item name="android:textColor">@color/ivory</item>
-		<item name="android:textSize">24dp</item>
+		<item name="android:textSize">24sp</item>
 	</style>
 
 	<style
 		name="white_alt_small"
 		parent="@android:style/TextAppearance">
 		<item name="android:textColor">@color/ivory</item>
-		<item name="android:textSize">15dp</item>
+		<item name="android:textSize">15sp</item>
 		<item name="android:typeface">serif</item>
 	</style>
 	<style
 		name="white_alt_medium"
 		parent="@android:style/TextAppearance">
 		<item name="android:textColor">@color/ivory</item>
-		<item name="android:textSize">18dp</item>
+		<item name="android:textSize">18sp</item>
 		<item name="android:typeface">serif</item>
 	</style>
 	<style
 		name="white_alt_large"
 		parent="@android:style/TextAppearance">
 		<item name="android:textColor">@color/ivory</item>
-		<item name="android:textSize">20dp</item>
+		<item name="android:textSize">20sp</item>
 		<item name="android:typeface">serif</item>
 	</style>
 	<style
 		name="white_alt_extra_large"
 		parent="@android:style/TextAppearance">
 		<item name="android:textColor">@color/ivory</item>
-		<item name="android:textSize">24dp</item>
+		<item name="android:textSize">24sp</item>
 		<item name="android:typeface">serif</item>
 	</style>
 
