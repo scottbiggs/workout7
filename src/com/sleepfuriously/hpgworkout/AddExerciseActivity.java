@@ -172,6 +172,16 @@ public class AddExerciseActivity
 		m_exer_weight_msp.set_icon(R.drawable.hpglogo_small);
 		m_exer_weight_msp.setOnLongClickListener(this);
 
+		{
+			Intent weight_itt = new Intent();
+			weight_itt.setClassName(getPackageName(), AddWeightItemActivity.class.getName());
+			m_exer_weight_msp.set_user_add(m_exer_weight_msp.length() - 1,
+										weight_itt,
+										m_exer_weight_msp.getId());
+			m_exer_weight_msp.set_icon(R.drawable.hpglogo_small);
+			m_exer_weight_msp.set_prompt(R.string.add_weight_item_prompt);
+		}
+
 		// distanced
 		m_exer_dist_rb = (RadioButton) findViewById(R.id.addexer_dist_rad);
 		m_exer_dist_rb.setOnClickListener(this);
@@ -185,6 +195,16 @@ public class AddExerciseActivity
 		m_exer_dist_msp.set_prompt(R.string.addexer_dist_unit_title);
 		m_exer_dist_msp.set_icon(R.drawable.hpglogo_small);
 		m_exer_dist_msp.setOnLongClickListener(this);
+
+		{
+			Intent dist_itt = new Intent();
+			dist_itt.setClassName(getPackageName(), AddDistItemActivity.class.getName());
+			m_exer_dist_msp.set_user_add(m_exer_dist_msp.length() - 1,
+										 dist_itt,
+										 m_exer_dist_msp.getId());
+			m_exer_dist_msp.set_icon(R.drawable.hpglogo_small);
+			m_exer_dist_msp.set_prompt(R.string.add_dist_item_prompt);
+		}
 
 		// time
 		m_exer_time_rb = (RadioButton) findViewById(R.id.addexer_time_rad);
@@ -788,7 +808,9 @@ public class AddExerciseActivity
 	 * item from a MySpinner.
 	 */
 	@Override
-	public void onMySpinnerSelected(MySpinner spinner, int position, boolean new_item) {
+	public void onMySpinnerSelected(MySpinner spinner,
+									int position,
+									boolean new_item) {
 		m_dirty = true;
 		m_ok.setEnabled(true);
 		spinner.setTextFromPos (position);

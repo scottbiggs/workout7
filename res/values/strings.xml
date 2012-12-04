@@ -15,7 +15,8 @@
 	<string name="done">done</string>
 	<string name="done_title">Done</string>
 	<string name="decimal_point">.</string>
-	<string name="clear">C</string>
+	<string name="clear_short">C</string>
+	<string name="clear_word">clear</string>
 	<string name="null_string">null</string>	<!-- should never be printed -->
 	<string name="hpg_logo_desc">Logo for the Hyde Park Gym</string>
 

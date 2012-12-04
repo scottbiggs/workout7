@@ -19,10 +19,6 @@ Minor Bug: I get warnings from SQLite when loading the Grid
 	and there are LOTS of exercises.  Seems it runs out of
 	memory and requests a different way to do some things.
 
-Minor bug: When an exercise has changed its significant aspect,
-	the ASet still draws the old aspect as bold (if it has
-	already been created).
-
 Bug: Custom units no longer work! Sigh.
 
 Need better way to enter numbers!  How about one of those sliders?
@@ -130,6 +126,11 @@ Need to remove the HistoryActivity from the project.
 ---------------------------------------------------
 Hmmmmmmmmmmmmmmmmmmmmmm
 ---------------------------------------------------
+Minor bug: When an exercise has changed its significant aspect,
+	the ASet still draws the old aspect as bold (if it has
+	already been created).
+	- looks like it's working to me.
+
 Bug: Adding a set does not cause the Grid to reload!!!
 	Didn't I just do that?
 	Having trouble repeating...

@@ -52,24 +52,30 @@
 
 		<!-- These Activities look like Dialogs -->
 		<activity android:name=".NumberActivity"
-				android:theme="@android:style/Theme.Dialog"
-				/>
+			android:theme="@android:style/Theme.Dialog"
+			/>
 		<activity android:name=".TextActivity"
-				android:theme="@android:style/Theme.Dialog"
-				android:windowSoftInputMode="stateVisible|adjustResize"
-				/>
+			android:theme="@android:style/Theme.Dialog"
+			android:windowSoftInputMode="stateVisible|adjustResize"
+			/>
 		<activity android:name=".StressActivity"
-				android:theme="@android:style/Theme.Dialog"
-				/>
+			android:theme="@android:style/Theme.Dialog"
+			/>
 		<activity android:name=".HistoryActivity"
-				android:theme="@android:style/Theme.Dialog"
-				/>
+			android:theme="@android:style/Theme.Dialog"
+			/>
 		<activity android:name=".EditSetActivity"
-				android:theme="@android:style/Theme.Dialog"
-				/>
+			android:theme="@android:style/Theme.Dialog"
+			/>
+		<activity android:name=".AddWeightItemActivity"
+			android:theme="@android:style/Theme.Dialog"
+			android:windowSoftInputMode="stateVisible|adjustResize"
+			/>
+		<activity android:name=".AddDistItemActivity"
+			android:theme="@android:style/Theme.Dialog"
+			android:windowSoftInputMode="stateVisible|adjustResize"
+			/>
 
-		<!-- TODO:  This is just used for testing!!! -->
-		<activity android:name=".TestActivity" />
 
 	</application>
 

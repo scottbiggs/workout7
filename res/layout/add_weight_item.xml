@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	The layout file for when the user wants to add a custom
+	weight unit.
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:background="@color/gray_darkest"
+	tools:ignore="ContentDescription" >
+
+	<RelativeLayout
+		android:id="@+id/add_weight_item_top_rl"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:layout_alignParentTop="true"
+		>
+		<TextView
+			android:id="@+id/add_weight_item_title_tv"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="3dp"
+			android:layout_marginLeft="10dp"
+			android:layout_marginRight="3dp"
+			android:layout_marginTop="5dp"
+			android:text="@string/addexer_weight_unit_title"
+			style="@style/white_text_large"
+			/>
+
+		<ImageView
+			android:id="@+id/add_weight_item_logo"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentRight="true"
+			android:layout_margin="5dp"
+			android:src="@drawable/hpglogo_small" />
+
+	</RelativeLayout>
+
+	<TextView
+	    android:id="@+id/add_weight_item_desc_tv"
+	    style="@style/white_text_medium"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@id/add_weight_item_top_rl"
+	    android:layout_centerHorizontal="true"
+	    android:layout_marginTop="4dp"
+	    android:gravity="center"
+	    android:text="@string/addexer_weight_unit_msg" />
+
+	<EditText
+		android:id="@+id/add_weight_item_et"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/add_weight_item_desc_tv"
+		android:layout_centerHorizontal="true"
+		android:layout_marginBottom="16dp"
+		android:layout_marginLeft="8dp"
+		android:layout_marginRight="8dp"
+		android:layout_marginTop="8dp"
+		android:gravity="center"
+		android:hint="@string/unit"
+		android:singleLine="true" >
+
+		<requestFocus />
+	</EditText>
+
+	<LinearLayout
+		android:id="@+id/add_weight_item_button_ll"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:layout_below="@+id/add_weight_item_et"
+		>
+
+		<Button
+			android:id="@+id/add_weight_item_clear_butt"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_margin="5dp"
+			android:layout_weight="1"
+			android:background="@drawable/button_shiny_black"
+			android:enabled="false"
+			android:gravity="center"
+			android:paddingLeft="5dp"
+			android:paddingRight="5dp"
+			android:text="@string/clear_word"
+			android:textColor="@color/ivory"
+			android:textSize="@dimen/font_size_button_default" />
+
+		<Button
+			android:id="@+id/add_weight_item_ok_butt"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_margin="5dp"
+			android:layout_weight="1"
+			android:background="@drawable/button_shiny_black"
+			android:enabled="false"
+			android:gravity="center"
+			android:paddingLeft="5dp"
+			android:paddingRight="5dp"
+			android:text="@string/ok"
+			android:textColor="@color/ivory"
+			android:textSize="@dimen/font_size_button_default" />
+
+	</LinearLayout>
+
+
+</RelativeLayout>
