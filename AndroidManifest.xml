@@ -75,6 +75,10 @@
 			android:theme="@android:style/Theme.Dialog"
 			android:windowSoftInputMode="stateVisible|adjustResize"
 			/>
+		<activity android:name=".AddTimeItemActivity"
+			android:theme="@android:style/Theme.Dialog"
+			android:windowSoftInputMode="stateVisible|adjustResize"
+			/>
 
 
 	</application>

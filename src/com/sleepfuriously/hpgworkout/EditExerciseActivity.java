@@ -177,6 +177,15 @@ public class EditExerciseActivity
 		m_exer_weight_msp.set_prompt(R.string.addexer_weight_unit_title);
 		m_exer_weight_msp.set_icon(R.drawable.hpglogo_small);
 		m_exer_weight_msp.setOnLongClickListener(this);
+		{
+			Intent weight_itt = new Intent();
+			weight_itt.setClassName(getPackageName(), AddWeightItemActivity.class.getName());
+			m_exer_weight_msp.set_user_add(m_exer_weight_msp.length() - 1,
+										weight_itt,
+										m_exer_weight_msp.getId());
+			m_exer_weight_msp.set_icon(R.drawable.hpglogo_small);
+			m_exer_weight_msp.set_prompt(R.string.add_weight_item_prompt);
+		}
 
 		// distanced
 		m_exer_dist_rb = (RadioButton) findViewById(R.id.edit_exer_dist_rad);
@@ -191,6 +200,15 @@ public class EditExerciseActivity
 		m_exer_dist_msp.set_prompt(R.string.addexer_dist_unit_title);
 		m_exer_dist_msp.set_icon(R.drawable.hpglogo_small);
 		m_exer_dist_msp.setOnLongClickListener(this);
+		{
+			Intent dist_itt = new Intent();
+			dist_itt.setClassName(getPackageName(), AddDistItemActivity.class.getName());
+			m_exer_dist_msp.set_user_add(m_exer_dist_msp.length() - 1,
+										dist_itt,
+										m_exer_dist_msp.getId());
+			m_exer_dist_msp.set_icon(R.drawable.hpglogo_small);
+			m_exer_dist_msp.set_prompt(R.string.add_dist_item_prompt);
+		}
 
 		// time
 		m_exer_time_rb = (RadioButton) findViewById(R.id.edit_exer_time_rad);
@@ -205,6 +223,15 @@ public class EditExerciseActivity
 		m_exer_time_msp.set_prompt(R.string.addexer_time_unit_title);
 		m_exer_time_msp.set_icon(R.drawable.hpglogo_small);
 		m_exer_time_msp.setOnLongClickListener(this);
+		{
+			Intent time_itt = new Intent();
+			time_itt.setClassName(getPackageName(), AddTimeItemActivity.class.getName());
+			m_exer_time_msp.set_user_add(m_exer_time_msp.length() - 1,
+										time_itt,
+										m_exer_time_msp.getId());
+			m_exer_time_msp.set_icon(R.drawable.hpglogo_small);
+			m_exer_time_msp.set_prompt(R.string.add_time_item_prompt);
+		}
 
 		// other
 		m_exer_other_rb = (RadioButton) findViewById(R.id.edit_exer_other_rad);

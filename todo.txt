@@ -1,5 +1,7 @@
 TODO:
 -----------------
+Enable data backups.  See http://developer.android.com/guide/topics/data/backup.html
+
 Shifting to the ASet tab when it needs to reload is still
 	very slow.  The dialog doesn't have time to hit, so
 	that means that the slowness happens BEFORE the asynch-
@@ -18,8 +20,6 @@ Bug: Something's wrong with the graph sometimes.  Looks
 Minor Bug: I get warnings from SQLite when loading the Grid
 	and there are LOTS of exercises.  Seems it runs out of
 	memory and requests a different way to do some things.
-
-Bug: Custom units no longer work! Sigh.
 
 Need better way to enter numbers!  How about one of those sliders?
 
@@ -184,6 +184,11 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Bug: Custom units no longer work! Sigh.
+	- done.  Hasn't worked for a very long time--the necessary
+	class and layout files weren't even in the project.  But I
+	found some old ones in version 4.  Whew!
+
 ASet doesn't reload after changes from the Inspector.
 	- now it does
 
