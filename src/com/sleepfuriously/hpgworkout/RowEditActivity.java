@@ -42,13 +42,12 @@ public class RowEditActivity
 
 	//--------	Widgets  ----------
 
-	// Static so it can be accessed through the Adapter. Sigh.
+	/** Static so it can be accessed through the Adapter. Sigh. */
 	protected static Button m_okay;
 	protected Button m_cancel;
 
 	private ImageView m_help;
 
-//	TableLayout m_table;
 	private ListView m_listview;
 
 	//---------  Data  -------------
@@ -76,8 +75,8 @@ public class RowEditActivity
 	 *	some important information about this row.
 	 */
 	static class ViewHolder {
-		TextView text;
-		ImageView up, down;
+		public TextView text;
+		public ImageView up, down;
 
 		/** Same as the textview's getText() */
 		String name;
@@ -225,6 +224,7 @@ public class RowEditActivity
 	} // load_data()
 
 	//-----------------------------
+	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 			case R.id.row_edit_ok_butt:
@@ -245,6 +245,7 @@ public class RowEditActivity
 					show_yes_no_dialog(R.string.row_edit_cancel_warning_title, null,
 							R.string.editexer_cancel_warning_msg, null,
 							new View.OnClickListener() {
+						@Override
 						public void onClick(View v) {
 							// Yes, they want to cancel.
 							setResult(RESULT_CANCELED);
@@ -280,6 +281,7 @@ public class RowEditActivity
 			show_yes_no_dialog(R.string.row_edit_cancel_warning_title, null,
 					R.string.row_edit_cancel_warning_msg, null,
 					new View.OnClickListener() {
+				@Override
 				public void onClick(View v) {
 					// Yes, they want to cancel.
 					setResult(RESULT_CANCELED);
@@ -304,7 +306,7 @@ public class RowEditActivity
 		if (m_db != null) {
 			Log.e(tag, "m_db is NOT null when trying to save!");
 		}
-		
+
 		try {
 			m_db = WGlobals.g_db_helper.getWritableDatabase();
 			if (m_db == null) {
@@ -324,7 +326,7 @@ public class RowEditActivity
 					"= " + i + " " +
 					"where " + DatabaseHelper.EXERCISE_COL_NAME + " " +
 					"= \"" + name + "\"";
-				
+
 				try {
 					m_db.execSQL(sql_str);
 				} catch (SQLException e) {
@@ -386,6 +388,7 @@ public class RowEditActivity
 				holder.up.setFocusable(true);
 				holder.up.setClickable(true);
 				holder.up.setOnClickListener(new OnClickListener() {
+					@Override
 					public void onClick(View v) {
 						ViewHolder holder = (ViewHolder) v.getTag();
 						int pos = holder.pos;
@@ -397,7 +400,7 @@ public class RowEditActivity
 							// Inform those rows that they now have
 							// new positions.
 							temp.pos--;
-							m_view_array.get(pos -1).pos++;
+							m_view_array.get(pos - 1).pos++;
 
 							// Swap positions with the above view.
 							m_view_array.set(pos, m_view_array.get(pos - 1));
@@ -415,6 +418,7 @@ public class RowEditActivity
 				holder.down.setClickable(true);
 				holder.down.setFocusable(true);
 				holder.down.setOnClickListener(new OnClickListener() {
+					@Override
 					public void onClick(View v) {
 						ViewHolder holder = (ViewHolder) v.getTag();
 						int pos = holder.pos;
@@ -466,7 +470,7 @@ public class RowEditActivity
 		} // getView (position, convertView, parent)
 
 
-	} // class MyArrayAdapter
+	} // class MyAdapter
 
 
 }

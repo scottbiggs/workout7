@@ -21,10 +21,6 @@ Minor Bug: I get warnings from SQLite when loading the Grid
 	and there are LOTS of exercises.  Seems it runs out of
 	memory and requests a different way to do some things.
 
-Need better way to enter numbers!  How about one of those sliders?
-
-Need to redo the Order!  Something like "Out of Milk"?
-
 Graph needs to be more independent.
 
 Graph needs to handle intermittent data.
@@ -116,8 +112,6 @@ Make the DatabaseHelper.onUpgrade() work properly so that
 	it doesn't delete all their work when upgrading.  Instead,
 	the routine should gracefully update the new format.
 
-Allow for the option to have the database on the simm card.
-
 Make sure that all the drawables are in the correct directories.
 
 Need to remove the HistoryActivity from the project.
@@ -153,6 +147,10 @@ In the graphs, instead of horizontal lines, divide up into
 ---------------------------------------------------
 TABLED (for later versions)
 ---------------------------------------------------
+Need to redo the Order!  Something like "Out of Milk"?
+Make it possible for the user to drag and rearrange
+	the rows.
+
 Put a wheel in the new value section when editing a set.
 
 Instead of a History tab (which is now removed), have a
@@ -184,6 +182,9 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Need better way to enter numbers!  How about one of those sliders?
+	- done, now I have WHEELS!  Weeee!
+
 Bug: Custom units no longer work! Sigh.
 	- done.  Hasn't worked for a very long time--the necessary
 	class and layout files weren't even in the project.  But I
@@ -796,10 +797,6 @@ In the name edittext for edit-exercise, make the cursor start
 	at the end.  Or better yet, specify that nothing should start
 	highlighted (maybe the cancel button?).
 	- Killed. Not doing this one.
-
-Make it possible for the user to drag and rearrange
-	the rows.
-	- Tabled until I have more time.
 
 Wierd things happen when moving the highlight around via
 	arrow keys in the various Activities.  Fix it!
