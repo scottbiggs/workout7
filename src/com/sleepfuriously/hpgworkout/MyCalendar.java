@@ -117,6 +117,31 @@ public class MyCalendar {
 		return m_cal.get(Calendar.DAY_OF_MONTH);
 	}
 
+	/*********************
+	 * @return	The number of days since Jan 1st, 1970
+	 * 			that this calendar day falls on.
+	 */
+	public long get_absolute_days() {
+		MyCalendar temp_copy;
+		long millis;
+
+		if (!m_legal_date)
+			return 0;
+
+		// Find the number of milliseconds for the beginning of
+		// today.
+		temp_copy = new MyCalendar(this);
+		temp_copy.set_time(0, 0, 0);
+
+		// Needed to make sure there are no milliseconds to give us errors.
+		millis = truncate_to_seconds(temp_copy.get_millis());
+
+		long return_val = millis / MILLIS_PER_DAY;
+		return return_val;
+
+	} // get_absolute_days()
+
+
 	/********************
 	 * Finds how many days the two MyCalendar dates differ.
 	 * Equivalent to:
@@ -133,40 +158,41 @@ public class MyCalendar {
 	 * 			date.
 	 */
 	public long get_difference_in_days (MyCalendar other_cal) {
-		MyCalendar temp;
-		long millis;
-
-		if (!m_legal_date)
-			return 0;
-
-		if (!other_cal.is_legal_date())
-			return 0;
-
-		// Find the number of milliseconds for the beginning of
-		// today.
-		temp = new MyCalendar(this);
-
-		temp.set_time(0, 0, 0);
-
-		// Needed to make sure there are no milliseconds to give us errors.
-		millis = truncate_to_seconds(temp.get_millis());
-		temp.set_millis(millis);
-
-		long millis_beginning_today = temp.get_millis();
-
-		// do the same for the other date.
-		temp.set_millis(other_cal.get_millis());
-		temp.set_time(0, 0, 0);
-		millis = truncate_to_seconds(temp.get_millis());
-		temp.set_millis(millis);
-		long millis_beginning_other = temp.get_millis();
-
-		// NOTE: neither of these millis numbers should be zero!
-		// The chances of that happening are pretty low!
-
-		long millis_diff = millis_beginning_today - millis_beginning_other;
-		long return_val = millis_diff / MILLIS_PER_DAY;
-		return return_val;
+		return get_absolute_days() - other_cal.get_absolute_days();
+//		MyCalendar temp;
+//		long millis;
+//
+//		if (!m_legal_date)
+//			return 0;
+//
+//		if (!other_cal.is_legal_date())
+//			return 0;
+//
+//		// Find the number of milliseconds for the beginning of
+//		// today.
+//		temp = new MyCalendar(this);
+//
+//		temp.set_time(0, 0, 0);
+//
+//		// Needed to make sure there are no milliseconds to give us errors.
+//		millis = truncate_to_seconds(temp.get_millis());
+//		temp.set_millis(millis);
+//
+//		long millis_beginning_today = temp.get_millis();
+//
+//		// do the same for the other date.
+//		temp.set_millis(other_cal.get_millis());
+//		temp.set_time(0, 0, 0);
+//		millis = truncate_to_seconds(temp.get_millis());
+//		temp.set_millis(millis);
+//		long millis_beginning_other = temp.get_millis();
+//
+//		// NOTE: neither of these millis numbers should be zero!
+//		// The chances of that happening are pretty low!
+//
+//		long millis_diff = millis_beginning_today - millis_beginning_other;
+//		long return_val = millis_diff / MILLIS_PER_DAY;
+//		return return_val;
 	} // get_difference_in_days (other_date)
 
 
