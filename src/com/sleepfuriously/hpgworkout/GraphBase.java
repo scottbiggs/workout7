@@ -33,6 +33,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
 
+@Deprecated
 public class GraphBase {
 
 	//-------------------------------

@@ -11,7 +11,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 
 
-public class GraphYAxis extends GraphBase {
+public class GraphYAxis {
 
 	//-------------------------------
 	//	Constants
@@ -31,7 +31,6 @@ public class GraphYAxis extends GraphBase {
 	 * Constructor.
 	 */
 	GraphYAxis (Context context, Canvas canvas, Rect padding) {
-		super (context, canvas, padding);
 	}
 
 }
