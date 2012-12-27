@@ -15,6 +15,7 @@ package com.sleepfuriously.hpgworkout;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.text.AndroidCharacter;
 import android.util.Log;
 
 
@@ -62,7 +63,7 @@ public class GraphDrawPrimitives {
 									float radius, Paint paint) {
 		y = convert_y(canvas, y);
 		canvas.drawCircle(x, y, radius, paint);
-		Log.d(tag, "drawCircle called at " + x + ", " + y);
+//		Log.d(tag, "drawCircle called at " + x + ", " + y);
 	} // draw_circle (canvas, x, y, radius, paint)
 
 
@@ -82,4 +83,18 @@ public class GraphDrawPrimitives {
 		canvas.drawLine(ax, ay, bx, by, paint);
 	} // draw_line, (canvas, ax, ay, bx, by, paint)
 
+
+
+	/************************
+	 * My replacement for drawText().  Like all the others
+	 * here, [0,0] is the bottom left instead of the top
+	 * right, everything else like the regular.
+	 *
+	 * @see android.graphics.Canvas#drawText(String, float, float, Paint)
+	 */
+	public static void draw_text (Canvas canvas, String text,
+								float x, float y,
+								Paint paint) {
+		canvas.drawText(text, x, convert_y (canvas, y), paint);
+	}
 }

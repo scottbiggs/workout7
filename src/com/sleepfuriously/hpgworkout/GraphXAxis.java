@@ -11,11 +11,13 @@ import java.util.List;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.Log;
 import static java.lang.Float.NaN;
 
 import static com.sleepfuriously.hpgworkout.GraphDrawPrimitives.draw_line;
+import static com.sleepfuriously.hpgworkout.GraphDrawPrimitives.draw_text;
 
 
 public class GraphXAxis {
@@ -26,7 +28,16 @@ public class GraphXAxis {
 	private static final String tag = "GraphXAxis";
 
 	/** Pixels long the horizontal ticks at the bottom */
-	public final static int DEFAULT_TICK_HEIGHT = 5;
+	public final static int DEFAULT_TICK_HEIGHT = 13;
+
+	public final static int DEFAULT_LABEL_PADDING_TOP = 4;
+
+	/**
+	 * Because there's some slop in the size of letters,
+	 * I nudge the labels a little by this much to make
+	 * it look better aligned.
+	 */
+	private final static int LABEL_FUDGE_FACTOR = 2;
 
 	//-------------------------------
 	//	Data
@@ -36,6 +47,15 @@ public class GraphXAxis {
 	 * The numbers that we want to indicate (originals).
 	 */
 	protected List<Float> m_orig;
+
+	/**
+	 * The labels for the numbers.  Each element can be
+	 * a string or null (to indicate no label for this
+	 * number).  Or...the whole thing can be null which
+	 * means that there are no labels at all.
+	 */
+	protected List<String> m_labels = null;
+
 
 	/**
 	 * The numbers after they have been mapped to my
@@ -70,7 +90,22 @@ public class GraphXAxis {
 	protected int m_tick_height = DEFAULT_TICK_HEIGHT;
 
 	/** Labels for the x-axis */
+	@Deprecated
 	protected String m_label_start = null, m_label_end = null;
+
+	/**
+	 * Used when drawing tick-marks.  This is x-axis
+	 * location (in screen coords) of the last
+	 * number that was drawn.
+	 */
+	protected float m_last_num = -Float.MAX_VALUE;
+
+	/**
+	 * This tells us the right-most pixel that was drawn
+	 * when drawing the last label.  Used to keep labels
+	 * from overlapping each other.
+	 */
+	protected float m_last_label_pixel = -Float.MAX_VALUE;
 
 	/**
 	 * Tells if we need to remap our original numbers
@@ -91,6 +126,10 @@ public class GraphXAxis {
 	 * 						They'll be mapped to screen coords for
 	 * 						tick-marks along the x-axis.
 	 *
+	 * @param labels			List of labels that correspond to the
+	 * 						numbers.  Null can be used for a individual
+	 * 						item or for the whole list.
+	 *
 	 * @param bounds_min		The logical minimum for these base
 	 * 						numbers.  Doesn't have to be within
 	 * 						their actual bounds (that's how we
@@ -108,14 +147,16 @@ public class GraphXAxis {
 	 * 						- The height (top & bottom) describe
 	 * 						the total height (lines + font size).
 	 */
-	GraphXAxis (List<Float> nums,
+	GraphXAxis (List<Float> nums, List<String> labels,
 				float bounds_min, float bounds_max,
 				RectF draw_area) {
 		m_orig = new ArrayList<Float>();
-		m_dirty = true;
+		set_nums(nums, labels);
+
+//		m_dirty = true;	 --taken care of in set_nums()
+
 		set_bounds (bounds_min, bounds_max);
 		set_draw_area(draw_area);
-		set_nums(nums);
 	} // constructor
 
 	/*****************************
@@ -126,6 +167,10 @@ public class GraphXAxis {
 	 * 						They'll be mapped to screen coords for
 	 * 						tick-marks along the x-axis.
 	 *
+	 * @param labels			List of labels that correspond to the
+	 * 						numbers.  Null can be used for a individual
+	 * 						item or for the whole list.
+	 *
 	 * @param bounds_min		The logical minimum for these base
 	 * 						numbers.  Doesn't have to be within
 	 * 						their actual bounds (that's how we
@@ -133,10 +178,13 @@ public class GraphXAxis {
 	 *
 	 * @param bounds_max		Logical max (original numbers).
 	 */
-	GraphXAxis (List<Float> nums,
+	GraphXAxis (List<Float> nums, List<String> labels,
 				float bounds_min, float bounds_max) {
-		m_orig = new ArrayList<Float>(nums);
-		m_dirty = true;
+		m_orig = new ArrayList<Float>();
+		set_nums (nums, labels);
+
+//		m_dirty = true;	 --taken care of in set_nums()
+
 		set_bounds (bounds_min, bounds_max);
 	} // constructor
 
@@ -147,10 +195,15 @@ public class GraphXAxis {
 	 * 						They'll be mapped to screen coords for
 	 * 						tick-marks along the x-axis.
 	 *
+	 * @param labels			List of labels that correspond to the
+	 * 						numbers.  Null can be used for a individual
+	 * 						item or for the whole list.
 	 */
-	GraphXAxis (List<Float> nums) {
-		m_orig = new ArrayList<Float>(nums);
-		m_dirty = true;
+	GraphXAxis (List<Float> nums, List<String> labels) {
+		m_orig = new ArrayList<Float>();
+		set_nums(nums, labels);
+//		m_dirty = true;	 --taken care of in set_nums()
+
 	} // constructor
 
 	/***************************
@@ -181,14 +234,23 @@ public class GraphXAxis {
 	 * array from them.  If you didn't construct with a list,
 	 * you gotta do this before drawing.
 	 *
-	 * @param pts	A bunch of points that will REPLACE the
+	 * @param nums	A bunch of numbers that will REPLACE the
 	 * 				current point list!
+	 *
+	 * @param labels		Labels corresponding the numbers.
+	 * 					You can use null instead of a string
+	 * 					to indicate no label for that number
+	 * 					or send in null to indicate no labels
+	 * 					at all.
 	 *
 	 * @return	The quantity of numbers added.
 	 */
-	public int set_nums (List<Float> nums) {
+	public int set_nums (List<Float> nums, List<String> labels) {
 		m_orig.clear();
 		m_orig.addAll(nums);
+
+		m_labels = labels;
+
 		m_dirty = true;
 		return m_orig.size();
 	}
@@ -200,10 +262,39 @@ public class GraphXAxis {
 	 * @param nums	A bunch of numbers that'll be added
 	 * 				to the current list.
 	 *
+	 * @param labels		Labels corresponding the numbers.
+	 * 					You can use null instead of a string
+	 * 					to indicate no label for that number
+	 * 					or send in null to indicate no labels
+	 * 					at all.
+	 *
 	 * @return	The total quantity of numbers in our list.
 	 */
-	public int add_nums (List<Float> nums) {
+	public int add_nums (List<Float> nums, List<String> labels) {
+		// Only add labels if there are any!
+		if (labels != null) {
+			if (m_labels == null) {
+				// Originally, there weren't any labels, so we
+				// need to make dummy labels to match the old
+				// numbers.
+				m_labels = new ArrayList<String>(m_orig.size());
+				for (int i = 0; i < m_labels.size(); i++) {
+					m_labels.set(i, null);
+				}
+			}
+			// Now add all the new labels.
+			m_labels.addAll(labels);
+		}
+
 		m_orig.addAll(nums);
+
+		// Test to make sure we did this right.
+		if (labels != null) {
+			if (m_orig.size() != m_labels.size()) {
+				Log.e (tag, "Error in add_nums()!  Sizes of the two lists don't match!");
+			}
+		}
+
 		m_dirty = true;
 		return m_orig.size();
 	}
@@ -218,13 +309,37 @@ public class GraphXAxis {
 	 *
 	 * @param num	The number to add.
 	 *
+	 * @param label	A label for the number.  If you don't
+	 * 				want one, send in null.
+	 *
 	 * @return	The total quantity of numbers.
 	 */
-	public int add_num (float num) {
+	public int add_num (float num, String label) {
+		if (label != null) {
+			if (m_labels == null) {
+				// No labels yet, so we need to construct
+				// a list to hold all the old labels.
+				m_labels = new ArrayList<String>(m_orig.size());
+				for (int i = 0; i < m_labels.size(); i++) {
+					m_labels.set(i, null);
+				}
+			}
+			m_labels.add(label);
+		}
+
 		m_orig.add(num);
+
+		// Test!
+		if (label != null) {
+			if (m_orig.size() != m_labels.size()) {
+				Log.e (tag, "Error in add_num()!  Sizes of the two lists don't match!");
+			}
+		}
+
 		m_dirty = true;
 		return m_orig.size();
 	}
+
 
 	/****************************
 	 * This does the calculations necessary to go from
@@ -317,6 +432,7 @@ public class GraphXAxis {
 	 *
 	 * @param end		Label for the last tick-mark.
 	 */
+	@Deprecated
 	public void set_labels (String start, String end) {
 		m_label_start = start;
 		m_label_end = end;
@@ -331,7 +447,7 @@ public class GraphXAxis {
 	 */
 	public void draw(Canvas canvas, Paint paint) {
 		draw_lines(canvas, paint);
-		draw_labels(canvas, paint);
+//		draw_labels(canvas, paint, false);
 	} // draw()
 
 	/*****************************
@@ -345,27 +461,128 @@ public class GraphXAxis {
 	 */
 	private void draw_lines (Canvas canvas, Paint paint) {
 		if (m_dirty) {
-			Log.e(tag, "Trying to draw with dirty numbers!  But I'll do it anyway, even if it is slow.");
+			Log.w(tag, "Trying to draw with dirty numbers!  But I'll do it anyway, even if it is slow.");
 			map_points();
 		}
 
 		for (int i = 0; i < m_converted.length; i++) {
-			if (m_converted[i] != NaN) {
+			if ((m_converted[i] != NaN) && (m_last_num + m_min_dist < m_converted[i])) {
 				draw_line(canvas,
-						m_converted[i], m_draw_rect.bottom,
 						m_converted[i], m_draw_rect.top,
+						m_converted[i], m_draw_rect.top - m_tick_height,
 						paint);
+				m_last_num = m_converted[i];
+
+				if (m_labels != null) {
+					draw_label(canvas, paint, m_labels.get(i), m_converted[i], true);
+				}
 			}
 		}
+
+		// And draw the axis line
+		draw_line(canvas,
+				m_draw_rect.left, m_draw_rect.top - m_tick_height,
+				m_draw_rect.right, m_draw_rect.top - m_tick_height,
+				paint);
 	} // draw_lines()
+
+
+	/****************************
+	 * Draws a single label.  Designed to be called within
+	 * the draw_lines() loop, this draws the label for the
+	 * corresponding line (if there's room).
+	 * <p>
+	 * <b>preconditions</b>:<br/>
+	 * 	<i>m_last_label</i> is set to the proper position (the right-most
+	 * 		pixel of the previous label).
+	 *
+	 * <p>
+	 * <b>side effects</b>:<br/>
+	 * 	<i>m_last_label</i> will be set to the right-most pixel of
+	 * 	the last label that was drawn with room (which may not
+	 * 	be THIS label).
+	 *
+	 * @param label		The string to display here (or null to
+	 * 					display nothin').
+	 * @param x_pos		The x_position of the tick-mark we're
+	 * 					labelling.
+	 * @param centered	Should the label be centered on the
+	 * 					tick-mark?
+	 */
+	private void draw_label (Canvas canvas, Paint paint,
+							String label, float x_pos,
+							boolean centered) {
+		if (m_labels == null) {
+			return;		// No labels to draw!
+		}
+
+		float x, y;
+		Rect rect = new Rect();
+
+		paint.setAntiAlias(true);	// neat text
+
+		// Find the bounding rectangle for this text.
+		paint.getTextBounds(label, 0, label.length(), rect);
+
+		// Set the drawing positions.
+		x = x_pos;
+		if (centered) {
+			x -= rect.exactCenterX();
+		}
+
+		// Is there enough room?
+		if (x > m_last_label_pixel)	{
+			y = m_draw_rect.top - m_tick_height - rect.height() - DEFAULT_LABEL_PADDING_TOP;
+			draw_text(canvas, label, x, y, paint);
+			m_last_label_pixel = x + rect.width();
+		}
+
+	} // draw_label(...)
 
 
 	/*****************************
 	 * Draws the labels on our x-axis.
+	 *
+	 * @param	centered		Should the labeled be centered
+	 * 						on the tick marks?  If not, then
+	 * 						the first will be at the left-most
+	 * 						edge, and the last will be at the
+	 * 						right-most edge.
 	 */
-	private void draw_labels (Canvas canvas, Paint paint) {
+	@Deprecated
+	private void draw_labels_old (Canvas canvas, Paint paint, boolean centered) {
+		float x, y;
+		Rect rect = new Rect();
 
-		// todo:
+		// draw the labels at the first and last number.
+		paint.setAntiAlias(true);	// neat text
+
+		paint.getTextBounds(m_label_start,
+							0, m_label_start.length(), rect);
+
+		if (centered) {
+			x = m_converted[0] - rect.exactCenterX();
+		}
+		else {
+			x = m_draw_rect.left;
+			x -= LABEL_FUDGE_FACTOR;
+		}
+		y = m_draw_rect.top - m_tick_height - rect.height() - DEFAULT_LABEL_PADDING_TOP;
+		draw_text(canvas, m_label_start, x, y, paint);
+//		Log.d (tag, "draw_labels start: " + x + ", " + y);
+
+		paint.getTextBounds(m_label_end,
+							0, m_label_end.length(), rect);
+		if (centered) {
+			x = m_converted[m_converted.length - 1] - rect.exactCenterX();
+		}
+		else {
+			x = m_draw_rect.right - rect.width();
+			x += LABEL_FUDGE_FACTOR;
+		}
+		y = m_draw_rect.top - m_tick_height - rect.height() - DEFAULT_LABEL_PADDING_TOP;
+		draw_text(canvas, m_label_end, x, y, paint);
+		Log.d (tag, "draw_labels end: " + x + ", " + y);
 
 	} // draw_labels()
 

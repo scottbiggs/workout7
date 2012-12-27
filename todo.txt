@@ -1,5 +1,9 @@
 TODO:
 -----------------
+When displaying graphs, have the menu bring up a legend for the
+	colors (in a dialog).  It'll save a lot on screen real estate
+	(instead of having the legend on the screen).
+
 The pink/fuchsia for the graph colors is too much.  Tone it down
 	a bit.
 

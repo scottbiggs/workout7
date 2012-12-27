@@ -48,13 +48,16 @@ public class GView extends View {
 	//----------------------------
 
 	/** Number of pixels between two points */
-	public static final float DEFAULT_MIN_POINT_DISTANCE = 6;
+	public static final float DEFAULT_MIN_POINT_DISTANCE = 10;
+
+	/** The size of the text for the labels (x and y). */
+	public static final float DEFAULT_TEXT_SIZE = 12;
 
 	private static final String tag = "GView";
 
 	/** The number of pixels to pad our drawing. */
-	private static final float PADDING_LEFT = 16,
-			PADDING_RIGHT = 8, PADDING_TOP = 46, PADDING_BOTTOM = 54;
+	private static final float PADDING_LEFT = 26,
+			PADDING_RIGHT = 26, PADDING_TOP = 46, PADDING_BOTTOM = 54;
 
 	/** Number of pixels between y-axis lines in the graph. */
 	private static final int VERT_LINE_SPACING = 70;
@@ -168,6 +171,10 @@ public class GView extends View {
 	 */
 	List <Float> m_unique_graph_nums = null;
 
+	/** The size of the label text */
+	protected float m_label_text_size = DEFAULT_TEXT_SIZE;
+
+
 	//----------------------------
 	//	Constructors (ALL are needed for inflating!)
 	//----------------------------
@@ -232,14 +239,12 @@ public class GView extends View {
 
 		// Update our draw rectangle
 		if (m_draw_rect == null) {
-			m_draw_rect = new RectF(0 + PADDING_LEFT, h - PADDING_TOP,
-									w - PADDING_RIGHT, 0 + PADDING_BOTTOM);
+			m_draw_rect = new RectF();
 		}
-		else {
-			m_draw_rect.set(0 + PADDING_LEFT, h - PADDING_TOP,
-							w - PADDING_RIGHT, 0 + PADDING_BOTTOM);
-		}
+		m_draw_rect.set(0 + PADDING_LEFT, h - PADDING_TOP,
+						w - PADDING_RIGHT, 0 + PADDING_BOTTOM);
 
+		// Update the draw rectangle for all our GraphLiness.
 		for (GraphCollection graph : m_graphlist) {
 			graph.m_line_graph.set_draw_area(m_draw_rect);
 			graph.m_line_graph.map_points();
@@ -280,6 +285,8 @@ public class GView extends View {
 		// todo
 		//	Draw the axii here
 		//
+		float old_text_size = m_paint.getTextSize();
+		m_paint.setTextSize(m_label_text_size);
 		if (m_graph_x_axis != null) {
 			if (m_graph_x_axis.is_draw_area_set() == false) {
 				// set the draw_area
@@ -291,6 +298,8 @@ public class GView extends View {
 			m_paint.setColor(getResources().getColor(color.ghost_white));
 			m_graph_x_axis.draw(canvas, m_paint);
 		}
+		m_paint.setTextSize(old_text_size);	// Restore.  Probably not needed.
+
 
 //		m_paint.setColor(getResources().getColor(color.hpg_orange));
 		m_paint.setAntiAlias(true);
@@ -860,6 +869,7 @@ public class GView extends View {
 	/********************
 	 * Converts usable coordinate to actual screen coordinate.
 	 */
+	@Deprecated
 	private float conv_x (float x) {
 		return PADDING_LEFT + x;
 	}
@@ -896,7 +906,24 @@ public class GView extends View {
 //		m_graphlist.add(line);
 //		return id;
 //	} // add_graph_points(points)
-//
+
+	/********************
+	 * Changes the size of the text in the x and y axii labels.
+	 *
+	 * @param size	The font size to use.
+	 */
+	public void set_label_size(float size) {
+		m_label_text_size = size;
+	}
+
+	/*********************
+	 * Returns the current text size of the x and y axii labels.
+	 */
+	public float get_label_size() {
+		return m_label_text_size;
+	}
+
+
 	/********************
 	 * Adds a collection for a graph to display in this widget.
 	 *

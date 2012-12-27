@@ -295,21 +295,37 @@ public class MyCalendar {
 	 * @param	ctx		A context.  This allows the routine
 	 * 					to look up teh string for the month
 	 * 					name (varies by language!).
-	 *
-	 * @return	A String for the date.
 	 */
 	public String print_date (Context ctx) {
 		return get_month_text(ctx) + " " + get_day() + ", " + get_year();
 	}
 
 	/********************
+	 * Returns a string suitable for displaying the date
+	 * WITHOUT the year.
+	 *
+	 * @param	ctx		A context.  This allows the routine
+	 * 					to look up teh string for the month
+	 * 					name (varies by language!).
+	 */
+	public String print_month_day (Context ctx) {
+		return get_month_text(ctx) + " " + get_day();
+	}
+
+	/********************
 	 * Returns a string suitable for printing the date.  This
 	 * version uses just a number format, like 9/12/2011.
-	 *
-	 * @return	A String for the date.
 	 */
 	public String print_date_numbers() {
 		return get_month_12() + "/" + get_day() + "/" + get_year();
+	}
+
+	/********************
+	 * Returns a string suitable for printing the date.  This
+	 * version uses numbers, but does NOT include the year.
+	 */
+	public String print_month_day_numbers() {
+		return get_month_12() + "/" + get_day();
 	}
 
 	/********************

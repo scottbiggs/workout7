@@ -344,7 +344,7 @@ public class GraphLine {
 	 */
 	public void draw (Canvas canvas, Paint paint) {
 		if (m_pts_dirty) {
-			Log.e(tag, "Trying to draw with dirty points!  But I'll do it anyway, even if it is slow.");
+			Log.w(tag, "Trying to draw with dirty points!  But I'll do it anyway, even if it is slow.");
 			map_points();
 		}
 

@@ -11,6 +11,7 @@ package com.sleepfuriously.hpgworkout;
 import java.util.ArrayList;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteException;
@@ -23,7 +24,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -126,6 +126,8 @@ public class GraphActivity
 
 		// Init buttons and the main graph View
 		m_view = (GView) findViewById(R.id.graph_view);
+		int text_size = getResources().getDimensionPixelSize(R.dimen.font_size_small);
+		m_view.set_label_size(text_size);
 
 		// Make sure we load the database each time onCreate() is called.
 		m_db_dirty = true;
@@ -638,7 +640,9 @@ public class GraphActivity
 			long left = Long.MAX_VALUE, right = -Long.MAX_VALUE;
 
 			for (SetData set_data : m_set_data) {
-				m_view.m_graph_x_axis.add_num(set_data.millis);
+				MyCalendar cal = new MyCalendar(set_data.millis);
+				String str = cal.print_month_day_numbers();
+				m_view.m_graph_x_axis.add_num(set_data.millis, str);
 				if (set_data.millis < left)
 					left = set_data.millis;
 				if (set_data.millis > right)
@@ -647,10 +651,6 @@ public class GraphActivity
 			left--;		// A little padding
 			right++;
 			m_view.m_graph_x_axis.set_bounds(left, right);
-
-			MyCalendar start = new MyCalendar(m_set_data.get(0).millis);
-			MyCalendar end = new MyCalendar(m_set_data.get(m_set_data.size() - 1).millis);
-			m_view.m_graph_x_axis.set_labels(start.print_date_numbers(), end.print_date_numbers());
 
 			stop_progress_dialog();
 			m_view.invalidate();		// Necessary to make sure that
