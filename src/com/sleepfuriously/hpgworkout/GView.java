@@ -116,6 +116,12 @@ public class GView extends View {
 	 */
 	private List<GraphCollection> m_graphlist = null;
 
+	/**
+	 * If not null, then this holds info about an X-axis
+	 * to draw for our graph.  It'll be created externally,
+	 * but this class will have to fill in the draw area.
+	 */
+	public GraphXAxis m_graph_x_axis = null;
 
 	/**
 	 * This string defines the beginning of the x-axis.
@@ -142,7 +148,7 @@ public class GView extends View {
 	 * 	See map_setup() and map() for more details.
 	 *
 	 * todo
-	 * 	Remove this variable.  It's in GraphBase now.
+	 * 	Remove this variable.  It's in other classes now.
 	 */
 //	private float a, b, r, s;
 	@Deprecated
@@ -152,6 +158,7 @@ public class GView extends View {
 	Paint m_paint = null;
 
 	/** Used during onDraw() occassionally. */
+	@Deprecated
 	Rect m_temp_rect = null;
 
 	/**
@@ -273,6 +280,17 @@ public class GView extends View {
 		// todo
 		//	Draw the axii here
 		//
+		if (m_graph_x_axis != null) {
+			if (m_graph_x_axis.is_draw_area_set() == false) {
+				// set the draw_area
+				RectF x_axis_rect = new RectF(m_draw_rect);
+				x_axis_rect.bottom = 0;
+				x_axis_rect.top = m_draw_rect.bottom;
+				m_graph_x_axis.set_draw_area(x_axis_rect);
+			}
+			m_paint.setColor(getResources().getColor(color.ghost_white));
+			m_graph_x_axis.draw(canvas, m_paint);
+		}
 
 //		m_paint.setColor(getResources().getColor(color.hpg_orange));
 		m_paint.setAntiAlias(true);

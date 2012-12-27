@@ -89,7 +89,7 @@ public class GraphLine {
 	protected PointF m_last_pt = new PointF();
 
 	/** Minimum distance between two points to draw a big dot */
-	public Float m_min_dist = GView.DEFAULT_MIN_POINT_DISTANCE;
+	public float m_min_dist = GView.DEFAULT_MIN_POINT_DISTANCE;
 
 
 	/** Tells if any of the points needs to be mapped */
@@ -119,7 +119,7 @@ public class GraphLine {
 	 * 						set up the mapping functions.
 	 */
 	public GraphLine (List<PointF> pts, RectF bounds, RectF draw_area) {
-		m_orig_pts = new ArrayList<PointF>(pts);
+		m_orig_pts = new ArrayList<PointF>(pts);		// todo: creating a copy of pts is redundant here!
 		m_pts_dirty = true;
 		set_bounds(bounds);
 		set_draw_area(draw_area);
@@ -178,6 +178,7 @@ public class GraphLine {
 	 */
 	public void delete_points() {
 		m_orig_pts.clear();
+		m_pts_dirty = true;
 	}
 
 	/****************************
@@ -204,10 +205,10 @@ public class GraphLine {
 	 * preconditions:
 	 * 	The rectangles have been set.
 	 *
-	 * @param pts	A bunch of points that will REPLACE the
-	 * 				current point list!
+	 * @param pts	A bunch of points that will be added
+	 * 				to the current point list.
 	 *
-	 * @return	The number of points added.
+	 * @return	The total number of points in our list.
 	 */
 	public int add_points (List<PointF> pts) {
 		m_orig_pts.addAll(pts);
@@ -228,7 +229,7 @@ public class GraphLine {
 	 *
 	 * @param pt		The 2D point to add.
 	 *
-	 * @return	The  number of points total.
+	 * @return	The number of points total.
 	 */
 	public int add_point (PointF pt) {
 		m_orig_pts.add(pt);

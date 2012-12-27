@@ -89,6 +89,7 @@ public class GraphActivity
 	 * Holds the exact time of the first and last set.  This is used
 	 * to figure out the labels in the x-axis.
 	 */
+	@Deprecated
 	MyCalendar m_start_cal = null, m_end_cal = null;
 
 	/**
@@ -400,8 +401,10 @@ public class GraphActivity
 		// Find the reps data and put it in a GraphCollection.
 		GraphCollection collection = new GraphCollection();
 		collection.m_line_graph = new GraphLine();
+
 		RectF bounds = new RectF(Float.MAX_VALUE, -Float.MAX_VALUE,
 								-Float.MAX_VALUE, Float.MAX_VALUE);
+
 		for (SetData set_data : m_set_data) {
 			PointF pt = new PointF();
 
@@ -441,10 +444,11 @@ public class GraphActivity
 				bounds.bottom = pt.y;
 			if (pt.y > bounds.top)
 				bounds.top = pt.y;
+
 			collection.m_line_graph.add_point(pt);
 		}
 
-		// Create some space for the bounds (also takes care of
+		// Create some padding for the bounds (also takes care of
 		// the case where everything is the same number).
 		bounds.left--;
 		bounds.right++;
@@ -628,36 +632,25 @@ public class GraphActivity
 			if (m_exercise_data.bother)
 				add_new_collection(DatabaseHelper.EXERCISE_COL_OTHER_NUM, graph_colors[6]);
 
-//			for (SetData set_data : m_set_data) {
-//				MyCalendar date = new MyCalendar (set_data.millis);
-//
-//				switch (m_exercise_data.significant) {
-//					case DatabaseHelper.EXERCISE_COL_REP_NUM:
-//						m_view.add_point(set_data.reps, date);
-//						break;
-//					case DatabaseHelper.EXERCISE_COL_LEVEL_NUM:
-//						m_view.add_point(set_data.levels, date);
-//						break;
-//					case DatabaseHelper.EXERCISE_COL_CALORIE_NUM:
-//						m_view.add_point(set_data.cals, date);
-//						break;
-//					case DatabaseHelper.EXERCISE_COL_WEIGHT_NUM:
-//						m_view.add_point(set_data.weight, date);
-//						break;
-//					case DatabaseHelper.EXERCISE_COL_DIST_NUM:
-//						m_view.add_point(set_data.dist, date);
-//						break;
-//					case DatabaseHelper.EXERCISE_COL_TIME_NUM:
-//						m_view.add_point(set_data.time, date);
-//						break;
-//					case DatabaseHelper.EXERCISE_COL_OTHER_NUM:
-//						m_view.add_point(set_data.other, date);
-//						break;
-//					default:
-//						Log.e(tag, "Can't find a significant aspect in onPostExecute!");
-//						break;
-//				}
-//			} // for all the sets
+
+			// Setup the x-axis
+			m_view.m_graph_x_axis = new GraphXAxis();
+			long left = Long.MAX_VALUE, right = -Long.MAX_VALUE;
+
+			for (SetData set_data : m_set_data) {
+				m_view.m_graph_x_axis.add_num(set_data.millis);
+				if (set_data.millis < left)
+					left = set_data.millis;
+				if (set_data.millis > right)
+					right = set_data.millis;
+			}
+			left--;		// A little padding
+			right++;
+			m_view.m_graph_x_axis.set_bounds(left, right);
+
+			MyCalendar start = new MyCalendar(m_set_data.get(0).millis);
+			MyCalendar end = new MyCalendar(m_set_data.get(m_set_data.size() - 1).millis);
+			m_view.m_graph_x_axis.set_labels(start.print_date_numbers(), end.print_date_numbers());
 
 			stop_progress_dialog();
 			m_view.invalidate();		// Necessary to make sure that
