@@ -1,5 +1,8 @@
 TODO:
 -----------------
+The pink/fuchsia for the graph colors is too much.  Tone it down
+	a bit.
+
 Need to make and test the new GraphLine class so that it supports
 	null values.
 
