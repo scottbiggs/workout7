@@ -1,5 +1,17 @@
 TODO:
 -----------------
+Need to make and test the new GraphLine class so that it supports
+	null values.
+
+Graphs need to be able to ZOOM IN/OUT!  What does that mean?
+	When the user pinches, the screen should respond accordingly.
+	For me, that means that the mapping of the graphs changes.
+	So I need the current mapping and the original mapping, to
+	go back to when the user double taps to go back.
+
+The wheels can be pretty small.  See if it's possible to
+	allow the user to make 'em bigger.
+
 Enable data backups.  See http://developer.android.com/guide/topics/data/backup.html
 
 Shifting to the ASet tab when it needs to reload is still

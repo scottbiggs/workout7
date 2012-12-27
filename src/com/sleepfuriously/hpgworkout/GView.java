@@ -8,14 +8,14 @@
  * 	1.	Instantiate.  This sets everything up, (including
  * 		clearing everything).
  *
- *	2.	Add the numbers to graph (floats).  You can add them
- *		one at time via add_point(), in an array with
- *		add_points(), or any combination of the two methods.
- *		They'll be graphed in the order received.
+ * 	2.	Create a GraphLine for every line graph that you want
+ * 		to display.  This is easiest by calling add_graph_points()
+ * 		for each group of points you want (this makes each point
+ * 		group a line graph).
  *
  *	3.	If you need to start over, call clear().
  *
- *	4.	todo: Set the labels.
+ *	4.	todo: Set the labels and the x/y axii.
  */
 package com.sleepfuriously.hpgworkout;
 
@@ -27,7 +27,9 @@ import java.util.List;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.PointF;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
@@ -45,11 +47,14 @@ public class GView extends View {
 	//	Constants
 	//----------------------------
 
+	/** Number of pixels between two points */
+	public static final float DEFAULT_MIN_POINT_DISTANCE = 6;
+
 	private static final String tag = "GView";
 
 	/** The number of pixels to pad our drawing. */
-	private static final float LEFT_PADDING = 16,
-			RIGHT_PADDING = 8, TOP_PADDING = 46, BOTTOM_PADDING = 54;
+	private static final float PADDING_LEFT = 16,
+			PADDING_RIGHT = 8, PADDING_TOP = 46, PADDING_BOTTOM = 54;
 
 	/** Number of pixels between y-axis lines in the graph. */
 	private static final int VERT_LINE_SPACING = 70;
@@ -82,7 +87,11 @@ public class GView extends View {
 	 * If m_graph_nums are added on a day that already exists,
 	 * then that value will be added to the existing m_graph_num
 	 * and a new item will NOT be created.
+	 *
+	 * todo:
+	 * 	Take these out when GraphBase is done.
 	 */
+	@Deprecated
 	private List<Float> m_graph_nums = new ArrayList<Float>();
 
 	/**
@@ -94,8 +103,19 @@ public class GView extends View {
 	 * Repeating dates causes the value of original date to be
 	 * ADDED by the new value, instead of a new element added
 	 * to the list.
+	 *
+	 * todo:
+	 * 	Take these out when GraphBase is done.
 	 */
+	@Deprecated
 	private List<MyCalendar> m_graph_nums_date = new ArrayList<MyCalendar>();
+
+	/**
+	 * Holds the all the lines to be graphed.  The caller can reference
+	 * them by their ID.
+	 */
+	private List<GraphCollection> m_graphlist = null;
+
 
 	/**
 	 * This string defines the beginning of the x-axis.
@@ -112,14 +132,21 @@ public class GView extends View {
 	 */
 	private float m_usable_height, m_usable_width;
 
+	/** Describes the area that the graph draws in (in my coord system) */
+	private RectF m_draw_rect = null;
+
 	/**
 	 * These define the parameters of the mapping function:
 	 * 		[a, b]  =>  [r, s]
 	 *
 	 * 	See map_setup() and map() for more details.
+	 *
+	 * todo
+	 * 	Remove this variable.  It's in GraphBase now.
 	 */
-	private float a, b, r, s;
-
+//	private float a, b, r, s;
+	@Deprecated
+	GraphMap m_mapper;
 
 	/** Used during onDraw(). */
 	Paint m_paint = null;
@@ -162,6 +189,10 @@ public class GView extends View {
 	 * Right now, this is for testing.
 	 */
 	private void init() {
+		if (m_graphlist == null) {
+			m_graphlist = new ArrayList<GraphCollection>();
+		}
+
 		clear();
 		if (m_paint == null) {
 			m_paint = new Paint();
@@ -187,35 +218,96 @@ public class GView extends View {
 		m_official_width = (float) w;
 //		Log.v(tag, "onSizeChanged(): w = " + w + ", h = " + h);
 
-		m_usable_height = m_official_height - (TOP_PADDING + BOTTOM_PADDING);
-		m_usable_width = m_official_width - (LEFT_PADDING + RIGHT_PADDING);
+		m_usable_height = m_official_height - (PADDING_TOP + PADDING_BOTTOM);
+		m_usable_width = m_official_width - (PADDING_LEFT + PADDING_RIGHT);
 //		Log.v(tag, "onSizeChanged(): usable width = " + m_usable_width +
 //				", usable height = " + m_usable_height);
-	}
+
+		// Update our draw rectangle
+		if (m_draw_rect == null) {
+			m_draw_rect = new RectF(0 + PADDING_LEFT, h - PADDING_TOP,
+									w - PADDING_RIGHT, 0 + PADDING_BOTTOM);
+		}
+		else {
+			m_draw_rect.set(0 + PADDING_LEFT, h - PADDING_TOP,
+							w - PADDING_RIGHT, 0 + PADDING_BOTTOM);
+		}
+
+		for (GraphCollection graph : m_graphlist) {
+			graph.m_line_graph.set_draw_area(m_draw_rect);
+			graph.m_line_graph.map_points();
+		}
+
+	} // onSizeChanged(w, h, oldw, oldh)
+
+
+	//----------------------------
+	@Override
+	protected void onDraw(Canvas canvas) {
+		// Are we loading? Then just exit.
+		if (GraphActivity.m_loading) {
+			Log.v(tag, "onDraw: EXITING because we're loading");
+			return;
+		}
+
+		// Some basic setup stuff.
+		float dot_size = DOT_RADIUS;
+		m_paint.setStrokeWidth(0);		// hairline (min. of 0)
+		m_paint.setColor(getResources().getColor(color.ghost_white));
+		m_paint.setAntiAlias(true);
+		m_paint.setTextSize(20);
+
+
+		// Check to see if there's anything to draw.
+		if (m_graphlist.size() == 0) {
+			String msg = this.getContext().getString(R.string.graph_no_sets_msg);
+			m_paint.getTextBounds(msg, 0, msg.length(), m_temp_rect);
+			canvas.drawText(msg,
+					m_official_width / 2 - m_temp_rect.width() / 2,
+					m_official_height / 2 - m_temp_rect.height() / 2,
+					m_paint);
+			return;
+		}
+
+		//
+		// todo
+		//	Draw the axii here
+		//
+
+//		m_paint.setColor(getResources().getColor(color.hpg_orange));
+		m_paint.setAntiAlias(true);
+		m_paint.setStrokeWidth(LINE_STROKE_WIDTH);
+
+		// Draw all the lines
+		for (GraphCollection graph : m_graphlist) {
+			if (graph.m_line_graph.is_draw_area_set() == false) {
+				graph.m_line_graph.set_draw_area(m_draw_rect);	// Could slow down the drawing quite a bit
+			}
+			m_paint.setColor(graph.m_color);
+			graph.m_line_graph.draw(canvas, m_paint);
+		}
+
+
+	} // onDraw(canvas)
 
 	//----------------------------
 	//	This is called every time a draw is needed.  Therefore a dirty
 	//	bit is superfluous.
 	//
-	@Override
-	protected void onDraw(Canvas canvas) {
+	//	Okay, I learned something.  The Canvas describes the entire
+	//	screen, but we're only allowed to draw in the clipBounds.
+	//	Yes, I believe they can be changed, but that's not interesting
+	//	at the moment.
+	//
+	//	The clipBounds actually does some work for us:
+	//		It translates from 0,0 (when we enter that location) to
+	//		the top left of our view.  Yay!  And the bottom and right
+	//		portion of the clipBounds are our height and width.  Double
+	//		yay.  Now I get it.
+	//
+//	@Override
+	protected void onDraw_old(Canvas canvas) {
 		float dot_size = DOT_RADIUS;
-
-		// todo
-		//	DEBUG
-
-		for (int i = 0; i < m_graph_nums_date.size(); i++) {
-			Log.v(tag, "Days from first for day " + i + " is " +
-						m_graph_nums_date.get(i).get_difference_in_days(m_graph_nums_date.get(0)));
-		}
-		for (int i = 0; i < m_graph_nums_date.size(); i++) {
-			Log.v(tag, "Date #" + i + " is " + m_graph_nums_date.get(i).print_date_numbers()
-				  + ", " + m_graph_nums_date.get(i).print_time(false));
-		}
-
-
-		// todo
-		//	end DEBUG
 
 		m_paint.setStrokeWidth(0);		// hairline (min. of 0)
 		m_paint.setColor(getResources().getColor(color.ghost_white));
@@ -325,6 +417,10 @@ public class GView extends View {
 		heckbert_loose_label(min, max, num_y_lines,
 							canvas, m_paint);
 
+		// Draw all the lines
+		for (GraphCollection graph : m_graphlist) {
+			graph.m_line_graph.draw(canvas, m_paint);
+		}
 
 		/**
 		 * The number of horizontal pixels between graphed
@@ -339,13 +435,57 @@ public class GView extends View {
 		float num_days = (float) (end_day.get_difference_in_days(start_day));
 		if (num_days != 0) {
 			Log.v(tag, "num_days = " + num_days);
-			float horiz_spacing = (m_usable_width - (LEFT_PADDING + RIGHT_PADDING))
+			float horiz_spacing = (m_usable_width - (PADDING_LEFT + PADDING_RIGHT))
 									/ num_days;
 			Log.v(tag, "horiz_spacing = " + horiz_spacing);
 
-			draw_x_axis_lines (horiz_spacing, canvas, m_paint);
-			draw_the_points (canvas, m_paint, horiz_spacing, dot_size);
+//			draw_x_axis_lines (horiz_spacing, canvas, m_paint);
+			new_draw_x_axis_lines (canvas, m_paint);
+
+//			draw_the_points (canvas, m_paint, horiz_spacing, dot_size);
+
+
+			m_paint.setColor(getResources().getColor(color.hpg_orange));
+			m_paint.setAntiAlias(true);
+			m_paint.setStrokeWidth(LINE_STROKE_WIDTH);
+
+
+
+			// TODO:
+			//	Move this out of a critical loop and into a much less
+			//	time sensitive place.
+			//
+			// Create the list of points
+//			ArrayList<PointF> pts = new ArrayList<PointF>();
+//			long first_day = m_graph_nums_date.get(0).get_absolute_days();
+//			long last_day = -1;
+//			float smallest = Float.MAX_VALUE;
+//			float largest = -Float.MAX_VALUE;
+//			for (int i = 0; i < m_graph_nums_date.size(); i++) {
+//				long day = m_graph_nums_date.get(i).get_absolute_days();
+//				if (day != last_day) {
+//					float val = m_graph_nums.get(i);
+//					// Add unique days to our list
+//					pts.add(new PointF(day, val));
+//					last_day = day;
+//					if (val < smallest)
+//						smallest = val;
+//					if (val > largest)
+//						largest = val;
+//				}
+//			}
+
+//			RectF bounds_rect = new RectF(first_day, largest, last_day, smallest);
+
+//			GraphLine line = new GraphLine(pts, bounds_rect, m_draw_rect);
+//			line.draw(canvas, m_paint);
+
+
+//			new_draw_the_points (pts, bounds_rect, draw_rect, canvas, m_paint);
+
+
 		}
+
 		else {
 			// todo:
 			//	handle the situation where all the sets (or the only set)
@@ -353,6 +493,102 @@ public class GView extends View {
 		}
 
 	} // onDraw (canvas)
+
+
+	/*******************
+	 * This version uses the GraphLine class.  This is
+	 * just a test method, to make sure that the GraphLine
+	 * class works.  All the prep work should be done
+	 * earlier for efficiency.
+	 *
+	 * preconditions:
+	 * 	There is more than one set to draw!
+	 *
+	 * @param pts_array		An array of 2D points to draw.  The vertical (y)
+	 * 						component is simply the values.  The horiz
+	 * 						aspect corresponds to some other value (probably
+	 * 						the day that the exercise happened).
+	 * 						This should be created as points are added.
+	 *
+	 * @param canvas		Something to draw on.
+	 *
+	 * @param paint		Something to paint with.
+	 */
+	@Deprecated
+	protected void new_draw_the_points(ArrayList<PointF> pts_list,
+									RectF bounds_rect, RectF draw_rect,
+									Canvas canvas, Paint paint) {
+
+
+		// todo:
+		//	TESTING.  Trying to see exactly where our draw rectangle is.
+//		{
+//		Paint tpaint = new Paint(m_paint);
+//		tpaint.setStrokeWidth(0);
+//
+//		// YELLOW:
+//		tpaint.setColor(getResources().getColor(color.yellow));
+//		Rect trect = canvas.getClipBounds();
+//		Log.d(tag, "clipBounds = " + trect.toString());
+//		canvas.drawCircle(trect.right, trect.top, 25, tpaint);
+//		canvas.drawCircle(trect.right, trect.bottom, 25, tpaint);
+//
+//		// X
+//		canvas.drawLine(trect.left, trect.top, trect.right, trect.bottom, tpaint);
+//		canvas.drawLine(trect.left, trect.bottom, trect.right, trect.top, tpaint);
+//
+//		// box
+//		canvas.drawLine(trect.left, trect.top, trect.left, trect.bottom, tpaint);
+//		canvas.drawLine(trect.right, trect.top, trect.right, trect.bottom, tpaint);
+//		canvas.drawLine(trect.left, trect.top, trect.right, trect.top, tpaint);
+//		canvas.drawLine(trect.left, trect.bottom, trect.right, trect.bottom, tpaint);
+//
+//		}
+		//
+		// END Testing
+
+
+		// find our drawing rect.  Remember that in my system
+		// the origin is at the bottom left.
+//		Rect cliprect = canvas.getClipBounds();
+//		RectF draw_rect = new RectF(cliprect.left, cliprect.bottom,	// Yes, a little swapping because
+//									cliprect.right, cliprect.top);	// of diff. coords.
+//		Log.d (tag, "cliprect = " + cliprect);
+//		Log.d(tag, "draw_rect = " + draw_rect);
+//
+//		draw_rect.left += PADDING_LEFT;
+//		draw_rect.right -= PADDING_RIGHT;
+//		draw_rect.bottom += PADDING_BOTTOM;
+//		draw_rect.top -= PADDING_TOP;
+
+		// Convert to a regular array.
+//		PointF[] pts_array = (PointF[]) pts.toArray(new PointF[pts.size()]);
+
+//		RectF bounds_rect = new RectF(first_day, largest, last_day, smallest);
+
+//		GraphLine line = new GraphLine(pts_array,
+//									bounds_rect, draw_rect);
+//		GraphLine line = new GraphLine(pts_list, bounds_rect, draw_rect);
+//		line.draw(canvas, paint);
+	} // new_draw_the_points(...)
+
+
+	/********************
+	 * Draws the little vertical lines at the bottom of the screen.
+	 * These give the user a bit of information about the x axis,
+	 * including some labels as well.
+	 *
+	 * preconditions:
+	 * 	m_graph_nums_date		Filled with appropriate data.
+	 *
+	 * @param canvas
+	 * @param paint
+	 */
+	protected void new_draw_x_axis_lines (Canvas canvas, Paint paint) {
+
+		// todo: remove this comment and actually use this!
+//		GraphXAxis axis_drawer = new GraphXAxis(x_pts, boundaries, draw_area);
+	} // new_draw_x_axis_lines(...)
 
 
 	/********************
@@ -365,6 +601,7 @@ public class GView extends View {
 	 * @param horiz_spacing
 	 * @param dot_size
 	 */
+	@Deprecated
 	protected void draw_the_points(Canvas canvas, Paint paint,
 								float horiz_spacing, float dot_size) {
 
@@ -374,7 +611,9 @@ public class GView extends View {
 //		float last_x = 0 + (horiz_spacing / 2);
 		float last_x = 0;
 		last_x = conv_x(last_x);		// add the padding
-		float last_y = conv_y(map(m_graph_nums.get(0)));	// quick way
+
+		float last_y = conv_y(m_mapper.map(m_graph_nums.get(0)));
+//		float last_y = conv_y(map(m_graph_nums.get(0)));	// quick way
 
 
 		// (Since map_setup() has already been called very recently,
@@ -403,7 +642,8 @@ public class GView extends View {
 			x = conv_x(x);
 
 			float y = m_graph_nums.get(i);
-			y = map(y);
+			y = m_mapper.map(y);
+//			y = map(y);
 			y = conv_y(y);
 
 			// Only draw the line if this and the last ends are valid.
@@ -411,7 +651,7 @@ public class GView extends View {
 				(m_graph_nums.get(i) != -1)) {
 				canvas.drawLine(last_x, last_y, x, y, m_paint);
 				Log.d(tag, "Line drawn from " + last_x + ", " + last_y + " to "
-					  + x + ", " + y);
+					+ x + ", " + y);
 			}
 			if (m_graph_nums.get(i) != -1) {
 				canvas.drawCircle(x, y, dot_size, m_paint);
@@ -499,6 +739,7 @@ public class GView extends View {
 		return;
 	} // draw_1_set_graph (y, canvas, paint)
 
+
 	/********************
 	 * Draws the little vertical lines at the bottom of the screen.
 	 * These give the user a bit of information about the x axis,
@@ -513,6 +754,20 @@ public class GView extends View {
 	 */
 	protected void draw_x_axis_lines (float horiz_spacing,
 									Canvas canvas, Paint paint) {
+		// Beginning to use the new GraphXAxis class.
+		//
+
+		// todo:
+		//	This should probably be in a constructor somewhere.
+//		Rect padding_rect = new Rect((int)PADDING_LEFT, (int)PADDING_TOP, (int)PADDING_RIGHT, (int)PADDING_BOTTOM);
+//		GraphXAxis x_axis = new GraphXAxis(m_context, canvas, padding_rect);
+//		x_axis.m_paint = new Paint();
+//		x_axis.m_paint.setColor(getResources().getColor(color.ghost_white));
+//		x_axis.m_paint.setAntiAlias(false);	// Just vert lines
+//		x_axis.draw();
+		//
+		// End of new stuff
+
 		paint.setColor(getResources().getColor(color.ghost_white));
 		paint.setAntiAlias(false);	// Just vert lines
 
@@ -522,7 +777,6 @@ public class GView extends View {
 		float last_x = -HORIZ_LINE_SPACING;
 		float days_from_first;
 
-		paint.setAntiAlias(false);	// just a horiz line
 
 		// find the first day and make that our base.
 		MyCalendar first_day = m_graph_nums_date.get(0);
@@ -581,7 +835,7 @@ public class GView extends View {
 	 * @return	The y value to actually draw.
 	 */
 	private float conv_y (float y) {
-		return m_usable_height - y + TOP_PADDING;
+		return m_usable_height - y + PADDING_TOP;
 	} // conv_y (y)
 
 
@@ -589,8 +843,58 @@ public class GView extends View {
 	 * Converts usable coordinate to actual screen coordinate.
 	 */
 	private float conv_x (float x) {
-		return LEFT_PADDING + x;
+		return PADDING_LEFT + x;
 	}
+
+//	/********************
+//	 * Adds a set of points to be graphed.  The points will be
+//	 * stretched to fill the rectangle as best possible.
+//	 *
+//	 * @param points		A list of x and y coordinates to be shown
+//	 * 					in a graph.
+//	 * @param color		A color to paint this graph.
+//	 * @param bounds		This rectangle describes the logical boundaries
+//	 * 					of points.  The left-right are the logical beginning
+//	 * 					and end of the x-axis.  The y-axis is similar.
+//	 *
+//	 * @param start		The string to display at the beginning of the
+//	 * 					x-axis.
+//	 * @param end		The end-point display string for the x-axis.
+//	 *
+//	 * @return	A handle to refer to this graph later.
+//	 * 			-1 on error.
+//	 */
+//	public int add_graph_points (ArrayList<PointF> points, int color,
+//								RectF bounds,
+//								String start, String end) {
+//		if (m_draw_rect == null) {
+//			Log.e (tag, "add_graph_points(): m_draw_rect has not been allocated yet!");
+//			return -1;
+//		}
+//
+//		GraphLine line = new GraphLine(points, bounds, m_draw_rect);
+//		int id = m_graphlist.size();	// Set the ID of this GraphLine
+//		line.set_id(id);
+//		m_graphlist.add(line);
+//		return id;
+//	} // add_graph_points(points)
+//
+	/********************
+	 * Adds a collection for a graph to display in this widget.
+	 *
+	 * The collection contains the axii and the line graph
+	 * objects necessary to display a graph in this widget.
+	 *
+	 * @param grapher	The GraphCollection to add.  Doesn't
+	 * 					have to be complete yet.
+	 *
+	 * @return	The total number of GraphCollections this class
+	 * 			holds after adding this one.
+	 */
+	public int add_graph_collection(GraphCollection grapher) {
+		m_graphlist.add(grapher);
+		return m_graphlist.size();
+	} // add_graph_collection (grapher)
 
 	/********************
 	 * This allows you to add a point to this Widget, one
@@ -615,7 +919,11 @@ public class GView extends View {
 	 * @return	1	The point was added to the list.
 	 * 			0	The point matched the date of an existing
 	 * 				point which was incremented by x amount.
+	 *
+	 * todo:
+	 * 	Allow points to be added to a specific graph
 	 */
+	@Deprecated
 	public int add_point (float x, MyCalendar date) {
 		for (int i = 0; i < m_graph_nums.size(); i++) {
 			if (date.is_same_day(m_graph_nums_date.get(i))) {
@@ -647,6 +955,9 @@ public class GView extends View {
 	 *
 	 * @param dates	All the dates.  The should be all seperate
 	 * 				days!!!
+	 *
+	 * todo:
+	 * 	Allow points to be added to a specific graph
 	 */
 	@Deprecated
 	public void add_points (Float[] vals, MyCalendar[] dates) {
@@ -656,10 +967,14 @@ public class GView extends View {
 
 	/********************
 	 * Removes all the points from this widget.
+	 *
+	 * todo:
+	 * 	Moved to GraphBase. Take it out when it's done.
 	 */
 	public void clear() {
 		m_graph_nums.clear();
 		m_graph_nums_date.clear();
+		m_graphlist.clear();
 	}
 
 	/**********************
@@ -727,15 +1042,17 @@ public class GView extends View {
 		nfrac = (int) Math.max(-Math.floor(Math.log10(d)), 0);
 
 		// Need to map the y values to screen y values.
-		map_setup (graphmin, graphmax, 0, m_usable_height);
+//		map_setup (graphmin, graphmax, 0, m_usable_height);
+		m_mapper = new GraphMap(graphmin, graphmax, 0, m_usable_height);
 
 		for (y = graphmin; y <= graphmax + .5 * d; y += d) {
 //			Log.v (tag, "looping through label lines: y = " + y);
-			float y2 = map(y);
+			float y2 = m_mapper.map(y);
+//			float y2 = map(y);
 			y2 = conv_y(y2);
 			paint.setAntiAlias(false);	// just a horiz line
-			canvas.drawLine(LEFT_PADDING, y2,
-					m_official_width - RIGHT_PADDING, y2, paint);
+			canvas.drawLine(PADDING_LEFT, y2,
+					m_official_width - PADDING_RIGHT, y2, paint);
 //			Log.v (tag, "\tline at " + y + ", converted to " + y2);
 
 			String str = new DecimalFormat("#.######").format(y);
@@ -744,7 +1061,7 @@ public class GView extends View {
 			paint.getTextBounds(str, 0, str.length(), rect);
 
 			paint.setAntiAlias(true);
-			canvas.drawText(str, LEFT_PADDING, y2 - 2, paint);	// -2 to seperate the text from the line
+			canvas.drawText(str, PADDING_LEFT, y2 - 2, paint);	// -2 to seperate the text from the line
 		}
 
 		return graphmin;
@@ -794,52 +1111,4 @@ public class GView extends View {
 	} // heckbert_nicenum (x, round)
 
 
-	/******************************
-	 * This is a general map function setup.  It sets some private
-	 * globals so that calls to map() work correctly.
-	 *
-	 * The mapping goes like this:
-	 * 		map the range [a, b] to the range [r, s]
-	 * 		Please note that the range INCLUDES the given numbers!
-	 *
-	 * So if the map is [1, 4] to [0, 100] then calling map(1) = 0,
-	 * map(2) = 33.3, map(3) = 66.7, map(4) = 100.
-	 *
-	 * This generally will be used so that [a, b] is the range of
-	 * of the numbers to graph, and [r, s] is the size of the drawing
-	 * window.
-	 *
-	 *  NOTE:
-	 *  		a != b		This will cause an divide by zero
-	 *  					(and doesn't make sense anyway).
-	 *
-	 *  @param	a	The lowest of the FROM portion of the map
-	 *  @param	b	The highest of the FROM portion.
-	 *  @param	r	The lowest of the TO (destination) of the mapping.
-	 *  @param	s	The highest of the TO.
-	 */
-	private void map_setup (float _a, float _b,
-							float _r, float _s) {
-		if (_a == _b) {
-			Log.e(tag, "a == b in map_y_setup!!!  Get ready for a divide by zero!!!");
-		}
-		a = _a;
-		b = _b;
-		r = _r;
-		s = _s;
-	} // map_setup (a, b, r, s)
-
-	/***********************
-	 * Using the parameters set up from map_setup(), this maps a number
-	 * from [a, b] to [r, s].  Note that it's actually quite okay for
-	 * n to be outside of the boundary of [a, b]; this method will extra-
-	 * polate.
-	 *
-	 * @param n		The number to map from [a, b] into the [r, s] space.
-	 *
-	 * @return	The resulting number in the [r, s] space.
-	 */
-	private float map (float n) {
-		return (n - a) * ((s - r) / (b - a)) + r;
-	} // map (n)
 }

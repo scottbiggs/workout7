@@ -1,5 +1,10 @@
 /**
  * This Activity displays a/some graph/s!
+ *
+ * TODO:
+ * 	UI	- add double taps to zoom in and out.
+ * 		- pinching to zoom in and out.
+ *
  */
 package com.sleepfuriously.hpgworkout;
 
@@ -9,6 +14,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteException;
+import android.graphics.PointF;
+import android.graphics.RectF;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +23,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -102,6 +110,9 @@ public class GraphActivity
 	 */
 	public static boolean m_loading = false;
 
+	/** Holds the colors for the graphs */
+	private int[] m_graph_colors;
+
 
 	//-------------------------
 	@Override
@@ -128,6 +139,9 @@ public class GraphActivity
 			Log.e(tag, "\tGraph creation aborted.");
 			return;
 		}
+
+		m_graph_colors = getResources().getIntArray(R.array.graph_color_array);
+
 
 		// If we're displaying graphs in a Tab, then the title and
 		// logo need to disappear.
@@ -361,6 +375,90 @@ public class GraphActivity
 		}
 	} // test_m_db()
 
+
+	/************************
+	 * Goes through m_set_data and extracts all the data associated
+	 * with a particular aspect.  This is then loaded up into a
+	 * GraphCollection and added to our GView (m_view).
+	 *
+	 * preconditions:
+	 * 	m_set_data	Loaded up with all our data from the async
+	 * 				task.
+	 *
+	 * side effect:
+	 * 	m_view		Will have a GraphCollection added to it.
+	 *
+	 * @param aspect		The aspect (identified by the
+	 * 					DatabaseHelper.EXERCISE_COL_???_NUM)
+	 * 					that this GraphCollection represents.
+	 *
+	 * @param color		The color to assign for this aspect.
+	 */
+	protected void add_new_collection(int aspect, int color) {
+
+
+		// Find the reps data and put it in a GraphCollection.
+		GraphCollection collection = new GraphCollection();
+		collection.m_line_graph = new GraphLine();
+		RectF bounds = new RectF(Float.MAX_VALUE, -Float.MAX_VALUE,
+								-Float.MAX_VALUE, Float.MAX_VALUE);
+		for (SetData set_data : m_set_data) {
+			PointF pt = new PointF();
+
+			pt.x = set_data.millis;
+			if (pt.x < bounds.left)
+				bounds.left = pt.x;
+			if (pt.x > bounds.right)
+				bounds.right = pt.x;
+
+			switch (aspect) {
+				case DatabaseHelper.EXERCISE_COL_REP_NUM:
+					pt.y = set_data.reps;
+					break;
+				case DatabaseHelper.EXERCISE_COL_LEVEL_NUM:
+					pt.y = set_data.levels;
+					break;
+				case DatabaseHelper.EXERCISE_COL_CALORIE_NUM:
+					pt.y = set_data.cals;
+					break;
+				case DatabaseHelper.EXERCISE_COL_WEIGHT_NUM:
+					pt.y = set_data.weight;
+					break;
+				case DatabaseHelper.EXERCISE_COL_DIST_NUM:
+					pt.y = set_data.dist;
+					break;
+				case DatabaseHelper.EXERCISE_COL_TIME_NUM:
+					pt.y = set_data.time;
+					break;
+				case DatabaseHelper.EXERCISE_COL_OTHER_NUM:
+					pt.y = set_data.other;
+					break;
+				default:
+					Log.e (tag, "add_new_collection() cannot recognize the aspect!");
+					break;
+			}
+			if (pt.y < bounds.bottom)
+				bounds.bottom = pt.y;
+			if (pt.y > bounds.top)
+				bounds.top = pt.y;
+			collection.m_line_graph.add_point(pt);
+		}
+
+		// Create some space for the bounds (also takes care of
+		// the case where everything is the same number).
+		bounds.left--;
+		bounds.right++;
+		bounds.top++;
+		bounds.bottom--;
+
+		collection.m_line_graph.set_bounds(bounds);
+		collection.m_id = DatabaseHelper.EXERCISE_COL_REP_NUM;	// Using this for ID. Convenient and unique.
+		collection.m_color = color;
+
+		m_view.add_graph_collection(collection);
+	} // add_new_collection (aspect)
+
+
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	//	The Three Types:
 	//		Params		- The info sent to the task when
@@ -412,6 +510,7 @@ public class GraphActivity
 				// Read in all the sets and store that information
 				// in a list.
 				try {
+					// LOAD FROM DATABASE
 					set_cursor = DatabaseHelper.getAllSets(m_db, m_ex_name, true);
 					m_set_count = set_cursor.getCount();
 
@@ -421,10 +520,13 @@ public class GraphActivity
 						return null;
 					}
 
+					// MAIN LOOP:
 					// Load up the exercise sets one by one into our list.
 					while (set_cursor.moveToNext()) {
 						SetData new_set_data = DatabaseHelper.getSetData(set_cursor);
 						m_set_data.add(new_set_data);
+						// todo
+						//	Here is where we would publish our progress.
 					}
 
 					// Setting the first and last labels of the x-axis.
@@ -491,6 +593,8 @@ public class GraphActivity
 
 			m_view.clear();
 
+			int[] graph_colors = getResources().getIntArray(R.array.graph_color_array);
+
 			// Set the start and end labels for the x-axis.
 			if ((m_start_cal == null) || (m_end_cal == null)) {
 				Log.v (tag, "Date not set in onPostExecute.");
@@ -507,35 +611,53 @@ public class GraphActivity
 					m_end_cal.get_year_two_digit();
 			m_view.set_x_axis_labels(start_str, end_str);
 
-			for (SetData set_data : m_set_data) {
-				MyCalendar date = new MyCalendar (set_data.millis);
-				switch (m_exercise_data.significant) {
-					case DatabaseHelper.EXERCISE_COL_REP_NUM:
-						m_view.add_point(set_data.reps, date);
-						break;
-					case DatabaseHelper.EXERCISE_COL_LEVEL_NUM:
-						m_view.add_point(set_data.levels, date);
-						break;
-					case DatabaseHelper.EXERCISE_COL_CALORIE_NUM:
-						m_view.add_point(set_data.cals, date);
-						break;
-					case DatabaseHelper.EXERCISE_COL_WEIGHT_NUM:
-						m_view.add_point(set_data.weight, date);
-						break;
-					case DatabaseHelper.EXERCISE_COL_DIST_NUM:
-						m_view.add_point(set_data.dist, date);
-						break;
-					case DatabaseHelper.EXERCISE_COL_TIME_NUM:
-						m_view.add_point(set_data.time, date);
-						break;
-					case DatabaseHelper.EXERCISE_COL_OTHER_NUM:
-						m_view.add_point(set_data.other, date);
-						break;
-					default:
-						Log.e(tag, "Can't find a significant aspect in onPostExecute!");
-						break;
-				}
-			} // for all the sets
+			// Go through the data and create a GraphCollection for
+			// each aspect.
+			if (m_exercise_data.breps)
+				add_new_collection(DatabaseHelper.EXERCISE_COL_REP_NUM, graph_colors[0]);
+			if (m_exercise_data.bcals)
+				add_new_collection(DatabaseHelper.EXERCISE_COL_CALORIE_NUM, graph_colors[1]);
+			if (m_exercise_data.blevel)
+				add_new_collection(DatabaseHelper.EXERCISE_COL_LEVEL_NUM, graph_colors[2]);
+			if (m_exercise_data.bweight)
+				add_new_collection(DatabaseHelper.EXERCISE_COL_WEIGHT_NUM, graph_colors[3]);
+			if (m_exercise_data.bdist)
+				add_new_collection(DatabaseHelper.EXERCISE_COL_DIST_NUM, graph_colors[4]);
+			if (m_exercise_data.btime)
+				add_new_collection(DatabaseHelper.EXERCISE_COL_TIME_NUM, graph_colors[5]);
+			if (m_exercise_data.bother)
+				add_new_collection(DatabaseHelper.EXERCISE_COL_OTHER_NUM, graph_colors[6]);
+
+//			for (SetData set_data : m_set_data) {
+//				MyCalendar date = new MyCalendar (set_data.millis);
+//
+//				switch (m_exercise_data.significant) {
+//					case DatabaseHelper.EXERCISE_COL_REP_NUM:
+//						m_view.add_point(set_data.reps, date);
+//						break;
+//					case DatabaseHelper.EXERCISE_COL_LEVEL_NUM:
+//						m_view.add_point(set_data.levels, date);
+//						break;
+//					case DatabaseHelper.EXERCISE_COL_CALORIE_NUM:
+//						m_view.add_point(set_data.cals, date);
+//						break;
+//					case DatabaseHelper.EXERCISE_COL_WEIGHT_NUM:
+//						m_view.add_point(set_data.weight, date);
+//						break;
+//					case DatabaseHelper.EXERCISE_COL_DIST_NUM:
+//						m_view.add_point(set_data.dist, date);
+//						break;
+//					case DatabaseHelper.EXERCISE_COL_TIME_NUM:
+//						m_view.add_point(set_data.time, date);
+//						break;
+//					case DatabaseHelper.EXERCISE_COL_OTHER_NUM:
+//						m_view.add_point(set_data.other, date);
+//						break;
+//					default:
+//						Log.e(tag, "Can't find a significant aspect in onPostExecute!");
+//						break;
+//				}
+//			} // for all the sets
 
 			stop_progress_dialog();
 			m_view.invalidate();		// Necessary to make sure that
