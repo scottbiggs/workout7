@@ -15,6 +15,7 @@ package com.sleepfuriously.hpgworkout;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.text.AndroidCharacter;
 import android.util.Log;
 
@@ -75,14 +76,68 @@ public class GraphDrawPrimitives {
 	 * @see android.graphics.Canvas#drawLine(float, float, float, float, Paint)
 	 */
 	public static void draw_line (Canvas canvas,
-								float ax, float ay,
-								float bx, float by,
-								Paint paint) {
+								  float ax, float ay,
+								  float bx, float by,
+								  Paint paint) {
 		ay = convert_y(canvas, ay);
 		by = convert_y(canvas, by);
 		canvas.drawLine(ax, ay, bx, by, paint);
 	} // draw_line, (canvas, ax, ay, bx, by, paint)
 
+
+	/************************
+	 * A courtesy method to draw a box at the specified
+	 * rectangle.  Like the others here, it uses my special
+	 * coord system.
+	 *
+	 * @param rect	Defines where to draw the empty box.
+	 */
+	public static void draw_box (Canvas canvas, Rect rect,
+								Paint paint) {
+		draw_line(canvas,
+				rect.left, rect.bottom,
+				rect.left, rect.top,
+				paint);
+		draw_line(canvas,
+				rect.left, rect.top,
+				rect.right, rect.top,
+				paint);
+		draw_line(canvas,
+				rect.right, rect.top,
+				rect.right, rect.bottom,
+				paint);
+		draw_line(canvas,
+				rect.right, rect.bottom,
+				rect.left, rect.bottom,
+				paint);
+	}
+
+	/************************
+	 * A courtesy method to draw a box at the specified
+	 * rectangle.  Like the others here, it uses my special
+	 * coord system.
+	 *
+	 * @param rect	Defines where to draw the empty box.
+	 */
+	public static void draw_box (Canvas canvas, RectF rect,
+								Paint paint) {
+		draw_line(canvas,
+				rect.left, rect.bottom,
+				rect.left, rect.top,
+				paint);
+		draw_line(canvas,
+				rect.left, rect.top,
+				rect.right, rect.top,
+				paint);
+		draw_line(canvas,
+				rect.right, rect.top,
+				rect.right, rect.bottom,
+				paint);
+		draw_line(canvas,
+				rect.right, rect.bottom,
+				rect.left, rect.bottom,
+				paint);
+	}
 
 
 	/************************
