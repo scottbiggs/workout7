@@ -398,8 +398,8 @@ public class GraphActivity
 	 * @param color		The color to assign for this aspect.
 	 */
 	protected void add_new_collection(int aspect, int color) {
-
-
+		Log.d(tag, "add_new_collection()");
+		
 		// Find the reps data and put it in a GraphCollection.
 		GraphCollection collection = new GraphCollection();
 		collection.m_line_graph = new GraphLine();
@@ -460,6 +460,9 @@ public class GraphActivity
 		collection.m_line_graph.set_bounds(bounds);
 		collection.m_id = DatabaseHelper.EXERCISE_COL_REP_NUM;	// Using this for ID. Convenient and unique.
 		collection.m_color = color;
+
+		// Do the y-axis that's attached to this graph line.
+		collection.m_y_axis_graph = new GraphYAxis(bounds.bottom, bounds.top);
 
 		m_view.add_graph_collection(collection);
 	} // add_new_collection (aspect)
@@ -600,22 +603,6 @@ public class GraphActivity
 			m_view.clear();
 
 			int[] graph_colors = getResources().getIntArray(R.array.graph_color_array);
-
-			// Set the start and end labels for the x-axis.
-			if ((m_start_cal == null) || (m_end_cal == null)) {
-				Log.v (tag, "Date not set in onPostExecute.");
-				stop_progress_dialog();
-				m_loading = false;
-				m_view.invalidate();		// force GView to redraw
-				return;
-			}
-			String start_str = "" + (m_start_cal.get_month() + 1) + "/" +
-					m_start_cal.get_day() + "/" +
-					m_start_cal.get_year_two_digit();
-			String end_str = "" + (m_end_cal.get_month() + 1) + "/" +
-					m_end_cal.get_day() + "/" +
-					m_end_cal.get_year_two_digit();
-			m_view.set_x_axis_labels(start_str, end_str);
 
 			// Go through the data and create a GraphCollection for
 			// each aspect.

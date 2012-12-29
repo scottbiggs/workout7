@@ -1458,7 +1458,7 @@
 	<string name="graph_units_msg1">%s</string>
 	<string name="graph_units_msg2">%1$s (%2$s)</string>
 
-	<string name="graph_no_sets_msg">No data for this exercise</string>
+	<string name="graph_no_sets_msg">No data for this exercise.</string>
 	<string name="graph_1_set_msg">Just one set: %s</string>
 	<string name="graph_illegal_sets_msg">Error trying to graph!</string>
 	<string name="graph_all_same_value_msg">All sets are the same value: %s</string>

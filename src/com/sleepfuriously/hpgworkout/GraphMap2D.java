@@ -6,6 +6,7 @@
 package com.sleepfuriously.hpgworkout;
 
 import android.graphics.PointF;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.Log;
 
@@ -26,7 +27,7 @@ public class GraphMap2D {
 	 *  					map FROM.
 	 *  @param	dest		Where we want to map our point onto.
 	 */
-	GraphMap2D (RectF src, RectF dest) {
+	GraphMap2D (RectF src, Rect dest) {
 		if ((src.left == src.right) || (src.bottom == src.top)) {
 			Log.e(tag, "a == b in Constructor!!!  Get ready for a divide by zero!!!");
 		}
@@ -49,7 +50,7 @@ public class GraphMap2D {
 	 */
 	public PointF map (PointF pt) {
 		PointF new_pt = new PointF(x_mapper.map(pt.x),
-								   y_mapper.map(pt.y));
+								y_mapper.map(pt.y));
 //		Log.d(tag, "mapping (" + pt.x + ", " + pt.y + ") --> (" + new_pt.x + ", " + new_pt.y + ")");
 		return new_pt;
 	} // map (n)

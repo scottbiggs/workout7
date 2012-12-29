@@ -45,6 +45,7 @@ import java.util.List;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.Log;
 
@@ -79,7 +80,7 @@ public class GraphLine {
 	protected RectF m_rect_bounds;
 
 	/** The canvas draw area. */
-	protected RectF m_draw_rect;
+	protected Rect m_draw_rect;
 
 	/**
 	 * Used when drawing lines and points.  This is the
@@ -118,7 +119,7 @@ public class GraphLine {
 	 * 						graph in.  Need this to properly
 	 * 						set up the mapping functions.
 	 */
-	public GraphLine (List<PointF> pts, RectF bounds, RectF draw_area) {
+	public GraphLine (List<PointF> pts, RectF bounds, Rect draw_area) {
 		m_orig_pts = new ArrayList<PointF>(pts);		// todo: creating a copy of pts is redundant here!
 		m_pts_dirty = true;
 		set_bounds(bounds);
@@ -250,6 +251,7 @@ public class GraphLine {
 	 */
 	public void map_points() {
 		m_pts = new PointF[m_orig_pts.size()];
+
 		GraphMap2D mapper2D = new GraphMap2D(m_rect_bounds, m_draw_rect);
 
 		// Map each point.
@@ -277,7 +279,7 @@ public class GraphLine {
 	 * @param draw_area		The part of the canvas that we draw to
 	 * 						(using my screen coords!).
 	 */
-	public void set_rects (RectF bounds, RectF draw_area) {
+	public void set_rects (RectF bounds, Rect draw_area) {
 		set_bounds (bounds);
 		set_draw_area (draw_area);
 	}
@@ -311,9 +313,9 @@ public class GraphLine {
 	 * @param draw_area		The part of the canvas that we draw to
 	 * 						(in my screen format!).
 	 */
-	public void set_draw_area (RectF draw_area) {
+	public void set_draw_area (Rect draw_area) {
 		if (m_draw_rect == null) {
-			m_draw_rect = new RectF(draw_area);
+			m_draw_rect = new Rect(draw_area);
 		}
 		else {
 			m_draw_rect.set(draw_area);

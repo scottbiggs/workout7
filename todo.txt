@@ -1,5 +1,8 @@
 TODO:
 -----------------
+When the Inspector tries to display an exercise with no sets
+	(empty), please don't say what the order is!  It's ugly.
+
 When displaying graphs, have the menu bring up a legend for the
 	colors (in a dialog).  It'll save a lot on screen real estate
 	(instead of having the legend on the screen).

@@ -31,4 +31,28 @@ public class GraphCollection {
 	/** The logical limits of this graph */
 	public RectF m_bounds;
 
+
+	/************************
+	 * This tells if the contents of the graph
+	 * routines has any actual data in it or not.
+	 * Mostly a courtesy routine.
+	 *
+	 * @return true iff there is a GraphLine instance
+	 * 			that actually has any data in it.
+	 */
+	public boolean has_data() {
+		// Check to see if there's any data.  If
+		// something's bad, return false.
+		if (m_line_graph == null)
+			return false;
+
+		if (m_line_graph.m_orig_pts == null)
+			return false;
+
+		if (m_line_graph.m_orig_pts.size() == 0)
+			return false;
+
+		// Otherwise assume there's some data here.
+		return true;
+	} // has_data()
 }

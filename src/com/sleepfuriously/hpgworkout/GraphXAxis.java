@@ -145,7 +145,7 @@ public class GraphXAxis {
 	 * 						Otherwise the ticks won't match the
 	 * 						graph.
 	 * 						- The height (top & bottom) describe
-	 * 						the total height (lines + font size).
+	 * 						the total height (lines + text).
 	 */
 	GraphXAxis (List<Float> nums, List<String> labels,
 				float bounds_min, float bounds_max,
