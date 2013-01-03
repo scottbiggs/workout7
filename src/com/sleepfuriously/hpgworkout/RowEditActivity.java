@@ -462,9 +462,9 @@ public class RowEditActivity
 			holder.up.setTag(holder);	// Set it to the ViewHolder for this row.
 			holder.down.setTag(holder);	// Set it to the ViewHolder for this row.
 
-			Log.i(tag, "name = " + holder.text.getText() +
-					", lorder = " + holder.lorder +
-					", pos = " + holder.pos);
+//			Log.i(tag, "name = " + holder.text.getText() +
+//					", lorder = " + holder.lorder +
+//					", pos = " + holder.pos);
 
 			return convertView;		// Return the row we just made.
 		} // getView (position, convertView, parent)
