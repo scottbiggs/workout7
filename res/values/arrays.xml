@@ -103,6 +103,10 @@
 		<item>custom</item>
 	</string-array>
 
+	<!--
+		These are the colors used for the different
+		aspects when graphing exercise sets.
+	-->
 	<integer-array name="graph_color_array">
 		<item>@color/orange_peel</item>
 		<item>@color/yellow_maize</item>

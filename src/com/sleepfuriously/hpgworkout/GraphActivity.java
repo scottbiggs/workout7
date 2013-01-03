@@ -398,8 +398,7 @@ public class GraphActivity
 	 * @param color		The color to assign for this aspect.
 	 */
 	protected void add_new_collection(int aspect, int color) {
-		Log.d(tag, "add_new_collection()");
-		
+
 		// Find the reps data and put it in a GraphCollection.
 		GraphCollection collection = new GraphCollection();
 		collection.m_line_graph = new GraphLine();

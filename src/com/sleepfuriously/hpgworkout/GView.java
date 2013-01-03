@@ -25,7 +25,9 @@ import java.util.Collections;
 import java.util.List;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
@@ -39,6 +41,8 @@ import android.view.View;
 
 import com.sleepfuriously.hpgworkout.R.color;
 import static com.sleepfuriously.hpgworkout.GraphDrawPrimitives.draw_text;
+import static com.sleepfuriously.hpgworkout.GraphDrawPrimitives.draw_line;
+import static com.sleepfuriously.hpgworkout.GraphDrawPrimitives.draw_box;;
 
 
 public class GView extends View {
@@ -75,7 +79,7 @@ public class GView extends View {
 	private static final int X_AXIS_LABEL_Y = 5;
 
 	/** Width of the graph lines. */
-	protected final float LINE_STROKE_WIDTH = 1.7f;
+	protected final float LINE_STROKE_WIDTH = 1.8f;
 
 	/** Size of the dots at the graph nodes */
 	protected final float DOT_RADIUS = 2.9f;
@@ -136,28 +140,9 @@ public class GView extends View {
 	 * This string defines the beginning of the x-axis.
 	 * The y-axis is figured out by the data.
 	 */
-	private String m_x_label_start = "";
-	private String m_x_label_finish = "";
-
-	/** The sizes of the drawing area, as reported by OS. */
-	private int m_official_height, m_official_width;
-
-	/**
-	 * The sizes of the drawing area with padding taken into account
-	 */
-	private float m_usable_height, m_usable_width;
-
-	/** Describes the whole canvas draw area (my coords). */
-	private Rect m_canvas_rect = null;
-
-	/** Holds the clip rectangle for this widget */
-	private Rect m_clip_rect = null;
-
-	/**
-	 *  Describes the area that the GraphLine classes
-	 *  draw in (in my coord system).
-	 */
-	private Rect m_draw_rect = null;
+	@Deprecated
+	private String m_x_label_start = "",
+			m_x_label_finish = "";
 
 	/**
 	 * These define the parameters of the mapping function:
@@ -176,12 +161,6 @@ public class GView extends View {
 	Paint m_paint = null;
 
 	/**
-	 * Used during onDraw() occassionally. It's defined outside
-	 * to avoid declaring any memory during onDraw().
-	 */
-	Rect m_temp_rect = null;
-
-	/**
 	 * Also used in onDraw().  Like the others, allocation is taken
 	 * out of that method to speed things up (and eliminate garbage
 	 * collection during that important method!).
@@ -193,6 +172,56 @@ public class GView extends View {
 
 	/** The size of the message text */
 	protected float m_msg_text_size = DEFAULT_MSG_TEXT_SIZE;
+
+
+	//-------------------------------
+	//	Drawing Coordinate Data
+	//-------------------------------
+
+	/** The sizes of the drawing area, as reported by OS. */
+	private int m_canvas_height, m_canvas_width;
+
+	/**
+	 * The sizes of the drawing area with padding taken into account
+	 */
+	private int m_usable_height, m_usable_width;
+
+	/**
+	 * Describes the whole canvas draw area of this
+	 * widget (my coords).  Defined in onSizeChanged().
+	 */
+	private Rect m_canvas_rect = new Rect();
+
+	/**
+	 * Holds the whole canvas area of this widget
+	 * AFTER padding has taken into account (my coords).
+	 */
+	private Rect m_canvas_padded_rect = new Rect();
+
+	/**
+	 *  Describes the area that the GraphLine classes
+	 *  draw in (in my coord system).
+	 */
+	private Rect m_graphline_rect = new Rect();
+
+	/**
+	 * Describes the draw area of the x-axis within this
+	 * widget.
+	 */
+	private Rect m_x_axis_rect = new Rect();
+
+	/**
+	 * Temp to hold a rectangle for a y-axis.
+	 * Used to prevent memory allocation during onDraw().
+	 */
+	private Rect m_y_axis_rect = new Rect();
+
+	/**
+	 * Used during onDraw() occassionally. It's defined outside
+	 * to avoid declaring any memory during onDraw().
+	 */
+	@Deprecated
+	Rect m_temp_rect = new Rect();
 
 
 	//----------------------------
@@ -236,14 +265,6 @@ public class GView extends View {
 		m_paint.setAntiAlias(true);
 		m_paint.setTextSize(m_label_text_size);
 
-		if (m_clip_rect == null) {
-			m_clip_rect = new Rect();
-		}
-
-		if (m_temp_rect == null) {
-			m_temp_rect = new Rect();
-		}
-
 		if (m_unique_graph_nums == null) {
 			m_unique_graph_nums = new ArrayList<Float>();
 		}
@@ -253,39 +274,32 @@ public class GView extends View {
 
 
 	//----------------------------
+	//	Interesting fact:
+	//		w and h correspond EXACTLY to the cliprect you get
+	//		from onDraw()!
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-		Log.v(tag, "onSizeChanged(): w = " + w + ", h = " + h);
+//		Log.v(tag, "onSizeChanged(): w = " + w + ", h = " + h);
 		super.onSizeChanged(w, h, oldw, oldh);
-		m_official_height = h;
-		m_official_width = w;
-		if (m_canvas_rect == null) {
-			m_canvas_rect = new Rect();
-		}
-		m_canvas_rect.set(0, h, w, 0);
+		m_canvas_height = h;
+		m_canvas_width = w;
 
-		m_usable_height = m_official_height - (PADDING_TOP + PADDING_BOTTOM);
-		m_usable_width = m_official_width - (PADDING_LEFT + PADDING_RIGHT);
+		m_usable_height = m_canvas_height - (PADDING_TOP + PADDING_BOTTOM);
+		m_usable_width = m_canvas_width - (PADDING_LEFT + PADDING_RIGHT);
+
+		// set the rects
+		m_canvas_rect.set(0, h, w, 0);
+		m_canvas_padded_rect.set(PADDING_LEFT,
+								PADDING_BOTTOM + m_usable_height,
+								PADDING_LEFT + m_usable_width,
+								PADDING_BOTTOM);
+
+		// Tell the GraphLines and the GraphYAxii classes to
+		// update their drawing coordinates.
+		update_changeable_rects();
+
 //		Log.v(tag, "onSizeChanged(): usable width = " + m_usable_width +
 //				", usable height = " + m_usable_height);
-
-
-		// Update our draw rectangle.  It contains all the usable
-		// area that is NOT taken up by the y_axis.
-		if (m_draw_rect == null) {
-			m_draw_rect = new Rect();
-		}
-		m_draw_rect = find_GraphLine_area(m_graphlist.size());
-
-		// Update the draw rectangle for all our GraphLiness.
-		for (int i = 0; i < m_graphlist.size(); i++) {
-			// The GraphLine instance
-			m_graphlist.get(i).m_line_graph.set_draw_area(m_draw_rect);
-			m_graphlist.get(i).m_line_graph.map_points();
-
-			// The GrapyYAxis instance
-			m_graphlist.get(i).m_y_axis_graph.m_draw_area = find_y_axis_area(i);
-		}
 
 	} // onSizeChanged(w, h, oldw, oldh)
 
@@ -299,67 +313,97 @@ public class GView extends View {
 			return;
 		}
 
-		// Set our clip rectangle
-		canvas.getClipBounds(m_clip_rect);
+		//	testing!
+		// This successfully draws a box at the outermost
+		// pixle of the widget.
+//		Log.d(tag, "onDraw(), m_clip_rect = " + m_canvas_padded_rect);
+		float old_stroke_width = m_paint.getStrokeWidth();
+		m_paint.setStrokeWidth(1);
+		int old_color = m_paint.getColor();
+
+		// Full canvas = red
+//		m_paint.setColor(Color.RED);
+//		Log.d (tag, "red box (m_canvas_rect) = " + m_canvas_rect);
+//		draw_box(canvas, m_canvas_rect, m_paint);
+
+		// padded rectangle = yellow
+//		m_paint.setColor(Color.YELLOW);
+//		Log.d (tag, "yellow box (m_canvas_padded_rect) = " + m_canvas_padded_rect);
+//		draw_box(canvas, m_canvas_padded_rect, m_paint);
+
+		// Graph rectangle = cyan
+//		m_paint.setColor(Color.CYAN);
+//		Log.d (tag, "cyan box (m_graphline_rect) = " + m_graphline_rect);
+//		draw_box(canvas, m_graphline_rect, m_paint);
+
+		// x-axis = green
+//		m_paint.setColor(Color.GREEN);
+//		Log.d (tag, "green box (m_x_axis) = " + m_x_axis_rect);
+//		draw_box(canvas, m_x_axis_rect, m_paint);
+
+		// Not supposed to be valid.
+//		m_paint.setColor(Color.MAGENTA);
+//		Log.d (tag, "magenta box (m_y_axis_rect) = " + m_y_axis_rect);
+//		draw_box(canvas, m_y_axis_rect, m_paint);
+
+		m_paint.setStrokeWidth(old_stroke_width);
+		m_paint.setColor(old_color);
+		//
+		// end test
+
 
 		// Check to see if there's anything to draw.
-		boolean has_data = false;
-		for (GraphCollection collection : m_graphlist) {
-			if (collection.has_data()) {
-				has_data = true;
-				break;
-			}
-		}
-
-		if (has_data == false) {
-//			Log.d(tag, "Nothing to graph in onDraw()!");
+		if (has_data() == false) {
 			String msg = this.getContext().getString(R.string.graph_no_sets_msg);
 			m_paint.setTextSize(m_msg_text_size);
 			m_paint.getTextBounds(msg, 0, msg.length(), m_temp_rect);
 			draw_text(canvas, msg,
-					  m_clip_rect.exactCenterX() - m_temp_rect.exactCenterX(),
-					  m_clip_rect.exactCenterY() - m_temp_rect.exactCenterY(),
+					m_canvas_padded_rect.exactCenterX() - m_temp_rect.exactCenterX(),
+					m_canvas_padded_rect.exactCenterY() - m_temp_rect.exactCenterY(),
 					m_paint);
 			m_paint.setTextSize(m_label_text_size);	// Return to default size
-			return;
+			return;		// get outta here!
 		}
 
 
-		//	Draw the x-axis here
+		//	Draw the x-axii here
 		if (m_graph_x_axis != null) {
 			if (m_graph_x_axis.is_draw_area_set() == false) {
-				// set the draw_area
-				RectF x_axis_rect = new RectF(m_draw_rect);
-				x_axis_rect.bottom = 0;
-				x_axis_rect.top = m_draw_rect.bottom;
-				m_graph_x_axis.set_draw_area(x_axis_rect);
+				Log.e(tag, "onDraw(): m_graph_x_axis.is_draw_area_set() is false! Setting the draw area to continue, sigh.");
+				m_graph_x_axis.set_draw_area(m_x_axis_rect);
 			}
 			m_paint.setColor(getResources().getColor(color.ghost_white));
 			m_graph_x_axis.draw(canvas, m_paint);
 		}
 
 
-//		m_paint.setColor(getResources().getColor(color.hpg_orange));
+		// Draw the y-axii before the lines (so the graph lines
+		// cover the y-axii lines).
+		m_paint.setAntiAlias(true);
+		m_paint.setStrokeWidth(0);
+		for (int i = 0; i < m_graphlist.size(); i++) {	// Need the count, sigh.
+			// Draw the y-axis, but only if it's non-null.
+			if (m_graphlist.get(i).m_y_axis_graph != null) {
+				if (m_graphlist.get(i).m_y_axis_graph.m_draw_area == null) {
+					Log.e(tag, "onDraw() has to find the y-axis area!");
+					m_graphlist.get(i).m_y_axis_graph.m_draw_area = find_y_axis_area(i);
+				}
+				m_paint.setColor(m_graphlist.get(i).m_color);
+				m_graphlist.get(i).m_y_axis_graph.draw(canvas, m_paint);
+			}
+		}
+
+
+		// Draw all the lines!
 		m_paint.setAntiAlias(true);
 		m_paint.setStrokeWidth(LINE_STROKE_WIDTH);
-
-		// Draw all the lines and their corresponding y-axii
-		int counter = 0; // need a counter, too.
 		for (GraphCollection graph : m_graphlist) {
 			if (graph.m_line_graph.is_draw_area_set() == false) {
-				graph.m_line_graph.set_draw_area(find_GraphLine_area(m_graphlist.size()));
-//				graph.m_line_graph.set_draw_area(m_draw_rect);	// Could slow down the drawing quite a bit
+				Log.e(tag, "onDraw(): a GraphLine draw area is not set! Setting the draw area to continue, sigh.");
+				graph.m_line_graph.set_draw_area(m_graphline_rect);	// Could slow down the drawing quite a bit
 			}
 			m_paint.setColor(graph.m_color);
 			graph.m_line_graph.draw(canvas, m_paint);
-
-			if (graph.m_y_axis_graph != null) {
-				if (graph.m_y_axis_graph.m_draw_area == null) {
-					graph.m_y_axis_graph.m_draw_area = find_y_axis_area(counter);
-				}
-				graph.m_y_axis_graph.draw(canvas, m_paint);
-			}
-			counter++;
 		}
 
 
@@ -381,6 +425,7 @@ public class GView extends View {
 	//		yay.  Now I get it.
 	//
 //	@Override
+	@Deprecated
 	protected void onDraw_old(Canvas canvas) {
 		float dot_size = DOT_RADIUS;
 
@@ -419,8 +464,8 @@ public class GView extends View {
 			}
 			m_paint.getTextBounds(msg, 0, msg.length(), m_temp_rect);
 			canvas.drawText(msg,
-					m_official_width / 2 - m_temp_rect.width() / 2,
-					m_official_height / 2 - m_temp_rect.height() / 2,
+					m_canvas_width / 2 - m_temp_rect.width() / 2,
+					m_canvas_height / 2 - m_temp_rect.height() / 2,
 					m_paint);
 			return;
 		}
@@ -786,7 +831,7 @@ public class GView extends View {
 
 		// Translate this canvas according to the layout's width
 		// and height
-		float dx = (m_official_width - layout.getWidth()) / 2f;
+		float dx = (m_canvas_width - layout.getWidth()) / 2f;
 		float dy = (m_usable_height - layout.getHeight()) / 2f;
 		canvas.translate(dx, dy);
 		layout.draw(canvas);
@@ -808,8 +853,8 @@ public class GView extends View {
 		paint.setTextSize(m_msg_text_size);
 		paint.getTextBounds(msg, 0, msg.length(), rect);
 		canvas.drawText(msg,
-				m_official_width / 2 - rect.width() / 2,
-				m_official_height / 2 - rect.height() / 2,
+				m_canvas_width / 2 - rect.width() / 2,
+				m_canvas_height / 2 - rect.height() / 2,
 				paint);
 		return;
 	} // draw_1_set_graph (y, canvas, paint)
@@ -867,8 +912,8 @@ public class GView extends View {
 				if (first_x == -1) {
 					first_x = x;
 				}
-				canvas.drawLine((int)x, m_official_height,
-					(int)x, m_official_height - X_AXIS_LABEL_Y,
+				canvas.drawLine((int)x, m_canvas_height,
+					(int)x, m_canvas_height - X_AXIS_LABEL_Y,
 					paint);
 				last_x = x;
 			}
@@ -882,14 +927,74 @@ public class GView extends View {
 				0, m_x_label_start.length(), rect);
 		canvas.drawText(m_x_label_start,
 				first_x - rect.width() / 2,
-				m_official_height - (X_AXIS_LABEL_Y + 2), paint);
+				m_canvas_height - (X_AXIS_LABEL_Y + 2), paint);
 
 		paint.getTextBounds(m_x_label_finish,
 				0, m_x_label_finish.length(), rect);
 		canvas.drawText(m_x_label_finish,
 				last_x - rect.width() / 2,
-				m_official_height - (X_AXIS_LABEL_Y + 2), paint);
+				m_canvas_height - (X_AXIS_LABEL_Y + 2), paint);
 	} // draw_x_axis_lines (canvas, paint)
+
+
+	/***************************
+	 * Working on existing data members, this determines
+	 * if there's any data to draw or not.
+	 *
+	 * @return	true iff there's something to draw!  False
+	 * 			otherwise.
+	 */
+	private boolean has_data() {
+		for (GraphCollection collection : m_graphlist) {
+			if (collection.has_data()) {
+				return true;
+			}
+		}
+		return false;
+	} // has_data()
+
+	/******************************
+	 * Updates all the rectangles that depend on the number of
+	 * GraphLines. Tells all the items in m_graphlist to
+	 * update their draw areas.
+	 * <p>
+	 * <b>preconditions</b>:<br/>
+	 * 		<i>m_canvas_padded_rect</i> is properly set.<br/>
+	 * <p>
+	 * <b>side effects</b>:<br/>
+	 * 	<i>m_graphline_rect</i> will reflect the current number
+	 * 		of GraphLine instances.<br/>
+	 * 	<i>m_graphlist</i>'s subsidiary elements, specifically
+	 * 		their .m_line_graph and .m_y_axis_graph.
+	 * 	<i>m_x_axis_rect</i> changed to fit just below m_graphline_rect.
+	 */
+	private void update_changeable_rects() {
+		m_graphline_rect = find_GraphLine_area(m_graphlist.size());
+		if (m_graphline_rect == null) {
+			Log.e (tag, "update_changeable_rects() can't make m_graphline_rect!");
+			return;
+		}
+		for (int i = 0; i < m_graphlist.size(); i++) {
+			// The GraphLine instance
+			m_graphlist.get(i).m_line_graph.set_draw_area(m_graphline_rect);
+			m_graphlist.get(i).m_line_graph.map_points();
+
+			// The GrapyYAxis instance
+			m_graphlist.get(i).m_y_axis_graph.m_draw_area = find_y_axis_area(i);
+		}
+
+		// Rests just below m_graphline_rect
+		m_x_axis_rect.set(m_graphline_rect);
+		m_x_axis_rect.bottom = 0;
+		m_x_axis_rect.top = m_graphline_rect.bottom;
+
+		// Set the x-axis
+		if (m_graph_x_axis != null) {
+			m_graph_x_axis.set_draw_area(m_x_axis_rect);
+			m_graph_x_axis.map_points();
+		}
+
+	} // update_changeable_rects()
 
 
 	/********************
@@ -960,8 +1065,7 @@ public class GView extends View {
 	 * Figures out the draw area for a y-axis.
 	 * <p>
 	 * <b>preconditions</b>:<br/>
-	 * 	<i>m_official_height</i> and <i>m_official_width</i>
-	 * 			must be correctly set.<br/>
+	 * 	<i>m_canvas_padded_rect</i> must be correctly set.
 	 *
 	 * @param count		Which y-axis we're drawing (they start
 	 * 					at zero).
@@ -971,36 +1075,30 @@ public class GView extends View {
 	 * 			for that instance's m_draw_area.
 	 */
 	protected RectF find_y_axis_area (int count) {
-		RectF draw_area = new RectF (0 + PADDING_LEFT,
-									m_official_height - PADDING_TOP,
-									m_official_width - PADDING_RIGHT,
-									0 + PADDING_BOTTOM);
+		RectF draw_area = new RectF (m_canvas_padded_rect);
 		draw_area.left += count * DEFAULT_Y_AXIS_WIDTH;
-		draw_area.right = draw_area.left + DEFAULT_Y_AXIS_WIDTH;
+//		draw_area.right = draw_area.left + DEFAULT_Y_AXIS_WIDTH;		// Makes the right size = to left side of line draw area
 		return draw_area;
 	} // find_y_axis_area (count)
 
 	/*******************
 	 * Figures out the draw area for all the line graphs.
-	 * This is essentially the usable draw area - the area
-	 * used by the y-axii.
+	 * This is essentially the usable draw area minus the
+	 * area used by the y-axii.
 	 * <p>
 	 * <b>preconditions</b>:<br/>
-	 * 	<i>m_official_height</i> and <i>m_official_width</i>
-	 * 		must be correctly set.<br/>
+	 * 	<i>m_canvas_padded_rect</i> must be correctly set.
 	 *
 	 * @param num_y_axii		How many y-axii there are.
 	 *
-	 * @return	A RectF that defines the drawing area for all
+	 * @return	-A RectF that defines the drawing area for all
 	 * 			the GraphLine instances.  Use this rectangle
-	 * 			to set their draw areas.
-	 * 			Returns null on an error.
+	 * 			to set their draw areas.<br/>
+	 * 			-Returns null on an error.
 	 */
 	protected Rect find_GraphLine_area (int num_y_axii) {
-		Rect draw_area = new Rect (0 + PADDING_LEFT,
-								m_official_height - PADDING_TOP,
-								m_official_width - PADDING_RIGHT,
-								0 + PADDING_BOTTOM);
+//		Log.d(tag, "find_GraphLine_area() called, num_y_axii = " + num_y_axii);
+		Rect draw_area = new Rect (m_canvas_padded_rect);
 		draw_area.left += num_y_axii * DEFAULT_Y_AXIS_WIDTH;
 		if (draw_area.left >= draw_area.right) {
 			Log.e (tag, "Error in find_GraphLine_area()! Don't have enough room to draw all the y-axii!");
@@ -1040,6 +1138,7 @@ public class GView extends View {
 	 */
 	public int add_graph_collection(GraphCollection grapher) {
 		m_graphlist.add(grapher);
+		update_changeable_rects();
 		return m_graphlist.size();
 	} // add_graph_collection (grapher)
 
@@ -1199,7 +1298,7 @@ public class GView extends View {
 			y2 = conv_y(y2);
 			paint.setAntiAlias(false);	// just a horiz line
 			canvas.drawLine(PADDING_LEFT, y2,
-							m_official_width - PADDING_RIGHT, y2, paint);
+							m_canvas_width - PADDING_RIGHT, y2, paint);
 //			Log.v (tag, "\tline at " + y + ", converted to " + y2);
 
 			String str = new DecimalFormat("#.######").format(y);

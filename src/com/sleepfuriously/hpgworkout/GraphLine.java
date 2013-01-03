@@ -250,6 +250,7 @@ public class GraphLine {
 	 * 	m_pts	Created to reflect the correct mapping from m_orig_pts.
 	 */
 	public void map_points() {
+		Log.d(tag, "map_points(): " + m_rect_bounds + " ==> " + m_draw_rect);
 		m_pts = new PointF[m_orig_pts.size()];
 
 		GraphMap2D mapper2D = new GraphMap2D(m_rect_bounds, m_draw_rect);
@@ -393,6 +394,7 @@ public class GraphLine {
 			(pt.y - m_last_pt.y > m_min_dist)) {
 			radius = BIG_DOT_RADIUS;
 		}
+//		Log.d (tag, "draw_pt() at " + pt.x + ", " + pt.y);
 		GraphDrawPrimitives.draw_circle(canvas, pt.x, pt.y, radius, paint);
 		m_last_pt = pt;
 	} // draw_pt (canvas, paint, pt)

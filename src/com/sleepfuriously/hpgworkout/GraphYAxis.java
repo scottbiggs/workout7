@@ -9,6 +9,7 @@ package com.sleepfuriously.hpgworkout;
 import java.text.DecimalFormat;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -28,14 +29,19 @@ public class GraphYAxis {
 
 	/** Mininum pixels between lines along the y-axis */
 	public static final float DEFAULT_LINE_SPACING = 70f;
-	
+
+	/** Default color for the horizontal lines across the graph */
+	public final static int DEFAULT_Y_LINE_COLOR = Color.LTGRAY;
+
 	/**
 	 * Because there's some slop in the size of letters,
 	 * I nudge the labels a little by this much to make
 	 * it look better aligned.
 	 */
 	private final static int LABEL_FUDGE_FACTOR = 2;
-	
+
+
+
 	//-------------------------------
 	//	Data
 	//-------------------------------
@@ -56,6 +62,10 @@ public class GraphYAxis {
 	protected RectF m_draw_area = null;
 
 	public float m_line_spacing = DEFAULT_LINE_SPACING;
+
+	/** The color to draw the horizontal lines */
+	public int m_line_color = DEFAULT_Y_LINE_COLOR;
+
 
 	//-------------------------------
 	//	Constructors
@@ -168,6 +178,10 @@ public class GraphYAxis {
 			(m_draw_area == null)) {
 			return NaN;
 		}
+		Log.e (tag, "Is this ever called?");
+
+		Log.d(tag, "map(): [" + m_orig_min + ".." + m_orig_max + "]  ==>  ["
+			+ m_draw_area.bottom + ".." + m_draw_area.top + "]");
 
 		GraphMap mapper;
 		mapper = new GraphMap(m_orig_min, m_orig_max,
@@ -252,14 +266,17 @@ public class GraphYAxis {
 		nfrac = (int) Math.max(-Math.floor(Math.log10(d)), 0);
 
 		// Need to map the y values to screen y values.
-//		map_setup (graphmin, graphmax, 0, m_usable_height);
-//		GraphMap mapper = new GraphMap(graphmin, graphmax, 0, m_draw_area.height());
 		GraphMap mapper = new GraphMap(graphmin, graphmax,
 									   m_draw_area.bottom, m_draw_area.top);
+		Log.d(tag, "heckbert_loose_label: [" + graphmin + ".." + graphmax + "]  ==>  ["
+										+ m_draw_area.bottom + ".." + m_draw_area.top + "]");
 
+
+		int text_color = paint.getColor();
 
 		for (y = graphmin; y <= graphmax + .5 * d; y += d) {
 			paint.setAntiAlias(false);	// just a horiz line
+			paint.setColor(m_line_color);
 //			Log.v (tag, "looping through label lines: y = " + y);
 			float y2 = mapper.map(y);
 //			float y2 = map(y);
@@ -276,6 +293,7 @@ public class GraphYAxis {
 
 			paint.setAntiAlias(true);
 
+			paint.setColor(text_color);
 			// -2 to seperate the text from the line
 			draw_text(canvas, str, m_draw_area.left, y2 + 2, paint);
 //			canvas.drawText(str, m_draw_area.left, y2 - 2, paint);

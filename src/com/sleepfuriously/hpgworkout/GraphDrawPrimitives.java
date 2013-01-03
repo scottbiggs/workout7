@@ -76,9 +76,9 @@ public class GraphDrawPrimitives {
 	 * @see android.graphics.Canvas#drawLine(float, float, float, float, Paint)
 	 */
 	public static void draw_line (Canvas canvas,
-								  float ax, float ay,
-								  float bx, float by,
-								  Paint paint) {
+								float ax, float ay,
+								float bx, float by,
+								Paint paint) {
 		ay = convert_y(canvas, ay);
 		by = convert_y(canvas, by);
 		canvas.drawLine(ax, ay, bx, by, paint);
@@ -137,7 +137,7 @@ public class GraphDrawPrimitives {
 				rect.right, rect.bottom,
 				rect.left, rect.bottom,
 				paint);
-	}
+	} // draw_box (...)
 
 
 	/************************

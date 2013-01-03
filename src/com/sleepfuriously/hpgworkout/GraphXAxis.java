@@ -12,7 +12,6 @@ import java.util.List;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.util.Log;
 import static java.lang.Float.NaN;
 
@@ -79,7 +78,7 @@ public class GraphXAxis {
 	 * The area to draw the x-axis graphics (including
 	 * the labels!).
 	 */
-	protected RectF m_draw_rect = null;
+	protected Rect m_draw_rect = null;
 
 	/** Min distance between two tick-marks. */
 	public float m_min_dist = GView.DEFAULT_MIN_POINT_DISTANCE;
@@ -149,7 +148,7 @@ public class GraphXAxis {
 	 */
 	GraphXAxis (List<Float> nums, List<String> labels,
 				float bounds_min, float bounds_max,
-				RectF draw_area) {
+				Rect draw_area) {
 		m_orig = new ArrayList<Float>();
 		set_nums(nums, labels);
 
@@ -349,7 +348,7 @@ public class GraphXAxis {
 	 * preconditions:
 	 * 	m_logical_left	Correctly set.
 	 * 	m_logical_right	Correctly set.
-	 * 	m_canvas_rect	Correctly set.
+	 * 	m_draw_rect		Correctly set.
 	 * 	m_orig			Holds the numbers to map.
 	 *
 	 * side effects:
@@ -357,6 +356,24 @@ public class GraphXAxis {
 	 * 					mapping from m_orig.
 	 */
 	public void map_points() {
+		if (m_logical_left == NaN) {
+			Log.e(tag, "map_points() called without first setting m_logical_left!");
+			return;
+		}
+		if (m_logical_right == NaN) {
+			Log.e(tag, "map_points() called without first setting m_logical_right!");
+			return;
+		}
+		if (m_orig == null) {
+			Log.e(tag, "map_points() called without first setting m_orig!");
+			return;
+		}
+		if (m_draw_rect == null) {
+			Log.e(tag, "map_points() called without first setting m_draw_rect!");
+			return;
+		}
+
+
 		m_converted = new float[m_orig.size()];
 		GraphMap mapper = new GraphMap(m_logical_left, m_logical_right,
 									m_draw_rect.left, m_draw_rect.right);
@@ -403,9 +420,9 @@ public class GraphXAxis {
 	 * @param draw_area		The part of the canvas that we draw to
 	 * 						(in my screen format!).
 	 */
-	public void set_draw_area (RectF draw_area) {
+	public void set_draw_area (Rect draw_area) {
 		if (m_draw_rect == null) {
-			m_draw_rect = new RectF(draw_area);
+			m_draw_rect = new Rect(draw_area);
 		}
 		else {
 			m_draw_rect.set(draw_area);
