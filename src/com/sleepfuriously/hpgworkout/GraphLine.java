@@ -353,7 +353,7 @@ public class GraphLine {
 
 		/** Was the last point a valid one? */
 		boolean last_valid = false;
-		m_last_pt.set(0, 0);		// Clear
+		m_last_pt.set(0, 0);		// Clear		!!! If this is still set to the last point, we have a problem!
 
 		for (int i = 0; i < m_pts.length; i++) {
 			if (m_pts[i] == null) {
@@ -396,7 +396,7 @@ public class GraphLine {
 		}
 //		Log.d (tag, "draw_pt() at " + pt.x + ", " + pt.y);
 		GraphDrawPrimitives.draw_circle(canvas, pt.x, pt.y, radius, paint);
-		m_last_pt = pt;
+		m_last_pt.set(pt);
 	} // draw_pt (canvas, paint, pt)
 
 
@@ -416,13 +416,13 @@ public class GraphLine {
 	 */
 	private void draw_line (Canvas canvas, Paint paint,
 					PointF a, PointF b) {
-		m_last_pt = a;
+		m_last_pt.set(a);
 		GraphDrawPrimitives.draw_line(canvas, a.x, a.y, b.x, b.y, paint);
 		Log.d(tag, "drawing line from (" + a.x + ", " + a.y + ") to (" + b.x + ", " + b.y + ")");
 		if ((b.x - a.x > m_min_dist) ||
 			(b.y - a.y > m_min_dist)) {
 			draw_pt(canvas, paint, b);
 		}
-		m_last_pt = b;
+		m_last_pt.set(b);
 	} // draw_line (canvas, paint)
 }
