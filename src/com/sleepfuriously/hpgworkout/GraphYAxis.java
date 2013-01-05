@@ -33,6 +33,9 @@ public class GraphYAxis {
 	/** Default color for the horizontal lines across the graph */
 	public final static int DEFAULT_Y_LINE_COLOR = Color.LTGRAY;
 
+	/** Default number of tick-marks in the y axis */
+	public final static int DEFAULT_NUM_TICKS = 3;
+
 	/**
 	 * Because there's some slop in the size of letters,
 	 * I nudge the labels a little by this much to make
@@ -47,13 +50,21 @@ public class GraphYAxis {
 	//-------------------------------
 
 	/**
-	 * The min and max y values.  Original
+	 * The min and max y values.  <i>Original</i>
 	 * values (not converted to screen coords).
-	 * <p>
-	 * This corresponds to the boundary rectangle
-	 * of the GraphLine class.
 	 */
 	protected float m_orig_min = NaN, m_orig_max = NaN;
+
+	/**
+	 * The graph limits as the Heckbert algorithm sees
+	 * them.  Based on m_orig_min and max, but might
+	 * define a larger spread to make the graph look
+	 * nice.
+	 * <p>
+	 * When polled, these are the numbers returned and should
+	 * be used by the corresponding GraphLine class.
+	 */
+	protected float m_heckbert_min = NaN, m_heckbert_max = NaN;
 
 	/**
 	 * The rectangle to draw our y axis.  It's part
@@ -65,6 +76,9 @@ public class GraphYAxis {
 
 	/** The color to draw the horizontal lines */
 	public int m_line_color = DEFAULT_Y_LINE_COLOR;
+
+	/** The spacing the for the tic-marks. */
+	private float m_tick_spacing = NaN;
 
 
 	//-------------------------------
@@ -95,8 +109,7 @@ public class GraphYAxis {
 	 * 					the total width (lines and text).
 	 */
 	public GraphYAxis (float min, float max, RectF draw_area) {
-		m_orig_min = min;
-		m_orig_max = max;
+		set_range(min, max);
 		m_draw_area = draw_area;
 	} // constructor
 
@@ -115,8 +128,7 @@ public class GraphYAxis {
 	 * 				the corresponding GraphLine class.
 	 */
 	public GraphYAxis (float min, float max) {
-		m_orig_min = min;
-		m_orig_max = max;
+		set_range(min, max);
 	}
 
 	/*****************************
@@ -140,6 +152,7 @@ public class GraphYAxis {
 	public void set_range (float min, float max) {
 		m_orig_min = min;
 		m_orig_max = max;
+		heckbert_calc_range();
 	}
 
 
@@ -148,7 +161,7 @@ public class GraphYAxis {
 	 * y-axis.  Returns NaN if it hasn't been set.
 	 */
 	public float get_min() {
-		return m_orig_min;
+		return m_heckbert_min;
 	}
 
 	/*****************************
@@ -156,7 +169,7 @@ public class GraphYAxis {
 	 * y-axis.  Returns NaN if it hasn't been set.
 	 */
 	public float get_max() {
-		return m_orig_max;
+		return m_heckbert_max;
 	}
 
 	/*****************************
@@ -210,18 +223,8 @@ public class GraphYAxis {
 			return;
 		}
 
-		// Figuring out the right number of y-axis lines.  First,
-		// make sure that we have the minimum based on how much
-		// room there is.
-		int num_y_lines = (int) (m_draw_area.height() / m_line_spacing);
-		if (num_y_lines < 3) {
-			num_y_lines = 3;		// Always need at least three lines
-		}
-
 		// Draw the y-axis lines.
-		heckbert_loose_label(m_orig_min, m_orig_max,
-							num_y_lines,
-							canvas, paint);
+		heckbert_loose_label(canvas, paint);
 
 	} // draw(...)
 
@@ -246,45 +249,48 @@ public class GraphYAxis {
 	 *
 	 * @return	The graphmin. This is the minimum number that the
 	 * 			graph shows, and it should be used to subtract
-	 * 			to find the bottom of our drawing!
+	 * 			to find the bottom of our drawing!<br/>
+	 * 			- NaN on error.
 	 */
-	protected float heckbert_loose_label (float min, float max,
-										int ntick,
+	protected float heckbert_loose_label (//float min, float max,
+//										int ntick,
 										Canvas canvas,
 										Paint paint) {
 		int nfrac;
-		float d;			// Tick mark spacing
-		float graphmin, graphmax;	// graph range min & max
-		float range, y;
+//		float d;			// Tick mark spacing
+//		float m_heckbert_min, m_heckbert_max;	// graph range min & max
+		float /* range,*/ y;
 
-		range = heckbert_nicenum(max - min, false);
-		d = heckbert_nicenum(range / (ntick - 1), true);
-		graphmin = (float) (Math.floor(min / d) * d);
-		graphmax = (float) (Math.ceil(max / d) * d);
+//		range = heckbert_nicenum(max - min, false);
+//		d = heckbert_nicenum(range / (ntick - 1), true);
+//		m_heckbert_min = (float) (Math.floor(min / d) * d);
+//		m_heckbert_max = (float) (Math.ceil(max / d) * d);
+
+		if (Float.isNaN(m_heckbert_min) || Float.isNaN(m_heckbert_max)) {
+			Log.e(tag, "Can't continue--the heckbert min or max has not been calculated yet! Aborting!");
+			return NaN;
+		}
 
 		// number of fractional digits
-		nfrac = (int) Math.max(-Math.floor(Math.log10(d)), 0);
+		nfrac = (int) Math.max(-Math.floor(Math.log10(m_tick_spacing)), 0);
 
 		// Need to map the y values to screen y values.
-		GraphMap mapper = new GraphMap(graphmin, graphmax,
-									   m_draw_area.bottom, m_draw_area.top);
-		Log.d(tag, "heckbert_loose_label: [" + graphmin + ".." + graphmax + "]  ==>  ["
-										+ m_draw_area.bottom + ".." + m_draw_area.top + "]");
+		GraphMap mapper = new GraphMap(m_heckbert_min, m_heckbert_max,
+									m_draw_area.bottom, m_draw_area.top);
+//		Log.d(tag, "heckbert_loose_label: [" + m_heckbert_min + ".." + m_heckbert_max + "]  ==>  ["
+//										+ m_draw_area.bottom + ".." + m_draw_area.top + "]");
 
 
 		int text_color = paint.getColor();
 
-		for (y = graphmin; y <= graphmax + .5 * d; y += d) {
+		for (y = m_heckbert_min; y <= m_heckbert_max + .5 * m_tick_spacing; y += m_tick_spacing) {
 			paint.setAntiAlias(false);	// just a horiz line
 			paint.setColor(m_line_color);
 //			Log.v (tag, "looping through label lines: y = " + y);
 			float y2 = mapper.map(y);
-//			float y2 = map(y);
-//			y2 = conv_y(y2);
 
-//			canvas.drawLine(m_draw_area.left, y2, m_draw_area.right, y2, paint);
 			draw_line(canvas, m_draw_area.left, y2, m_draw_area.right, y2, paint);
-			Log.v (tag, "\tline at " + y + ", converted to " + y2);
+//			Log.v (tag, "\tline at " + y + ", converted to " + y2);
 
 			String str = new DecimalFormat("#.######").format(y);
 
@@ -294,13 +300,57 @@ public class GraphYAxis {
 			paint.setAntiAlias(true);
 
 			paint.setColor(text_color);
-			// -2 to seperate the text from the line
+			// +2 to seperate the text from the line
 			draw_text(canvas, str, m_draw_area.left, y2 + 2, paint);
-//			canvas.drawText(str, m_draw_area.left, y2 - 2, paint);
 		}
 
-		return graphmin;
+		return m_heckbert_min;
 	} // heckbert_loose_label (min, max, ntick)
+
+
+	/*********************
+	 * Working mostly by side effect, this figures out
+	 * the maximum and minimum of the range as the
+	 * Heckbert algorithm sees fit.
+	 * <p>
+	 * Also note that this code was simply lifted from
+	 * the Heckbert algorithm.
+	 * <p>
+	 * <b>preconditions</b>:<br/>
+	 * 	<i>m_orig_min</i> and <i>m_orig_max</i> need to
+	 * 	be set to the lowest and highest values of our
+	 *	data set.
+	 * <p>
+	 * <b>side effects</b>:<br/>
+	 * 	<i>m_heckbert_min</i> and <i>m_heckbert_max</i>
+	 * 	are both set by this method.
+	 * <p>
+	 * 	<i>m_tick_spacing</i> is set here.
+	 */
+	void heckbert_calc_range () {
+		float range;
+		int num_ticks = DEFAULT_NUM_TICKS;
+
+		if (Float.isNaN(m_orig_min) || Float.isNaN(m_orig_max)) {
+			Log.e (tag, "Trying to calculate the Heckbert range before the original min and max are set. Aborting!");
+			return;
+		}
+
+		if (m_draw_area != null) {
+			// Figuring out the right number of y-axis lines.  First,
+			// make sure that we have the minimum based on how much
+			// room there is.
+			num_ticks = (int) (m_draw_area.height() / m_line_spacing);
+			if (num_ticks < 3) {
+				num_ticks = 3;		// Always need at least three lines
+			}
+		}
+
+		range = heckbert_nicenum(m_orig_max - m_orig_min, false);
+		m_tick_spacing = heckbert_nicenum(range / (num_ticks - 1), true);
+		m_heckbert_min = (float) (Math.floor(m_orig_min / m_tick_spacing) * m_tick_spacing);
+		m_heckbert_max = (float) (Math.ceil(m_orig_max / m_tick_spacing) * m_tick_spacing);
+	} // calc_heckbert_range (ntick)
 
 
 	/*********************

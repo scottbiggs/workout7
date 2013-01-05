@@ -974,6 +974,8 @@ public class GView extends View {
 			Log.e (tag, "update_changeable_rects() can't make m_graphline_rect!");
 			return;
 		}
+
+		// Loop through all the graphs (include the y-axis, too!)
 		for (int i = 0; i < m_graphlist.size(); i++) {
 			// The GraphLine instance
 			m_graphlist.get(i).m_line_graph.set_draw_area(m_graphline_rect);

@@ -418,6 +418,7 @@ public class GraphLine {
 					PointF a, PointF b) {
 		m_last_pt = a;
 		GraphDrawPrimitives.draw_line(canvas, a.x, a.y, b.x, b.y, paint);
+		Log.d(tag, "drawing line from (" + a.x + ", " + a.y + ") to (" + b.x + ", " + b.y + ")");
 		if ((b.x - a.x > m_min_dist) ||
 			(b.y - a.y > m_min_dist)) {
 			draw_pt(canvas, paint, b);

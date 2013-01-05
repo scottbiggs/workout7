@@ -449,12 +449,6 @@ public class GraphActivity
 			collection.m_line_graph.add_point(pt);
 		}
 
-		// Create some padding for the bounds (also takes care of
-		// the case where everything is the same number).
-		bounds.left--;
-		bounds.right++;
-		bounds.top++;
-		bounds.bottom--;
 
 		collection.m_line_graph.set_bounds(bounds);
 		collection.m_id = DatabaseHelper.EXERCISE_COL_REP_NUM;	// Using this for ID. Convenient and unique.
@@ -462,6 +456,17 @@ public class GraphActivity
 
 		// Do the y-axis that's attached to this graph line.
 		collection.m_y_axis_graph = new GraphYAxis(bounds.bottom, bounds.top);
+
+		// Now tell the line_graph to modify its bounding rectangle
+		// to match the one in the y_axis_graph.
+		// TODO:
+		//		Move things around so that we set the y-axis stuff
+		//		BEFORE the GraphLine--that way we don't do things
+		//		twice as we do here.
+		RectF modified_rect = new RectF(bounds);
+		modified_rect.bottom = collection.m_y_axis_graph.get_min();
+		modified_rect.top = collection.m_y_axis_graph.get_max();
+		collection.m_line_graph.set_bounds(modified_rect);
 
 		m_view.add_graph_collection(collection);
 	} // add_new_collection (aspect)

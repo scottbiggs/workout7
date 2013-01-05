@@ -1,5 +1,8 @@
 TODO:
 -----------------
+For the y-axii, make each successive one shift down one pixel
+	so that the lines don't overlap.
+
 When the Inspector tries to display an exercise with no sets
 	(empty), please don't say what the order is!  It's ugly.
 
