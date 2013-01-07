@@ -14,6 +14,7 @@
 	<dimen name="font_size_medium_default">18sp</dimen>
 	<dimen name="font_size_default">15sp</dimen>
 	<dimen name="font_size_button_default">15sp</dimen>
-	<dimen name="font_size_small">12sp</dimen>
+	<dimen name="font_size_small">15sp</dimen>
+	<dimen name="font_size_very_small">12sp</dimen>
 
 </resources>

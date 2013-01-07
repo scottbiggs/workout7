@@ -126,7 +126,7 @@ public class GraphActivity
 
 		// Init buttons and the main graph View
 		m_view = (GView) findViewById(R.id.graph_view);
-		int text_size = getResources().getDimensionPixelSize(R.dimen.font_size_small);
+		int text_size = getResources().getDimensionPixelSize(R.dimen.font_size_very_small);
 		m_view.set_label_size(text_size);
 
 		// Make sure we load the database each time onCreate() is called.

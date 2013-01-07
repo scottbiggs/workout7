@@ -168,7 +168,7 @@ public class GView extends View {
 	List <Float> m_unique_graph_nums = null;
 
 	/** The size of the label text */
-	protected float m_label_text_size = DEFAULT_LABEL_TEXT_SIZE;
+//	protected float m_label_text_size = DEFAULT_LABEL_TEXT_SIZE;
 
 	/** The size of the message text */
 	protected float m_msg_text_size = DEFAULT_MSG_TEXT_SIZE;
@@ -263,7 +263,7 @@ public class GView extends View {
 		m_paint.setStrokeWidth(0);		// hairline
 		m_paint.setColor(getResources().getColor(color.ghost_white));
 		m_paint.setAntiAlias(true);
-		m_paint.setTextSize(m_label_text_size);
+		m_paint.setTextSize(DEFAULT_LABEL_TEXT_SIZE);
 
 		if (m_unique_graph_nums == null) {
 			m_unique_graph_nums = new ArrayList<Float>();
@@ -351,17 +351,17 @@ public class GView extends View {
 		//
 		// end test
 
-
 		// Check to see if there's anything to draw.
 		if (has_data() == false) {
 			String msg = this.getContext().getString(R.string.graph_no_sets_msg);
+			float temp_text_size = m_paint.getTextSize();
 			m_paint.setTextSize(m_msg_text_size);
 			m_paint.getTextBounds(msg, 0, msg.length(), m_temp_rect);
 			draw_text(canvas, msg,
 					m_canvas_padded_rect.exactCenterX() - m_temp_rect.exactCenterX(),
 					m_canvas_padded_rect.exactCenterY() - m_temp_rect.exactCenterY(),
 					m_paint);
-			m_paint.setTextSize(m_label_text_size);	// Return to default size
+			m_paint.setTextSize(temp_text_size);	// Return to default size
 			return;		// get outta here!
 		}
 
@@ -1115,14 +1115,14 @@ public class GView extends View {
 	 * @param size	The font size to use.
 	 */
 	public void set_label_size(float size) {
-		m_label_text_size = size;
+		m_paint.setTextSize(size);
 	}
 
 	/*********************
 	 * Returns the current text size of the x and y axii labels.
 	 */
 	public float get_label_size() {
-		return m_label_text_size;
+		return m_paint.getTextSize();
 	}
 
 
