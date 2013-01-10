@@ -31,4 +31,31 @@ public class ExerciseData {
 
 	/** The order this exercise appears in the list of all exercises. */
 	int lorder;
+
+	//----------------
+	//	Graphing Info
+	//----------------
+
+	/**
+	 * Whether or not to graph the given aspect.
+	 * Defaults to false.
+	 */
+	boolean g_reps = false,
+			g_weight = false,
+			g_dist = false,
+			g_time = false,
+			g_level = false,
+			g_cals = false,
+			g_other = false;
+
+	/**
+	 * Do we multiply the number of reps with another
+	 * aspect?  If so, then which aspect?  This number
+	 * can be found in DatabaseHelper.EXERCISE_COL_*_NUM.
+	 * <p>
+	 * -1 means that this is not used.
+	 */
+	int g_with_reps = -1;
+
+
 }

@@ -49,7 +49,8 @@ public class WGlobals extends Application {
 		GRAPHSELECTORACTIVITY = 18,
 		HISTORYACTIVITY = 19,	// todo: deprecated
 		TESTACTIVITY = 20,		// todo:		Just for debugging!!
-		EXERCISETABHOSTACTIVITY = 21;	// added as they're made
+		EXERCISETABHOSTACTIVITY = 21,
+		GRAPHOPTIONSACTIVITY = 22;	// added as they're made
 
 
 	//---------------------------
@@ -219,13 +220,13 @@ public class WGlobals extends Application {
 															"" + DEFAULT_WHEELS_NUM_LEFT));
 
 		g_wheel_num_right = Integer.parseInt(prefs.getString(activity.getString(R.string.prefs_wheel_right_key),
-															 "" + DEFAULT_WHEELS_NUM_RIGHT));
+															"" + DEFAULT_WHEELS_NUM_RIGHT));
 
 		g_wheel_width = Integer.parseInt(prefs.getString(activity.getString(R.string.prefs_wheel_width_key),
-														 "" + DEFAULT_WHEELS_NUM_RIGHT));
+														"" + DEFAULT_WHEELS_NUM_RIGHT));
 
 		g_wheel_text_size = Integer.parseInt(prefs.getString(activity.getString(R.string.prefs_wheel_text_size_key),
-															 "" + DEFAULT_WHEEL_TEXT_SIZE));
+															"" + DEFAULT_WHEEL_TEXT_SIZE));
 	} // load_prefs()
 
 

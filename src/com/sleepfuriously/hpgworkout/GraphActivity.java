@@ -23,7 +23,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,7 +30,9 @@ import android.widget.Toast;
 
 public class GraphActivity
 					extends
-						BaseDialogActivity {
+						BaseDialogActivity
+					implements
+						OnClickListener {
 
 	//-------------------------
 	//	Constants
@@ -57,6 +58,9 @@ public class GraphActivity
 	 * Where the data is actually drawn.  This is a custom View.
 	 */
 	GView m_view;
+
+	/** The button to take the user to an options dialog */
+	Button m_options_butt;
 
 
 	//-------------------------
@@ -124,6 +128,9 @@ public class GraphActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.graphs);
 
+		m_options_butt = (Button) findViewById(R.id.graph_options_butt);
+		m_options_butt.setOnClickListener(this);
+
 		// Init buttons and the main graph View
 		m_view = (GView) findViewById(R.id.graph_view);
 		int text_size = getResources().getDimensionPixelSize(R.dimen.font_size_very_small);
@@ -183,6 +190,18 @@ public class GraphActivity
 		}
 
 	} // onResume()
+
+
+	//-------------------------
+	@Override
+	public void onClick(View v) {
+		Intent itt;
+		if (v == m_options_butt) {
+			// todo
+//			itt = new Intent(this, GraphOptionsActivity.class);
+//			startActivityForResult(itt, WGlobals.);
+		}
+	} // onClick(v)
 
 
 	//-------------------------

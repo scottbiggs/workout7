@@ -5,6 +5,16 @@
 	android:background="@color/gray_darkest"
 	>
 
+	<RelativeLayout
+		android:id="@+id/graph_title_rl"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentTop="true"
+		android:layout_marginTop="6dp"
+		android:layout_marginRight="8dp"
+		android:layout_marginLeft="8dp"
+		>
+
 	<ImageView
 		android:id="@+id/graph_logo"
 		android:layout_width="wrap_content"
@@ -22,19 +32,21 @@
 		android:layout_alignParentTop="true"
 		android:layout_gravity="center_vertical"
 		android:layout_marginBottom="3dp"
-		android:layout_marginLeft="10dp"
+		android:layout_marginLeft="2dp"
 		android:layout_marginRight="8dp"
-		android:layout_marginTop="5dp"
 		android:layout_toLeftOf="@id/graph_logo"
 		android:text="@string/graph_title_msg"
 		style="@style/white_text_medium"
 		android:textColor="@color/off_white" />
 
+	</RelativeLayout>
+
+
 	<TextView
 		android:id="@+id/graph_description_tv"
-		android:layout_below="@id/graph_title_tv"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
+		android:layout_below="@id/graph_title_rl"
 		android:layout_marginLeft="24dp"
 		android:layout_marginRight="12dp"
 		android:layout_marginTop="6dp"
@@ -44,13 +56,29 @@
 		android:textColor="@color/off_white"
 		android:textStyle="bold" />
 
+	<Button
+		android:id="@+id/graph_options_butt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_centerHorizontal="true"
+		android:layout_marginBottom="8dp"
+		android:background="@drawable/button_shiny_black"
+		android:paddingLeft="8dp"
+		android:paddingRight="8dp"
+		android:text="@string/graph_options_butt"
+		android:textColor="@color/ivory"
+		android:textSize="@dimen/font_size_default" />
+
 	<com.sleepfuriously.hpgworkout.GView
 		android:id="@+id/graph_view"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
 		android:layout_below="@id/graph_description_tv"
+		android:layout_above="@id/graph_options_butt"
 		android:layout_margin="8dp"
 		android:background="@drawable/rounded_edges_dark_blue"
 		android:padding="25dp"/>
+
 
 </RelativeLayout>

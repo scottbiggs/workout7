@@ -1,11 +1,23 @@
 /**
  * This class is used to open a database.
  *
+ * In case you want to push or pull the database file,
+ * here's the commands (from whatever directory you want
+ * to store the database file):
+ *
+ * adb pull data/data/com.sleepfuriously.hpgworkout/databases/hpg.sqlite
+ *
+ * adb push hpg.sqlite data/data/com.sleepfuriously.hpgworkout/databases/
+ *
+ * Also, you can use Firefox's SQLite Manager to look at and alter
+ * the database--works pretty well (but you have to load it every time).
+ *
+ *
  *	WARNING!
  * There's a peculiarity right now that means it should
  * only handle ONE instance at a time!  I've put in tests
- * to make sure that only one instance happens, but it's
- * not enforced.
+ * to make sure that only one instance happens, but it
+ * can still happen.
  *
  */
 package com.sleepfuriously.hpgworkout;
@@ -76,7 +88,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		EXERCISE_COL_OTHER_TITLE = "other_title",// title of other (string)
 		EXERCISE_COL_OTHER_UNIT = "other_unit",	// unit (string)
 		EXERCISE_COL_SIGNIFICANT = "significant",// which is most significant, 0 = n/a (int)
-		EXERCISE_COL_LORDER = "lorder";	// The order it appears (int)
+		EXERCISE_COL_LORDER = "lorder",	// The order it appears (int)
+			// New!!!
+		EXERCISE_COL_GRAPH_WEIGHT = "g_weight", // Graph the weight aspect? (bool)
+		EXERCISE_COL_GRAPH_REPS = "g_reps",		// (bool)
+		EXERCISE_COL_GRAPH_DIST = "g_dist",		// (bool)
+		EXERCISE_COL_GRAPH_TIME = "g_time",		// (bool)
+		EXERCISE_COL_GRAPH_LEVEL = "g_level",	// (bool)
+		EXERCISE_COL_GRAPH_CALS = "g_cals",		// (bool)
+		EXERCISE_COL_GRAPH_OTHER = "g_other",	// (bool)
+		EXERCISE_COL_GRAPH_WITH_REPS = "g_reps_with"; // Graph reps * aspect, the number of the aspect from the next list (int)
+
 
 	/**
 	 * These are the column numbers in the database for
@@ -105,7 +127,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		EXERCISE_COL_OTHER_UNIT_NUM = 15,
 		EXERCISE_COL_SIGNIFICANT_NUM = 16,
 		EXERCISE_COL_ORDER_NUM = 17,
-		EXERCISE_COL_NUM_ROWS = 18;		// The number of rows
+			// new
+		EXERCISE_COL_GRAPH_WEIGHT_NUM = 18,
+		EXERCISE_COL_GRAPH_REPS_NUM = 19,
+		EXERCISE_COL_GRAPH_DIST_NUM = 20,
+		EXERCISE_COL_GRAPH_TIME_NUM = 21,
+		EXERCISE_COL_GRAPH_LEVEL_NUM = 22,
+		EXERCISE_COL_GRAPH_CALS_NUM = 23,
+		EXERCISE_COL_GRAPH_OTHER_NUM = 24,
+		EXERCISE_COL_GRAPH_REPS_WITH_NUM = 25,	// Refers to one of these numbers (4, 6, 7, 9, 11, 12, 13)
+
+		EXERCISE_COL_NUM_ROWS = 26;		// The number of rows
 
 
 	/********************
@@ -163,7 +195,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		+ EXERCISE_COL_OTHER_TITLE + SPACE + TEXT + COMMA
 		+ EXERCISE_COL_OTHER_UNIT + SPACE + TEXT + COMMA
 		+ EXERCISE_COL_LORDER + SPACE + INT + COMMA
-		+ EXERCISE_COL_SIGNIFICANT + SPACE + INT + ");";
+		+ EXERCISE_COL_SIGNIFICANT + SPACE + INT + COMMA
+			// new
+		+ EXERCISE_COL_GRAPH_WEIGHT + SPACE + INT + COMMA
+		+ EXERCISE_COL_GRAPH_REPS + SPACE + INT + COMMA
+		+ EXERCISE_COL_GRAPH_DIST + SPACE + INT + COMMA
+		+ EXERCISE_COL_GRAPH_TIME + SPACE + INT + COMMA
+		+ EXERCISE_COL_GRAPH_LEVEL + SPACE + INT + COMMA
+		+ EXERCISE_COL_GRAPH_CALS + SPACE + INT + COMMA
+		+ EXERCISE_COL_GRAPH_OTHER + SPACE + INT + COMMA
+		+ EXERCISE_COL_GRAPH_WITH_REPS + SPACE + INT
+		+ ");";
 
 	/**
 	 * Like the above String, this is used to create a
@@ -197,7 +239,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		SET_COND_INJURY = 4;
 
 	/** Current version of the Database */
-	private static final int DATABASE_VERSION = 5;
+	private static final int DATABASE_VERSION = 6;
+
+	/** We'll try to upgrade if this version is found */
+	private static final int DATABASE_VERSION_LAST = 5;
 
 	private static final String tag = "---DatabaseHelper---";
 
@@ -208,11 +253,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	/**
 	 * Counter to make sure we have only one instance.
 	 *
-	 * todo:
-	 * 	Not sure why I even have this.  Since it's not static,
-	 * 	it's really not counting the instances.
+	 * Just in case.
 	 */
-	private int m_instance_counter = 0;
+	private static int m_instance_counter = 0;
 
 
 	// Nice to have around.
@@ -320,14 +363,44 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public void onUpgrade (SQLiteDatabase db,
 						int oldVersion,
 						int newVersion) {
-		// TODO:
-		//	Make this work correctly so that it doesn't delete
-		//	a user's entire work!  Right now, it just deletes
-		//	the existing exercise table and creates a new one.
 		Log.w (tag, "WARNING!  Entering onUpgrade(" + db.toString() + ", " + oldVersion + ", " + newVersion + ")");
-		db.execSQL("DROP TABLE IF EXISTS " + EXERCISE_TABLE_NAME);
-		onCreate (db);
-		db.close();
+
+		// If it's not version 5, delete and start all over.
+		if (oldVersion != DATABASE_VERSION_LAST) {
+			Log.w(tag, "   The table was very old, deleting and starting fresh.");
+			db.execSQL("DROP TABLE IF EXISTS " + EXERCISE_TABLE_NAME);
+			onCreate (db);
+			db.close();
+			return;
+		}
+
+		// Yup, this is version 5 (DATABASE_VERSION_LAST).
+		// Let's try to update.
+		Log.i(tag, "   Trying to update the exercise table (the set table should be unchanged).");
+		try {
+			db.execSQL("ALTER TABLE " + EXERCISE_TABLE_NAME
+					+ " ADD " + EXERCISE_COL_GRAPH_CALS + " " + INT + " DEFAULT 0");
+			db.execSQL("ALTER TABLE " + EXERCISE_TABLE_NAME
+					+ " ADD " + EXERCISE_COL_GRAPH_DIST + " " + INT + " DEFAULT 0");
+			db.execSQL("ALTER TABLE " + EXERCISE_TABLE_NAME
+					+ " ADD " + EXERCISE_COL_GRAPH_LEVEL + " " + INT + " DEFAULT 0");
+			db.execSQL("ALTER TABLE " + EXERCISE_TABLE_NAME
+					+ " ADD " + EXERCISE_COL_GRAPH_OTHER + " " + INT + " DEFAULT 0");
+			db.execSQL("ALTER TABLE " + EXERCISE_TABLE_NAME
+					+ " ADD " + EXERCISE_COL_GRAPH_REPS + " " + INT + " DEFAULT 0");
+			db.execSQL("ALTER TABLE " + EXERCISE_TABLE_NAME
+					+ " ADD " + EXERCISE_COL_GRAPH_TIME + " " + INT + " DEFAULT 0");
+			db.execSQL("ALTER TABLE " + EXERCISE_TABLE_NAME
+					+ " ADD " + EXERCISE_COL_GRAPH_WEIGHT + " " + INT + " DEFAULT 0");
+			db.execSQL("ALTER TABLE " + EXERCISE_TABLE_NAME
+					+ " ADD " + EXERCISE_COL_GRAPH_WITH_REPS + " " + INT + " DEFAULT -1");
+
+		} catch (SQLException e) {
+			Log.e (tag, "Problem adding columns in onUpgrade()!");
+			e.printStackTrace();
+		}
+
+
 	} // onUpgrade (db, old, new)
 
 
@@ -411,6 +484,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put (EXERCISE_COL_OTHER_UNIT, "");
 		values.put(EXERCISE_COL_LORDER, 2);
 		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_WEIGHT_NUM);
+
+		// new with version 6
+		values.put(EXERCISE_COL_GRAPH_WEIGHT, true);
+		values.put(EXERCISE_COL_GRAPH_REPS, true);
+		values.put(EXERCISE_COL_GRAPH_DIST, false);
+		values.put(EXERCISE_COL_GRAPH_TIME, false);
+		values.put(EXERCISE_COL_GRAPH_LEVEL, false);
+		values.put(EXERCISE_COL_GRAPH_CALS, false);
+		values.put(EXERCISE_COL_GRAPH_OTHER, false);
+		values.put(EXERCISE_COL_GRAPH_WITH_REPS, EXERCISE_COL_WEIGHT_NUM); // same as significant
+
 		try {
 			db.insertOrThrow(EXERCISE_TABLE_NAME, null, values);
 		}
@@ -439,6 +523,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put (EXERCISE_COL_OTHER_UNIT, "");
 		values.put(EXERCISE_COL_LORDER, 3);
 		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_WEIGHT_NUM);
+		values.put(EXERCISE_COL_GRAPH_WEIGHT, true);
+		values.put(EXERCISE_COL_GRAPH_REPS, true);
+		values.put(EXERCISE_COL_GRAPH_DIST, false);
+		values.put(EXERCISE_COL_GRAPH_TIME, false);
+		values.put(EXERCISE_COL_GRAPH_LEVEL, false);
+		values.put(EXERCISE_COL_GRAPH_CALS, false);
+		values.put(EXERCISE_COL_GRAPH_OTHER, false);
+		values.put(EXERCISE_COL_GRAPH_WITH_REPS, EXERCISE_COL_WEIGHT_NUM);
 		db.insert(EXERCISE_TABLE_NAME, null, values);
 
 		values.clear();
@@ -458,6 +550,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put (EXERCISE_COL_OTHER_UNIT, "");
 		values.put(EXERCISE_COL_LORDER, 1);
 		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_TIME_NUM);
+		values.put(EXERCISE_COL_GRAPH_WEIGHT, false);
+		values.put(EXERCISE_COL_GRAPH_REPS, false);
+		values.put(EXERCISE_COL_GRAPH_DIST, true);
+		values.put(EXERCISE_COL_GRAPH_TIME, true);
+		values.put(EXERCISE_COL_GRAPH_LEVEL, false);
+		values.put(EXERCISE_COL_GRAPH_CALS, false);
+		values.put(EXERCISE_COL_GRAPH_OTHER, false);
+		values.put(EXERCISE_COL_GRAPH_WITH_REPS, EXERCISE_COL_WEIGHT_NUM);
 		db.insert(EXERCISE_TABLE_NAME, null, values);
 
 		values.clear();
@@ -478,6 +578,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put (EXERCISE_COL_OTHER_UNIT, "winks");
 		values.put(EXERCISE_COL_LORDER, 4);
 		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_REP_NUM);
+		values.put(EXERCISE_COL_GRAPH_WEIGHT, true);
+		values.put(EXERCISE_COL_GRAPH_REPS, true);
+		values.put(EXERCISE_COL_GRAPH_DIST, true);
+		values.put(EXERCISE_COL_GRAPH_TIME, true);
+		values.put(EXERCISE_COL_GRAPH_LEVEL, true);
+		values.put(EXERCISE_COL_GRAPH_CALS, true);
+		values.put(EXERCISE_COL_GRAPH_OTHER, true);
+		values.put(EXERCISE_COL_GRAPH_WITH_REPS, EXERCISE_COL_WEIGHT_NUM);
 		db.insert(EXERCISE_TABLE_NAME, null, values);
 
 		values.clear();
@@ -497,6 +605,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put (EXERCISE_COL_OTHER_UNIT, "degrees");
 		values.put(EXERCISE_COL_LORDER, 5);
 		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_REP_NUM);
+		values.put(EXERCISE_COL_GRAPH_WEIGHT, false);
+		values.put(EXERCISE_COL_GRAPH_REPS, true);
+		values.put(EXERCISE_COL_GRAPH_DIST, false);
+		values.put(EXERCISE_COL_GRAPH_TIME, false);
+		values.put(EXERCISE_COL_GRAPH_LEVEL, false);
+		values.put(EXERCISE_COL_GRAPH_CALS, false);
+		values.put(EXERCISE_COL_GRAPH_OTHER, false);
+		values.put(EXERCISE_COL_GRAPH_WITH_REPS, -1); // none
 		db.insert(EXERCISE_TABLE_NAME, null, values);
 
 		values.clear();
@@ -516,6 +632,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put (EXERCISE_COL_OTHER_UNIT, "");
 		values.put(EXERCISE_COL_LORDER, 6);
 		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_WEIGHT_NUM);
+		values.put(EXERCISE_COL_GRAPH_WEIGHT, true);
+		values.put(EXERCISE_COL_GRAPH_REPS, true);
+		values.put(EXERCISE_COL_GRAPH_DIST, false);
+		values.put(EXERCISE_COL_GRAPH_TIME, false);
+		values.put(EXERCISE_COL_GRAPH_LEVEL, false);
+		values.put(EXERCISE_COL_GRAPH_CALS, false);
+		values.put(EXERCISE_COL_GRAPH_OTHER, false);
+		values.put(EXERCISE_COL_GRAPH_WITH_REPS, EXERCISE_COL_WEIGHT_NUM);
 		db.insert(EXERCISE_TABLE_NAME, null, values);
 
 		values.clear();
@@ -536,6 +660,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put (EXERCISE_COL_OTHER_UNIT, "");
 		values.put(EXERCISE_COL_LORDER, 0);
 		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_DIST_NUM);
+		values.put(EXERCISE_COL_GRAPH_WEIGHT, false);
+		values.put(EXERCISE_COL_GRAPH_REPS, false);
+		values.put(EXERCISE_COL_GRAPH_DIST, true);
+		values.put(EXERCISE_COL_GRAPH_TIME, true);
+		values.put(EXERCISE_COL_GRAPH_LEVEL, false);
+		values.put(EXERCISE_COL_GRAPH_CALS, true);
+		values.put(EXERCISE_COL_GRAPH_OTHER, false);
+		values.put(EXERCISE_COL_GRAPH_WITH_REPS, -1);
 		db.insert(EXERCISE_TABLE_NAME, null, values);
 
 		values.clear();
@@ -555,6 +687,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put (EXERCISE_COL_OTHER_UNIT, "");
 		values.put(EXERCISE_COL_LORDER, 8);
 		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_REP_NUM);
+		values.put(EXERCISE_COL_GRAPH_WEIGHT, false);
+		values.put(EXERCISE_COL_GRAPH_REPS, true);
+		values.put(EXERCISE_COL_GRAPH_DIST, false);
+		values.put(EXERCISE_COL_GRAPH_TIME, false);
+		values.put(EXERCISE_COL_GRAPH_LEVEL, false);
+		values.put(EXERCISE_COL_GRAPH_CALS, false);
+		values.put(EXERCISE_COL_GRAPH_OTHER, false);
+		values.put(EXERCISE_COL_GRAPH_WITH_REPS, -1);
 		db.insert(EXERCISE_TABLE_NAME, null, values);
 
 		values.clear();
@@ -574,6 +714,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put (EXERCISE_COL_OTHER_UNIT, "");
 		values.put(EXERCISE_COL_LORDER, 9);
 		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_REP_NUM);
+		values.put(EXERCISE_COL_GRAPH_WEIGHT, false);
+		values.put(EXERCISE_COL_GRAPH_REPS, true);
+		values.put(EXERCISE_COL_GRAPH_DIST, false);
+		values.put(EXERCISE_COL_GRAPH_TIME, false);
+		values.put(EXERCISE_COL_GRAPH_LEVEL, false);
+		values.put(EXERCISE_COL_GRAPH_CALS, false);
+		values.put(EXERCISE_COL_GRAPH_OTHER, false);
+		values.put(EXERCISE_COL_GRAPH_WITH_REPS, -1);
 		db.insert(EXERCISE_TABLE_NAME, null, values);
 
 		values.clear();
@@ -593,6 +741,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put (EXERCISE_COL_OTHER_UNIT, "");
 		values.put(EXERCISE_COL_LORDER, 10);
 		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_REP_NUM);
+		values.put(EXERCISE_COL_GRAPH_WEIGHT, false);
+		values.put(EXERCISE_COL_GRAPH_REPS, true);
+		values.put(EXERCISE_COL_GRAPH_DIST, false);
+		values.put(EXERCISE_COL_GRAPH_TIME, false);
+		values.put(EXERCISE_COL_GRAPH_LEVEL, false);
+		values.put(EXERCISE_COL_GRAPH_CALS, false);
+		values.put(EXERCISE_COL_GRAPH_OTHER, false);
+		values.put(EXERCISE_COL_GRAPH_WITH_REPS, -1);
 		db.insert(EXERCISE_TABLE_NAME, null, values);
 
 		values.clear();
@@ -612,6 +768,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put (EXERCISE_COL_OTHER_UNIT, "");
 		values.put(EXERCISE_COL_LORDER, 11);
 		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_REP_NUM);
+		values.put(EXERCISE_COL_GRAPH_WEIGHT, false);
+		values.put(EXERCISE_COL_GRAPH_REPS, true);
+		values.put(EXERCISE_COL_GRAPH_DIST, false);
+		values.put(EXERCISE_COL_GRAPH_TIME, false);
+		values.put(EXERCISE_COL_GRAPH_LEVEL, false);
+		values.put(EXERCISE_COL_GRAPH_CALS, false);
+		values.put(EXERCISE_COL_GRAPH_OTHER, false);
+		values.put(EXERCISE_COL_GRAPH_WITH_REPS, -1);
 		db.insert(EXERCISE_TABLE_NAME, null, values);
 
 		values.clear();
@@ -631,127 +795,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put (EXERCISE_COL_OTHER_UNIT, "");
 		values.put(EXERCISE_COL_LORDER, 12);
 		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_WEIGHT_NUM);
+		values.put(EXERCISE_COL_GRAPH_WEIGHT, true);
+		values.put(EXERCISE_COL_GRAPH_REPS, true);
+		values.put(EXERCISE_COL_GRAPH_DIST, false);
+		values.put(EXERCISE_COL_GRAPH_TIME, false);
+		values.put(EXERCISE_COL_GRAPH_LEVEL, false);
+		values.put(EXERCISE_COL_GRAPH_CALS, false);
+		values.put(EXERCISE_COL_GRAPH_OTHER, false);
+		values.put(EXERCISE_COL_GRAPH_WITH_REPS, EXERCISE_COL_WEIGHT_NUM);
 		db.insert(EXERCISE_TABLE_NAME, null, values);
 
-//		values.clear();
-//		values.put (EXERCISE_COL_NAME, "thinker");
-//		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_ANAEROBIC);
-//		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_UPPER);
-//		values.put (EXERCISE_COL_WEIGHT, true);
-//		values.put (EXERCISE_COL_REP, true);
-//		values.put (EXERCISE_COL_DIST, false);
-//		values.put (EXERCISE_COL_TIME, false);
-//		values.put (EXERCISE_COL_LEVEL, false);
-//		values.put (EXERCISE_COL_OTHER, false);
-//		values.put (EXERCISE_COL_WEIGHT_UNIT, "thoughts");
-//		values.put (EXERCISE_COL_DIST_UNIT, "");
-//		values.put (EXERCISE_COL_TIME_UNIT, "");
-//		values.put (EXERCISE_COL_OTHER_TITLE, "");
-//		values.put (EXERCISE_COL_OTHER_UNIT, "");
-//		values.put(EXERCISE_COL_LORDER, 13);
-//		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_WEIGHT_NUM);
-//		db.insert(EXERCISE_TABLE_NAME, null, values);
-
-//		values.clear();
-//		values.put (EXERCISE_COL_NAME, "head banger");
-//		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_ANAEROBIC);
-//		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_UPPER);
-//		values.put (EXERCISE_COL_WEIGHT, true);
-//		values.put (EXERCISE_COL_REP, true);
-//		values.put (EXERCISE_COL_DIST, false);
-//		values.put (EXERCISE_COL_TIME, false);
-//		values.put (EXERCISE_COL_LEVEL, false);
-//		values.put (EXERCISE_COL_OTHER, false);
-//		values.put (EXERCISE_COL_WEIGHT_UNIT, "ounces");
-//		values.put (EXERCISE_COL_DIST_UNIT, "");
-//		values.put (EXERCISE_COL_TIME_UNIT, "");
-//		values.put (EXERCISE_COL_OTHER_TITLE, "");
-//		values.put (EXERCISE_COL_OTHER_UNIT, "");
-//		values.put(EXERCISE_COL_LORDER, 14);
-//		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_WEIGHT_NUM);
-//		db.insert(EXERCISE_TABLE_NAME, null, values);
-
-//		values.clear();
-//		values.put (EXERCISE_COL_NAME, "cross over");
-//		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_ANAEROBIC);
-//		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_UPPER);
-//		values.put (EXERCISE_COL_WEIGHT, true);
-//		values.put (EXERCISE_COL_REP, true);
-//		values.put (EXERCISE_COL_DIST, false);
-//		values.put (EXERCISE_COL_TIME, false);
-//		values.put (EXERCISE_COL_LEVEL, false);
-//		values.put (EXERCISE_COL_OTHER, false);
-//		values.put (EXERCISE_COL_WEIGHT_UNIT, "pounds");
-//		values.put (EXERCISE_COL_DIST_UNIT, "");
-//		values.put (EXERCISE_COL_TIME_UNIT, "");
-//		values.put (EXERCISE_COL_OTHER_TITLE, "");
-//		values.put (EXERCISE_COL_OTHER_UNIT, "");
-//		values.put(EXERCISE_COL_LORDER, 15);
-//		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_WEIGHT_NUM);
-//		db.insert(EXERCISE_TABLE_NAME, null, values);
-
-//		values.clear();
-//		values.put (EXERCISE_COL_NAME, "vmo blaster");
-//		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_ANAEROBIC);
-//		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_UPPER);
-//		values.put (EXERCISE_COL_WEIGHT, true);
-//		values.put (EXERCISE_COL_REP, true);
-//		values.put (EXERCISE_COL_DIST, false);
-//		values.put (EXERCISE_COL_TIME, false);
-//		values.put (EXERCISE_COL_LEVEL, false);
-//		values.put (EXERCISE_COL_OTHER, false);
-//		values.put (EXERCISE_COL_WEIGHT_UNIT, "kilograms");
-//		values.put (EXERCISE_COL_DIST_UNIT, "");
-//		values.put (EXERCISE_COL_TIME_UNIT, "");
-//		values.put (EXERCISE_COL_OTHER_TITLE, "");
-//		values.put (EXERCISE_COL_OTHER_UNIT, "");
-//		values.put(EXERCISE_COL_LORDER, 16);
-//		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_WEIGHT_NUM);
-//		db.insert(EXERCISE_TABLE_NAME, null, values);
-
-//		values.clear();
-//		values.put (EXERCISE_COL_NAME, "dips");
-//		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_ANAEROBIC);
-//		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_UPPER);
-//		values.put (EXERCISE_COL_WEIGHT, false);
-//		values.put (EXERCISE_COL_REP, true);
-//		values.put (EXERCISE_COL_DIST, false);
-//		values.put (EXERCISE_COL_TIME, false);
-//		values.put (EXERCISE_COL_LEVEL, false);
-//		values.put (EXERCISE_COL_OTHER, false);
-//		values.put (EXERCISE_COL_WEIGHT_UNIT, "");
-//		values.put (EXERCISE_COL_DIST_UNIT, "");
-//		values.put (EXERCISE_COL_TIME_UNIT, "");
-//		values.put (EXERCISE_COL_OTHER_TITLE, "");
-//		values.put (EXERCISE_COL_OTHER_UNIT, "");
-//		values.put(EXERCISE_COL_LORDER, 17);
-//		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_REP_NUM);
-//		db.insert(EXERCISE_TABLE_NAME, null, values);
-
-//		values.clear();
-//		values.put (EXERCISE_COL_NAME, "lunges");
-//		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_ANAEROBIC);
-//		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_LOWER);
-//		values.put (EXERCISE_COL_WEIGHT, false);
-//		values.put (EXERCISE_COL_REP, true);
-//		values.put (EXERCISE_COL_DIST, false);
-//		values.put (EXERCISE_COL_TIME, false);
-//		values.put (EXERCISE_COL_LEVEL, false);
-//		values.put (EXERCISE_COL_OTHER, false);
-//		values.put (EXERCISE_COL_WEIGHT_UNIT, "");
-//		values.put (EXERCISE_COL_DIST_UNIT, "");
-//		values.put (EXERCISE_COL_TIME_UNIT, "");
-//		values.put (EXERCISE_COL_OTHER_TITLE, "");
-//		values.put (EXERCISE_COL_OTHER_UNIT, "");
-//		values.put(EXERCISE_COL_LORDER, 18);
-//		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_REP_NUM);
-//		db.insert(EXERCISE_TABLE_NAME, null, values);
 
 		values.clear();
 		values.put (EXERCISE_COL_NAME, "med ball twister");
 		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_ANAEROBIC);
 		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_UPPER);
-		values.put (EXERCISE_COL_WEIGHT, false);
+		values.put (EXERCISE_COL_WEIGHT, true);
 		values.put (EXERCISE_COL_REP, true);
 		values.put (EXERCISE_COL_DIST, false);
 		values.put (EXERCISE_COL_TIME, false);
@@ -764,6 +823,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put (EXERCISE_COL_OTHER_UNIT, "");
 		values.put(EXERCISE_COL_LORDER, 7);
 		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_REP_NUM);
+		values.put(EXERCISE_COL_GRAPH_WEIGHT, true);
+		values.put(EXERCISE_COL_GRAPH_REPS, true);
+		values.put(EXERCISE_COL_GRAPH_DIST, false);
+		values.put(EXERCISE_COL_GRAPH_TIME, false);
+		values.put(EXERCISE_COL_GRAPH_LEVEL, false);
+		values.put(EXERCISE_COL_GRAPH_CALS, false);
+		values.put(EXERCISE_COL_GRAPH_OTHER, false);
+		values.put(EXERCISE_COL_GRAPH_WITH_REPS, -1);
 		db.insert(EXERCISE_TABLE_NAME, null, values);
 
 	} // init_exes (db)
@@ -984,16 +1051,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		if (data.bweight) {
 			col = cursor.getColumnIndex(EXERCISE_COL_WEIGHT_UNIT);
 			data.weight_unit = cursor.getString(col);
+			col = cursor.getColumnIndex(EXERCISE_COL_GRAPH_WEIGHT);
+			data.g_weight = cursor.getInt(col) == 1 ? true : false;
 		}
 
 		col = cursor.getColumnIndex(EXERCISE_COL_REP);
 		data.breps = cursor.getInt(col) == 1 ? true : false;
+		col = cursor.getColumnIndex(EXERCISE_COL_GRAPH_REPS);
+		data.g_reps = cursor.getInt(col) == 1 ? true : false;
 
 		col = cursor.getColumnIndex(EXERCISE_COL_DIST);
 		data.bdist = cursor.getInt(col) == 1 ? true : false;
 		if (data.bdist) {
 			col = cursor.getColumnIndex(EXERCISE_COL_DIST_UNIT);
 			data.dist_unit = cursor.getString(col);
+			col = cursor.getColumnIndex(EXERCISE_COL_GRAPH_DIST);
+			data.g_dist = cursor.getInt(col) == 1 ? true : false;
 		}
 
 		col = cursor.getColumnIndex(EXERCISE_COL_TIME);
@@ -1001,13 +1074,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		if (data.btime) {
 			col = cursor.getColumnIndex(EXERCISE_COL_TIME_UNIT);
 			data.time_unit = cursor.getString(col);
+			col = cursor.getColumnIndex(EXERCISE_COL_GRAPH_TIME);
+			data.g_time = cursor.getInt(col) == 1 ? true : false;
 		}
 
 		col = cursor.getColumnIndex(EXERCISE_COL_LEVEL);
 		data.blevel = cursor.getInt(col) == 1 ? true : false;
+		col = cursor.getColumnIndex(EXERCISE_COL_GRAPH_LEVEL);
+		data.g_level = cursor.getInt(col) == 1 ? true : false;
 
 		col = cursor.getColumnIndex(EXERCISE_COL_CALORIES);
 		data.bcals = cursor.getInt(col) == 1 ? true : false;
+		col = cursor.getColumnIndex(EXERCISE_COL_GRAPH_CALS);
+		data.g_cals = cursor.getInt(col) == 1 ? true : false;
 
 		col = cursor.getColumnIndex(EXERCISE_COL_OTHER);
 		data.bother = cursor.getInt(col) == 1 ? true : false;
@@ -1016,12 +1095,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			data.other_title = cursor.getString(col);
 			col = cursor.getColumnIndex(EXERCISE_COL_OTHER_UNIT);
 			data.other_unit = cursor.getString(col);
+			col = cursor.getColumnIndex(EXERCISE_COL_GRAPH_OTHER);
+			data.g_other = cursor.getInt(col) == 1 ? true : false;
 		}
 		col = cursor.getColumnIndex(EXERCISE_COL_SIGNIFICANT);
 		data.significant = cursor.getInt(col);
 
 		col = cursor.getColumnIndex(EXERCISE_COL_LORDER);
 		data.lorder = cursor.getInt(col);
+
+		col = cursor.getColumnIndex(EXERCISE_COL_GRAPH_WITH_REPS);
+		data.g_with_reps = cursor.getInt(col);
 
 		return data;
 	} // getExerciseData (cursor)
@@ -1049,20 +1133,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 		try {
 			cursor = db.query(EXERCISE_TABLE_NAME,
-									null,
-									EXERCISE_COL_NAME + "=?",
-									new String[] {name},// selectionArgs[]
-									null,
-									null,
-									null);
+							null,
+							EXERCISE_COL_NAME + "=?",
+							new String[] {name},// selectionArgs[]
+							null,
+							null,
+							null);
 			cursor.moveToFirst();	// Oh so important!
 
+			// This is IT!  Yes, that's all there is, wheee!
 			data = getExerciseData(cursor);
-
 		}
+
 		catch (SQLiteException e) {
 			e.printStackTrace();
 		}
+
 		finally {
 			if (cursor != null) {
 				cursor.close();

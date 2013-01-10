@@ -1453,7 +1453,7 @@
 		\n\nIf you see gaps, that means that there were times
 		that did not have entries for this exercise for this
 		aspect.
-		</string>
+	</string>
 
 	<string name="graph_units_msg1">%s</string>
 	<string name="graph_units_msg2">%1$s (%2$s)</string>
@@ -1464,7 +1464,15 @@
 	<string name="graph_all_same_value_msg">All sets are the same value: %s</string>
 	<string name="graph_all_invalid_msg">All values are invalid, so there\'s
 		nothing to graph. Sorry. Try filling some of the missing values.
-		</string>
+	</string>
+
+	<string name="graph_options_butt">options</string>
+	<string name="graph_options_butt_help_title">Options Help</string>
+	<string name="graph_options_butt_help_msg">
+		This button takes you to a dialog where you can customize
+		how your graphs are displayed for this exercise. Pretty cool,
+		right?
+	</string>
 
 	<!-- ============          ============ -->
 	<!-- ============ History  ============ -->
