@@ -401,17 +401,17 @@ public class EditExerciseActivity
 		// Here's the select statement:
 		//		select * from exercise_table where _ID = <id>
 		m_db = WGlobals.g_db_helper.getReadableDatabase();
+		Cursor cursor = null;
 		try {
-			Cursor cursor =
-				m_db.query(
-						DatabaseHelper.EXERCISE_TABLE_NAME,	// table
-						null,			//	columns[]
-						DatabaseHelper.EXERCISE_COL_NAME + "=?",//selection
-						new String[] {m_orig_exercise_name},// selectionArgs[]
-						null,	//	groupBy
-						null,	//	having
-						null,	//	orderBy
-						null);	//	limit
+			cursor = m_db.query(
+								DatabaseHelper.EXERCISE_TABLE_NAME,	// table
+								null,			//	columns[]
+								DatabaseHelper.EXERCISE_COL_NAME + "=?",//selection
+								new String[] {m_orig_exercise_name},// selectionArgs[]
+								null,	//	groupBy
+								null,	//	having
+								null,	//	orderBy
+								null);	//	limit
 
 			// Necessary!  Too bad no one told me that.
 			cursor.moveToFirst();
@@ -573,22 +573,23 @@ public class EditExerciseActivity
 				m_lorder = cursor.getInt(col);
 			}
 
-			// Clean up.
-			cursor.close();
 		}
 		catch (SQLException e) {
 			Log.e(tag, "problem querying the database!");
 			e.printStackTrace();
+			return false;
+		}
+		finally {
+			// Clean up.
+			if (cursor != null) {
+				cursor.close();
+				cursor = null;
+			}
 			if (m_db != null) {
 				m_db.close();
 				m_db = null;
 			}
-			return false;
-		}
 
-		if (m_db != null) {
-			m_db.close();
-			m_db = null;
 		}
 
 		return true;
