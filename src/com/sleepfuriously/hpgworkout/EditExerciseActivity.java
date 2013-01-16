@@ -670,6 +670,7 @@ public class EditExerciseActivity
 		}
 
 		m_db.close();
+		m_db = null;
 	} // save_data()
 
 
