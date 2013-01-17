@@ -1496,8 +1496,7 @@
 	</string>
 
 	<string name="graph_options_with_label">reps combo</string>
-	<string name="graph_options_with_prompt">Choose something to
-		combine (multiply) with reps.</string>
+	<string name="graph_options_with_prompt">Combine reps with...</string>
 	<string name="graph_options_with_help_title">Combine Reps Help</string>
 	<string name="graph_options_with_help_msg">
 		This graph is a little unusual, so I\'ll try to break it down

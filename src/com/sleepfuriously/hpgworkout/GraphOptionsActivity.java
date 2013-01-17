@@ -44,6 +44,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class GraphOptionsActivity
 					extends BaseDialogActivity
@@ -348,6 +349,12 @@ public class GraphOptionsActivity
 	private void read_intent() {
 		Intent itt = getIntent();
 		View bar = null, last_bar = null;
+
+		// First, set the title from the name of the
+		// exericse.
+		String name = itt.getStringExtra(ITT_KEY_EXERCISE_NAME);
+		TextView name_tv = (TextView) findViewById(R.id.graph_options_name_tv);
+		name_tv.setText(name);
 
 		//
 		//	NOTE:
