@@ -674,6 +674,8 @@ public class GraphActivity
 			values.put(DatabaseHelper.EXERCISE_COL_GRAPH_TIME, m_exercise_data.g_time);
 			values.put(DatabaseHelper.EXERCISE_COL_GRAPH_OTHER, m_exercise_data.g_other);
 
+			values.put(DatabaseHelper.EXERCISE_COL_GRAPH_WITH_REPS, m_exercise_data.g_with_reps);
+			
 			m_db.insert(DatabaseHelper.EXERCISE_TABLE_NAME, null, values);
 
 		} catch (SQLiteException e) {
