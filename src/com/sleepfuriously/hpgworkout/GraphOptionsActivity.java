@@ -147,6 +147,9 @@ public class GraphOptionsActivity
 	//	Class Data
 	//--------------------
 
+	/** The name of this exercise */
+	private String m_exercise_name;
+
 	/**
 	 * This is an array of aspects that the user may combine
 	 * with the REPS aspect.  It's a list of CharSequences
@@ -157,7 +160,7 @@ public class GraphOptionsActivity
 	 * Note:
 	 * 		The first item (numbered 0) will ALWAYS be "none".
 	 */
-	ArrayList <CharSequence> m_with_reps_list = new ArrayList<CharSequence>();
+	private ArrayList <CharSequence> m_with_reps_list = new ArrayList<CharSequence>();
 
 	/**
 	 * This goes hand-in-hand with m_with_reps_list.  It holds the
@@ -167,10 +170,10 @@ public class GraphOptionsActivity
 	 * Note:
 	 * 		The first item is always the 'none' selection (-1).
 	 */
-	ArrayList<Integer> m_with_reps_list_ref = new ArrayList<Integer>();
+	private ArrayList<Integer> m_with_reps_list_ref = new ArrayList<Integer>();
 
 	/** Has the user made any changes? */
-	boolean m_dirty = false;
+	private boolean m_dirty = false;
 
 
 	//--------------------
@@ -198,30 +201,37 @@ public class GraphOptionsActivity
 
 		m_reps_cb = (CheckBox) findViewById(R.id.graph_options_reps_check);
 		m_reps_cb.setOnClickListener(this);
+		m_reps_cb.setOnLongClickListener(this);
 		m_reps_cb.setChecked(false);
 
 		m_weight_cb = (CheckBox) findViewById(R.id.graph_options_weight_check);
 		m_weight_cb.setOnClickListener(this);
+		m_weight_cb.setOnLongClickListener(this);
 		m_weight_cb.setChecked(false);
 
 		m_cals_cb = (CheckBox) findViewById(R.id.graph_options_cals_check);
 		m_cals_cb.setOnClickListener(this);
+		m_cals_cb.setOnLongClickListener(this);
 		m_cals_cb.setChecked(false);
 
 		m_level_cb = (CheckBox) findViewById(R.id.graph_options_level_check);
 		m_level_cb.setOnClickListener(this);
+		m_level_cb.setOnLongClickListener(this);
 		m_level_cb.setChecked(false);
 
 		m_dist_cb = (CheckBox) findViewById(R.id.graph_options_dist_check);
 		m_dist_cb.setOnClickListener(this);
+		m_dist_cb.setOnLongClickListener(this);
 		m_dist_cb.setChecked(false);
 
 		m_time_cb = (CheckBox) findViewById(R.id.graph_options_time_check);
 		m_time_cb.setOnClickListener(this);
+		m_time_cb.setOnLongClickListener(this);
 		m_time_cb.setChecked(false);
 
 		m_other_cb = (CheckBox) findViewById(R.id.graph_options_other_check);
 		m_other_cb.setOnClickListener(this);
+		m_other_cb.setOnLongClickListener(this);
 		m_other_cb.setChecked(false);
 
 		m_combine_with_reps_myspin = (MySpinner) findViewById(R.id.graph_options_with_msp);
@@ -292,8 +302,9 @@ public class GraphOptionsActivity
 		} // done
 
 		else if (v == m_help) {
-			show_help_dialog(R.string.graph_options_help_title,
-							R.string.graph_options_help_msg);
+			String[] args = {m_exercise_name};
+			show_help_dialog(R.string.graph_options_help_title, null,
+							R.string.graph_options_help_msg, args);
 		}
 
 		else if (v == m_cancel) {
@@ -322,8 +333,13 @@ public class GraphOptionsActivity
 			return true;
 		}
 
-		// todo
-		//	MORE help!
+		// Did they long-press a checkbox? Then send 'em
+		// some help!
+		if (v.getClass() == CheckBox.class) {
+			show_help_dialog(R.string.graph_options_checkbox_help_title,
+								R.string.graph_options_checkbox_help_msg);
+				return true;
+		}
 
 		return false;
 	} // onLongClick (v)
@@ -352,9 +368,9 @@ public class GraphOptionsActivity
 
 		// First, set the title from the name of the
 		// exericse.
-		String name = itt.getStringExtra(ITT_KEY_EXERCISE_NAME);
+		m_exercise_name = itt.getStringExtra(ITT_KEY_EXERCISE_NAME);
 		TextView name_tv = (TextView) findViewById(R.id.graph_options_name_tv);
-		name_tv.setText(name);
+		name_tv.setText(m_exercise_name);
 
 		//
 		//	NOTE:

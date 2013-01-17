@@ -1483,8 +1483,8 @@
 
 	<string name="graph_options_help_title">Graph Options</string>
 	<string name="graph_options_help_msg">
-		Here is where you get to customize how your graphs for the
-		%s exercise are displayed.
+		Here you customize the display of the graphs for
+		%s.
 		\n\n	Turn the buttons on or off to control which aspects are
 		shown in the graph.
 		\n\n	The \'reps-with\' drop-down lets you combine the reps
@@ -1493,6 +1493,14 @@
 		select reps-with and tell it with weight, and you will
 		see the number of reps times the weight. Yes, that\'s ALL
 		the weight you moved in that set total!
+	</string>
+
+	<string name="graph_options_checkbox_help_title">Graph Options Check</string>
+	<string name="graph_options_checkbox_help_msg">
+		Each checkbox displayed here represents an aspect of your workout.
+		\n\nYou may turn on or off what aspects you want to see in the
+		graph window by with these checkboxes. Pretty simple once you
+		think about it.
 	</string>
 
 	<string name="graph_options_with_label">reps combo</string>
