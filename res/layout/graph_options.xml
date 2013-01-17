@@ -5,10 +5,279 @@
 
 	This layout should be displayed as a dialog.
 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
+	android:orientation="vertical"
+	android:background="@color/gray_darkest"
 	>
 
+	<RelativeLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		>
 
-</RelativeLayout>
+		<TextView
+			android:id="@+id/graph_options_title_tv"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentLeft="true"
+			android:layout_alignParentTop="true"
+			android:layout_gravity="center_vertical"
+			android:layout_marginBottom="3dp"
+			android:layout_marginLeft="10dp"
+			android:layout_marginRight="3dp"
+			android:layout_marginTop="5dp"
+			android:text="@string/graph_options_title"
+			style="@style/white_text_large"
+			/>
+
+		<ImageView
+			android:id="@+id/graph_options_logo"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentRight="true"
+			android:layout_marginRight="8dp"
+			android:layout_marginTop="6dp"
+			android:src="@drawable/hpglogo_small" />
+	</RelativeLayout>
+
+
+	<RelativeLayout
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent" >
+
+		<!-- ============= -->
+		<!-- Buttons -->
+		<!-- ============= -->
+
+		<Button
+			android:id="@+id/graph_options_null_butt"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			android:layout_centerHorizontal="true"
+			android:layout_marginLeft="5dp"
+			android:layout_marginRight="5dp"
+			android:clickable="false"
+			android:enabled="false"
+			android:focusable="false"
+			android:focusableInTouchMode="false"
+			android:longClickable="false"
+			android:paddingLeft="15dp"
+			android:paddingRight="15dp"
+			android:text="@string/question_mark"
+			android:visibility="invisible" />
+
+		<Button
+			android:id="@+id/graph_options_ok_butt"
+			style="@style/white_text_medium"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			android:layout_alignParentRight="true"
+			android:layout_marginBottom="8dp"
+			android:layout_marginRight="8dp"
+			android:layout_toRightOf="@id/graph_options_null_butt"
+			android:background="@drawable/button_shiny_black"
+			android:enabled="false"
+			android:text="@string/ok" />
+
+		<Button
+			android:id="@+id/graph_options_cancel_butt"
+			style="@style/white_text_small"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			android:layout_alignParentLeft="true"
+			android:layout_marginBottom="8dp"
+			android:layout_marginLeft="8dp"
+			android:layout_toLeftOf="@id/graph_options_null_butt"
+			android:background="@drawable/button_shiny_black"
+			android:text="@string/cancel" />
+
+		<ScrollView
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignParentTop="true"
+			android:layout_above="@id/graph_options_null_butt"
+			android:layout_marginBottom="8dp"
+			android:layout_marginLeft="12dp"
+			android:layout_marginRight="12dp"
+			android:layout_marginTop="8dp"
+			>
+			<LinearLayout
+				android:id="@+id/graph_options_check_ll"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:background="@drawable/rounded_edges_dark" >
+
+				<CheckBox
+					android:id="@+id/graph_options_reps_check"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="15dp"
+					style="@style/white_text_small"
+					android:text="@string/addexer_rep_label" />
+
+				<View
+					android:id="@+id/graph_options_reps_line"
+					android:layout_width="fill_parent"
+					android:layout_height="1dp"
+					android:layout_marginBottom="3dp"
+					android:layout_marginLeft="24dp"
+					android:layout_marginRight="24dp"
+					android:layout_marginTop="3dp"
+					android:background="@color/hpg_orange_dark_desaturated4" />
+
+				<CheckBox
+					android:id="@+id/graph_options_level_check"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="15dp"
+					style="@style/white_text_small"
+					android:text="@string/addexer_level_label" />
+
+				<View
+					android:id="@+id/graph_options_level_line"
+					android:layout_width="fill_parent"
+					android:layout_height="1dp"
+					android:layout_marginBottom="3dp"
+					android:layout_marginLeft="24dp"
+					android:layout_marginRight="24dp"
+					android:layout_marginTop="3dp"
+					android:background="@color/hpg_orange_dark_desaturated4" />
+
+				<CheckBox
+					android:id="@+id/graph_options_cals_check"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="15dp"
+					style="@style/white_text_small"
+					android:text="@string/addexer_calorie_label" />
+
+				<View
+					android:id="@+id/graph_options_cals_line"
+					android:layout_width="fill_parent"
+					android:layout_height="1dp"
+					android:layout_marginBottom="3dp"
+					android:layout_marginLeft="24dp"
+					android:layout_marginRight="24dp"
+					android:layout_marginTop="3dp"
+					android:background="@color/hpg_orange_dark_desaturated4" />
+
+				<CheckBox
+					android:id="@+id/graph_options_weight_check"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="15dp"
+					style="@style/white_text_small"
+					android:text="@string/addexer_weight_label" />
+
+				<View
+					android:id="@+id/graph_options_weight_line"
+					android:layout_width="fill_parent"
+					android:layout_height="1dp"
+					android:layout_marginBottom="3dp"
+					android:layout_marginLeft="24dp"
+					android:layout_marginRight="24dp"
+					android:layout_marginTop="3dp"
+					android:background="@color/hpg_orange_dark_desaturated4" />
+
+				<CheckBox
+					android:id="@+id/graph_options_dist_check"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="15dp"
+					style="@style/white_text_small"
+					android:text="@string/addexer_dist_label" />
+
+				<View
+					android:id="@+id/graph_options_dist_line"
+					android:layout_width="fill_parent"
+					android:layout_height="1dp"
+					android:layout_marginBottom="3dp"
+					android:layout_marginLeft="24dp"
+					android:layout_marginRight="24dp"
+					android:layout_marginTop="3dp"
+					android:background="@color/hpg_orange_dark_desaturated4" />
+
+				<CheckBox
+					android:id="@+id/graph_options_time_check"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="15dp"
+					android:text="@string/addexer_time_label"
+					style="@style/white_text_small"
+					/>
+
+				<View
+					android:id="@+id/graph_options_time_line"
+					android:layout_width="fill_parent"
+					android:layout_height="1dp"
+					android:layout_marginBottom="3dp"
+					android:layout_marginLeft="24dp"
+					android:layout_marginRight="24dp"
+					android:layout_marginTop="3dp"
+					android:background="@color/hpg_orange_dark_desaturated4" />
+
+				<CheckBox
+					android:id="@+id/graph_options_other_check"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="15dp"
+					style="@style/white_text_small"
+					/>
+
+				<View
+					android:id="@+id/graph_options_other_line"
+					android:layout_width="fill_parent"
+					android:layout_height="1dp"
+					android:layout_marginBottom="3dp"
+					android:layout_marginLeft="24dp"
+					android:layout_marginRight="24dp"
+					android:layout_marginTop="3dp"
+					android:background="@color/hpg_orange_dark_desaturated4" />
+
+				<LinearLayout
+					android:id="@+id/graph_options_with_ll"
+					android:orientation="horizontal"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					>
+
+					<TextView
+						style="@style/white_text_small"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_gravity="top"
+						android:layout_marginLeft="15dp"
+						android:layout_marginTop="6dp"
+						android:text="@string/graph_options_with_label" />
+
+					<com.sleepfuriously.hpgworkout.MySpinner
+						android:id="@+id/graph_options_with_msp"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_gravity="center_vertical"
+						android:layout_marginBottom="6dp"
+						android:layout_marginLeft="6dp"
+						android:layout_marginTop="6dp"
+						android:drawableRight="@android:drawable/arrow_down_float"
+						android:gravity="center"
+						android:hint="@string/select"
+						android:paddingLeft="15dp"
+						android:paddingRight="15dp" />
+
+				</LinearLayout>
+
+
+			</LinearLayout>
+
+		</ScrollView>
+
+	</RelativeLayout>
+
+
+</LinearLayout>

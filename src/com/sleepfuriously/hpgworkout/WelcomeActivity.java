@@ -70,8 +70,8 @@ public class WelcomeActivity extends BaseDialogActivity
 		// Load in the default preferences (but don't
 		// override the user's settings).
 		PreferenceManager.setDefaultValues(this,
-										   R.xml.pref,
-										   false);	// Prevents overriding user's saved preferences.
+										R.xml.pref,
+										false);	// Prevents overriding user's saved preferences.
 
 		m_start_butt = (Button) findViewById(R.id.welcome_start_butt);
 		m_start_butt.setOnClickListener(this);

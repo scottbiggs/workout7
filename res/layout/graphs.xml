@@ -57,18 +57,18 @@
 		android:textStyle="bold" />
 
 	<Button
-		android:id="@+id/graph_options_butt"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignParentBottom="true"
-		android:layout_centerHorizontal="true"
-		android:layout_marginBottom="8dp"
-		android:background="@drawable/button_shiny_black"
-		android:paddingLeft="8dp"
-		android:paddingRight="8dp"
-		android:text="@string/graph_options_butt"
-		android:textColor="@color/ivory"
-		android:textSize="@dimen/font_size_default" />
+	    android:id="@+id/graph_options_butt"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentBottom="true"
+	    android:layout_centerHorizontal="true"
+	    android:layout_marginBottom="8dp"
+	    android:background="@drawable/button_shiny_black"
+	    android:paddingLeft="18dp"
+	    android:paddingRight="18dp"
+	    android:text="@string/graph_options_butt"
+	    android:textColor="@color/ivory"
+	    android:textSize="@dimen/font_size_default" />
 
 	<com.sleepfuriously.hpgworkout.GView
 		android:id="@+id/graph_view"

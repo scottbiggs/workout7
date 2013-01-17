@@ -283,14 +283,14 @@ public class GraphYAxis {
 
 		int text_color = paint.getColor();
 
-		for (y = m_heckbert_min; y <= m_heckbert_max + .5 * m_tick_spacing; y += m_tick_spacing) {
+		for (y = m_heckbert_min;
+			y <= m_heckbert_max + .5 * m_tick_spacing;
+			y += m_tick_spacing) {
 			paint.setAntiAlias(false);	// just a horiz line
-			paint.setColor(m_line_color);
-//			Log.v (tag, "looping through label lines: y = " + y);
+//			paint.setColor(m_line_color);
 			float y2 = mapper.map(y);
 
 			draw_line(canvas, m_draw_area.left, y2, m_draw_area.right, y2, paint);
-//			Log.v (tag, "\tline at " + y + ", converted to " + y2);
 
 			String str = new DecimalFormat("#.######").format(y);
 

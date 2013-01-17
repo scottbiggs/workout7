@@ -473,12 +473,6 @@ public class MySpinner extends Button
 	 */
 	public boolean set_array (int res_id) {
 
-		// Yes, here's a nice simple way to make it work.
-//		m_aa = ArrayAdapter.createFromResource(
-//				m_context,
-//				res_id,		// Static, so it can't be added to.
-//				android.R.layout.simple_spinner_dropdown_item);
-
 		// Hopefully, this will allow additions.
 		List<CharSequence> list = new ArrayList<CharSequence>();
 		CharSequence[] str_array = getResources().getTextArray(res_id);
@@ -494,6 +488,24 @@ public class MySpinner extends Button
 
 		return true;
 	} // set_array (res_id)
+
+
+	/*********************
+	 * Like the above, but instead of loading from a
+	 * resource, it loads a pre-made list into our
+	 * spinner.
+	 *
+	 * @param list	A List of Strings to put in the spinner.
+	 *
+	 * @return	true IFF we're a-okay.
+	 */
+	public boolean set_array (ArrayList<CharSequence> list) {
+		m_aa = new ArrayAdapter<CharSequence>
+				(m_context,
+				android.R.layout.simple_spinner_dropdown_item,
+				list);
+		return true;
+	} // set_array (list)
 
 
 	/*********************

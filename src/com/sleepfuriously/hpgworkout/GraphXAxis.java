@@ -27,7 +27,7 @@ public class GraphXAxis {
 	private static final String tag = "GraphXAxis";
 
 	/** Pixels long the horizontal ticks at the bottom */
-	public final static int DEFAULT_TICK_HEIGHT = 13;
+	public final static int DEFAULT_TICK_HEIGHT = 9;
 
 	public final static int DEFAULT_LABEL_PADDING_TOP = 4;
 
@@ -89,8 +89,8 @@ public class GraphXAxis {
 	protected int m_tick_height = DEFAULT_TICK_HEIGHT;
 
 	/** Labels for the x-axis */
-	@Deprecated
-	protected String m_label_start = null, m_label_end = null;
+//	@Deprecated
+//	protected String m_label_start = null, m_label_end = null;
 
 	/**
 	 * Used when drawing tick-marks.  This is x-axis
@@ -449,11 +449,11 @@ public class GraphXAxis {
 	 *
 	 * @param end		Label for the last tick-mark.
 	 */
-	@Deprecated
-	public void set_labels (String start, String end) {
-		m_label_start = start;
-		m_label_end = end;
-	}
+//	@Deprecated
+//	public void set_labels (String start, String end) {
+//		m_label_start = start;
+//		m_label_end = end;
+//	}
 
 	/*****************************
 	 * Now that everything is set up, let draw the
@@ -469,8 +469,11 @@ public class GraphXAxis {
 
 	/*****************************
 	 * Draws the line portions of the x-axis.
-	 *
-	 * Note:
+	 *<p>
+	 *  <i>I don't like the look of the long horizontal line,
+	 *  so I'm commenting it out.</i>
+	 *<p>
+	 * <b>Note</b>:<br/>
 	 * 	This only draws those little vertical lines that
 	 * 	mark important x positions.  The big horizontal
 	 *	lines that cross the screen are drawn in the
@@ -497,10 +500,10 @@ public class GraphXAxis {
 		}
 
 		// And draw the axis line
-		draw_line(canvas,
-				m_draw_rect.left, m_draw_rect.top - m_tick_height,
-				m_draw_rect.right, m_draw_rect.top - m_tick_height,
-				paint);
+//		draw_line(canvas,
+//				m_draw_rect.left, m_draw_rect.top - m_tick_height,
+//				m_draw_rect.right, m_draw_rect.top - m_tick_height,
+//				paint);
 	} // draw_lines()
 
 
@@ -566,42 +569,42 @@ public class GraphXAxis {
 	 * 						edge, and the last will be at the
 	 * 						right-most edge.
 	 */
-	@Deprecated
-	private void draw_labels_old (Canvas canvas, Paint paint, boolean centered) {
-		float x, y;
-		Rect rect = new Rect();
-
-		// draw the labels at the first and last number.
-		paint.setAntiAlias(true);	// neat text
-
-		paint.getTextBounds(m_label_start,
-							0, m_label_start.length(), rect);
-
-		if (centered) {
-			x = m_converted[0] - rect.exactCenterX();
-		}
-		else {
-			x = m_draw_rect.left;
-			x -= LABEL_FUDGE_FACTOR;
-		}
-		y = m_draw_rect.top - m_tick_height - rect.height() - DEFAULT_LABEL_PADDING_TOP;
-		draw_text(canvas, m_label_start, x, y, paint);
-//		Log.d (tag, "draw_labels start: " + x + ", " + y);
-
-		paint.getTextBounds(m_label_end,
-							0, m_label_end.length(), rect);
-		if (centered) {
-			x = m_converted[m_converted.length - 1] - rect.exactCenterX();
-		}
-		else {
-			x = m_draw_rect.right - rect.width();
-			x += LABEL_FUDGE_FACTOR;
-		}
-		y = m_draw_rect.top - m_tick_height - rect.height() - DEFAULT_LABEL_PADDING_TOP;
-		draw_text(canvas, m_label_end, x, y, paint);
-		Log.d (tag, "draw_labels end: " + x + ", " + y);
-
-	} // draw_labels()
+//	@Deprecated
+//	private void draw_labels_old (Canvas canvas, Paint paint, boolean centered) {
+//		float x, y;
+//		Rect rect = new Rect();
+//
+//		// draw the labels at the first and last number.
+//		paint.setAntiAlias(true);	// neat text
+//
+//		paint.getTextBounds(m_label_start,
+//							0, m_label_start.length(), rect);
+//
+//		if (centered) {
+//			x = m_converted[0] - rect.exactCenterX();
+//		}
+//		else {
+//			x = m_draw_rect.left;
+//			x -= LABEL_FUDGE_FACTOR;
+//		}
+//		y = m_draw_rect.top - m_tick_height - rect.height() - DEFAULT_LABEL_PADDING_TOP;
+//		draw_text(canvas, m_label_start, x, y, paint);
+////		Log.d (tag, "draw_labels start: " + x + ", " + y);
+//
+//		paint.getTextBounds(m_label_end,
+//							0, m_label_end.length(), rect);
+//		if (centered) {
+//			x = m_converted[m_converted.length - 1] - rect.exactCenterX();
+//		}
+//		else {
+//			x = m_draw_rect.right - rect.width();
+//			x += LABEL_FUDGE_FACTOR;
+//		}
+//		y = m_draw_rect.top - m_tick_height - rect.height() - DEFAULT_LABEL_PADDING_TOP;
+//		draw_text(canvas, m_label_end, x, y, paint);
+//		Log.d (tag, "draw_labels end: " + x + ", " + y);
+//
+//	} // draw_labels()
 
 
 }

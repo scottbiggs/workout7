@@ -10,6 +10,7 @@ package com.sleepfuriously.hpgworkout;
 
 import java.util.ArrayList;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -198,8 +199,35 @@ public class GraphActivity
 		Intent itt;
 		if (v == m_options_butt) {
 			// todo
-//			itt = new Intent(this, GraphOptionsActivity.class);
-//			startActivityForResult(itt, WGlobals.);
+			itt = new Intent(this, GraphOptionsActivity.class);
+
+			// fill in the Intent
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_EXERCISE_NAME, m_exercise_data.name);
+
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_ASPECT_REPS, m_exercise_data.breps);
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_ASPECT_LEVEL, m_exercise_data.blevel);
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_ASPECT_CALS, m_exercise_data.bcals);
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_ASPECT_WEIGHT, m_exercise_data.bweight);
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_ASPECT_DIST, m_exercise_data.bdist);
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_ASPECT_TIME, m_exercise_data.btime);
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_ASPECT_OTHER, m_exercise_data.bother);
+
+			if (m_exercise_data.bother) {
+				itt.putExtra(GraphOptionsActivity.ITT_KEY_GRAPH_OTHER_NAME, m_exercise_data.other_title);
+			}
+
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_GRAPH_REPS, m_exercise_data.g_reps);
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_GRAPH_LEVEL, m_exercise_data.g_level);
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_GRAPH_CALS, m_exercise_data.g_cals);
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_GRAPH_WEIGHT, m_exercise_data.g_weight);
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_GRAPH_DIST, m_exercise_data.g_dist);
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_GRAPH_TIME, m_exercise_data.g_time);
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_GRAPH_OTHER, m_exercise_data.g_other);
+
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_WITH_REPS, m_exercise_data.g_with_reps);
+
+
+			startActivityForResult(itt, WGlobals.GRAPHOPTIONSACTIVITY);
 		}
 	} // onClick(v)
 
@@ -257,6 +285,49 @@ public class GraphActivity
 		return super.onKeyDown(keyCode, event);
 	}
 
+
+	//***********************
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
+	 */
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//		if ((requestCode == WGlobals.GRAPHACTIVITY) &&
+//			(resultCode == RESULT_OK)) {
+//			// The user modified the settings, reload!
+//			m_db_dirty = true;
+//			onResume();
+//		}
+
+		if ((requestCode == WGlobals.GRAPHOPTIONSACTIVITY) &&
+			(resultCode == RESULT_OK)) {
+			// todo
+			// Grab the info from our intent and update
+			// our data (and possibly the database, too).
+			m_exercise_data.g_reps = data.getBooleanExtra(GraphOptionsActivity.ITT_KEY_GRAPH_REPS, false);
+			m_exercise_data.g_level = data.getBooleanExtra(GraphOptionsActivity.ITT_KEY_GRAPH_LEVEL, false);
+			m_exercise_data.g_cals = data.getBooleanExtra(GraphOptionsActivity.ITT_KEY_GRAPH_CALS, false);
+			m_exercise_data.g_weight = data.getBooleanExtra(GraphOptionsActivity.ITT_KEY_GRAPH_WEIGHT, false);
+			m_exercise_data.g_dist = data.getBooleanExtra(GraphOptionsActivity.ITT_KEY_GRAPH_DIST, false);
+			m_exercise_data.g_time = data.getBooleanExtra(GraphOptionsActivity.ITT_KEY_GRAPH_TIME, false);
+			m_exercise_data.g_other = data.getBooleanExtra(GraphOptionsActivity.ITT_KEY_GRAPH_OTHER, false);
+
+			m_exercise_data.g_with_reps = data.getIntExtra(GraphOptionsActivity.ITT_KEY_WITH_REPS, -1);
+
+			// Check for error condition of NOTHING being
+			// graphed.  If so, err report and set to the
+			// significant.
+			test_and_fix_graph_settings();
+
+			// Change the database
+			save_data();
+
+			m_db_dirty = true;
+			onResume();
+
+		} // return from GraphOptionsActivity
+
+	} // onActivityResult(...)
 
 
 	/************************
@@ -491,6 +562,133 @@ public class GraphActivity
 	} // add_new_collection (aspect)
 
 
+	/**************
+	 * This tests the current settings
+	 *
+	 * preconditions:
+	 * 	m_exercise_data		Should be filled out (either correctly
+	 * 						or incorrectly).
+	 *
+	 * side effects:
+	 * 	m_exercise_data		If all the graphs are turned off, this
+	 * 						fixes that problem by turning the
+	 * 						significant graph on.
+	 *
+	 * @return	true iff no problems were found. m_exercise_data
+	 * 			will be unchanged.
+	 */
+	private boolean test_and_fix_graph_settings() {
+		if ((m_exercise_data.g_reps) ||
+			(m_exercise_data.g_level) ||
+			(m_exercise_data.g_cals) ||
+			(m_exercise_data.g_weight) ||
+			(m_exercise_data.bdist) ||
+			(m_exercise_data.g_time) ||
+			(m_exercise_data.g_other)) {
+			return true;
+		}
+
+		// Figure out the significant and turn it on.
+		switch (m_exercise_data.significant) {
+			case DatabaseHelper.EXERCISE_COL_GRAPH_REPS_NUM:
+				m_exercise_data.g_reps = true;
+				break;
+			case DatabaseHelper.EXERCISE_COL_GRAPH_LEVEL_NUM:
+				m_exercise_data.g_level = true;
+				break;
+			case DatabaseHelper.EXERCISE_COL_GRAPH_CALS_NUM:
+				m_exercise_data.g_cals = true;
+				break;
+			case DatabaseHelper.EXERCISE_COL_GRAPH_WEIGHT_NUM:
+				m_exercise_data.g_weight = true;
+				break;
+			case DatabaseHelper.EXERCISE_COL_GRAPH_DIST_NUM:
+				m_exercise_data.g_dist = true;
+				break;
+			case DatabaseHelper.EXERCISE_COL_GRAPH_TIME_NUM:
+				m_exercise_data.g_time = true;
+				break;
+			case DatabaseHelper.EXERCISE_COL_GRAPH_OTHER_NUM:
+				m_exercise_data.g_other = true;
+				break;
+			default:
+				Log.e (tag, "Can't find the significant aspect of the " + m_exercise_data.name + " exercise in test_and_fix_graph_settings()!");
+				break;
+		}
+		return false;
+	} // test_and_fix_graph_settings();
+
+
+	/*************
+	 * Saves the data from the widgets into our database.
+	 *
+	 * preconditions:
+	 * 		Everything has been checked and is
+	 * 		ready to go.
+	 */
+	private void save_data() {
+		if (m_db != null) {
+			Log.e (tag, "Trying to save_data(), but m_db is already being used! Aborting!");
+			return;
+		}
+
+		try {
+			m_db = WGlobals.g_db_helper.getWritableDatabase();
+
+			// The data has already been loaded, so remove that
+			// row and add in the modified row.
+			if (m_db.delete(DatabaseHelper.EXERCISE_TABLE_NAME,
+							DatabaseHelper.EXERCISE_COL_NAME + "=?",
+							new String[] {m_exercise_data.name})
+					== 0) {
+				Log.e(tag, "Error deleting row in save_data()!");
+				return;
+			}
+
+			ContentValues values = new ContentValues();
+			values.put (DatabaseHelper.EXERCISE_COL_NAME, m_exercise_data.name);
+			values.put (DatabaseHelper.EXERCISE_COL_TYPE, m_exercise_data.type);
+			values.put (DatabaseHelper.EXERCISE_COL_GROUP, m_exercise_data.group);
+			values.put (DatabaseHelper.EXERCISE_COL_WEIGHT, m_exercise_data.bweight);
+			values.put (DatabaseHelper.EXERCISE_COL_REP, m_exercise_data.breps);
+			values.put (DatabaseHelper.EXERCISE_COL_DIST, m_exercise_data.bdist);
+			values.put (DatabaseHelper.EXERCISE_COL_TIME, m_exercise_data.btime);
+			values.put (DatabaseHelper.EXERCISE_COL_LEVEL, m_exercise_data.blevel);
+			values.put (DatabaseHelper.EXERCISE_COL_CALORIES, m_exercise_data.bcals);
+			values.put (DatabaseHelper.EXERCISE_COL_OTHER, m_exercise_data.bother);
+
+			values.put (DatabaseHelper.EXERCISE_COL_WEIGHT_UNIT, m_exercise_data.weight_unit);
+			values.put (DatabaseHelper.EXERCISE_COL_DIST_UNIT, m_exercise_data.dist_unit);
+			values.put (DatabaseHelper.EXERCISE_COL_TIME_UNIT,  m_exercise_data.time_unit);
+			values.put (DatabaseHelper.EXERCISE_COL_OTHER_TITLE, m_exercise_data.other_title);
+			values.put (DatabaseHelper.EXERCISE_COL_OTHER_UNIT, m_exercise_data.other_unit);
+
+			values.put(DatabaseHelper.EXERCISE_COL_SIGNIFICANT, m_exercise_data.significant);
+			values.put(DatabaseHelper.EXERCISE_COL_LORDER, m_exercise_data.lorder);
+
+			values.put(DatabaseHelper.EXERCISE_COL_GRAPH_REPS, m_exercise_data.g_reps);
+			values.put(DatabaseHelper.EXERCISE_COL_GRAPH_LEVEL, m_exercise_data.g_level);
+			values.put(DatabaseHelper.EXERCISE_COL_GRAPH_CALS, m_exercise_data.g_cals);
+			values.put(DatabaseHelper.EXERCISE_COL_GRAPH_WEIGHT, m_exercise_data.g_weight);
+			values.put(DatabaseHelper.EXERCISE_COL_GRAPH_DIST, m_exercise_data.g_dist);
+			values.put(DatabaseHelper.EXERCISE_COL_GRAPH_TIME, m_exercise_data.g_time);
+			values.put(DatabaseHelper.EXERCISE_COL_GRAPH_OTHER, m_exercise_data.g_other);
+
+			m_db.insert(DatabaseHelper.EXERCISE_TABLE_NAME, null, values);
+
+		} catch (SQLiteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (m_db != null) {
+				m_db.close();
+				m_db = null;
+			}
+		}
+
+	} // save_data()
+
+
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	//	The Three Types:
 	//		Params		- The info sent to the task when
@@ -629,21 +827,47 @@ public class GraphActivity
 
 			// Go through the data and create a GraphCollection for
 			// each aspect.
-			if (m_exercise_data.breps)
+			int aspect_count = 0;
+			if (m_exercise_data.breps) {
 				add_new_collection(DatabaseHelper.EXERCISE_COL_REP_NUM, graph_colors[0]);
-			if (m_exercise_data.bcals)
-				add_new_collection(DatabaseHelper.EXERCISE_COL_CALORIE_NUM, graph_colors[1]);
-			if (m_exercise_data.blevel)
-				add_new_collection(DatabaseHelper.EXERCISE_COL_LEVEL_NUM, graph_colors[2]);
-			if (m_exercise_data.bweight)
-				add_new_collection(DatabaseHelper.EXERCISE_COL_WEIGHT_NUM, graph_colors[3]);
-			if (m_exercise_data.bdist)
-				add_new_collection(DatabaseHelper.EXERCISE_COL_DIST_NUM, graph_colors[4]);
-			if (m_exercise_data.btime)
-				add_new_collection(DatabaseHelper.EXERCISE_COL_TIME_NUM, graph_colors[5]);
-			if (m_exercise_data.bother)
-				add_new_collection(DatabaseHelper.EXERCISE_COL_OTHER_NUM, graph_colors[6]);
+				aspect_count++;
+			}
 
+			if (m_exercise_data.bcals) {
+				add_new_collection(DatabaseHelper.EXERCISE_COL_CALORIE_NUM, graph_colors[1]);
+				aspect_count++;
+			}
+
+			if (m_exercise_data.blevel) {
+				add_new_collection(DatabaseHelper.EXERCISE_COL_LEVEL_NUM, graph_colors[2]);
+				aspect_count++;
+			}
+
+			if (m_exercise_data.bweight) {
+				add_new_collection(DatabaseHelper.EXERCISE_COL_WEIGHT_NUM, graph_colors[3]);
+				aspect_count++;
+			}
+
+			if (m_exercise_data.bdist) {
+				add_new_collection(DatabaseHelper.EXERCISE_COL_DIST_NUM, graph_colors[4]);
+				aspect_count++;
+			}
+
+			if (m_exercise_data.btime) {
+				add_new_collection(DatabaseHelper.EXERCISE_COL_TIME_NUM, graph_colors[5]);
+				aspect_count++;
+			}
+
+			if (m_exercise_data.bother) {
+				add_new_collection(DatabaseHelper.EXERCISE_COL_OTHER_NUM, graph_colors[6]);
+				aspect_count++;
+			}
+
+			// If the aspect count is 1, disable the options button as it
+			// just doesn't make sense anymore.
+			if (aspect_count == 1) {
+				m_options_butt.setVisibility(View.GONE);
+			}
 
 			// Setup the x-axis
 			m_view.m_graph_x_axis = new GraphXAxis();

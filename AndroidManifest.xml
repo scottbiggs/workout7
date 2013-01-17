@@ -81,7 +81,6 @@
 			/>
 		<activity android:name=".GraphOptionsActivity"
 			android:theme="@android:style/Theme.Dialog"
-			android:windowSoftInputMode="stateVisible|adjustResize"
 			/>
 
 	</application>

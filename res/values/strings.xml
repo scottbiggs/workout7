@@ -8,8 +8,8 @@
 	<string name="no">no</string>
 	<string name="cancel">cancel</string>
 	<string name="back">back</string>
-	<string name="loading_str">loading...</string>
-	<string name="saving_str">saving...</string>
+	<string name="loading_str">loading&#x2026;</string>
+	<string name="saving_str">saving&#x2026;</string>
 	<string name="question_mark">i</string>
 	<string name="question_mark_upside_down">\u00bf</string>
 	<string name="done">done</string>
@@ -25,7 +25,7 @@
 		This string must match EXACTLY with the item in the
 		exercise list that the user select to enter a custom
 		item.
-		If this changes, then you much change all the arrays
+		If this changes, then you must change all the arrays
 		in arrays.xml to match this.  And vice versa.
 	-->
 	<string name="custom_item_name">custom</string>
@@ -133,7 +133,7 @@
 		are in no way responsible for any damage, frustration, or insults
 		that may (or may not) crop up while using this app.  So you should
 		send your hate messages to me through the Google Play site. I promise
-		to do my best to address the issues (which may not be much--I am
+		to do my best to address the issues (which may not be much\u2014I am
 		very far from a programming god, sorry). Anyway, I did lots of
 		this stuff in the middle of the night, so you might be amused or
 		offended by some of these help messages. So it goes. But in any
@@ -148,7 +148,7 @@
 	<string name="welcome_menu_credits_msg">Hyde Park Gym is owned
 		and run by Brook Jones. This tool was created with the
 		help of him and many of the other fine folks at Hyde Park
-		Gym in Austin, Texas--just look for place with the arm
+		Gym in Austin, Texas\u2014just look for place with the arm
 		sticking out! Programmed by Scott Biggs.</string>
 	<string name="welcome_menu_exit_button">exit</string>
 
@@ -366,7 +366,7 @@
 		\n\nWhile this program does not calculate calories for you,
 		many exercise machines do.  You can enter that information
 		here and this app will keep track of it. Cool, right?
-		Yeah yeah, I know--it\'s just a program.
+		Yeah yeah, I know\u2014it\'s just a program.
 	</string>
 
 			<string name="addexer_other_label">other</string>
@@ -444,7 +444,7 @@
 		details of an exercise set, tap directly on its number.
 		\n-Pressing and holding
 		allows you to edit or delete that entry.
-		\n\n--For the *real* beginner:\n
+		\n\n\u2013For the *real* beginner:\n
 		Workouts consist of a series
 		of exercises, often done in multiple sets. On this screen,
 		select an exercise to perform from the left-most column.
@@ -534,7 +534,7 @@
 		exercise.
 		\n\nI\'ll do my best to try to retain data, but
 		some things just won\'t work (like changing the
-		unit--there is no way I can convert from the old
+		unit\u2014there is no way I can convert from the old
 		unit to the new one without forcing you to enter
 		some sort of formula, which is the sort of thing
 		you\'re avoiding by using a computer, right\?).
@@ -705,7 +705,7 @@
 	<string name="add_weight_item_et_help_title">Custom Weight Here</string>
 	<string name="add_weight_item_et_help_msg">This is a widget to
 		hold text. The text to put in should be some sort of weight
-		measurement....I know, something related to your workout! Yeah,
+		measurement&#x2026;. I know, something related to your workout! Yeah,
 		that\'s it: some sort of weight measurement for THIS exercise
 		that you\'re working on right now!
 		\n\nHere\'s a gold star!</string>
@@ -744,15 +744,15 @@
 
 	<!-- ============             ============ -->
 	<!-- ============ AddTimeItem ============ -->
-		<!-- ============             ============ -->
-		<string name="add_time_item_help_title">Adding a Custom Time Unit</string>
-	<string name="add_time_item_help_msg">Time is always slipping... :)
+	<!-- ============             ============ -->
+	<string name="add_time_item_help_title">Adding a Custom Time Unit</string>
+	<string name="add_time_item_help_msg">Time is always slipping&#x2026; :)
 		and this page allows you to get a litte better grip on it
 		by using whatever time unit you want for this exercise.
 		\n\nBack to the rocket skater: For the sprints, the time units are
 		very tiny. Oh yeah, these things are FAST for short distances.
 		So we like to use microseconds.
-		\n\nBut, uh, ... I didn\'t put microseconds in my list! No sweat
+		\n\nBut, uh, &#x2026; I didn\'t put microseconds in my list! No sweat
 		(hehe), type
 		it in and we\'re back in business.
 		</string>
@@ -768,9 +768,9 @@
 
 	<!-- ============          ============ -->
 	<!-- ============ AddOther ============ -->
-		<!-- ============          ============ -->
-		<string name="add_other_name_et_help_title">The NAME For this Measurement</string>
-		<string name="add_other_name_et_help_msg" >
+	<!-- ============          ============ -->
+	<string name="add_other_name_et_help_title">The NAME For this Measurement</string>
+	<string name="add_other_name_et_help_msg" >
 		Okay, this is a little esoteric,
 		but if you hang on with me, I think we can get this figured out.
 		\n\nIn case you come up with an exercise that has some sort
@@ -810,7 +810,7 @@
 
 	<!-- ============          ============ -->
 	<!-- ============ EditRows ============ -->
-		<!-- ============          ============ -->
+	<!-- ============          ============ -->
 	<string name="row_edit_title">Edit Rows</string>
 	<string name="row_edit_desc">Tap the arrows to move a row up or
 		down.</string>
@@ -853,7 +853,7 @@
 		press the \'clear\' button and start fresh. (Your
 		stress condition is ALWAYS set to \'just right\', the
 		first button. The
-		notes from your previous set is just a hint--it will
+		notes from your previous set is just a hint\u2014it will
 		disappear when you save or start writing something else.)
 
 		\n\nInput the numbers and any comments and don\'t forget
@@ -864,7 +864,7 @@
 		\n\nSelect a radio button that indicates how hard this
 		set has been for you (I call it the \'stress\' condition).
 		The first choice means that this exercise set was just
-		right--you had to push to complete it.
+		right\u2014you had to push to complete it.
 
 		\n\nIf the workout was too easy or you\'re ready to
 		up the amps, select the next radio button, an image
@@ -906,7 +906,7 @@
 		for \'repetitions.\' Tell the program how many
 		times you did this exercise.  I can\'t believe
 		I have to explain this.</string>
-	<string name="aset_reps_hint">1, 2, 3...</string>
+	<string name="aset_reps_hint">1, 2, 3&#x2026;</string>
 
 	<string name="aset_time_label">time (%s)</string>
 	<string name="aset_time_off_label">time</string>
@@ -979,9 +979,9 @@
 	<string name="aset_notes_help_title">Notes</string>
 	<string name="aset_notes_help_msg">If you have anything
 		to add to this set, jot it down here. It\'s great
-		place to jot down phone numbers--what other app
+		place to jot down phone numbers\u2014what other app
 		thinks this far ahead\?.</string>
-	<string name="aset_notes_hint">anything at all...</string>
+	<string name="aset_notes_hint">anything at all&#x2026;</string>
 
 	<string name="aset_cancel_warning_title">Cancel Workout Set</string>
 	<string name="aset_cancel_warning_msg">You\'ve started
@@ -1094,7 +1094,7 @@
 	<string name="inspector_another_help_msg">
 		Like the exercise that you see\? Want to do it again\?
 		Well, my friend, this button is for you!
-		\n\nPress the \"do another\" button to...yes, you guessed
+		\n\nPress the \"do another\" button to&#x2026;yes, you guessed
 		it, do another set of this exercise! Weeeee, isn\'t
 		working out fun\?
 	</string>
@@ -1105,7 +1105,7 @@
 		and want do go back to the previous screen\?  REALLY\?
 		\n\nI don\'t blame you a bit. You probably have more
 		important things to do than look at my carefully
-		crafted user interface.  Go ahead--you won\'t
+		crafted user interface.  Go ahead\u2014you won\'t
 		hurt my feelings.  Sigh.
 	</string>
 
@@ -1209,7 +1209,7 @@
 
 	<!-- ============                ============ -->
 	<!-- ============ Enter a Number ============ -->
-		<!-- ============                ============ -->
+	<!-- ============                ============ -->
 
 	<string name="enter_a_number_default_title">NO TITLE</string>
 	<string name="enter_a_number_instruction">Type in a new value:</string>
@@ -1220,10 +1220,10 @@
 		Type in a number here.
 		\n\n\n\nGee, why do I even bother\? \'Cause I\'m anal, that\'s
 		why.
-		\n\nI... must... cross... the... T\'s... dot...
-		the... I\'s... and... ... ...
+		\n\nI&#x2026; must&#x2026; cross&#x2026; the&#x2026; T\'s&#x2026; dot&#x2026;
+		the&#x2026; I\'s&#x2026; and&#x2026; &#x2026; &#x2026;
 		\n\n
-		...breathe! Whew.
+		&#x2026;breathe! Whew.
 	</string>
 
 	<string name="enter_a_number_cancel_warn_title">Cancel Number Change</string>
@@ -1235,7 +1235,7 @@
 
 	<!-- ============            ============ -->
 	<!-- ============ Enter Text ============ -->
-		<!-- ============            ============ -->
+	<!-- ============            ============ -->
 	<string name="enter_text_default_title">Change Note</string>
 	<string name="enter_text_msg_empty">Type in a note
 		for this set:</string>
@@ -1261,7 +1261,7 @@
 
 	<!-- ============              ============ -->
 	<!-- ============ Enter Stress ============ -->
-		<!-- ============              ============ -->
+	<!-- ============              ============ -->
 	<string name="enter_stress_title">Stress Level</string>
 	<string name="enter_stress_prod">Select the stress
 		level for this workout set.</string>
@@ -1425,8 +1425,11 @@
 	<string name="graph_selector_help_msg">
 		Here is a list of all your exercises. Tap on one to see your
 		progress in that exercise.
-		\n\nRemember when you made the exercise, you noted one of the
-		bits as significant\? Well that\'s the part that will be graphed.
+		\n\nOther buttons provide other options:
+		\n\t\'Upper\' - show the combined work on all upper body
+		exericses.
+		\n\t\'Lower\' - show the combined work on all the exercises
+		the concentrate on the lower body.
 	</string>
 
 	<!-- ============        ============ -->
@@ -1466,6 +1469,10 @@
 		nothing to graph. Sorry. Try filling some of the missing values.
 	</string>
 
+	<!-- ======= Graph Options ======= -->
+
+	<string name="graph_options_title">Graph Options</string>
+
 	<string name="graph_options_butt">options</string>
 	<string name="graph_options_butt_help_title">Options Help</string>
 	<string name="graph_options_butt_help_msg">
@@ -1473,6 +1480,44 @@
 		how your graphs are displayed for this exercise. Pretty cool,
 		right?
 	</string>
+
+	<string name="graph_options_help_title">Graph Options</string>
+	<string name="graph_options_help_msg">
+		Here is where you get to customize how your graphs for the
+		%s exercise are displayed.
+		\n\n	Turn the buttons on or off to control which aspects are
+		shown in the graph.
+		\n\n	The \'reps-with\' drop-down lets you combine the reps
+		with another aspect. For instance, instead of simply
+		counting how many bench presses you did at 100 pounds,
+		select reps-with and tell it with weight, and you will
+		see the number of reps times the weight. Yes, that\'s ALL
+		the weight you moved in that set total!
+	</string>
+
+	<string name="graph_options_with_label">reps combo</string>
+	<string name="graph_options_with_prompt">Choose something to
+		combine (multiply) with reps.</string>
+	<string name="graph_options_with_help_title">Combine Reps Help</string>
+	<string name="graph_options_with_help_msg">
+		This graph is a little unusual, so I\'ll try to break it down
+		for you.
+		\n\nSure, it\'s nice to know how many reps you do. And it\'s
+		nice to know how much weight you are pushing, too. But wouldn\'t
+		it be great to know the total weight you moved during that set?
+		Well, I do. So I added this feature.
+		\n\nTurn this on, and a graph will show the total weight you
+		moved for each set. Yeah, reps * weight = total.
+		\n\nBut you gotta tell the program what to multiply the reps
+		by. Select this and a list will pop up: pick what you want to
+		graph (which will probably be weight, but who knows? I\'ll
+		leave it up to you).
+		\n\nNow you can walk over to that muscle-head and brag that you
+		lift more per set them him (except that you did 150 reps of ten
+		pounds instead of his two reps of&#x2026;well I can\'t count that high,
+		but you get the picture).
+	</string>
+	<string name="graph_options_with_no_selection">none</string>
 
 	<!-- ============          ============ -->
 	<!-- ============ History  ============ -->
