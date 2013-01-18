@@ -141,6 +141,41 @@ public class GraphDrawPrimitives {
 
 
 	/************************
+	 * This draws a filled rectangle onto the Canvas. This
+	 * version handles ints.
+	 *
+	 * Replacement for drawRect(). Like the others, (0,0)
+	 * is at the bottom left.
+	 *
+	 * @see android.graphics.Canvas#drawRect(Rect, Paint)
+	 *
+	 * @param rect	Defines where to draw the rectangle.
+	 */
+	public static void draw_rect (Canvas canvas, Rect rect, Paint paint) {
+		canvas.drawRect(rect.left, convert_y (canvas, rect.top),
+						rect.right, convert_y (canvas, rect.bottom),
+						paint);
+	} // draw_rect (canvas, rect, paint)
+
+	/************************
+	 * This draws a filled rectangle onto the Canvas.  This is
+	 * the float version.
+	 *
+	 * Replacement for drawRect(). Like the others, (0,0)
+	 * is at the bottom left.
+	 *
+	 * @see android.graphics.Canvas#drawRect(Rect, Paint)
+	 *
+	 * @param rect	Defines where to draw the rectangle.
+	 */
+	public static void draw_rect (Canvas canvas, RectF rect, Paint paint) {
+		canvas.drawRect(rect.left, convert_y (canvas, rect.top),
+						rect.right, convert_y (canvas, rect.bottom),
+						paint);
+	} // draw_rect (canvas, rect, paint)
+
+
+	/************************
 	 * My replacement for drawText().  Like all the others
 	 * here, [0,0] is the bottom left instead of the top
 	 * right, everything else like the regular.

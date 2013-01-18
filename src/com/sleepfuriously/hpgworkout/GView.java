@@ -38,7 +38,8 @@ import android.view.View;
 import com.sleepfuriously.hpgworkout.R.color;
 import static com.sleepfuriously.hpgworkout.GraphDrawPrimitives.draw_text;
 import static com.sleepfuriously.hpgworkout.GraphDrawPrimitives.draw_line;
-import static com.sleepfuriously.hpgworkout.GraphDrawPrimitives.draw_box;;
+import static com.sleepfuriously.hpgworkout.GraphDrawPrimitives.draw_box;
+import static com.sleepfuriously.hpgworkout.GraphDrawPrimitives.draw_rect;
 
 
 public class GView extends View {
@@ -75,7 +76,7 @@ public class GView extends View {
 	private static final int X_AXIS_LABEL_Y = 5;
 
 	/** Distance between the graph area and the x-axis area */
-	private static final int X_AXIS_GAP = 7;
+	private static final int X_AXIS_GAP = 10;
 
 	/** Distance between a y-axis and the next one (or the graph area) */
 	private static final int Y_AXIS_GAP = 8;
@@ -262,13 +263,14 @@ public class GView extends View {
 			return;
 		}
 
+
 		//	testing!
 		// This successfully draws a box at the outermost
 		// pixle of the widget.
 //		Log.d(tag, "onDraw(), m_clip_rect = " + m_canvas_padded_rect);
-		float old_stroke_width = m_paint.getStrokeWidth();
-		m_paint.setStrokeWidth(1);
-		int old_color = m_paint.getColor();
+//		float old_stroke_width = m_paint.getStrokeWidth();
+//		m_paint.setStrokeWidth(1);
+//		int old_color = m_paint.getColor();
 
 		// Full canvas = red
 //		m_paint.setColor(Color.RED);
@@ -295,8 +297,8 @@ public class GView extends View {
 //		Log.d (tag, "magenta box (m_y_axis_rect) = " + m_y_axis_rect);
 //		draw_box(canvas, m_y_axis_rect, m_paint);
 
-		m_paint.setStrokeWidth(old_stroke_width);
-		m_paint.setColor(old_color);
+//		m_paint.setStrokeWidth(old_stroke_width);
+//		m_paint.setColor(old_color);
 		//
 		// end test
 
@@ -314,11 +316,18 @@ public class GView extends View {
 			return;		// get outta here!
 		}
 
+		// Draw a background for the lines.
+		m_paint.setColor(getResources().getColor(color.fainter_white));
+		draw_box(canvas, m_graphline_rect, m_paint);
+//		draw_rect(canvas, m_graphline_rect, m_paint);
+
+		// Reset the color
+		m_paint.setColor(getResources().getColor(color.ghost_white));
 
 		//	Draw the x-axii here
 		if (m_graph_x_axis != null) {
 			if (m_graph_x_axis.is_draw_area_set() == false) {
-				Log.e(tag, "onDraw(): m_graph_x_axis.is_draw_area_set() is false! Setting the draw area to continue, sigh.");
+				Log.w(tag, "onDraw(): m_graph_x_axis.is_draw_area_set() is false! Setting the draw area to continue, sigh.");
 				m_graph_x_axis.set_draw_area(m_x_axis_rect);
 			}
 			m_paint.setColor(getResources().getColor(color.ghost_white));

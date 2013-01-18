@@ -34,7 +34,7 @@ public class GraphYAxis {
 	public final static int DEFAULT_Y_LINE_COLOR = Color.LTGRAY;
 
 	/** Default number of tick-marks in the y axis */
-	public final static int DEFAULT_NUM_TICKS = 3;
+	public final static int DEFAULT_NUM_TICKS = 4;
 
 	/**
 	 * Because there's some slop in the size of letters,
@@ -341,8 +341,9 @@ public class GraphYAxis {
 			// make sure that we have the minimum based on how much
 			// room there is.
 			num_ticks = (int) (m_draw_area.height() / m_line_spacing);
-			if (num_ticks < 3) {
-				num_ticks = 3;		// Always need at least three lines
+			if (num_ticks < DEFAULT_NUM_TICKS) {
+				num_ticks = DEFAULT_NUM_TICKS;
+				Log.v(tag, "heckbert_cal_range(): resetting to default number of ticks.");
 			}
 		}
 

@@ -19,7 +19,10 @@
 	<color name="snow">#fffafa</color>
 	<color name="ghost_white">#f8f8ff</color>
 	<color name="floral_white">#fffaf0</color>
-
+	<color name="faint_white">#80ffffff</color>
+	<color name="fainter_white">#40ffffff</color>
+	<color name="faintest_white">#20ffffff</color>
+		
 	<!-- Grays -->
 	<color name="gray">#808080</color>
 	<color name="warm_gray_lightest">#c4c0c0</color>

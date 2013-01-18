@@ -250,7 +250,7 @@ public class GraphLine {
 	 * 	m_pts	Created to reflect the correct mapping from m_orig_pts.
 	 */
 	public void map_points() {
-		Log.d(tag, "map_points(): " + m_rect_bounds + " ==> " + m_draw_rect);
+//		Log.d(tag, "map_points(): " + m_rect_bounds + " ==> " + m_draw_rect);
 		m_pts = new PointF[m_orig_pts.size()];
 
 		GraphMap2D mapper2D = new GraphMap2D(m_rect_bounds, m_draw_rect);
@@ -418,7 +418,7 @@ public class GraphLine {
 					PointF a, PointF b) {
 		m_last_pt.set(a);
 		GraphDrawPrimitives.draw_line(canvas, a.x, a.y, b.x, b.y, paint);
-		Log.d(tag, "drawing line from (" + a.x + ", " + a.y + ") to (" + b.x + ", " + b.y + ")");
+//		Log.d(tag, "drawing line from (" + a.x + ", " + a.y + ") to (" + b.x + ", " + b.y + ")");
 		if ((b.x - a.x > m_min_dist) ||
 			(b.y - a.y > m_min_dist)) {
 			draw_pt(canvas, paint, b);
