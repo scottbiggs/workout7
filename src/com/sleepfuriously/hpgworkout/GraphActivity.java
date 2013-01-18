@@ -434,6 +434,102 @@ public class GraphActivity
 
 	} // setup_graph()
 
+
+	/************************
+	 * If the "with reps" portion needs to be graphed,
+	 * then this is where it's set up.  Oh yeah, this
+	 * also checks first to see if it needs to do anything
+	 * at all, which is kind of nice.
+	 * <p>
+	 * preconditions:	All the data from the DB is loaded
+	 * 					and ready to poked and prodded.
+	 */
+	private void setup_with_reps() {
+		if ((m_exercise_data.g_with_reps == -1) ||
+			(m_exercise_data.breps == false)) {
+			return;
+		}
+
+		// Find the reps data and put it in a GraphCollection.
+		GraphCollection collection = new GraphCollection();
+		collection.m_line_graph = new GraphLine();
+
+		RectF bounds = new RectF(Float.MAX_VALUE, -Float.MAX_VALUE,
+								-Float.MAX_VALUE, Float.MAX_VALUE);
+
+		for (SetData set_data : m_set_data) {
+			PointF pt = new PointF();
+
+			pt.x = set_data.millis;
+			if (pt.x < bounds.left)
+				bounds.left = pt.x;
+			if (pt.x > bounds.right)
+				bounds.right = pt.x;
+
+
+
+			switch (m_exercise_data.g_with_reps) {
+				case DatabaseHelper.EXERCISE_COL_REP_NUM:
+					Log.e(tag, "Error in setup_with_reps()! Tried to combine reps with itself!  Aborting.");
+					return;
+
+				case DatabaseHelper.EXERCISE_COL_LEVEL_NUM:
+					pt.y = set_data.levels;
+					break;
+				case DatabaseHelper.EXERCISE_COL_CALORIE_NUM:
+					pt.y = set_data.cals;
+					break;
+				case DatabaseHelper.EXERCISE_COL_WEIGHT_NUM:
+					pt.y = set_data.weight;
+					break;
+				case DatabaseHelper.EXERCISE_COL_DIST_NUM:
+					pt.y = set_data.dist;
+					break;
+				case DatabaseHelper.EXERCISE_COL_TIME_NUM:
+					pt.y = set_data.time;
+					break;
+				case DatabaseHelper.EXERCISE_COL_OTHER_NUM:
+					pt.y = set_data.other;
+					break;
+				default:
+					Log.e (tag, "add_new_collection() cannot recognize the aspect!");
+					break;
+			}
+
+			// Now multiply by the number of reps.
+			pt.y *= set_data.reps;
+
+			if (pt.y < bounds.bottom)
+				bounds.bottom = pt.y;
+			if (pt.y > bounds.top)
+				bounds.top = pt.y;
+
+			collection.m_line_graph.add_point(pt);
+		}
+
+
+		collection.m_line_graph.set_bounds(bounds);
+		collection.m_id = DatabaseHelper.EXERCISE_COL_REP_NUM;	// Using this for ID. Convenient and unique.
+		collection.m_color = getResources().getColor(R.color.color_with_reps);
+
+		// Do the y-axis that's attached to this graph line.
+		collection.m_y_axis_graph = new GraphYAxis(bounds.bottom, bounds.top);
+
+		// Now tell the line_graph to modify its bounding rectangle
+		// to match the one in the y_axis_graph.
+		// TODO:
+		//		Move things around so that we set the y-axis stuff
+		//		BEFORE the GraphLine--that way we don't do things
+		//		twice as we do here.
+		RectF modified_rect = new RectF(bounds);
+		modified_rect.bottom = collection.m_y_axis_graph.get_min();
+		modified_rect.top = collection.m_y_axis_graph.get_max();
+		collection.m_line_graph.set_bounds(modified_rect);
+
+		m_view.add_graph_collection(collection);
+	} // setup_with_reps()
+
+
 	/************************
 	 * A nice thing to do before trying to access the database.
 	 * This first tests to make sure that another thread is not
@@ -839,7 +935,6 @@ public class GraphActivity
 			}
 
 
-
 			/** The number of aspects that we're graphing */
 			if (m_exercise_data.g_reps) {
 				add_new_collection(DatabaseHelper.EXERCISE_COL_REP_NUM,
@@ -875,6 +970,10 @@ public class GraphActivity
 				add_new_collection(DatabaseHelper.EXERCISE_COL_OTHER_NUM,
 								getResources().getColor(R.color.color_other));
 			}
+
+			// Do the "with reps" graph.
+			setup_with_reps();
+
 
 			// Setup the x-axis
 			m_view.m_graph_x_axis = new GraphXAxis();

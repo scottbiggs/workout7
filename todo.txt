@@ -1,5 +1,14 @@
 TODO:
 -----------------
+BUG: It looks like something goes wrong when graphing something
+	that's the same value for every set.  I found it when doing
+	the squats.  I changed one value to work on something else,
+	but the bug should still be there.  Yeah, you get an error
+	about the heckbert stuff in the LogCat.
+	- You can see another issue with the Bench Press.  All the
+	weights are the same, and the graph is just a vertical line
+	instead of a horizontal one.  No error msgs though.
+
 For the y-axii, make each successive one shift down one pixel
 	so that the lines don't overlap.
 

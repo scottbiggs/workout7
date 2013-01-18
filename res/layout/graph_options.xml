@@ -42,14 +42,14 @@
 			android:src="@drawable/hpglogo_small" />
 
 		<TextView
-		    android:id="@+id/graph_options_name_tv"
-		    style="@style/white_text_medium"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_below="@id/graph_options_title_tv"
-		    android:layout_marginLeft="30dp"
-		    android:layout_marginTop="3dp"
-		    android:text="@string/name" />
+			android:id="@+id/graph_options_name_tv"
+			style="@style/white_text_medium"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/graph_options_title_tv"
+			android:layout_marginLeft="30dp"
+			android:layout_marginTop="3dp"
+			android:text="@string/name" />
 
 	</RelativeLayout>
 
@@ -130,6 +130,7 @@
 					android:layout_height="wrap_content"
 					android:layout_marginLeft="15dp"
 					style="@style/white_text_small"
+					android:textColor="@color/color_reps"
 					android:text="@string/addexer_rep_label" />
 
 				<View
@@ -148,6 +149,7 @@
 					android:layout_height="wrap_content"
 					android:layout_marginLeft="15dp"
 					style="@style/white_text_small"
+					android:textColor="@color/color_level"
 					android:text="@string/addexer_level_label" />
 
 				<View
@@ -166,6 +168,7 @@
 					android:layout_height="wrap_content"
 					android:layout_marginLeft="15dp"
 					style="@style/white_text_small"
+					android:textColor="@color/color_cals"
 					android:text="@string/addexer_calorie_label" />
 
 				<View
@@ -184,6 +187,7 @@
 					android:layout_height="wrap_content"
 					android:layout_marginLeft="15dp"
 					style="@style/white_text_small"
+					android:textColor="@color/color_weight"
 					android:text="@string/addexer_weight_label" />
 
 				<View
@@ -202,6 +206,7 @@
 					android:layout_height="wrap_content"
 					android:layout_marginLeft="15dp"
 					style="@style/white_text_small"
+					android:textColor="@color/color_dist"
 					android:text="@string/addexer_dist_label" />
 
 				<View
@@ -221,6 +226,7 @@
 					android:layout_marginLeft="15dp"
 					android:text="@string/addexer_time_label"
 					style="@style/white_text_small"
+					android:textColor="@color/color_time"
 					/>
 
 				<View
@@ -239,6 +245,7 @@
 					android:layout_height="wrap_content"
 					android:layout_marginLeft="15dp"
 					style="@style/white_text_small"
+					android:textColor="@color/color_other"
 					/>
 
 				<View
@@ -259,12 +266,13 @@
 					>
 
 					<TextView
-						style="@style/white_text_small"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_gravity="top"
 						android:layout_marginLeft="15dp"
 						android:layout_marginTop="6dp"
+						style="@style/white_text_small"
+						android:textColor="@color/color_with_reps"
 						android:text="@string/graph_options_with_label" />
 
 					<com.sleepfuriously.hpgworkout.MySpinner
