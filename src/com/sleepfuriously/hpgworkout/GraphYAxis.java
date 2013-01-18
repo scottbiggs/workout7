@@ -223,6 +223,12 @@ public class GraphYAxis {
 			return;
 		}
 
+		// Draw the vertical line
+		draw_line(canvas,
+				  m_draw_area.right, m_draw_area.bottom,
+				  m_draw_area.right, m_draw_area.top,
+				  paint);
+
 		// Draw the y-axis lines.
 		heckbert_loose_label(canvas, paint);
 
@@ -290,7 +296,7 @@ public class GraphYAxis {
 //			paint.setColor(m_line_color);
 			float y2 = mapper.map(y);
 
-			draw_line(canvas, m_draw_area.left, y2, m_draw_area.right, y2, paint);
+			draw_line(canvas, m_draw_area.centerX(), y2, m_draw_area.right, y2, paint);
 
 			String str = new DecimalFormat("#.######").format(y);
 

@@ -60,7 +60,7 @@ public class GView extends View {
 	public static final float DEFAULT_MSG_TEXT_SIZE = 25;
 
 	/** The number of pixels wide for the y-axis */
-	public static final int DEFAULT_Y_AXIS_WIDTH = 15;
+	public static final int DEFAULT_Y_AXIS_WIDTH = 33;
 
 	/** The number of pixels to pad our drawing. */
 	private static final int PADDING_LEFT = 26,
@@ -316,9 +316,9 @@ public class GView extends View {
 			return;		// get outta here!
 		}
 
-		// Draw a background for the lines.
-		m_paint.setColor(getResources().getColor(color.fainter_white));
-		draw_box(canvas, m_graphline_rect, m_paint);
+		// Draw a background for the GraphLines area.
+//		m_paint.setColor(getResources().getColor(color.fainter_white));
+//		draw_box(canvas, m_graphline_rect, m_paint);
 //		draw_rect(canvas, m_graphline_rect, m_paint);
 
 		// Reset the color
@@ -519,8 +519,14 @@ public class GView extends View {
 	 */
 	protected RectF find_y_axis_area (int count) {
 		RectF draw_area = new RectF (m_canvas_padded_rect);
-		draw_area.left += count * DEFAULT_Y_AXIS_WIDTH;
-		draw_area.right = draw_area.left + DEFAULT_Y_AXIS_WIDTH;		// Makes the right size = to left side of line draw area
+
+		// The gap is the spacing in between the various
+		// y-axii.
+		draw_area.left += count * (DEFAULT_Y_AXIS_WIDTH + Y_AXIS_GAP);
+
+		// Makes the right size = to left side of line draw area
+		draw_area.right = draw_area.left + DEFAULT_Y_AXIS_WIDTH;
+
 		return draw_area;
 	} // find_y_axis_area (count)
 
@@ -543,7 +549,7 @@ public class GView extends View {
 	protected Rect find_GraphLine_area (int num_y_axii) {
 //		Log.d(tag, "find_GraphLine_area() called, num_y_axii = " + num_y_axii);
 		Rect draw_area = new Rect (m_canvas_padded_rect);
-		draw_area.left += num_y_axii * DEFAULT_Y_AXIS_WIDTH;
+		draw_area.left += num_y_axii * (DEFAULT_Y_AXIS_WIDTH + Y_AXIS_GAP);
 		if (draw_area.left >= draw_area.right) {
 			Log.e (tag, "Error in find_GraphLine_area()! Don't have enough room to draw all the y-axii!");
 			return null;
