@@ -116,9 +116,6 @@ public class GraphActivity
 	 */
 	public static boolean m_loading = false;
 
-	/** Holds the colors for the graphs */
-	private int[] m_graph_colors;
-
 
 	//-------------------------
 	@Override
@@ -150,8 +147,6 @@ public class GraphActivity
 			Log.e(tag, "\tGraph creation aborted.");
 			return;
 		}
-
-		m_graph_colors = getResources().getIntArray(R.array.graph_color_array);
 
 
 		// If we're displaying graphs in a Tab, then the title and
@@ -675,7 +670,7 @@ public class GraphActivity
 			values.put(DatabaseHelper.EXERCISE_COL_GRAPH_OTHER, m_exercise_data.g_other);
 
 			values.put(DatabaseHelper.EXERCISE_COL_GRAPH_WITH_REPS, m_exercise_data.g_with_reps);
-			
+
 			m_db.insert(DatabaseHelper.EXERCISE_TABLE_NAME, null, values);
 
 		} catch (SQLiteException e) {
@@ -825,43 +820,48 @@ public class GraphActivity
 
 			m_view.clear();
 
-			int[] graph_colors = getResources().getIntArray(R.array.graph_color_array);
-
 			// Go through the data and create a GraphCollection for
 			// each aspect.
 			int aspect_count = 0;
 			if (m_exercise_data.breps) {
-				add_new_collection(DatabaseHelper.EXERCISE_COL_REP_NUM, graph_colors[0]);
+				add_new_collection(DatabaseHelper.EXERCISE_COL_REP_NUM,
+								getResources().getColor(R.color.color_reps));
 				aspect_count++;
 			}
 
 			if (m_exercise_data.bcals) {
-				add_new_collection(DatabaseHelper.EXERCISE_COL_CALORIE_NUM, graph_colors[1]);
+				add_new_collection(DatabaseHelper.EXERCISE_COL_CALORIE_NUM,
+								getResources().getColor(R.color.color_cals));
 				aspect_count++;
 			}
 
 			if (m_exercise_data.blevel) {
-				add_new_collection(DatabaseHelper.EXERCISE_COL_LEVEL_NUM, graph_colors[2]);
+				add_new_collection(DatabaseHelper.EXERCISE_COL_LEVEL_NUM,
+								getResources().getColor(R.color.color_level));
 				aspect_count++;
 			}
 
 			if (m_exercise_data.bweight) {
-				add_new_collection(DatabaseHelper.EXERCISE_COL_WEIGHT_NUM, graph_colors[3]);
+				add_new_collection(DatabaseHelper.EXERCISE_COL_WEIGHT_NUM,
+								getResources().getColor(R.color.color_weight));
 				aspect_count++;
 			}
 
 			if (m_exercise_data.bdist) {
-				add_new_collection(DatabaseHelper.EXERCISE_COL_DIST_NUM, graph_colors[4]);
+				add_new_collection(DatabaseHelper.EXERCISE_COL_DIST_NUM,
+								getResources().getColor(R.color.color_dist));
 				aspect_count++;
 			}
 
 			if (m_exercise_data.btime) {
-				add_new_collection(DatabaseHelper.EXERCISE_COL_TIME_NUM, graph_colors[5]);
+				add_new_collection(DatabaseHelper.EXERCISE_COL_TIME_NUM,
+								getResources().getColor(R.color.color_time));
 				aspect_count++;
 			}
 
 			if (m_exercise_data.bother) {
-				add_new_collection(DatabaseHelper.EXERCISE_COL_OTHER_NUM, graph_colors[6]);
+				add_new_collection(DatabaseHelper.EXERCISE_COL_OTHER_NUM,
+								getResources().getColor(R.color.color_other));
 				aspect_count++;
 			}
 
