@@ -821,54 +821,59 @@ public class GraphActivity
 			m_view.clear();
 
 			// Go through the data and create a GraphCollection for
-			// each aspect.
-			int aspect_count = 0;
-			if (m_exercise_data.breps) {
+			// each graphical aspect.
+
+			// But first, if the aspect count is 0 (and there's no other graphs),
+			// then there's been an error or we started with a database that wasn't
+			// properly set.  So turn on the significant aspect.
+			if ((ExerciseData.count_valid_graph_aspects(m_exercise_data) == 0) &&
+				(m_exercise_data.g_with_reps == -1)) {
+				int graph_aspect_num = ExerciseData.get_graph_aspect(m_exercise_data.significant);
+				m_exercise_data.set_aspect_by_num(graph_aspect_num, true);
+			}
+
+			// If there is only one aspect possible, disable the
+			// options button as it no longer makes sense.
+			if (ExerciseData.count_valid_aspects(m_exercise_data) == 1) {
+				m_options_butt.setVisibility(View.GONE);
+			}
+
+
+
+			/** The number of aspects that we're graphing */
+			if (m_exercise_data.g_reps) {
 				add_new_collection(DatabaseHelper.EXERCISE_COL_REP_NUM,
 								getResources().getColor(R.color.color_reps));
-				aspect_count++;
 			}
 
-			if (m_exercise_data.bcals) {
+			if (m_exercise_data.g_cals) {
 				add_new_collection(DatabaseHelper.EXERCISE_COL_CALORIE_NUM,
 								getResources().getColor(R.color.color_cals));
-				aspect_count++;
 			}
 
-			if (m_exercise_data.blevel) {
+			if (m_exercise_data.g_level) {
 				add_new_collection(DatabaseHelper.EXERCISE_COL_LEVEL_NUM,
 								getResources().getColor(R.color.color_level));
-				aspect_count++;
 			}
 
-			if (m_exercise_data.bweight) {
+			if (m_exercise_data.g_weight) {
 				add_new_collection(DatabaseHelper.EXERCISE_COL_WEIGHT_NUM,
 								getResources().getColor(R.color.color_weight));
-				aspect_count++;
 			}
 
-			if (m_exercise_data.bdist) {
+			if (m_exercise_data.g_dist) {
 				add_new_collection(DatabaseHelper.EXERCISE_COL_DIST_NUM,
 								getResources().getColor(R.color.color_dist));
-				aspect_count++;
 			}
 
-			if (m_exercise_data.btime) {
+			if (m_exercise_data.g_time) {
 				add_new_collection(DatabaseHelper.EXERCISE_COL_TIME_NUM,
 								getResources().getColor(R.color.color_time));
-				aspect_count++;
 			}
 
-			if (m_exercise_data.bother) {
+			if (m_exercise_data.g_other) {
 				add_new_collection(DatabaseHelper.EXERCISE_COL_OTHER_NUM,
 								getResources().getColor(R.color.color_other));
-				aspect_count++;
-			}
-
-			// If the aspect count is 1, disable the options button as it
-			// just doesn't make sense anymore.
-			if (aspect_count == 1) {
-				m_options_butt.setVisibility(View.GONE);
 			}
 
 			// Setup the x-axis

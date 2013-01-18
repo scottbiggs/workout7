@@ -1526,6 +1526,13 @@
 	</string>
 	<string name="graph_options_with_no_selection">none</string>
 
+	<string name="graph_options_no_checks_title">No Checks</string>
+	<string name="graph_options_no_checks_msg">
+		I hate to be a pain about this, but you gotta turn on
+		SOMETHING for the grapher to display.
+		\n\nHow else can I show off all that beautiful code?
+	</string>
+
 	<!-- ============          ============ -->
 	<!-- ============ History  ============ -->
 	<!-- ============          ============ -->

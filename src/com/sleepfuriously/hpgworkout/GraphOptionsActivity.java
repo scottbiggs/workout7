@@ -135,7 +135,7 @@ public class GraphOptionsActivity
 	 * When pressed, this combines reps with another
 	 * aspect (selected by the user).
 	 */
-	private MySpinner m_combine_with_reps_myspin;
+	private MySpinner m_with_reps_myspin;
 
 	/** The basic buttons */
 	Button m_cancel, m_done;
@@ -234,9 +234,9 @@ public class GraphOptionsActivity
 		m_other_cb.setOnLongClickListener(this);
 		m_other_cb.setChecked(false);
 
-		m_combine_with_reps_myspin = (MySpinner) findViewById(R.id.graph_options_with_msp);
-		m_combine_with_reps_myspin.setOnLongClickListener(this);
-		m_combine_with_reps_myspin.setMySpinnerListener(this);
+		m_with_reps_myspin = (MySpinner) findViewById(R.id.graph_options_with_msp);
+		m_with_reps_myspin.setOnLongClickListener(this);
+		m_with_reps_myspin.setMySpinnerListener(this);
 
 		// For our With Reps lists, start with the first item always
 		// indicating 'not used'.
@@ -278,6 +278,14 @@ public class GraphOptionsActivity
 				return;
 			}
 
+			// Don't let 'em fuck up the database with nothing
+			// to graph.
+			if (count_checks() == 0) {
+				show_help_dialog(R.string.graph_options_no_checks_title,
+								R.string.graph_options_no_checks_msg);
+				return;
+			}
+
 			// Fill in the Intent and return the caller.
 			Intent itt = new Intent();
 
@@ -289,7 +297,7 @@ public class GraphOptionsActivity
 			itt.putExtra(ITT_KEY_GRAPH_TIME, m_time_cb.isChecked());
 			itt.putExtra(ITT_KEY_GRAPH_OTHER, m_other_cb.isChecked());
 
-			int selection = m_combine_with_reps_myspin.get_current_selection();
+			int selection = m_with_reps_myspin.get_current_selection();
 			if (selection == -1) {
 				itt.putExtra(ITT_KEY_WITH_REPS, -1);
 			}
@@ -327,7 +335,7 @@ public class GraphOptionsActivity
 	 */
 	@Override
 	public boolean onLongClick(View v) {
-		if (v == m_combine_with_reps_myspin) {
+		if (v == m_with_reps_myspin) {
 			show_help_dialog(R.string.graph_options_with_help_title,
 							R.string.graph_options_with_help_msg);
 			return true;
@@ -352,8 +360,8 @@ public class GraphOptionsActivity
 		m_dirty = true;
 		m_done.setEnabled(true);
 
-		m_combine_with_reps_myspin.set_selected(position);
-		m_combine_with_reps_myspin.setText(m_with_reps_list.get(position));
+		m_with_reps_myspin.set_selected(position);
+		m_with_reps_myspin.setText(m_with_reps_list.get(position));
 	} // onMySpinnerSelected (...)
 
 
@@ -485,7 +493,7 @@ public class GraphOptionsActivity
 			(itt.getBooleanExtra(ITT_KEY_ASPECT_TIME, false)) ||
 			(itt.getBooleanExtra(ITT_KEY_ASPECT_OTHER, false)))) {
 
-			m_combine_with_reps_myspin.set_prompt(R.string.graph_options_with_prompt);
+			m_with_reps_myspin.set_prompt(R.string.graph_options_with_prompt);
 
 
 			// Display the current setting.
@@ -522,13 +530,13 @@ public class GraphOptionsActivity
 					Log.e (tag, "Illegal ITT_KEY_WITH_REPS value of " + with + " in read_intent()!");
 					break;
 			}
-			m_combine_with_reps_myspin.setText(current_with_str);
+			m_with_reps_myspin.setText(current_with_str);
 
 			// Fill in the list
-			m_combine_with_reps_myspin.set_array(m_with_reps_list);
+			m_with_reps_myspin.set_array(m_with_reps_list);
 
 			// Now turn on the right item in the list.
-			m_combine_with_reps_myspin.set_selected(m_with_reps_list_ref.indexOf(with));
+			m_with_reps_myspin.set_selected(m_with_reps_list_ref.indexOf(with));
 		}
 		else {
 			// Remove the whole LinearLayout with the MySpinner
@@ -545,4 +553,33 @@ public class GraphOptionsActivity
 
 	} // read_intent()
 
+
+	/***************************
+	 * Goes through all the widgets and checks to see
+	 * how many the user has turned on.  Useful to tell
+	 * if there's an error condition or something.
+	 *
+	 * @return	The number of CheckBoxes and MySpinners
+	 * 			(if applicable) that are turned ON.
+	 */
+	private int count_checks() {
+		int count =
+			(m_reps_cb.isChecked() ? 1 : 0) +
+			(m_level_cb.isChecked() ? 1 : 0) +
+			(m_cals_cb.isChecked() ? 1 : 0) +
+			(m_weight_cb.isChecked() ? 1 : 0) +
+			(m_dist_cb.isChecked() ? 1 : 0) +
+			(m_time_cb.isChecked() ? 1 : 0) +
+			(m_other_cb.isChecked() ? 1 : 0);
+
+		if ((m_with_reps_myspin != null) &&
+			(m_with_reps_myspin.isShown())) {
+			int selection = m_with_reps_myspin.get_current_selection();
+			if ((selection != 0) && (selection != -1)) {
+				count++;
+			}
+		}
+
+		return count;
+	} // count_checks()
 }
