@@ -20,14 +20,19 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.TextView.BufferType;
 
 public class GraphActivity
 					extends
@@ -50,7 +55,10 @@ public class GraphActivity
 	public static final String
 			NAME_KEY = "name";
 
+	/** Goes in-between items in the legend part of the Activity */ 
+	protected static final String DEFAULT_LEGEND_SPACER = " - ";
 
+	
 	//-------------------------
 	//	Widgets
 	//-------------------------
@@ -164,7 +172,7 @@ public class GraphActivity
 		}
 
 		// Set the aspect that we're displaying.
-		set_aspect_and_units();
+//		set_aspect_and_units();		this should be done AFTER the DB has been loaded.
 
 		// Continued in onResume()
 
@@ -329,7 +337,12 @@ public class GraphActivity
 	 * Part of onCreate(), this looks into the database and figures
 	 * out which aspect is most significant.  It then sets the title
 	 * of the graph to the aspect and unit (if necessary).
+	 *
+	 * todo:
+	 * 	This should be done AFTER m_exercise_data has been filled out.
+	 * 	That'll make this a LOT easier!
 	 */
+	@Deprecated
 	private void set_aspect_and_units() {
 		int col;
 		String str, unit;
@@ -412,6 +425,154 @@ public class GraphActivity
 		}
 
 	} // set_aspect_and_units()
+
+
+	/************************
+	 * Creates the legend that helps the user understand
+	 * what the colors of the graph mean.
+	 */
+	private void construct_legend() {
+		String str = null;
+//		int len, start, end;
+//		SpannableString spannable;
+
+		TextView tv = (TextView) findViewById(R.id.graph_description_tv);
+/*
+		if (m_exercise_data.g_reps) {
+			str = getString(R.string.addexer_rep_label);
+			start = 0;
+			end = str.length();
+			spannable = new SpannableString(str);
+			spannable.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.color_reps)),
+							  start, end, 0);	// no flags
+			tv.setText(spannable, BufferType.SPANNABLE);
+		}
+
+		
+		// First, build a string that has all the relevant
+		// aspects.
+
+		str = "";
+		boolean needs_comma = false;
+		if (m_exercise_data.g_reps) {
+			str += getString(R.string.addexer_rep_label);
+			needs_comma = true;
+		}
+		if (m_exercise_data.g_level) {
+			if (needs_comma)
+				str += ", ";
+			str += getString(R.string.addexer_level_label);
+			needs_comma = true;
+		}
+		if (m_exercise_data.g_cals) {
+			if (needs_comma)
+				str += ", ";
+			str += getString(R.string.addexer_calorie_label);
+			needs_comma = true;
+		}
+		if (m_exercise_data.g_weight) {
+			if (needs_comma)
+				str += ", ";
+			str += getString(R.string.addexer_weight_label);
+			needs_comma = true;
+		}
+		if (m_exercise_data.g_dist) {
+			if (needs_comma)
+				str += ", ";
+			str += getString(R.string.addexer_dist_label);
+			needs_comma = true;
+		}
+		if (m_exercise_data.g_time) {
+			if (needs_comma)
+				str += ", ";
+			str += getString(R.string.addexer_time_label);
+			needs_comma = true;
+		}
+		if (m_exercise_data.g_other) {
+			if (needs_comma)
+				str += ", ";
+			str += m_exercise_data.other_title;
+			needs_comma = true;
+		}
+		
+		if (m_exercise_data.g_with_reps != -1) {
+			if (needs_comma)
+				str += ", ";
+			str += getString(R.string.graph_options_with_label);
+			needs_comma = true;	// not really needed
+		}
+
+		// Okay, now we have a string.
+*/
+		
+		// This time, let's try a SpannableStringBuilder
+		StyleableSpannableStringBuilder builder = 
+				new StyleableSpannableStringBuilder();
+		
+		boolean needs_seperator = false;
+		if (m_exercise_data.g_reps) {
+			str = getString(R.string.addexer_rep_label);
+			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_reps));
+			needs_seperator = true;
+		}
+		if (m_exercise_data.g_level) {
+			if (needs_seperator)
+				builder.append (DEFAULT_LEGEND_SPACER);
+			str = getString(R.string.addexer_level_label);
+			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_level));
+			needs_seperator = true;
+		}
+		if (m_exercise_data.g_cals) {
+			if (needs_seperator)
+				builder.append (DEFAULT_LEGEND_SPACER);
+			str = getString(R.string.addexer_calorie_label);
+			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_cals));
+			needs_seperator = true;
+		}
+		if (m_exercise_data.g_weight) {
+			if (needs_seperator)
+				builder.append (DEFAULT_LEGEND_SPACER);
+			str = getString(R.string.addexer_weight_label);
+			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_weight));
+			needs_seperator = true;
+		}
+		
+		if (m_exercise_data.g_dist) {
+			if (needs_seperator)
+				builder.append (DEFAULT_LEGEND_SPACER);
+			str = getString(R.string.addexer_dist_label);
+			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_dist));
+			needs_seperator = true;
+		}
+		
+		if (m_exercise_data.g_time) {
+			if (needs_seperator)
+				builder.append (DEFAULT_LEGEND_SPACER);
+			str = getString(R.string.addexer_time_label);
+			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_time));
+			needs_seperator = true;
+		}
+		
+		if (m_exercise_data.g_other) {
+			if (needs_seperator)
+				builder.append (DEFAULT_LEGEND_SPACER);
+			str = m_exercise_data.other_title;
+			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_other));
+			needs_seperator = true;
+		}
+		
+		if (m_exercise_data.g_with_reps != -1) {
+			if (needs_seperator)
+				builder.append (DEFAULT_LEGEND_SPACER);
+			str = getString(R.string.graph_options_with_label, "foo");
+			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_with_reps));
+			needs_seperator = true;
+		}
+
+		// Finally!
+		tv.setText(builder);
+		
+	} // construct_legend()
 
 
 	/************************
@@ -913,6 +1074,8 @@ public class GraphActivity
 		 */
 		@Override
 		protected void onPostExecute(Void result) {
+
+			construct_legend();
 
 			m_view.clear();
 

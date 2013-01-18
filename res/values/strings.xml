@@ -1503,7 +1503,7 @@
 		think about it.
 	</string>
 
-	<string name="graph_options_with_label">reps combo</string>
+	<string name="graph_options_with_label">reps combo %s</string>
 	<string name="graph_options_with_prompt">Combine reps with...</string>
 	<string name="graph_options_with_help_title">Combine Reps Help</string>
 	<string name="graph_options_with_help_msg">

@@ -401,6 +401,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		}
 
 
+		// Now that the new columns have been added, go through
+		// each exercise and turn on the graphical column
+		// that correlates to the significant aspect.
+		String[] ex_names = getAllExerciseNamesStrArray(db);
+
+		for (String name : ex_names) {
+			int significant = getSignificantExerciseNum(db, name);
+
+			// Find the corresponding graphical aspect.
+			int graph_sig = ExerciseData.get_graph_aspect(significant);
+			String col_name = get_exercise_string_from_col_num(graph_sig);
+
+			ContentValues values = new ContentValues();
+			values.put(col_name, true);		// Set that value to true.
+
+			db.update(EXERCISE_TABLE_NAME, values,
+						EXERCISE_COL_NAME + "=?", new String[] {name});
+		}
+
 	} // onUpgrade (db, old, new)
 
 
@@ -416,6 +435,82 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		Log.i(tag, "Called finalize()!!!");
 		super.finalize();
 	} // destructor
+
+
+	/*************************
+	 * So you have the number for an exercise column in a db
+	 * and would like the string-name for that column, yeah?
+	 * Here's the place to get you that info.
+	 * <p>
+	 * NOTE:  Just for the EXERCISE table, not the SET table!
+	 *
+	 * @param col	The number of the column that you have.
+	 * 				It's the number designated via
+	 * 				EXERCISE_COL_..._NUM.
+	 *
+	 * @return	The string that defines that column.<br/>
+	 * 			null if error.
+	 */
+	public static String get_exercise_string_from_col_num (int col) {
+		switch (col) {
+			case EXERCISE_COL_ID_NUM:
+				return COL_ID;
+			case EXERCISE_COL_NAME_NUM:
+				return EXERCISE_COL_NAME;
+			case EXERCISE_COL_TYPE_NUM:
+				return EXERCISE_COL_TYPE;
+			case EXERCISE_COL_GROUP_NUM:
+				return EXERCISE_COL_GROUP;
+			case EXERCISE_COL_WEIGHT_NUM:
+				return EXERCISE_COL_WEIGHT;
+			case EXERCISE_COL_WEIGHT_UNIT_NUM:
+				return EXERCISE_COL_WEIGHT_UNIT;
+			case EXERCISE_COL_REP_NUM:
+				return EXERCISE_COL_REP;
+			case EXERCISE_COL_DIST_NUM:
+				return EXERCISE_COL_DIST;
+			case EXERCISE_COL_DIST_UNIT_NUM:
+				return EXERCISE_COL_DIST_UNIT;
+			case EXERCISE_COL_TIME_NUM:
+				return EXERCISE_COL_TIME;
+			case EXERCISE_COL_TIME_UNIT_NUM:
+				return EXERCISE_COL_TIME_UNIT;
+			case EXERCISE_COL_LEVEL_NUM:
+				return EXERCISE_COL_LEVEL;
+			case EXERCISE_COL_CALORIE_NUM:
+				return EXERCISE_COL_CALORIES;
+			case EXERCISE_COL_OTHER_NUM:
+				return EXERCISE_COL_OTHER;
+			case EXERCISE_COL_OTHER_TITLE_NUM:
+				return EXERCISE_COL_OTHER_TITLE;
+			case EXERCISE_COL_OTHER_UNIT_NUM:
+				return EXERCISE_COL_OTHER_UNIT;
+			case EXERCISE_COL_SIGNIFICANT_NUM:
+				return EXERCISE_COL_SIGNIFICANT;
+			case EXERCISE_COL_ORDER_NUM:				// todo: need to refactor to lorder
+				return EXERCISE_COL_LORDER;
+
+			case EXERCISE_COL_GRAPH_WEIGHT_NUM:
+				return EXERCISE_COL_GRAPH_WEIGHT;
+			case EXERCISE_COL_GRAPH_REPS_NUM:
+				return EXERCISE_COL_GRAPH_REPS;
+			case EXERCISE_COL_GRAPH_DIST_NUM:
+				return EXERCISE_COL_GRAPH_DIST;
+			case EXERCISE_COL_GRAPH_TIME_NUM:
+				return EXERCISE_COL_GRAPH_TIME;
+			case EXERCISE_COL_GRAPH_LEVEL_NUM:
+				return EXERCISE_COL_GRAPH_LEVEL;
+			case EXERCISE_COL_GRAPH_CALS_NUM:
+				return EXERCISE_COL_GRAPH_CALS;
+			case EXERCISE_COL_GRAPH_OTHER_NUM:
+				return EXERCISE_COL_GRAPH_OTHER;
+			case EXERCISE_COL_GRAPH_REPS_WITH_NUM:
+				return EXERCISE_COL_GRAPH_WITH_REPS;
+			default:
+				Log.e(tag, "Illegal value " + col + " in get_string_from_col_num()!");
+				return null;
+		}
+	} // get_string_from_col_num(col)
 
 
 	/*************************
@@ -864,6 +959,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			null);	//	limit
 	} // getAllExerciseNames (activity)
 
+	/***************************
+	 * Like the above, but returns an array of Strings instead
+	 * of a Cursor.  That way you don't need to worry about it.
+	 *
+	 * @param db		A database primed for reading.
+	 *
+	 * @return		An array of the names, ordered by LORDER.
+	 *
+	 * @see #getAllExerciseNames()
+	 */
+	public static String[] getAllExerciseNamesStrArray (SQLiteDatabase db) {
+		int i, col;
+		Cursor c = db.query(EXERCISE_TABLE_NAME,	// table
+							new String[] {EXERCISE_COL_NAME},//	columns[]
+								null,	//selection
+								null,	// selectionArgs[]
+								null,	//	groupBy
+								null,	//	having
+								EXERCISE_COL_LORDER,	//	orderBy
+								null);	//	limit
+
+		String name_array[] = new String[c.getCount()];
+		i = 0;
+		col = c.getColumnIndex(EXERCISE_COL_NAME);
+		while (c.moveToNext()) {
+			name_array[i++] = c.getString(col);
+		}
+
+		c.close();
+
+		return name_array;
+	} // getAllExerciseNameStrArray (db)
+
 
 	/***************************
 	 * Similar to above, but this is the super-easy version.
@@ -873,6 +1001,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * ordered in the user's preference.
 	 *
 	 * @return	An array of Strings.  Could have a size 0.
+	 *
+	 * @see #getAllExerciseNames()
 	 */
 	public static String[] getAllExerciseNames() {
 		int i, col;
