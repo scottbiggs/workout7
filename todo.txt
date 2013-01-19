@@ -9,15 +9,8 @@ BUG: It looks like something goes wrong when graphing something
 	weights are the same, and the graph is just a vertical line
 	instead of a horizontal one.  No error msgs though.
 
-For the y-axii, make each successive one shift down one pixel
-	so that the lines don't overlap.
-
 When the Inspector tries to display an exercise with no sets
 	(empty), please don't say what the order is!  It's ugly.
-
-When displaying graphs, have the menu bring up a legend for the
-	colors (in a dialog).  It'll save a lot on screen real estate
-	(instead of having the legend on the screen).
 
 The pink/fuchsia for the graph colors is too much.  Tone it down
 	a bit.
@@ -216,6 +209,15 @@ Graph ALL the aspects!
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+When displaying graphs, have the menu bring up a legend for the
+	colors (in a dialog).  It'll save a lot on screen real estate
+	(instead of having the legend on the screen).
+	- No.  Found a way to have the legend take up very little space.
+
+For the y-axii, make each successive one shift down one pixel
+	so that the lines don't overlap.
+	- no longer relevant.
+
 Need better way to enter numbers!  How about one of those sliders?
 	- done, now I have WHEELS!  Weeee!
 

@@ -1503,7 +1503,8 @@
 		think about it.
 	</string>
 
-	<string name="graph_options_with_label">reps combo %s</string>
+	<!-- Added the no-break character to keep the TextView from clipping the leaning part of the italics -->
+	<string name="graph_options_with_label">reps <i>and</i>\u00a0</string>
 	<string name="graph_options_with_prompt">Combine reps with...</string>
 	<string name="graph_options_with_help_title">Combine Reps Help</string>
 	<string name="graph_options_with_help_msg">
