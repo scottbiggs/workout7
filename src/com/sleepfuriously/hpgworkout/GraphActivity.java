@@ -11,6 +11,7 @@ package com.sleepfuriously.hpgworkout;
 import java.util.ArrayList;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -55,10 +56,10 @@ public class GraphActivity
 	public static final String
 			NAME_KEY = "name";
 
-	/** Goes in-between items in the legend part of the Activity */ 
-	protected static final String DEFAULT_LEGEND_SPACER = " - ";
+	/** Goes in-between items in the legend part of the Activity */
+	protected static final String DEFAULT_LEGEND_SPACER = "   ";
 
-	
+
 	//-------------------------
 	//	Widgets
 	//-------------------------
@@ -437,122 +438,55 @@ public class GraphActivity
 //		SpannableString spannable;
 
 		TextView tv = (TextView) findViewById(R.id.graph_description_tv);
-/*
-		if (m_exercise_data.g_reps) {
-			str = getString(R.string.addexer_rep_label);
-			start = 0;
-			end = str.length();
-			spannable = new SpannableString(str);
-			spannable.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.color_reps)),
-							  start, end, 0);	// no flags
-			tv.setText(spannable, BufferType.SPANNABLE);
-		}
 
-		
-		// First, build a string that has all the relevant
-		// aspects.
-
-		str = "";
-		boolean needs_comma = false;
-		if (m_exercise_data.g_reps) {
-			str += getString(R.string.addexer_rep_label);
-			needs_comma = true;
-		}
-		if (m_exercise_data.g_level) {
-			if (needs_comma)
-				str += ", ";
-			str += getString(R.string.addexer_level_label);
-			needs_comma = true;
-		}
-		if (m_exercise_data.g_cals) {
-			if (needs_comma)
-				str += ", ";
-			str += getString(R.string.addexer_calorie_label);
-			needs_comma = true;
-		}
-		if (m_exercise_data.g_weight) {
-			if (needs_comma)
-				str += ", ";
-			str += getString(R.string.addexer_weight_label);
-			needs_comma = true;
-		}
-		if (m_exercise_data.g_dist) {
-			if (needs_comma)
-				str += ", ";
-			str += getString(R.string.addexer_dist_label);
-			needs_comma = true;
-		}
-		if (m_exercise_data.g_time) {
-			if (needs_comma)
-				str += ", ";
-			str += getString(R.string.addexer_time_label);
-			needs_comma = true;
-		}
-		if (m_exercise_data.g_other) {
-			if (needs_comma)
-				str += ", ";
-			str += m_exercise_data.other_title;
-			needs_comma = true;
-		}
-		
-		if (m_exercise_data.g_with_reps != -1) {
-			if (needs_comma)
-				str += ", ";
-			str += getString(R.string.graph_options_with_label);
-			needs_comma = true;	// not really needed
-		}
-
-		// Okay, now we have a string.
-*/
-		
 		// This time, let's try a SpannableStringBuilder
-		StyleableSpannableStringBuilder builder = 
+		StyleableSpannableStringBuilder builder =
 				new StyleableSpannableStringBuilder();
-		
+
 		boolean needs_seperator = false;
 		if (m_exercise_data.g_reps) {
-			str = getString(R.string.addexer_rep_label);
+			str = getString(R.string.reps_readable);
 			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_reps));
 			needs_seperator = true;
 		}
 		if (m_exercise_data.g_level) {
 			if (needs_seperator)
 				builder.append (DEFAULT_LEGEND_SPACER);
-			str = getString(R.string.addexer_level_label);
+			str = getString(R.string.level_readable);
 			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_level));
 			needs_seperator = true;
 		}
 		if (m_exercise_data.g_cals) {
 			if (needs_seperator)
 				builder.append (DEFAULT_LEGEND_SPACER);
-			str = getString(R.string.addexer_calorie_label);
+			str = getString(R.string.cals_readable);
 			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_cals));
 			needs_seperator = true;
 		}
 		if (m_exercise_data.g_weight) {
 			if (needs_seperator)
 				builder.append (DEFAULT_LEGEND_SPACER);
-			str = getString(R.string.addexer_weight_label);
+			str = getString(R.string.weight_readable);
 			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_weight));
 			needs_seperator = true;
 		}
-		
+
 		if (m_exercise_data.g_dist) {
 			if (needs_seperator)
 				builder.append (DEFAULT_LEGEND_SPACER);
-			str = getString(R.string.addexer_dist_label);
+			str = getString(R.string.dist_readable);
 			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_dist));
 			needs_seperator = true;
 		}
-		
+
 		if (m_exercise_data.g_time) {
 			if (needs_seperator)
 				builder.append (DEFAULT_LEGEND_SPACER);
-			str = getString(R.string.addexer_time_label);
+			str = getString(R.string.time_readable);
 			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_time));
 			needs_seperator = true;
 		}
-		
+
 		if (m_exercise_data.g_other) {
 			if (needs_seperator)
 				builder.append (DEFAULT_LEGEND_SPACER);
@@ -560,40 +494,80 @@ public class GraphActivity
 			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_other));
 			needs_seperator = true;
 		}
-		
+
 		if (m_exercise_data.g_with_reps != -1) {
 			if (needs_seperator)
 				builder.append (DEFAULT_LEGEND_SPACER);
-			str = getString(R.string.graph_options_with_label, "foo");
+
+			// What is combined with reps?
+			String with_name;
+			if (m_exercise_data.g_with_reps == DatabaseHelper.EXERCISE_COL_OTHER_NUM) {
+				with_name = m_exercise_data.other_title;
+			}
+			else {
+				with_name = get_nice_string_from_aspect_num(this, m_exercise_data.g_with_reps);
+			}
+			str = getString(R.string.with_readable, with_name);
 			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_with_reps));
 			needs_seperator = true;
 		}
 
 		// Finally!
 		tv.setText(builder);
-		
+
 	} // construct_legend()
 
 
 	/************************
-	 * Used during onCreate() and onResume(), this does two things:
-	 * 	1.	Creates the ArrayList to hold the graph data
-	 * 	2.	Starts the ASyncTask to read that data and
-	 * 		draw the graph.
+	 * Builds the list of GraphCollections for this
+	 * Activity.
+	 * <p>
+	 *  preconditions:<br/>
+	 *		<i>m_exercise_data</i> is fully loaded.<br/>
+	 *		<i>m_set_data</i> is also fully loaded.
+	 * <p>
+	 *  side effects:<br/>
+	 *  		<i>m_view</i>, our GView will have a collection
+	 *  		added to it for every aspect that is used for this
+	 *  		exercise.
+	 *
 	 */
-	private void setup_data() {
-		// Set up this data list!
-		if (m_set_data != null) {
-			m_set_data.clear();
-			m_set_data = null;
+	protected void construct_collections_for_aspects() {
+		if (m_exercise_data.g_reps) {
+			add_new_collection(DatabaseHelper.EXERCISE_COL_REP_NUM,
+							getResources().getColor(R.color.color_reps));
 		}
-		m_set_data = new ArrayList<SetData>();
-		m_set_data.clear();
 
-		// Start the AsyncTask.
-		new GraphSyncTask().execute();
+		if (m_exercise_data.g_cals) {
+			add_new_collection(DatabaseHelper.EXERCISE_COL_CALORIE_NUM,
+							getResources().getColor(R.color.color_cals));
+		}
 
-	} // setup_graph()
+		if (m_exercise_data.g_level) {
+			add_new_collection(DatabaseHelper.EXERCISE_COL_LEVEL_NUM,
+							getResources().getColor(R.color.color_level));
+		}
+
+		if (m_exercise_data.g_weight) {
+			add_new_collection(DatabaseHelper.EXERCISE_COL_WEIGHT_NUM,
+							getResources().getColor(R.color.color_weight));
+		}
+
+		if (m_exercise_data.g_dist) {
+			add_new_collection(DatabaseHelper.EXERCISE_COL_DIST_NUM,
+							getResources().getColor(R.color.color_dist));
+		}
+
+		if (m_exercise_data.g_time) {
+			add_new_collection(DatabaseHelper.EXERCISE_COL_TIME_NUM,
+							getResources().getColor(R.color.color_time));
+		}
+
+		if (m_exercise_data.g_other) {
+			add_new_collection(DatabaseHelper.EXERCISE_COL_OTHER_NUM,
+							getResources().getColor(R.color.color_other));
+		}
+	} // construct_collections_for_aspects()
 
 
 	/************************
@@ -602,10 +576,16 @@ public class GraphActivity
 	 * also checks first to see if it needs to do anything
 	 * at all, which is kind of nice.
 	 * <p>
-	 * preconditions:	All the data from the DB is loaded
-	 * 					and ready to poked and prodded.
+	 * <b>preconditions</b>:<br/>
+	 * 		All the data from the DB is loaded
+	 * 		and ready to poked and prodded.
+	 * <p>
+	 * <b>side effects</b>:<br/>
+	 * 		Our GView will have another GraphCollection
+	 * 		added (but only if there's a with_reps aspect
+	 * 		to graph).
 	 */
-	private void setup_with_reps() {
+	private void construct_with_reps() {
 		if ((m_exercise_data.g_with_reps == -1) ||
 			(m_exercise_data.breps == false)) {
 			return;
@@ -626,7 +606,6 @@ public class GraphActivity
 				bounds.left = pt.x;
 			if (pt.x > bounds.right)
 				bounds.right = pt.x;
-
 
 
 			switch (m_exercise_data.g_with_reps) {
@@ -691,6 +670,56 @@ public class GraphActivity
 	} // setup_with_reps()
 
 
+	/***********************
+	 * Sets up the X-axis for the graph. This comprises
+	 * mostly of dates for the graph.
+	 * <p>
+	 *  preconditions:<br/>
+	 *		<i>m_set_data</i> is fully loaded.
+	 * <p>
+	 *  side effects:<br/>
+	 *  		<i>m_view</i> will have a GraphXAxis class
+	 *  			created for it.
+	 */
+	protected void construct_x_axis() {
+		m_view.m_graph_x_axis = new GraphXAxis();
+		long left = Long.MAX_VALUE, right = -Long.MAX_VALUE;
+
+		for (SetData set_data : m_set_data) {
+			MyCalendar cal = new MyCalendar(set_data.millis);
+			String str = cal.print_month_day_numbers();
+			m_view.m_graph_x_axis.add_num(set_data.millis, str);
+			if (set_data.millis < left)
+				left = set_data.millis;
+			if (set_data.millis > right)
+				right = set_data.millis;
+		}
+		m_view.m_graph_x_axis.set_bounds(left, right);
+
+	} // construct_x_axis()
+
+
+	/************************
+	 * Used during onCreate() and onResume(), this does two things:
+	 * 	1.	Creates the ArrayList to hold the graph data
+	 * 	2.	Starts the ASyncTask to read that data and
+	 * 		draw the graph.
+	 */
+	private void setup_data() {
+		// Set up this data list!
+		if (m_set_data != null) {
+			m_set_data.clear();
+			m_set_data = null;
+		}
+		m_set_data = new ArrayList<SetData>();
+		m_set_data.clear();
+
+		// Start the AsyncTask.
+		new GraphSyncTask().execute();
+
+	} // setup_graph()
+
+
 	/************************
 	 * A nice thing to do before trying to access the database.
 	 * This first tests to make sure that another thread is not
@@ -725,13 +754,13 @@ public class GraphActivity
 	 * Goes through m_set_data and extracts all the data associated
 	 * with a particular aspect.  This is then loaded up into a
 	 * GraphCollection and added to our GView (m_view).
-	 *
-	 * preconditions:
-	 * 	m_set_data	Loaded up with all our data from the async
-	 * 				task.
-	 *
-	 * side effect:
-	 * 	m_view		Will have a GraphCollection added to it.
+	 *<p>
+	 * <b>preconditions</b>:<br/>
+	 * 	<i>m_set_data</i>	Loaded up with all our data from the async
+	 * 						task.
+	 *<p>
+	 * <b>side effect</b>:<br/>
+	 * 	<i>m_view</i>		Will have a GraphCollection added to it.
 	 *
 	 * @param aspect		The aspect (identified by the
 	 * 					DatabaseHelper.EXERCISE_COL_???_NUM)
@@ -943,6 +972,57 @@ public class GraphActivity
 	} // save_data()
 
 
+	/*************
+	 * Given the number of an aspect, this returns a nice
+	 * string for that number.  Will work for the graphical
+	 * aspects as well as the regular ones.
+	 * <p>
+	 * NOTE:
+	 *		This is different from a similar-sounding method
+	 *		in DatabaseActivity! This version gets a string
+	 *		that's designed to be human-readable, whereas
+	 *		the other version returns the actual database
+	 *		column name.
+	 *
+	 * @param ctx	The context.  Needed as this is a static method.
+	 *
+	 * @param num	The number of the aspect (as specified
+	 * 				in the 'significant' portion of ExerciseData).
+	 *
+	 * @return	A string represent that aspect that's human
+	 * 			readable (from strings.xml in the general section).<br/>
+	 * 			null on error.
+	 */
+	public static String get_nice_string_from_aspect_num (Context ctx, int num) {
+		switch (num) {
+			case DatabaseHelper.EXERCISE_COL_REP_NUM:
+			case DatabaseHelper.EXERCISE_COL_GRAPH_REPS_NUM:
+				return ctx.getString(R.string.reps_readable);
+			case DatabaseHelper.EXERCISE_COL_LEVEL_NUM:
+			case DatabaseHelper.EXERCISE_COL_GRAPH_LEVEL_NUM:
+				return ctx.getString(R.string.level_readable);
+			case DatabaseHelper.EXERCISE_COL_CALORIE_NUM:
+			case DatabaseHelper.EXERCISE_COL_GRAPH_CALS_NUM:
+				return ctx.getString(R.string.cals_readable);
+			case DatabaseHelper.EXERCISE_COL_WEIGHT_NUM:
+			case DatabaseHelper.EXERCISE_COL_GRAPH_WEIGHT_NUM:
+				return ctx.getString(R.string.weight_readable);
+			case DatabaseHelper.EXERCISE_COL_DIST_NUM:
+			case DatabaseHelper.EXERCISE_COL_GRAPH_DIST_NUM:
+				return ctx.getString(R.string.dist_readable);
+			case DatabaseHelper.EXERCISE_COL_TIME_NUM:
+			case DatabaseHelper.EXERCISE_COL_GRAPH_TIME_NUM:
+				return ctx.getString(R.string.time_readable);
+			case DatabaseHelper.EXERCISE_COL_OTHER_NUM:
+			case DatabaseHelper.EXERCISE_COL_GRAPH_OTHER_NUM:
+				Log.w(tag, "Do not call get_nice_string_from_aspect_num() for 'other'! Use the other's title instead.");
+				return ctx.getString(R.string.other_readable);
+		}
+		Log.e(tag, "Illegal value in get_nice_string_from_aspect_num (" + num + ")!");
+		return null;
+	} // get_nice_string_from_aspect_num (num);
+
+
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	//	The Three Types:
 	//		Params		- The info sent to the task when
@@ -1079,14 +1159,12 @@ public class GraphActivity
 
 			m_view.clear();
 
-			// Go through the data and create a GraphCollection for
-			// each graphical aspect.
-
-			// But first, if the aspect count is 0 (and there's no other graphs),
+			// If the aspect count is 0 (and there's no other graphs),
 			// then there's been an error or we started with a database that wasn't
 			// properly set.  So turn on the significant aspect.
 			if ((ExerciseData.count_valid_graph_aspects(m_exercise_data) == 0) &&
 				(m_exercise_data.g_with_reps == -1)) {
+				Log.w(tag, "onPostExecute(), all the graphs are turned off! Turning on the most significant aspect...");
 				int graph_aspect_num = ExerciseData.get_graph_aspect(m_exercise_data.significant);
 				m_exercise_data.set_aspect_by_num(graph_aspect_num, true);
 			}
@@ -1097,63 +1175,10 @@ public class GraphActivity
 				m_options_butt.setVisibility(View.GONE);
 			}
 
-
-			/** The number of aspects that we're graphing */
-			if (m_exercise_data.g_reps) {
-				add_new_collection(DatabaseHelper.EXERCISE_COL_REP_NUM,
-								getResources().getColor(R.color.color_reps));
-			}
-
-			if (m_exercise_data.g_cals) {
-				add_new_collection(DatabaseHelper.EXERCISE_COL_CALORIE_NUM,
-								getResources().getColor(R.color.color_cals));
-			}
-
-			if (m_exercise_data.g_level) {
-				add_new_collection(DatabaseHelper.EXERCISE_COL_LEVEL_NUM,
-								getResources().getColor(R.color.color_level));
-			}
-
-			if (m_exercise_data.g_weight) {
-				add_new_collection(DatabaseHelper.EXERCISE_COL_WEIGHT_NUM,
-								getResources().getColor(R.color.color_weight));
-			}
-
-			if (m_exercise_data.g_dist) {
-				add_new_collection(DatabaseHelper.EXERCISE_COL_DIST_NUM,
-								getResources().getColor(R.color.color_dist));
-			}
-
-			if (m_exercise_data.g_time) {
-				add_new_collection(DatabaseHelper.EXERCISE_COL_TIME_NUM,
-								getResources().getColor(R.color.color_time));
-			}
-
-			if (m_exercise_data.g_other) {
-				add_new_collection(DatabaseHelper.EXERCISE_COL_OTHER_NUM,
-								getResources().getColor(R.color.color_other));
-			}
-
-			// Do the "with reps" graph.
-			setup_with_reps();
-
-
-			// Setup the x-axis
-			m_view.m_graph_x_axis = new GraphXAxis();
-			long left = Long.MAX_VALUE, right = -Long.MAX_VALUE;
-
-			for (SetData set_data : m_set_data) {
-				MyCalendar cal = new MyCalendar(set_data.millis);
-				String str = cal.print_month_day_numbers();
-				m_view.m_graph_x_axis.add_num(set_data.millis, str);
-				if (set_data.millis < left)
-					left = set_data.millis;
-				if (set_data.millis > right)
-					right = set_data.millis;
-			}
-			left--;		// A little padding
-			right++;
-			m_view.m_graph_x_axis.set_bounds(left, right);
+			// The main constructors...
+			construct_collections_for_aspects();
+			construct_with_reps();
+			construct_x_axis();
 
 			stop_progress_dialog();
 			m_view.invalidate();		// Necessary to make sure that

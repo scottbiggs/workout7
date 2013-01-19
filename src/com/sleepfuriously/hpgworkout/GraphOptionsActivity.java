@@ -409,7 +409,7 @@ public class GraphOptionsActivity
 		else {
 			m_level_cb.setChecked(itt.getBooleanExtra(ITT_KEY_GRAPH_LEVEL, false));
 
-			m_with_reps_list.add(getString(R.string.addexer_level_label));
+			m_with_reps_list.add(getString(R.string.level_readable));
 			m_with_reps_list_ref.add(DatabaseHelper.EXERCISE_COL_LEVEL_NUM);
 			last_bar = bar;
 		}
@@ -422,7 +422,7 @@ public class GraphOptionsActivity
 		else {
 			m_cals_cb.setChecked(itt.getBooleanExtra(ITT_KEY_GRAPH_CALS, false));
 
-			m_with_reps_list.add(getString(R.string.addexer_calorie_label));
+			m_with_reps_list.add(getString(R.string.cals_readable));
 			m_with_reps_list_ref.add(DatabaseHelper.EXERCISE_COL_CALORIE_NUM);
 			last_bar = bar;
 		}
@@ -435,7 +435,7 @@ public class GraphOptionsActivity
 		else {
 			m_weight_cb.setChecked(itt.getBooleanExtra(ITT_KEY_GRAPH_WEIGHT, false));
 
-			m_with_reps_list.add(getString(R.string.addexer_weight_label));
+			m_with_reps_list.add(getString(R.string.weight_readable));
 			m_with_reps_list_ref.add(DatabaseHelper.EXERCISE_COL_WEIGHT_NUM);
 			last_bar = bar;
 		}
@@ -448,7 +448,7 @@ public class GraphOptionsActivity
 		else {
 			m_dist_cb.setChecked(itt.getBooleanExtra(ITT_KEY_GRAPH_DIST, false));
 
-			m_with_reps_list.add(getString(R.string.addexer_dist_label));
+			m_with_reps_list.add(getString(R.string.dist_readable));
 			m_with_reps_list_ref.add(DatabaseHelper.EXERCISE_COL_DIST_NUM);
 			last_bar = bar;
 		}
@@ -461,7 +461,7 @@ public class GraphOptionsActivity
 		else {
 			m_time_cb.setChecked(itt.getBooleanExtra(ITT_KEY_GRAPH_TIME, false));
 
-			m_with_reps_list.add(getString(R.string.addexer_time_label));
+			m_with_reps_list.add(getString(R.string.time_readable));
 			m_with_reps_list_ref.add(DatabaseHelper.EXERCISE_COL_TIME_NUM);
 			last_bar = bar;
 		}
@@ -498,26 +498,26 @@ public class GraphOptionsActivity
 
 			// Display the current setting.
 			int with = itt.getIntExtra(ITT_KEY_WITH_REPS, -1);
-			String current_with_str = new String();
+			String current_with_str = new String (getString(R.string.graph_options_with_no_selection));
 			switch (with) {
 				case DatabaseHelper.EXERCISE_COL_REP_NUM:
-					current_with_str = getString(R.string.addexer_rep_label);
+					current_with_str = getString(R.string.reps_readable);
 					Log.e(tag, "Problem in read_intent(): can't combine reps with reps!");
 					break;
 				case DatabaseHelper.EXERCISE_COL_LEVEL_NUM:
-					current_with_str = getString(R.string.addexer_level_label);
+					current_with_str = getString(R.string.level_readable);
 					break;
 				case DatabaseHelper.EXERCISE_COL_CALORIE_NUM:
-					current_with_str = getString(R.string.addexer_calorie_label);
+					current_with_str = getString(R.string.cals_readable);
 					break;
 				case DatabaseHelper.EXERCISE_COL_WEIGHT_NUM:
-					current_with_str = getString(R.string.addexer_weight_label);
+					current_with_str = getString(R.string.weight_readable);
 					break;
 				case DatabaseHelper.EXERCISE_COL_DIST_NUM:
-					current_with_str = getString(R.string.addexer_dist_label);
+					current_with_str = getString(R.string.dist_readable);
 					break;
 				case DatabaseHelper.EXERCISE_COL_TIME_NUM:
-					current_with_str = getString(R.string.addexer_time_label);
+					current_with_str = getString(R.string.time_readable);
 					break;
 				case DatabaseHelper.EXERCISE_COL_OTHER_NUM:
 					current_with_str = itt.getStringExtra(ITT_KEY_GRAPH_OTHER_NAME);

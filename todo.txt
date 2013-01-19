@@ -1,5 +1,13 @@
 TODO:
 -----------------
+On the MySpinners, use android:drawablePadding to give some
+	space between the arrow and the text!
+
+Long-click help on the wheels is not implemented.
+
+BUG: There's still warnings and etc. happening when the Graph
+	displays.
+
 BUG: It looks like something goes wrong when graphing something
 	that's the same value for every set.  I found it when doing
 	the squats.  I changed one value to work on something else,
@@ -16,7 +24,7 @@ The pink/fuchsia for the graph colors is too much.  Tone it down
 	a bit.
 
 Need to make and test the new GraphLine class so that it supports
-	null values.
+	null values and intermittent data.
 
 Graphs need to be able to ZOOM IN/OUT!  What does that mean?
 	When the user pinches, the screen should respond accordingly.
@@ -48,10 +56,6 @@ Minor Bug: I get warnings from SQLite when loading the Grid
 	and there are LOTS of exercises.  Seems it runs out of
 	memory and requests a different way to do some things.
 
-Graph needs to be more independent.
-
-Graph needs to handle intermittent data.
-
 When graphing, have the option of graphing by exercise
 	set or by day (toggle button or menu?).
 Issue:  The graph adds up weight on the same day, that's
@@ -60,16 +64,9 @@ Issue:  The graph adds up weight on the same day, that's
 	or show the max?  Or maybe have the user select, as
 	described above?
 
-Graphs: the x-axis should be by date, not by the quantity of sets.
-
 Graph by muscle group.
 
 Graph by exercise type.
-
-Not all the new help dialogs use the new buttons.  The help dialogs
-	for the Tabs, display the old dialog, for example.
-
-In ASet, the notes and stress labels are black, not ivory.
 
 BUG: When the GraphActivity removes x-axis tick lines because they
 	are too close together, the date on the last tick line can be
@@ -79,7 +76,6 @@ TEST the nags.
 
 Preferences: put the option to Reset things here.  Clear the workout data, or
 	clear the exercises.
-
 Add the ability to clear EVERYTHING.  This is a tabula rasa,
 	so that the person can clear their entire history AND
 	all their exercises at once.  Of course, give appropriate
@@ -135,10 +131,6 @@ Make landscape versions of layouts.
 Fix the strings: there are lots of redundant strings for add
 	and edit screens.
 
-Make the DatabaseHelper.onUpgrade() work properly so that
-	it doesn't delete all their work when upgrading.  Instead,
-	the routine should gracefully update the new format.
-
 Make sure that all the drawables are in the correct directories.
 
 Need to remove the HistoryActivity from the project.
@@ -174,7 +166,9 @@ In the graphs, instead of horizontal lines, divide up into
 ---------------------------------------------------
 TABLED (for later versions)
 ---------------------------------------------------
-Need to redo the Order!  Something like "Out of Milk"?
+Support multiple users/accounts.
+
+Need to redo the Exercise Order!  Something like "Out of Milk"?
 Make it possible for the user to drag and rearrange
 	the rows.
 
@@ -204,11 +198,29 @@ The Graph:
 
 	* Need to be able to handle missing data.
 
-Graph ALL the aspects!
-
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Not all the new help dialogs use the new buttons.  The help dialogs
+	for the Tabs, display the old dialog, for example.
+	- done
+
+Graphs: the x-axis should be by date, not by the quantity of sets.
+	- done
+
+In ASet, the notes and stress labels are black, not ivory.
+
+Make the DatabaseHelper.onUpgrade() work properly so that
+	it doesn't delete all their work when upgrading.  Instead,
+	the routine should gracefully update the new format.
+	- done
+
+Graph ALL the aspects!
+	- done
+
+Graph needs to be more independent.
+	- done
+
 When displaying graphs, have the menu bring up a legend for the
 	colors (in a dialog).  It'll save a lot on screen real estate
 	(instead of having the legend on the screen).

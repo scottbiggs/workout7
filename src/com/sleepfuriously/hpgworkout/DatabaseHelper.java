@@ -411,7 +411,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 			// Find the corresponding graphical aspect.
 			int graph_sig = ExerciseData.get_graph_aspect(significant);
-			String col_name = get_exercise_string_from_col_num(graph_sig);
+			String col_name = get_exercise_string_from_col_num_db(graph_sig);
 
 			ContentValues values = new ContentValues();
 			values.put(col_name, true);		// Set that value to true.
@@ -451,7 +451,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * @return	The string that defines that column.<br/>
 	 * 			null if error.
 	 */
-	public static String get_exercise_string_from_col_num (int col) {
+	public static String get_exercise_string_from_col_num_db (int col) {
 		switch (col) {
 			case EXERCISE_COL_ID_NUM:
 				return COL_ID;
@@ -510,7 +510,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				Log.e(tag, "Illegal value " + col + " in get_string_from_col_num()!");
 				return null;
 		}
-	} // get_string_from_col_num(col)
+	} // get_string_from_col_num_db(col)
+
 
 
 	/*************************

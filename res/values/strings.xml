@@ -44,9 +44,9 @@
 	<string name="menu_zoomout_button">\ shrink it</string>
 	<string name="menu_zoomreset_button">reset text</string>
 
-	<!-- ============          			============ -->
+	<!-- ============          			 ============ -->
 	<!-- ============ Multiple Activity  ============ -->
-	<!-- ============          			============ -->
+	<!-- ============          			 ============ -->
 
 	<string name="label_reps">reps = %s</string>
 	<string name="label_weight">weight (%1$s) = %2$s</string>
@@ -56,10 +56,19 @@
 	<string name="label_time">time (%1$s) = %2$s</string>
 	<string name="label_other">%1$s (%2$s) = %3$s</string>
 
+	<string name="reps_readable">reps</string>
+	<string name="level_readable">level</string>
+	<string name="cals_readable">calories</string>
+	<string name="weight_readable">weight</string>
+	<string name="dist_readable">distance</string>
+	<string name="time_readable">time</string>
+	<string name="other_readable">other</string>		<!-- should not be used! Use other_title instead -->
+	<string name="with_readable">reps&#xA0;and&#xA0;%s</string>	<!-- Use non-breakable spaces instead of regular spaces -->
 
-	<!-- ============		 ============ -->
+
+	<!-- ============		  ============ -->
 	<!-- ============ Welcome ============ -->
-	<!-- ============		 ============ -->
+	<!-- ============		  ============ -->
 	<string name="welcome_title">Hyde Park Gym</string>
 	<string name="welcome_subtitle">Workout Tool</string>
 
@@ -910,7 +919,7 @@
 
 	<string name="aset_time_label">time (%s)</string>
 	<string name="aset_time_off_label">time</string>
-		<string name="aset_time_unit">minutes</string>
+	<string name="aset_time_unit">minutes</string>
 	<string name="aset_time_help_title">Time</string>
 	<string name="aset_time_help_msg">Just enter the time
 		you spent on this exercise. Use the units provided.
@@ -1525,7 +1534,7 @@
 		pounds instead of his two reps of&#x2026;well I can\'t count that high,
 		but you get the picture).
 	</string>
-	<string name="graph_options_with_no_selection">none</string>
+	<string name="graph_options_with_no_selection">nothing</string>
 
 	<string name="graph_options_no_checks_title">No Checks</string>
 	<string name="graph_options_no_checks_msg">
@@ -1533,6 +1542,7 @@
 		SOMETHING for the grapher to display.
 		\n\nHow else can I show off all that beautiful code?
 	</string>
+
 
 	<!-- ============          ============ -->
 	<!-- ============ History  ============ -->

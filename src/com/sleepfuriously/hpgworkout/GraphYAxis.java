@@ -152,6 +152,12 @@ public class GraphYAxis {
 	public void set_range (float min, float max) {
 		m_orig_min = min;
 		m_orig_max = max;
+		
+		if (m_orig_min == m_orig_max) {
+			Log.e(tag, "Hey, you're trying to set the min and max to the same value!.  I'll fix it for you, but this stuff's gotta stop! Btw, they are both " + min);
+			m_orig_min--;
+			m_orig_min++;
+		}
 		heckbert_calc_range();
 	}
 
@@ -217,9 +223,16 @@ public class GraphYAxis {
 	 * 					already be set.
 	 */
 	public void draw (Canvas canvas, Paint paint) {
-		if ((m_orig_min == NaN) ||
-			(m_orig_max == NaN) ||
-			(m_draw_area == null)) {
+		if (m_orig_min == NaN) {
+			Log.e(tag, "draw() can't continue because m_orig_min is NaN!");
+			return;
+		}
+		if (m_orig_max == NaN) {
+			Log.e(tag, "draw() can't continue because m_orig_max is NaN!");
+			return;
+		}
+		if (m_draw_area == null) {
+			Log.e(tag, "draw() can't continue because m_draw_area is null!");
 			return;
 		}
 
@@ -352,7 +365,7 @@ public class GraphYAxis {
 				Log.v(tag, "heckbert_cal_range(): resetting to default number of ticks.");
 			}
 		}
-
+		
 		range = heckbert_nicenum(m_orig_max - m_orig_min, false);
 		m_tick_spacing = heckbert_nicenum(range / (num_ticks - 1), true);
 		m_heckbert_min = (float) (Math.floor(m_orig_min / m_tick_spacing) * m_tick_spacing);
