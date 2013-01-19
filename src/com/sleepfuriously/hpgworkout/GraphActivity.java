@@ -820,6 +820,17 @@ public class GraphActivity
 			collection.m_line_graph.add_point(pt);
 		}
 
+		// HACK!  The GraphLine and the GraphYAxis classes hate
+		// it when the boundaries are the same.  Test and fix
+		// those situations here.
+		if (bounds.left == bounds.right) {
+			bounds.left -= 2;
+			bounds.right += 2;
+		}
+		if (bounds.top == bounds.bottom) {
+			bounds.top += 2;
+			bounds.bottom -= 2;
+		}
 
 		collection.m_line_graph.set_bounds(bounds);
 		collection.m_id = DatabaseHelper.EXERCISE_COL_REP_NUM;	// Using this for ID. Convenient and unique.
