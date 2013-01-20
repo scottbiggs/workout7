@@ -39,7 +39,7 @@
 			android:windowSoftInputMode="stateHidden"
 			/>
 		<activity android:name=".RowEditActivity"/>
-		<activity android:name=".ASetActivity"
+		<activity android:name="com.sleepfuriously.hpgworkout.AddSetActivity"
 			android:windowSoftInputMode="stateHidden"
 			/>
 		<activity android:name=".InspectorActivity2"/>

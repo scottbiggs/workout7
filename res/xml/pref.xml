@@ -21,12 +21,11 @@
 		android:summaryOff="@string/prefs_display_save_screen_msg"
 		android:summaryOn="@string/prefs_display_keep_on_msg"
 		android:title="@string/prefs_display_title" />
-<!--
+
 	<PreferenceCategory
 		android:title="@string/prefs_category_wheels"
 		android:summary="category summary will be written here."
 		>
--->
 		<com.sleepfuriously.hpgworkout.LongCheckboxPreference
 			android:key="@string/prefs_wheel_key"
 			android:defaultValue="true"
@@ -69,7 +68,7 @@
 			android:dialogIcon="@drawable/hpglogo_small"
 			android:inputType="number"
 			/>
-
+-->
 		<EditTextPreference
 			android:key="@string/prefs_wheel_width_key"
 			android:defaultValue="10"
@@ -81,10 +80,8 @@
 			android:dialogIcon="@drawable/hpglogo_small"
 			android:inputType="number"
 			/>
--->
-<!--
 	</PreferenceCategory>
--->
+
 
 	<PreferenceCategory
 		android:title="@string/prefs_category_inspector"

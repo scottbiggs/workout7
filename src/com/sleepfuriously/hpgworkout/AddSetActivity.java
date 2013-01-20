@@ -47,7 +47,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class ASetActivity
+public class AddSetActivity
 				extends BaseDialogActivity
 				implements
 					OnClickListener,

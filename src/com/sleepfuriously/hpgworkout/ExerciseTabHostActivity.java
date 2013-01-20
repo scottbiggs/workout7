@@ -160,7 +160,7 @@ public class ExerciseTabHostActivity
 		//		it is defined.
 		//
 		{
-			Intent aset_itt = new Intent(this, ASetActivity.class);
+			Intent aset_itt = new Intent(this, AddSetActivity.class);
 			aset_itt.putExtra(KEY_NAME, m_ex_name);
 			aset_itt.putExtra(KEY_SET_ID, m_id);
 			spec = th.newTabSpec("ASetActivity");// No one knows what this is for

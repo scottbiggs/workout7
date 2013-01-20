@@ -81,7 +81,7 @@
 		found.
 		\n\nHave fun!</string>
 
-	<string name="welcome_settings_button">settings</string>
+	<string name="welcome_settings_button">preferences</string>
 	<string name="welcome_settings_help_title">Preferences</string>
 	<string name="welcome_settings_help_msg">Tap on this
 		button to change the settings for this program.

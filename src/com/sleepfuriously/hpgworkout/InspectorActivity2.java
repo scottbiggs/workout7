@@ -299,7 +299,7 @@ public class InspectorActivity2
 			init_from_db();
 			HistoryActivity.m_db_dirty = true;
 			GraphActivity.m_db_dirty = true;
-			ASetActivity.m_reset_widgets = true;
+			AddSetActivity.m_reset_widgets = true;
 			m_database_changed = true;	// Used to tell the Grid that the DB changed.
 		}
 
