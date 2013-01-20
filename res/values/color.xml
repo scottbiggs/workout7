@@ -85,7 +85,7 @@
 	<color name="yellow_maize">#FBEC5D</color>
 	<color name="green_bright">#66FF00</color>
 	<color name="purple_amethyst">#9966CC</color>
-	<color name="pink_fuchsia">#FF00FF</color>
+	<color name="pink_fuchsia">#e850e8</color>	<!-- Upped the green to make it less intense -->
 	<color name="blue_dodger">#1E90FF</color>
 	<color name="brown_camel">#C19A6B</color>
 	<color name="salmon">#FA8072</color>

@@ -3,10 +3,7 @@ TODO:
 BUG: When exiting the program (particularly through the "back"
 	button, but sometimes the regular way, too), re-entering
 	can cause an error Toast about too many instances of
-	DatabaseHelper.
-
-On the MySpinners, use android:drawablePadding to give some
-	space between the arrow and the text!
+	DatabaseHelper.  Don't know if this causes problems.
 
 Long-click help on the wheels is not implemented.
 
@@ -15,9 +12,6 @@ BUG: There's still warnings and etc. happening when the Graph
 
 When the Inspector tries to display an exercise with no sets
 	(empty), please don't say what the order is!  It's ugly.
-
-The pink/fuchsia for the graph colors is too much.  Tone it down
-	a bit.
 
 Need to make and test the new GraphLine class so that it supports
 	null values and intermittent data.
@@ -203,6 +197,14 @@ The Graph:
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+The pink/fuchsia for the graph colors is too much.  Tone it down
+	a bit.
+	- done
+
+On the MySpinners, use android:drawablePadding to give some
+	space between the arrow and the text!
+	- taken care of
+
 BUG: can't graph correctly when there's just one set in
 	an exercise.
 	- fixed
