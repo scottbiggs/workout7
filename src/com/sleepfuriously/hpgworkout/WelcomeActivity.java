@@ -122,6 +122,7 @@ public class WelcomeActivity extends BaseDialogActivity
 
 
 	//------------------------------
+	@Override
 	public void onClick(View v) {
 		Intent itt;
 
@@ -163,6 +164,7 @@ public class WelcomeActivity extends BaseDialogActivity
 
 
 	//------------------------------
+	@Override
 	public boolean onLongClick(View v) {
 		switch (v.getId()) {
 			case R.id.welcome_start_butt:
