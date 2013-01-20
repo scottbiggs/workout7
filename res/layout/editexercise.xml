@@ -129,14 +129,20 @@
 						/>
 
 					<com.sleepfuriously.hpgworkout.MySpinner
-						android:id="@+id/edit_exer_type_msp"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_gravity="center_vertical"
-						android:layout_marginRight="16dp"
-						android:drawableRight="@android:drawable/arrow_down_float"
-						android:gravity="center"
-						android:hint="@string/select" />
+					    android:id="@+id/edit_exer_type_msp"
+					    style="@style/white_text_small"
+					    android:layout_width="wrap_content"
+					    android:layout_height="wrap_content"
+					    android:layout_gravity="center_vertical"
+					    android:layout_marginBottom="5dp"
+					    android:layout_marginRight="16dp"
+					    android:layout_marginTop="5dp"
+					    android:background="@drawable/button_shiny_black"
+					    android:drawableRight="@android:drawable/arrow_down_float"
+					    android:gravity="center"
+					    android:hint="@string/select"
+					    android:textColorHint="@color/gray_cool_lightest" />
+
 				</TableRow>
 
 				<!-- ============= -->
@@ -161,14 +167,20 @@
 						/>
 
 					<com.sleepfuriously.hpgworkout.MySpinner
-						android:id="@+id/edit_exer_group_msp"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_gravity="center_vertical"
-						android:layout_marginRight="16dp"
-						android:drawableRight="@android:drawable/arrow_down_float"
-						android:gravity="center"
-						android:hint="@string/select" />
+					    android:id="@+id/edit_exer_group_msp"
+					    style="@style/white_text_small"
+					    android:layout_width="wrap_content"
+					    android:layout_height="wrap_content"
+					    android:layout_gravity="center_vertical"
+					    android:layout_marginBottom="5dp"
+					    android:layout_marginRight="16dp"
+					    android:layout_marginTop="5dp"
+					    android:background="@drawable/button_shiny_black"
+					    android:drawableRight="@android:drawable/arrow_down_float"
+					    android:gravity="center"
+					    android:hint="@string/select"
+					    android:textColorHint="@color/gray_cool_lightest" />
+
 				</TableRow>
 			</TableLayout>
 
@@ -212,6 +224,9 @@
 						android:layout_marginRight="16dp"
 						android:drawableRight="@android:drawable/arrow_down_float"
 						android:gravity="left|center_vertical"
+						style="@style/white_text_small"
+						android:background="@drawable/button_shiny_black"
+						android:textColorHint="@color/gray_cool_lightest"
 						android:visibility="invisible" />
 
 					<RadioButton
@@ -268,6 +283,9 @@
 						android:drawSelectorOnTop="true"
 						android:drawableRight="@android:drawable/arrow_down_float"
 						android:gravity="left|center_vertical"
+						style="@style/white_text_small"
+						android:background="@drawable/button_shiny_black"
+						android:textColorHint="@color/gray_cool_lightest"
 						android:visibility="invisible" />
 
 					<RadioButton
@@ -323,6 +341,9 @@
 						android:drawSelectorOnTop="true"
 						android:drawableRight="@android:drawable/arrow_down_float"
 						android:gravity="left|center_vertical"
+						style="@style/white_text_small"
+						android:background="@drawable/button_shiny_black"
+						android:textColorHint="@color/gray_cool_lightest"
 						android:visibility="invisible" />
 
 					<RadioButton
@@ -378,6 +399,9 @@
 						android:enabled="false"
 						android:focusable="false"
 						android:gravity="center"
+						style="@style/white_text_small"
+						android:background="@drawable/button_shiny_black"
+						android:textColorHint="@color/gray_cool_lightest"
 						android:hint="@string/unit" />
 
 					<RadioButton
@@ -432,6 +456,9 @@
 						android:enabled="false"
 						android:focusable="false"
 						android:gravity="center"
+						style="@style/white_text_small"
+						android:background="@drawable/button_shiny_black"
+						android:textColorHint="@color/gray_cool_lightest"
 						android:hint="@string/unit" />
 
 					<RadioButton
@@ -487,6 +514,9 @@
 						android:enabled="false"
 						android:focusable="false"
 						android:gravity="center"
+						style="@style/white_text_small"
+						android:background="@drawable/button_shiny_black"
+						android:textColorHint="@color/gray_cool_lightest"
 						android:hint="@string/unit" />
 
 					<RadioButton

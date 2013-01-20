@@ -176,10 +176,16 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:layout_gravity="center_vertical"
+							android:layout_marginBottom="5dp"
 							android:layout_marginRight="16dp"
+							android:layout_marginTop="5dp"
 							android:drawableRight="@android:drawable/arrow_down_float"
 							android:gravity="center"
+							style="@style/white_text_small"
+							android:background="@drawable/button_shiny_black"
+							android:textColorHint="@color/gray_cool_lightest"
 							android:hint="@string/select" />
+
 					</TableRow>
 
 					<!-- ============= -->
@@ -205,13 +211,19 @@
 
 						<com.sleepfuriously.hpgworkout.MySpinner
 							android:id="@+id/addexer_group_msp"
+							style="@style/white_text_small"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:layout_gravity="center_vertical"
+							android:layout_marginBottom="5dp"
 							android:layout_marginRight="16dp"
+							android:layout_marginTop="5dp"
+							android:background="@drawable/button_shiny_black"
 							android:drawableRight="@android:drawable/arrow_down_float"
+							android:textColorHint="@color/gray_cool_lightest"
 							android:gravity="center"
 							android:hint="@string/select" />
+
 					</TableRow>
 				</TableLayout>
 
@@ -255,6 +267,9 @@
 							android:layout_marginRight="16dp"
 							android:drawableRight="@android:drawable/arrow_down_float"
 							android:gravity="left|center_vertical"
+							style="@style/white_text_small"
+							android:background="@drawable/button_shiny_black"
+							android:textColorHint="@color/gray_cool_lightest"
 							android:visibility="invisible" />
 
 						<RadioButton
@@ -310,6 +325,9 @@
 							android:drawSelectorOnTop="true"
 							android:drawableRight="@android:drawable/arrow_down_float"
 							android:gravity="left|center_vertical"
+							style="@style/white_text_small"
+							android:background="@drawable/button_shiny_black"
+							android:textColorHint="@color/gray_cool_lightest"
 							android:visibility="invisible" />
 
 						<RadioButton
@@ -364,6 +382,9 @@
 							android:drawSelectorOnTop="true"
 							android:drawableRight="@android:drawable/arrow_down_float"
 							android:gravity="left|center_vertical"
+							style="@style/white_text_small"
+							android:background="@drawable/button_shiny_black"
+							android:textColorHint="@color/gray_cool_lightest"
 							android:visibility="invisible" />
 
 						<RadioButton
@@ -417,6 +438,9 @@
 							android:drawableRight="@android:drawable/arrow_down_float"
 							android:enabled="false"
 							android:gravity="center"
+							style="@style/white_text_small"
+							android:background="@drawable/button_shiny_black"
+							android:textColorHint="@color/gray_cool_lightest"
 							android:hint="@string/unit" />
 
 						<RadioButton
@@ -470,6 +494,9 @@
 							android:drawableRight="@android:drawable/arrow_down_float"
 							android:enabled="false"
 							android:gravity="center"
+							style="@style/white_text_small"
+							android:background="@drawable/button_shiny_black"
+							android:textColorHint="@color/gray_cool_lightest"
 							android:hint="@string/unit" />
 
 						<RadioButton
@@ -523,6 +550,9 @@
 							android:drawableRight="@android:drawable/arrow_down_float"
 							android:enabled="false"
 							android:gravity="center"
+							style="@style/white_text_small"
+							android:background="@drawable/button_shiny_black"
+							android:textColorHint="@color/gray_cool_lightest"
 							android:hint="@string/unit" />
 
 						<RadioButton
