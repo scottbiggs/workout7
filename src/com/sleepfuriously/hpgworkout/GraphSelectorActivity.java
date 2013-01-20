@@ -89,11 +89,17 @@ public class GraphSelectorActivity
 			show_help_dialog(R.string.graph_selector_help_title,
 					R.string.graph_selector_help_msg);
 		}
+
+		// todo
+
 	} // onClick(v)
 
 
 	//----------------------------
 	public boolean onLongClick(View v) {
+
+		// todo
+
 		return false;
 	}
 

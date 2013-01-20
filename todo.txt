@@ -1,5 +1,10 @@
 TODO:
 -----------------
+BUG: When exiting the program (particularly through the "back"
+	button, but sometimes the regular way, too), re-entering
+	can cause an error Toast about too many instances of
+	DatabaseHelper.
+
 On the MySpinners, use android:drawablePadding to give some
 	space between the arrow and the text!
 
@@ -7,15 +12,6 @@ Long-click help on the wheels is not implemented.
 
 BUG: There's still warnings and etc. happening when the Graph
 	displays.
-
-BUG: It looks like something goes wrong when graphing something
-	that's the same value for every set.  I found it when doing
-	the squats.  I changed one value to work on something else,
-	but the bug should still be there.  Yeah, you get an error
-	about the heckbert stuff in the LogCat.
-	- You can see another issue with the Bench Press.  All the
-	weights are the same, and the graph is just a vertical line
-	instead of a horizontal one.  No error msgs though.
 
 When the Inspector tries to display an exercise with no sets
 	(empty), please don't say what the order is!  It's ugly.
@@ -201,6 +197,25 @@ The Graph:
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+BUG: can't graph correctly when there's just one set in
+	an exercise.
+	- fixed
+
+When graphing, make each successive aspect circle slightly larger
+	than the one before it.  That way, we can see overlapping
+	values.
+	- done
+
+BUG: It looks like something goes wrong when graphing something
+	that's the same value for every set.  I found it when doing
+	the squats.  I changed one value to work on something else,
+	but the bug should still be there.  Yeah, you get an error
+	about the heckbert stuff in the LogCat.
+	- You can see another issue with the Bench Press.  All the
+	weights are the same, and the graph is just a vertical line
+	instead of a horizontal one.  No error msgs though.
+	- fixed
+
 Not all the new help dialogs use the new buttons.  The help dialogs
 	for the Tabs, display the old dialog, for example.
 	- done

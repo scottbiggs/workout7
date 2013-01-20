@@ -69,15 +69,38 @@
 		android:textColor="@color/ivory"
 		android:textSize="@dimen/font_size_default" />
 
-	<com.sleepfuriously.hpgworkout.GView
-		android:id="@+id/graph_view"
+	<!--
+		This LinearLayout holds our GView and a TextView.
+		The tv is only used if there's ONE and only one
+		set to display.  In that case, the GView is made
+		GONE and the tv is turned on.
+	-->
+	<LinearLayout
+		android:id="@+id/graph_gview_ll"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
+		android:orientation="vertical"
 		android:layout_below="@id/graph_description_tv"
 		android:layout_above="@id/graph_options_butt"
-		android:layout_margin="8dp"
-		android:background="@drawable/rounded_edges_dark_blue"
-		android:padding="25dp"/>
+		>
+		<com.sleepfuriously.hpgworkout.GView
+			android:id="@+id/graph_view"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:layout_margin="8dp"
+			android:background="@drawable/rounded_edges_dark_blue"
+			android:padding="25dp"/>
 
+		<TextView
+			android:id="@+id/graph_gview_tv"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			style="@style/white_text_medium"
+			android:background="@drawable/rounded_edges_dark_blue"
+			android:layout_margin="12dp"
+			android:padding="8dp"
+			android:visibility="gone"
+			/>
+	</LinearLayout>
 
 </RelativeLayout>

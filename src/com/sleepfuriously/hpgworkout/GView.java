@@ -417,29 +417,6 @@ public class GView extends View {
 	} // draw_invalid_entries()
 
 
-	/********************
-	 * Draws the graph for the case where there's just one set.  Similar
-	 * to draw_one_number_graph().
-	 *
-	 * @param y			The single y value to draw.
-	 * @param canvas
-	 * @param paint
-	 */
-	protected void draw_1_set_graph (float y,
-									Canvas canvas, Paint paint) {
-		String msg = this.getContext().getString(R.string.graph_1_set_msg, "" + y);
-		Rect rect = new Rect();
-		paint.setAntiAlias(true);
-		paint.setTextSize(m_msg_text_size);
-		paint.getTextBounds(msg, 0, msg.length(), rect);
-		canvas.drawText(msg,
-				m_canvas_width / 2 - rect.width() / 2,
-				m_canvas_height / 2 - rect.height() / 2,
-				paint);
-		return;
-	} // draw_1_set_graph (y, canvas, paint)
-
-
 	/***************************
 	 * Working on existing data members, this determines
 	 * if there's any data to draw or not.

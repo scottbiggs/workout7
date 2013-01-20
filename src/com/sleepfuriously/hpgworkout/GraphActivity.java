@@ -90,9 +90,6 @@ public class GraphActivity
 	//	with our exercise.
 	//--------
 
-	/** The number of times the user has done this exercise */
-	protected int m_set_count;
-
 	/** Holds all the info about this exercise */
 	protected ExerciseData m_exercise_data = null;
 
@@ -533,39 +530,55 @@ public class GraphActivity
 	 *
 	 */
 	protected void construct_collections_for_aspects() {
+		float radius = GraphLine.BIG_DOT_RADIUS;
+
 		if (m_exercise_data.g_reps) {
 			add_new_collection(DatabaseHelper.EXERCISE_COL_REP_NUM,
-							getResources().getColor(R.color.color_reps));
+							getResources().getColor(R.color.color_reps),
+							radius);
+			radius -= GraphLine.DOT_RADIUS_INCREMENT;
 		}
 
 		if (m_exercise_data.g_cals) {
 			add_new_collection(DatabaseHelper.EXERCISE_COL_CALORIE_NUM,
-							getResources().getColor(R.color.color_cals));
+							getResources().getColor(R.color.color_cals),
+							radius);
+			radius -= GraphLine.DOT_RADIUS_INCREMENT;
 		}
 
 		if (m_exercise_data.g_level) {
 			add_new_collection(DatabaseHelper.EXERCISE_COL_LEVEL_NUM,
-							getResources().getColor(R.color.color_level));
+							getResources().getColor(R.color.color_level),
+							radius);
+			radius -= GraphLine.DOT_RADIUS_INCREMENT;
 		}
 
 		if (m_exercise_data.g_weight) {
 			add_new_collection(DatabaseHelper.EXERCISE_COL_WEIGHT_NUM,
-							getResources().getColor(R.color.color_weight));
+							getResources().getColor(R.color.color_weight),
+							radius);
+			radius -= GraphLine.DOT_RADIUS_INCREMENT;
 		}
 
 		if (m_exercise_data.g_dist) {
 			add_new_collection(DatabaseHelper.EXERCISE_COL_DIST_NUM,
-							getResources().getColor(R.color.color_dist));
+							getResources().getColor(R.color.color_dist),
+							radius);
+			radius -= GraphLine.DOT_RADIUS_INCREMENT;
 		}
 
 		if (m_exercise_data.g_time) {
 			add_new_collection(DatabaseHelper.EXERCISE_COL_TIME_NUM,
-							getResources().getColor(R.color.color_time));
+							getResources().getColor(R.color.color_time),
+							radius);
+			radius -= GraphLine.DOT_RADIUS_INCREMENT;
 		}
 
 		if (m_exercise_data.g_other) {
 			add_new_collection(DatabaseHelper.EXERCISE_COL_OTHER_NUM,
-							getResources().getColor(R.color.color_other));
+							getResources().getColor(R.color.color_other),
+							radius);
+			radius -= GraphLine.DOT_RADIUS_INCREMENT;
 		}
 	} // construct_collections_for_aspects()
 
@@ -636,17 +649,34 @@ public class GraphActivity
 					break;
 			}
 
-			// Now multiply by the number of reps.
-			pt.y *= set_data.reps;
+			// Now multiply by the number of reps and find
+			// the bounds.  BUT! Only do this if pt.y is
+			// *not* -1 (which indicates that the value is
+			// invalid).
+			if ((pt.y != -1) && (set_data.reps != -1)) {
+				pt.y *= set_data.reps;
 
-			if (pt.y < bounds.bottom)
-				bounds.bottom = pt.y;
-			if (pt.y > bounds.top)
-				bounds.top = pt.y;
+				if (pt.y < bounds.bottom)
+					bounds.bottom = pt.y;
+				if (pt.y > bounds.top)
+					bounds.top = pt.y;
+			}
 
 			collection.m_line_graph.add_point(pt);
 		}
 
+
+		// HACK!  The GraphLine and the GraphYAxis classes hate
+		// it when the boundaries are the same.  Test and fix
+		// those situations here.
+		if (bounds.left == bounds.right) {
+			bounds.left -= 2;
+			bounds.right += 2;
+		}
+		if (bounds.top == bounds.bottom) {
+			bounds.top += 2;
+			bounds.bottom -= 2;
+		}
 
 		collection.m_line_graph.set_bounds(bounds);
 		collection.m_id = DatabaseHelper.EXERCISE_COL_REP_NUM;	// Using this for ID. Convenient and unique.
@@ -694,9 +724,83 @@ public class GraphActivity
 			if (set_data.millis > right)
 				right = set_data.millis;
 		}
+
+		// todo:
+		//	Do we need to check to see if left = right?
+		// Nope, it should be taken care of via construct_one_set().
 		m_view.m_graph_x_axis.set_bounds(left, right);
 
 	} // construct_x_axis()
+
+
+	/************************
+	 * This is called when it's discovered that there's only
+	 * one set to display.  This removes the GView and replaces
+	 * it with a nice TextView that will display all our info.
+	 * <p>
+	 * preconditions:<br/>
+	 * 	<i>m_set_data</i> is properly set with only ONE set.
+	 */
+	protected void construct_one_set() {
+		// First, turn off the GView and turn on the TextView.
+		m_view.setVisibility(View.GONE);
+		TextView tv = (TextView) findViewById(R.id.graph_gview_tv);
+		tv.setVisibility(View.VISIBLE);
+
+		// While we're at it, set the legend to invisible.
+		TextView legend = (TextView) findViewById(R.id.graph_description_tv);
+		legend.setVisibility(View.INVISIBLE);
+		
+		// And you know what? the options doesn't make sense either.
+		m_options_butt.setVisibility(View.GONE);
+		
+		// Fill in the text.
+		String str = getString(R.string.graph_one_set_msg, m_exercise_data.name);
+
+		// Append to the string, depending on the current aspects.
+		if (m_exercise_data.breps)
+			str += "\treps: " + set_data_to_str(m_set_data.get(0).reps) + "\n";
+		if (m_exercise_data.blevel)
+			str += "\tlevels: " + set_data_to_str(m_set_data.get(0).levels) + "\n";
+		if (m_exercise_data.bcals)
+			str += "\tcalories: " + set_data_to_str(m_set_data.get(0).cals) + "\n";
+		if (m_exercise_data.bweight)
+			str += "\tweight (" + m_exercise_data.weight_unit + "): " + set_data_to_str(m_set_data.get(0).weight) + "\n";
+		if (m_exercise_data.bdist)
+			str += "\tdistance (" + m_exercise_data.dist_unit + "): " + set_data_to_str(m_set_data.get(0).dist) + "\n";
+		if (m_exercise_data.btime)
+			str += "\ttime (" + m_exercise_data.time_unit + "): " + set_data_to_str(m_set_data.get(0).time) + "\n";
+		if (m_exercise_data.bother)
+			str += "\t" + m_exercise_data.other_title + " (" + m_exercise_data.other_unit + "): " + set_data_to_str(m_set_data.get(0).other) + "\n";
+		
+		tv.setText(str);
+	} // construct_one_set()
+	
+	/************************
+	 * Helper method that takes quantity in some set data 
+	 * and spits out a string for that number.  This is needed
+	 * since a value of -1 mean NULL, not -1.
+	 * 
+	 * @param num	The set data to convert to a string.
+	 * 
+	 * @return	A printable string.
+	 */
+	private String set_data_to_str (int num) {
+		if (num == -1) {
+			return getString(R.string.graph_null);
+		}
+		return "" + num;
+	}
+	/**********************
+	 * Float version.
+	 * @see #set_data_to_str(int)
+	 */
+	private String set_data_to_str (float num) {
+		if (num == -1) {
+			return getString(R.string.graph_null);
+		}
+		return "" + num;
+	}
 
 
 	/************************
@@ -767,8 +871,13 @@ public class GraphActivity
 	 * 					that this GraphCollection represents.
 	 *
 	 * @param color		The color to assign for this aspect.
+	 *
+	 * @param radius		The radius of the dots to draw for this
+	 * 					graph's points.  They should be increasing
+	 * 					in size so that the last ones drawn don't
+	 * 					obscure the earlier ones.
 	 */
-	protected void add_new_collection(int aspect, int color) {
+	protected void add_new_collection(int aspect, int color, float radius) {
 
 		// Find the reps data and put it in a GraphCollection.
 		GraphCollection collection = new GraphCollection();
@@ -812,10 +921,16 @@ public class GraphActivity
 					Log.e (tag, "add_new_collection() cannot recognize the aspect!");
 					break;
 			}
-			if (pt.y < bounds.bottom)
-				bounds.bottom = pt.y;
-			if (pt.y > bounds.top)
-				bounds.top = pt.y;
+
+			// Adjust our logical left/right boundary.  But only
+			// if the value is not -1 (which indicates an invalid
+			// entry).
+			if (pt.y != -1) {
+				if (pt.y < bounds.bottom)
+					bounds.bottom = pt.y;
+				if (pt.y > bounds.top)
+					bounds.top = pt.y;
+			}
 
 			collection.m_line_graph.add_point(pt);
 		}
@@ -835,6 +950,7 @@ public class GraphActivity
 		collection.m_line_graph.set_bounds(bounds);
 		collection.m_id = DatabaseHelper.EXERCISE_COL_REP_NUM;	// Using this for ID. Convenient and unique.
 		collection.m_color = color;
+		collection.m_line_graph.m_radius = radius;
 
 		// Do the y-axis that's attached to this graph line.
 		collection.m_y_axis_graph = new GraphYAxis(bounds.bottom, bounds.top);
@@ -1087,10 +1203,9 @@ public class GraphActivity
 				try {
 					// LOAD FROM DATABASE
 					set_cursor = DatabaseHelper.getAllSets(m_db, m_ex_name, true);
-					m_set_count = set_cursor.getCount();
 
 					// If there are not enough sets, don't do anything.
-					if (m_set_count < 1) {
+					if (set_cursor.getCount() < 1) {
 						Log.v(tag, "Not enough exercise sets to graph.");
 						return null;
 					}
@@ -1165,6 +1280,17 @@ public class GraphActivity
 		 */
 		@Override
 		protected void onPostExecute(Void result) {
+
+			// If there's just one set, do something special
+			if (m_set_data.size() == 1) {
+				construct_one_set();
+				stop_progress_dialog();
+				m_view.invalidate();		// Necessary to make sure that
+										// it's drawn AFTER all the db
+										// stuff happens.
+				m_loading = false;
+				return;
+			}
 
 			construct_legend();
 

@@ -58,11 +58,27 @@ public class GraphLine {
 	private static final String tag = "GraphLine";
 
 	/** Size of big dots when drawn on the Canvas */
-	public static final float BIG_DOT_RADIUS = 2.9f;
+	public static final float BIG_DOT_RADIUS = 4.7f;
+
+	/** The smallest size of a dot when drawn on a Canvas */
+	public static final float SMALL_DOT_RADIUS = 1.8f;
+
+	/**
+	 * What to increment the dot radius by to make the
+	 * difference viewable.
+	 */
+	public static final float DOT_RADIUS_INCREMENT = 0.37f;
+
 
 	//-------------------------------
 	//	Data
 	//-------------------------------
+
+	/**
+	 * The size of the dot to draw for the points on the graph.
+	 * It's set externally.
+	 */
+	public float m_radius = SMALL_DOT_RADIUS;
 
 	/**
 	 * The original points for this class.  All mapping is
@@ -120,7 +136,7 @@ public class GraphLine {
 	 * 						set up the mapping functions.
 	 */
 	public GraphLine (List<PointF> pts, RectF bounds, Rect draw_area) {
-		m_orig_pts = new ArrayList<PointF>(pts);		// todo: creating a copy of pts is redundant here!
+		m_orig_pts = new ArrayList<PointF>(pts);
 		m_pts_dirty = true;
 		set_bounds(bounds);
 		set_draw_area(draw_area);
@@ -240,7 +256,12 @@ public class GraphLine {
 
 	/****************************
 	 * This does the calculations for the points of this class.
-	 *
+	 * <p>
+	 * NOTE: if the y-value (data value) of an original point
+	 * (from m_orig_pts) is -1, then that means that the
+	 * y-value is null. So that value is NOT processed, and is
+	 * passed along to the corresponding m_pts.y value.
+	 *<p>
 	 * preconditions:
 	 * 	m_rect_bounds	Correctly set.
 	 * 	m_canvas_rect	Correctly set.
@@ -257,8 +278,14 @@ public class GraphLine {
 
 		// Map each point.
 		for (int i = 0; i < m_orig_pts.size(); i++) {
+			// Check for uninitialized variable
 			if (m_orig_pts.get(i) == null) {
 				m_pts[i] = null;
+				Log.e(tag, "map_points(): can't handle a null m_orig_pts!");
+			}
+			// Check for a null value (which is -1 here).
+			else if (m_orig_pts.get(i).y == -1) {
+				m_pts[i] = new PointF(m_orig_pts.get(i).x, -1);	// The x is never used, but here for completeness.
 			}
 			else {
 				m_pts[i] = mapper2D.map(m_orig_pts.get(i));
@@ -356,9 +383,18 @@ public class GraphLine {
 		m_last_pt.set(0, 0);		// Clear		!!! If this is still set to the last point, we have a problem!
 
 		for (int i = 0; i < m_pts.length; i++) {
+			// Check for error condition.
 			if (m_pts[i] == null) {
+				Log.e(tag, "draw():  Can't draw a point that's null!");
 				last_valid = false;
 			}
+
+			// Check for an invalid point.
+			else if (m_pts[i].y == -1) {
+				last_valid = false;
+			}
+
+			// Actually draw the line.
 			else {
 				if (last_valid) {
 					draw_line(canvas, paint, m_last_pt, m_pts[i]);
@@ -375,10 +411,11 @@ public class GraphLine {
 
 	/****************************
 	 * Actually does the drawing of a line.
-	 *
-	 * preconditions:
-	 * 		- m_min_dist is correctly set.
-	 *
+	 *<p>
+	 * preconditions:<br/>
+	 * 		- m_min_dist is correctly set.<br/>
+	 * 		- m_radius is correctly set.
+	 *<p>
 	 * side effects:
 	 * 		m_last_pt		Will change this to be
 	 * 						this point.
@@ -386,14 +423,16 @@ public class GraphLine {
 	 * @param canvas		What to draw on.
 	 * @param paint		What to draw with.
 	 * @param pt			The point to draw (in Canvas coords).
+	 * @param radius		The requested radius for a point.
 	 */
 	private void draw_pt (Canvas canvas, Paint paint, PointF pt) {
-		float radius = 1f;
+		float radius = m_radius;
 
-		if ((pt.x - m_last_pt.x > m_min_dist) ||
-			(pt.y - m_last_pt.y > m_min_dist)) {
-			radius = BIG_DOT_RADIUS;
+		if ((pt.x - m_last_pt.x <= m_min_dist) &&
+			(pt.y - m_last_pt.y <= m_min_dist)) {
+			radius = 1;
 		}
+
 //		Log.d (tag, "draw_pt() at " + pt.x + ", " + pt.y);
 		GraphDrawPrimitives.draw_circle(canvas, pt.x, pt.y, radius, paint);
 		m_last_pt.set(pt);
