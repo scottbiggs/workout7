@@ -113,7 +113,6 @@ public class GraphXAxis {
 	private boolean m_dirty = true;
 
 
-
 	//-------------------------------
 	//	Constructors
 	//-------------------------------
@@ -214,9 +213,19 @@ public class GraphXAxis {
 	} // constructor
 
 
+	//***************************
+	/* (non-Javadoc)
+	 * @see java.lang.Object#finalize()
+	 */
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+	}
+
 	//-------------------------------
 	//	Methods
 	//-------------------------------
+
 
 	/****************************
 	 * Removes all the numbers from our list of

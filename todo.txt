@@ -162,6 +162,12 @@ In the graphs, instead of horizontal lines, divide up into
 ---------------------------------------------------
 TABLED (for later versions)
 ---------------------------------------------------
+Bug (minor): When graphing, we get a warning about the x-axis
+	draw area set to false.  But only if there are more than
+	one aspect for an exercise.
+	- doesn't seem to be causing any problems. And it might be
+	part of the design, too.
+
 Support multiple users/accounts.
 
 Need to redo the Exercise Order!  Something like "Out of Milk"?
