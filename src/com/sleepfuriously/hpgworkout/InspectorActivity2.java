@@ -128,8 +128,6 @@ public class InspectorActivity2
 		// Load in our preferences.
 		SharedPreferences prefs =
 			PreferenceManager.getDefaultSharedPreferences(this);
-//		m_prefs_quick_view = prefs.getBoolean(getString(R.string.prefs_inspector_quickview_key),
-//											false);
 		m_prefs_oldest_order = prefs.getBoolean(getString(R.string.prefs_inspector_oldest_first_key),
 												true);
 		set_order_msg();

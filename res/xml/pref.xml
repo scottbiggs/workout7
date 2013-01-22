@@ -68,7 +68,7 @@
 			android:dialogIcon="@drawable/hpglogo_small"
 			android:inputType="number"
 			/>
--->
+
 		<EditTextPreference
 			android:key="@string/prefs_wheel_width_key"
 			android:defaultValue="10"
@@ -80,6 +80,16 @@
 			android:dialogIcon="@drawable/hpglogo_small"
 			android:inputType="number"
 			/>
+-->			
+		<com.sleepfuriously.hpgworkout.LongCheckboxPreference
+			android:key="@string/prefs_wheel_width_key"
+			android:dependency="@string/prefs_wheel_key"
+			android:defaultValue="false"
+			android:summaryOff="@string/prefs_wheel_width_fat"
+			android:summaryOn="@string/prefs_wheel_width_skinny"
+			android:title="@string/prefs_wheel_width_title" />
+
+
 	</PreferenceCategory>
 
 

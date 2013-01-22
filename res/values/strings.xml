@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+	<!-- Notes
+				I'm using some strange codes. Here they are:
+				elipses ...		==> &#x2026;		(html)
+				long dash - 		==> \u2014		(unicode)
+				short dash -		==> \u2013		(unicode)
+				non-break space	==> &#xA0		(html)
+				"			"	==>	\u00a0		(unicode)
+					(doesn't cause a line-break)
+				colon			==> \u003a		(unicode)
+				less than		==>	\u003c		(unicode)
+				greater than		==>	\u003e		(unicode)
+	-->
+
 	<!-- General strings -->
 	<string name="app_name">HPG Workout Tool</string>
 	<string name="ok">ok</string>
@@ -1394,17 +1407,13 @@
 	</string>
 
 	<string name="prefs_wheel_width_key">wheel_width</string>
-	<string name="prefs_wheel_width_title">Wheel Width</string>
-	<string name="prefs_wheel_width_msg">
-		Set the width of of the each wheel (default is 10).
+	<string name="prefs_wheel_width_title">Enable Fat Wheels</string>
+	<string name="prefs_wheel_width_fat">
+		Thin wheels are now displayed. Good for slender fingers and
+		a clean interface.
 	</string>
-	<string name="prefs_wheel_width_dialog_title">
-		How wide should each wheel be?
-	</string>
-	<string name="prefs_wheel_width_dialog_msg">
-		Here you set the width of the wheels in pixels. Since
-		phones and fingers vary in size, you get to set what
-		works best for you. Default is 10.
+	<string name="prefs_wheel_width_skinny">
+		Now displaying fat wheels\u2014good for tired or stumpy fingers.
 	</string>
 
 	<string name="prefs_wheel_text_size_key">wheel_text_size</string>

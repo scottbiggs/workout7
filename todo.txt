@@ -1,5 +1,11 @@
 TODO:
 -----------------
+BUG: AddSetActivity: when the user types in a number through
+	the EditText, the wheels don't change even though the result
+	is registered.
+	I suggest finding when the focus leaves the EditText and
+	then updating the wheel.
+
 BUG: When exiting the program (particularly through the "back"
 	button, but sometimes the regular way, too), re-entering
 	can cause an error Toast about too many instances of
@@ -21,9 +27,6 @@ Graphs need to be able to ZOOM IN/OUT!  What does that mean?
 	For me, that means that the mapping of the graphs changes.
 	So I need the current mapping and the original mapping, to
 	go back to when the user double taps to go back.
-
-The wheels can be pretty small.  See if it's possible to
-	allow the user to make 'em bigger.
 
 Enable data backups.  See http://developer.android.com/guide/topics/data/backup.html
 
@@ -156,6 +159,10 @@ In the graphs, instead of horizontal lines, divide up into
 ---------------------------------------------------
 TABLED (for later versions)
 ---------------------------------------------------
+The wheels can be pretty small.  See if it's possible to
+	allow the user to make 'em bigger.
+	- done
+
 Bug (minor): When graphing, we get a warning about the x-axis
 	draw area set to false.  But only if there are more than
 	one aspect for an exercise.

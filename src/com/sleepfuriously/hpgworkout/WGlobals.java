@@ -168,7 +168,11 @@ public class WGlobals extends Application {
 	 * The number of pixels wide for each wheel.  Also
 	 * set via preferences.
 	 */
-	public static int g_wheel_width = 10;
+	@Deprecated
+	public static int g_wheel_width = DEFAULT_WHEEL_WIDTH;
+
+	/** Whether or not we use fat wheels or the normal slender ones */
+	public static boolean g_wheel_width_fat = false;
 
 	/**
 	 * Size of the text for the wheels.
@@ -222,8 +226,17 @@ public class WGlobals extends Application {
 		g_wheel_num_right = Integer.parseInt(prefs.getString(activity.getString(R.string.prefs_wheel_right_key),
 															"" + DEFAULT_WHEELS_NUM_RIGHT));
 
-		g_wheel_width = Integer.parseInt(prefs.getString(activity.getString(R.string.prefs_wheel_width_key),
-														"" + DEFAULT_WHEELS_NUM_RIGHT));
+//		g_wheel_width = Integer.parseInt(prefs.getString(activity.getString(R.string.prefs_wheel_width_key),
+//														"" + DEFAULT_WHEELS_NUM_RIGHT));
+
+		String width_key = activity.getString(R.string.prefs_wheel_width_key);
+//		String width_str = prefs.getString(width_key, "" + DEFAULT_WHEEL_WIDTH);
+//		g_wheel_width = Integer.parseInt(width_str);
+		g_wheel_width_fat = prefs.getBoolean(width_key, false);
+		if (g_wheel_width_fat) {
+			g_wheel_width = 45;
+		}
+
 
 		g_wheel_text_size = Integer.parseInt(prefs.getString(activity.getString(R.string.prefs_wheel_text_size_key),
 															"" + DEFAULT_WHEEL_TEXT_SIZE));

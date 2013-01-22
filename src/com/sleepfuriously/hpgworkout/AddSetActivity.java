@@ -39,6 +39,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.View.OnLongClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -510,6 +511,12 @@ public class AddSetActivity
 						R.id.aset_wheel_reps_100,
 						R.id.aset_wheel_reps_1000
 						});
+		LayoutParams params = m_reps_wheels.m_wheels[0].getLayoutParams();
+//		params.width = m_reps_wheels.m_wheels[0].getMeasuredWidth() + 40;
+//		if (WGlobals.g_wheel_width_fat)
+//			params.width = WheelFloat;
+//		m_reps_wheels.m_wheels[0].setLayoutParams(params);
+
 		m_reps_wheels.set_tv(m_reps_et);
 
 		m_level_wheels = new WheelInt(this, new int[]
