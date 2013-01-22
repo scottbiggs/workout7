@@ -902,10 +902,20 @@
 		press the last button, ouch! At least you can record
 		exactly what you were doing and when it happened.
 
-		\n\nAnd the notes section is there for whatever pops up,
+		\n\nThe notes section is there for whatever pops up,
 		usually relevant to the set you just did.  Of course you\'re
 		welcome to write that great novel you\'ve been thinking
 		of while cooling down between sets.
+
+		\n\nIf you are like me and have big bulky fingers, you
+		can change the width of the number wheel thingies by hitting
+		the menu button. But if your phone is small, this may
+		put a nasty cramp in how this screen lays out. Your call.
+
+		\n\nIf you do not like those number wheel things <i>at all</i>, you can
+		turn them off at the preferences from the welcome screen.
+		(Of course, if you don\'t
+		see anything they\'re probably already turned off.)
 		</string>
 
 	<string name="aset_leave_title">Really\?</string>
@@ -1099,6 +1109,9 @@
 			how and why this happened so you don\'t repeat this
 			problem again.
 	</string>
+
+	<string name="aset_menu_wide_wheels_turn_on_msg">Enable Fat Wheels</string>
+	<string name="aset_menu_wide_wheels_turn_off_msg">Enable Slim Wheels</string>
 
 
 	<!-- ============           ============ -->

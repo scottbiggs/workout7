@@ -229,9 +229,7 @@ public class InspectorActivity2
 				prefs.edit().putBoolean(getString(R.string.prefs_inspector_oldest_first_key),
 										m_prefs_oldest_order)
 								.commit();
-				// todo:
-				//	Need to reset which workout set shows first.
-				//	Should be the default.
+
 				// Show the default at the top.
 				m_set_id = -1;
 				set_order_msg();

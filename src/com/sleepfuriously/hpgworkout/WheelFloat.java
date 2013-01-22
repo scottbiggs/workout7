@@ -72,8 +72,12 @@ public class WheelFloat implements OnWheelChangedListener {
 	//	Methods
 	//--------------------
 
-	/**
+	/***************************
 	 * Constructor.
+	 * <p>
+	 * preconditions:<br/>
+	 * 	WGlobals.g_wheel_width is used to initially size the wheels.
+	 * 			You can change this by calling set_wheel_width().
 	 *
 	 * @param ctx	The context. Always useful.
 	 *
@@ -111,6 +115,21 @@ public class WheelFloat implements OnWheelChangedListener {
 		// Finish by zeroing out the number.
 		reset(false);
 	} // constructor
+
+
+	/********************
+	 * Call this to set the width of the wheels.  This is
+	 * a good way to override the default.
+	 *
+	 * @param pixels_wide	Number of pixels wide.  Default
+	 * 						is 10, which is pretty narrow.
+	 */
+	public void set_wheel_width (int pixels_wide) {
+		for (int i = 0; i != m_wheels.length; i++) {
+			m_wheels[i].setMinimumWidth(pixels_wide);
+		}
+	} // set_wheel_width (pixels_wide)
+
 
 	/********************
 	 * If you want a TextView to be automatically updated,
@@ -162,6 +181,17 @@ public class WheelFloat implements OnWheelChangedListener {
 
 		return (float)val;
 	} // get_current_value()
+
+
+	/***********************
+	 * Forces the wheels to redraw.  I'm using the
+	 * foreach technique--cute, isn't it?
+	 */
+	public void invalidate() {
+		for (WheelView wheel : m_wheels) {
+			wheel.invalidate();
+		}
+	} // invalidate()
 
 
 	/***********************

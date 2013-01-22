@@ -26,15 +26,19 @@ import java.util.Calendar;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
@@ -62,6 +66,10 @@ public class AddSetActivity
 	//------------------------
 
 	private static final String tag = "ASetActivity";
+
+
+	/** ID for the menu item to change the wheel width */
+	protected static final int MENU_ID_WIDE_WHEELS = 1;
 
 
 	//------------------------
@@ -358,6 +366,62 @@ public class AddSetActivity
 
 
 	//------------------------------
+	//	Initialize the menu.
+	//
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		menu.add(0, MENU_ID_WIDE_WHEELS, 0, R.string.null_string);
+
+		return super.onCreateOptionsMenu(menu);
+	}
+
+
+	//------------------------------
+	//	I use this method to make sure that the correct
+	//	message is displayed.
+	//
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		menu.findItem(MENU_ID_WIDE_WHEELS).setTitle(WGlobals.g_wheel_width_fat ?
+							R.string.aset_menu_wide_wheels_turn_off_msg :
+							R.string.aset_menu_wide_wheels_turn_on_msg);
+		return super.onPrepareOptionsMenu(menu);
+	}
+
+
+
+	//------------------------------
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		SharedPreferences prefs;
+		prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+		int id = item.getItemId();
+		switch (id) {
+			case MENU_ID_WIDE_WHEELS:
+				WGlobals.g_wheel_width_fat = !WGlobals.g_wheel_width_fat;
+				prefs.edit().putBoolean(getString(R.string.prefs_wheel_width_key),
+										WGlobals.g_wheel_width_fat)
+								.commit();
+				WGlobals.load_prefs(this);
+				WGlobals.act_on_prefs(this);
+
+				// Let's try starting over...Seems like overkill, but
+				// it works!
+				m_reset_widgets = true;
+				onResume();
+				break;
+
+			default:
+				Log.e (tag, "Illegal id: " + id + ", in onOptionsItemSelected!");
+				break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+
+
+	//------------------------------
 	//	Allows this Activity to send message to the caller
 	//	when the user hits the back button.
 	//
@@ -504,86 +568,124 @@ public class AddSetActivity
 	 */
 	private void init_wheels() {
 		// The ints first
-		m_reps_wheels = new WheelInt(this, new int[]
-						{
-						R.id.aset_wheel_reps_1,
-						R.id.aset_wheel_reps_10,
-						R.id.aset_wheel_reps_100,
-						R.id.aset_wheel_reps_1000
-						});
-		LayoutParams params = m_reps_wheels.m_wheels[0].getLayoutParams();
-//		params.width = m_reps_wheels.m_wheels[0].getMeasuredWidth() + 40;
-//		if (WGlobals.g_wheel_width_fat)
-//			params.width = WheelFloat;
-//		m_reps_wheels.m_wheels[0].setLayoutParams(params);
+		if (m_ex_data.breps) {
+			m_reps_wheels = new WheelInt(this, new int[]
+							{
+							R.id.aset_wheel_reps_1,
+							R.id.aset_wheel_reps_10,
+							R.id.aset_wheel_reps_100,
+							R.id.aset_wheel_reps_1000
+							});
+			m_reps_wheels.set_tv(m_reps_et);
+		}
 
-		m_reps_wheels.set_tv(m_reps_et);
+		if (m_ex_data.blevel) {
+			m_level_wheels = new WheelInt(this, new int[]
+							{
+							R.id.aset_wheel_level_1,
+							R.id.aset_wheel_level_10,
+							R.id.aset_wheel_level_100,
+							R.id.aset_wheel_level_1000
+							});
+			m_level_wheels.set_tv(m_level_et);
+		}
 
-		m_level_wheels = new WheelInt(this, new int[]
-						{
-						R.id.aset_wheel_level_1,
-						R.id.aset_wheel_level_10,
-						R.id.aset_wheel_level_100,
-						R.id.aset_wheel_level_1000
-						});
-		m_level_wheels.set_tv(m_level_et);
-
-		m_calorie_wheels = new WheelInt(this, new int[]
-						{
-						R.id.aset_wheel_calorie_1,
-						R.id.aset_wheel_calorie_10,
-						R.id.aset_wheel_calorie_100,
-						R.id.aset_wheel_calorie_1000
-						});
-		m_calorie_wheels.set_tv(m_calorie_et);
-
+		if (m_ex_data.bcals) {
+			m_calorie_wheels = new WheelInt(this, new int[]
+							{
+							R.id.aset_wheel_calorie_1,
+							R.id.aset_wheel_calorie_10,
+							R.id.aset_wheel_calorie_100,
+							R.id.aset_wheel_calorie_1000
+							});
+			m_calorie_wheels.set_tv(m_calorie_et);
+		}
 
 		// The floats
-		m_weight_wheels = new WheelFloat (this, new int[]
-						{
-						R.id.aset_wheel_weight_point,
-						R.id.aset_wheel_weight_1,
-						R.id.aset_wheel_weight_10,
-						R.id.aset_wheel_weight_100,
-						R.id.aset_wheel_weight_1000
-						},
-						1);
-		m_weight_wheels.set_tv(m_weight_et);
+		if (m_ex_data.bweight) {
+			m_weight_wheels = new WheelFloat (this, new int[]
+							{
+							R.id.aset_wheel_weight_point,
+							R.id.aset_wheel_weight_1,
+							R.id.aset_wheel_weight_10,
+							R.id.aset_wheel_weight_100,
+							R.id.aset_wheel_weight_1000
+							},
+							1);
+			m_weight_wheels.set_tv(m_weight_et);
+		}
 
-		m_dist_wheels = new WheelFloat (this, new int[]
-						{
-						R.id.aset_wheel_dist_point,
-						R.id.aset_wheel_dist_1,
-						R.id.aset_wheel_dist_10,
-						R.id.aset_wheel_dist_100,
-						R.id.aset_wheel_dist_1000
-						},
-						1);
-		m_dist_wheels.set_tv(m_dist_et);
+		if (m_ex_data.bdist) {
+			m_dist_wheels = new WheelFloat (this, new int[]
+							{
+							R.id.aset_wheel_dist_point,
+							R.id.aset_wheel_dist_1,
+							R.id.aset_wheel_dist_10,
+							R.id.aset_wheel_dist_100,
+							R.id.aset_wheel_dist_1000
+							},
+							1);
+			m_dist_wheels.set_tv(m_dist_et);
+		}
 
-		m_time_wheels = new WheelFloat (this, new int[]
-						{
-						R.id.aset_wheel_time_point,
-						R.id.aset_wheel_time_1,
-						R.id.aset_wheel_time_10,
-						R.id.aset_wheel_time_100,
-						R.id.aset_wheel_time_1000
-						},
-						1);
-		m_time_wheels.set_tv(m_time_et);
+		if (m_ex_data.btime) {
+			m_time_wheels = new WheelFloat (this, new int[]
+							{
+							R.id.aset_wheel_time_point,
+							R.id.aset_wheel_time_1,
+							R.id.aset_wheel_time_10,
+							R.id.aset_wheel_time_100,
+							R.id.aset_wheel_time_1000
+							},
+							1);
+			m_time_wheels.set_tv(m_time_et);
+		}
 
-		m_other_wheels = new WheelFloat (this, new int[]
-						{
-						R.id.aset_wheel_other_point,
-						R.id.aset_wheel_other_1,
-						R.id.aset_wheel_other_10,
-						R.id.aset_wheel_other_100,
-						R.id.aset_wheel_other_1000
-						},
-						1);
-		m_other_wheels.set_tv(m_other_et);
-
+		if (m_ex_data.bother) {
+			m_other_wheels = new WheelFloat (this, new int[]
+							{
+							R.id.aset_wheel_other_point,
+							R.id.aset_wheel_other_1,
+							R.id.aset_wheel_other_10,
+							R.id.aset_wheel_other_100,
+							R.id.aset_wheel_other_1000
+							},
+							1);
+			m_other_wheels.set_tv(m_other_et);
+		}
 	} // init_wheels()
+
+
+	/********************
+	 * Working by side effect, this sets the width of
+	 * all the wheels to the current wheel setting.
+	 * <p>
+	 * preconditions:<br/>
+	 * 	g_wheel_width	Holds the correct wheel size.
+	 * <p>
+	 * 	all the wheel widgets are properly initialized.
+	 * <p>
+	 * side effects:<br/>
+	 * 	- all the wheels will have their widths changed to
+	 * 	match the current global wheel setting (which presumably
+	 * 	has potentially changed).
+	 */
+	private void set_wheel_width() {
+		if (m_ex_data.breps)
+			m_reps_wheels.set_wheel_width(WGlobals.g_wheel_width);
+		if (m_ex_data.blevel)
+			m_level_wheels.set_wheel_width(WGlobals.g_wheel_width);
+		if (m_ex_data.bcals)
+			m_calorie_wheels.set_wheel_width(WGlobals.g_wheel_width);
+		if (m_ex_data.bweight)
+			m_weight_wheels.set_wheel_width(WGlobals.g_wheel_width);
+		if (m_ex_data.bdist)
+			m_dist_wheels.set_wheel_width(WGlobals.g_wheel_width);
+		if (m_ex_data.btime)
+			m_time_wheels.set_wheel_width(WGlobals.g_wheel_width);
+		if (m_ex_data.bother)
+			m_other_wheels.set_wheel_width(WGlobals.g_wheel_width);
+	} // set_wheel_width()
 
 
 	/********************
@@ -1439,16 +1541,15 @@ public class AddSetActivity
 		//
 		@Override
 		protected void onPreExecute() {
-			if (WGlobals.g_wheel) {
-				setContentView(R.layout.aset_wheel);
-				init_widgets_with_wheels();
-				init_wheels();
-			}
-			else {
-				setContentView(R.layout.aset);
-				init_widgets_no_wheels();
-			}
-
+//			if (WGlobals.g_wheel) {				LET'S MOVE THIS TO onPostExecute!
+//				setContentView(R.layout.aset_wheel);
+//				init_widgets_with_wheels();
+//				init_wheels();
+//			}
+//			else {
+//				setContentView(R.layout.aset);
+//				init_widgets_no_wheels();
+//			}
 		} // onPreExecute()
 
 
@@ -1518,6 +1619,17 @@ public class AddSetActivity
 		//
 		@Override
 		protected void onPostExecute(Void result) {
+
+			if (WGlobals.g_wheel) {
+				setContentView(R.layout.aset_wheel);
+				init_widgets_with_wheels();
+				init_wheels();
+			}
+			else {
+				setContentView(R.layout.aset);
+				init_widgets_no_wheels();
+			}
+
 			/**
 			 * Indicates if we should draw a bar separating the
 			 * row from the one above it.

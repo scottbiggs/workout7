@@ -1,5 +1,7 @@
 TODO:
 -----------------
+Make an XML file for the initial workouts instead of hard-coding.
+
 BUG: AddSetActivity: when the user types in a number through
 	the EditText, the wheels don't change even though the result
 	is registered.
@@ -159,10 +161,6 @@ In the graphs, instead of horizontal lines, divide up into
 ---------------------------------------------------
 TABLED (for later versions)
 ---------------------------------------------------
-The wheels can be pretty small.  See if it's possible to
-	allow the user to make 'em bigger.
-	- done
-
 Bug (minor): When graphing, we get a warning about the x-axis
 	draw area set to false.  But only if there are more than
 	one aspect for an exercise.
@@ -204,6 +202,10 @@ The Graph:
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+The wheels can be pretty small.  See if it's possible to
+	allow the user to make 'em bigger.
+	- done
+
 The pink/fuchsia for the graph colors is too much.  Tone it down
 	a bit.
 	- done
