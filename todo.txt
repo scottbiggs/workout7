@@ -2,12 +2,6 @@ TODO:
 -----------------
 Make an XML file for the initial workouts instead of hard-coding.
 
-BUG: AddSetActivity: when the user types in a number through
-	the EditText, the wheels don't change even though the result
-	is registered.
-	I suggest finding when the focus leaves the EditText and
-	then updating the wheel.
-
 BUG: When exiting the program (particularly through the "back"
 	button, but sometimes the regular way, too), re-entering
 	can cause an error Toast about too many instances of
@@ -202,6 +196,14 @@ The Graph:
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+BUG: AddSetActivity: when the user types in a number through
+	the EditText, the wheels don't change even though the result
+	is registered.
+	I suggest finding when the focus leaves the EditText and
+	then updating the wheel.
+	- done, but I think it's still awkward to use.  My number
+	dialog would work better.
+
 The wheels can be pretty small.  See if it's possible to
 	allow the user to make 'em bigger.
 	- done

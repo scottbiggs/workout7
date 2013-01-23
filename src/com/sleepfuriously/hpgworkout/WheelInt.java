@@ -171,17 +171,6 @@ public class WheelInt implements OnWheelChangedListener {
 
 
 	/***********************
-	 * Forces the wheels to redraw.  I'm using the
-	 * foreach technique--cute, isn't it?
-	 */
-	public void invalidate() {
-		for (WheelView wheel : m_wheels) {
-			wheel.invalidate();
-		}
-	} // invalidate()
-
-
-	/***********************
 	 * Sets all the wheels to zero.
 	 *
 	 * side effects:

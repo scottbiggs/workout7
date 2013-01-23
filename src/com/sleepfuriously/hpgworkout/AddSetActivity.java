@@ -41,6 +41,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.view.View.OnKeyListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -58,7 +59,8 @@ public class AddSetActivity
 					OnClickListener,
 					OnLongClickListener,
 					TextWatcher,
-					OnKeyListener {
+					OnKeyListener,
+					OnFocusChangeListener {
 
 
 	//------------------------
@@ -270,36 +272,43 @@ public class AddSetActivity
 		m_reps_et.setOnLongClickListener(this);
 		m_reps_et.setOnKeyListener(this);
 		m_reps_et.addTextChangedListener(this);
+		m_reps_et.setOnFocusChangeListener(this);
 
 		m_weight_et = (EditText) findViewById(R.id.aset_wheel_weight_et);
 		m_weight_et.setOnLongClickListener(this);
 		m_weight_et.setOnKeyListener(this);
 		m_weight_et.addTextChangedListener(this);
+		m_weight_et.setOnFocusChangeListener(this);
 
 		m_level_et = (EditText) findViewById(R.id.aset_wheel_level_et);
 		m_level_et.setOnLongClickListener(this);
 		m_level_et.setOnKeyListener(this);
 		m_level_et.addTextChangedListener(this);
+		m_level_et.setOnFocusChangeListener(this);
 
 		m_calorie_et = (EditText) findViewById(R.id.aset_wheel_calorie_et);
 		m_calorie_et.setOnLongClickListener(this);
 		m_calorie_et.setOnKeyListener(this);
 		m_calorie_et.addTextChangedListener(this);
+		m_calorie_et.setOnFocusChangeListener(this);
 
 		m_dist_et = (EditText) findViewById(R.id.aset_wheel_dist_et);
 		m_dist_et.setOnLongClickListener(this);
 		m_dist_et.setOnKeyListener(this);
 		m_dist_et.addTextChangedListener(this);
+		m_dist_et.setOnFocusChangeListener(this);
 
 		m_time_et = (EditText) findViewById(R.id.aset_wheel_time_et);
 		m_time_et.setOnLongClickListener(this);
 		m_time_et.setOnKeyListener(this);
 		m_time_et.addTextChangedListener(this);
+		m_time_et.setOnFocusChangeListener(this);
 
 		m_other_et = (EditText) findViewById(R.id.aset_wheel_other_et);
 		m_other_et.setOnLongClickListener(this);
 		m_other_et.setOnKeyListener(this);
 		m_other_et.addTextChangedListener(this);
+		m_other_et.setOnFocusChangeListener(this);
 
 		m_notes_et = (EditText) findViewById(R.id.aset_wheel_notes_et);
 		m_notes_et.setOnLongClickListener(this);
@@ -419,6 +428,58 @@ public class AddSetActivity
 		return super.onOptionsItemSelected(item);
 	}
 
+
+
+	//------------------------------
+	// Fires when a view gains or loses focus.  Of course,
+	// you have to set the view to have such a listener!
+	//
+	//	I'm just listening to the EditText, and when it
+	//	loses focus, I'll tell the appropriate Wheel
+	//	to set its number to the ET's value.
+	//
+	@Override
+	public void onFocusChange(View v, boolean hasFocus) {
+
+		// ONLY handling EditTexts!!!
+		if (v.getClass() != EditText.class) {
+			return;
+		}
+
+		// Also, we only want where the View LOSES focus.
+		if (hasFocus) {
+			return;
+		}
+
+		if (v == m_reps_et) {
+			int val = Integer.parseInt(((EditText) v).getText().toString());
+			m_reps_wheels.set_value(val, true);
+		}
+		else if (v == m_level_et) {
+			int val = Integer.parseInt(((EditText) v).getText().toString());
+			m_level_wheels.set_value(val, true);
+		}
+		else if (v == m_calorie_et) {
+			int val = Integer.parseInt(((EditText) v).getText().toString());
+			m_calorie_wheels.set_value(val, true);
+		}
+		else if (v == m_weight_et) {
+			float val = Float.parseFloat(((EditText) v).getText().toString());
+			m_weight_wheels.set_value(val, true);
+		}
+		else if (v == m_dist_et) {
+			float val = Float.parseFloat(((EditText) v).getText().toString());
+			m_dist_wheels.set_value(val, true);
+		}
+		else if (v == m_time_et) {
+			float val = Float.parseFloat(((EditText) v).getText().toString());
+			m_time_wheels.set_value(val, true);
+		}
+		else if (v == m_other_et) {
+			float val = Float.parseFloat(((EditText) v).getText().toString());
+			m_other_wheels.set_value(val, true);
+		}
+	} // onFocusChange (v, hasFocus)
 
 
 	//------------------------------
@@ -543,9 +604,9 @@ public class AddSetActivity
 	// to see if a software keyboard made any changes.
 	//
 	@Override
-	public void afterTextChanged(Editable s) {
+	public void afterTextChanged(Editable et) {
 		m_widgets_dirty = true;
-	}
+	} // afterTextChanged (et)
 
 	//-----------------------------------
 	@Override
