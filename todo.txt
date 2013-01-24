@@ -7,11 +7,6 @@ When updating an old database, make sure that we don't leave it
 
 Make an XML file for the initial workouts instead of hard-coding.
 
-BUG: When exiting the program (particularly through the "back"
-	button, but sometimes the regular way, too), re-entering
-	can cause an error Toast about too many instances of
-	DatabaseHelper.  Don't know if this causes problems.
-
 Long-click help on the wheels is not implemented.
 
 BUG: There's still warnings and etc. happening when the Graph
@@ -77,11 +72,14 @@ Need to make a preferences screen.
 	* Save the database to SIMM card. (http://stackoverflow.com/questions/1209469/storing-android-application-data-on-sd-card,
 	read the whole article!)
 	* Numeric entry style: EditText, Numeric Keypad, Rollers. etc. ??
+	- done
 	* Sound VOLUME
 	* Details of the sound (keypad clicks, warnings, nags, successful
 	completions, etc.).
 	* Should the program nag about cancelling.
 	* Allow user to clear EVERYTHING (tabula rasa).  Warn!
+	* add/modify/change accounts
+	* vibrate
 
 	DONE:
 	* Move the whole program to SIMM
@@ -157,6 +155,15 @@ In the graphs, instead of horizontal lines, divide up into
 ---------------------------------------------------
 TABLED (for later versions)
 ---------------------------------------------------
+BUG: When exiting the program (particularly through the "back"
+	button, but sometimes the regular way, too), re-entering
+	can cause an error Toast about too many instances of
+	DatabaseHelper.  Don't know if this causes problems.
+	- fixed.  Just removed the instance counter--doesn't
+	really seem to be necessary.  I don't think it's possible
+	to have two instances of the app going at once, conflicting
+	the database's writes.
+
 Be nice if the database can be transmitted to a web-site.
 
 What about a GPS to track your location of workouts and make
@@ -193,16 +200,16 @@ When long-clicking a single exercise set on the Grid,
 	within the Inspector's tab.
 	- Not that important.
 
+---------------------------------------------------
+DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
+---------------------------------------------------
 The Graph:
 	* Need to seperate the drawing of a graph from any knowledge of
 	the exercise.  This isolation will allow to have multiple graphs
 	at the same time (at the color choice and view of the caller).
-
 	* Need to be able to handle missing data.
+	- done
 
----------------------------------------------------
-DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
----------------------------------------------------
 When updating an old database, make sure that we don't leave it
 	in an illegal state (where there are no graph settings).
 	That's just bad coding.

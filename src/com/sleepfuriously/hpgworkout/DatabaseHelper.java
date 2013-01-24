@@ -250,14 +250,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	//	Data Members
 	//-----------------------
 
-	/**
-	 * Counter to make sure we have only one instance.
-	 *
-	 * Just in case.
-	 */
-	private static int m_instance_counter = 0;
-
-
 	// Nice to have around.
 	private Context m_context = null;
 
@@ -297,13 +289,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			factory,
 			version != 0 ? version : DATABASE_VERSION);
 
-		if (m_instance_counter > 0) {
-			Toast.makeText(context, "Too many instances of DatabaseHelper!!!  Everything will go wrong, now.  You've been warned!", Toast.LENGTH_LONG).show();
-			Log.e(tag, "Error constructing database: too many instances (no more than one allowed)!");
-			return;
-		}
-
-		m_instance_counter++;
 		Log.i(tag, "Called the full Constructor!!!  (should be the only time)");
 		m_context = context;
 	} // constructor
@@ -319,12 +304,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public DatabaseHelper (Context context) {
 		super (context, DB_NAME, null, DATABASE_VERSION);
 
-		if (m_instance_counter > 0) {
-			Toast.makeText(context, "Too many instances of DatabaseHelper!!!  Everything will go wrong, now.  You've been warned!", Toast.LENGTH_LONG).show();
-			Log.e(tag, "Error constructing database: too many instances (no more than one allowed)!");
-			return;
-		}
-		m_instance_counter++;
 		Log.i(tag, "Called the minimal Constructor!!!  (should be the only time)");
 		m_context = context;
 	}
@@ -431,7 +410,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	//
 	@Override
 	protected void finalize() throws Throwable {
-		m_instance_counter--;
 		Log.i(tag, "Called finalize()!!!");
 		super.finalize();
 	} // destructor
