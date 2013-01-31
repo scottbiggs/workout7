@@ -158,15 +158,17 @@ public class GraphActivity
 		// If we're displaying graphs in a Tab, then the title and
 		// logo need to disappear.
 		TextView title = (TextView) findViewById(R.id.graph_title_tv);
+		ImageView logo = (ImageView) findViewById(R.id.graph_logo);
 		if (ExerciseTabHostActivity.m_tab_active) {
 			title.setVisibility(View.GONE);
-			ImageView logo = (ImageView) findViewById(R.id.graph_logo);
 			logo.setVisibility(View.GONE);
 		}
 		else {
-			// Otherwise, set the title to our exercise.
+			// Otherwise, set the title to our exercise and set the
+			// help button.
 			str = getString(R.string.graph_title_msg, m_ex_name);
 			title.setText(str);
+			logo.setOnClickListener(this);
 		}
 
 		// Set the aspect that we're displaying.
@@ -198,7 +200,13 @@ public class GraphActivity
 	@Override
 	public void onClick(View v) {
 		Intent itt;
-		if (v == m_options_butt) {
+
+		// Did they hit the help button?
+		if (v.getId() == R.id.graph_logo) {
+			show_help_dialog(R.string.graph_help_title, R.string.graph_help_msg);
+		}
+		
+		else if (v == m_options_butt) {
 			// todo
 			itt = new Intent(this, GraphOptionsActivity.class);
 

@@ -1,19 +1,6 @@
 TODO:
 -----------------
-When updating an old database, make sure that we don't leave it
-	in an illegal state (where there are no graph settings).
-	That's just bad coding.
-	-done
-
 Make an XML file for the initial workouts instead of hard-coding.
-
-Long-click help on the wheels is not implemented.
-
-BUG: There's still warnings and etc. happening when the Graph
-	displays.
-
-When the Inspector tries to display an exercise with no sets
-	(empty), please don't say what the order is!  It's ugly.
 
 Graphs need to be able to ZOOM IN/OUT!  What does that mean?
 	When the user pinches, the screen should respond accordingly.
@@ -22,11 +9,6 @@ Graphs need to be able to ZOOM IN/OUT!  What does that mean?
 	go back to when the user double taps to go back.
 
 Enable data backups.  See http://developer.android.com/guide/topics/data/backup.html
-
-Shifting to the ASet tab when it needs to reload is still
-	very slow.  The dialog doesn't have time to hit, so
-	that means that the slowness happens BEFORE the asynch-
-	task fires in ASet.  Maybe something in ExerciseTabHostActivity?
 
 Remember to make Grid and the Inspector only load so many
 	dates.  Need to provide buttons (or swipes) to load
@@ -71,8 +53,12 @@ Need to make a preferences screen.
 	TODO:
 	* Save the database to SIMM card. (http://stackoverflow.com/questions/1209469/storing-android-application-data-on-sd-card,
 	read the whole article!)
+	- done by the OS
+
 	* Numeric entry style: EditText, Numeric Keypad, Rollers. etc. ??
 	- done
+
+	* Sound
 	* Sound VOLUME
 	* Details of the sound (keypad clicks, warnings, nags, successful
 	completions, etc.).
@@ -83,11 +69,13 @@ Need to make a preferences screen.
 
 	DONE:
 	* Move the whole program to SIMM
-		- The system or the user has the option now.
+	- The system or the user has the option now.
+
 	* Should the program nag about unimportant empty portions
 	of workout sets.
-	* Sound
+
 	* Keep screen on.
+	- done
 
 When doing aset, make it obvious which is the significant
 	row!  Something like a tick, or making it a different color.
@@ -128,6 +116,10 @@ Need to remove the HistoryActivity from the project.
 ---------------------------------------------------
 Hmmmmmmmmmmmmmmmmmmmmmm
 ---------------------------------------------------
+When the Inspector tries to display an exercise with no sets
+	(empty), please don't say what the order is!  It's ugly.
+	- don't see the problem anymore
+
 Minor bug: When an exercise has changed its significant aspect,
 	the ASet still draws the old aspect as bold (if it has
 	already been created).
@@ -203,6 +195,28 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Bug: Help doesn't work on the graph screen when it's not in a tab.
+	- fixed
+
+BUG: There's still warnings and etc. happening when the Graph
+	displays.
+	- not any more!
+
+Shifting to the ASet tab when it needs to reload is still
+	very slow.  The dialog doesn't have time to hit, so
+	that means that the slowness happens BEFORE the asynch-
+	task fires in ASet.  Maybe something in ExerciseTabHostActivity?
+	- found the problem. It's still a little slow, but
+	much faster now.
+
+Long-click help on the wheels is not implemented.
+	-killed, not compatible with the gestures for wheels.
+
+When updating an old database, make sure that we don't leave it
+	in an illegal state (where there are no graph settings).
+	That's just bad coding.
+	-done
+
 The Graph:
 	* Need to seperate the drawing of a graph from any knowledge of
 	the exercise.  This isolation will allow to have multiple graphs
