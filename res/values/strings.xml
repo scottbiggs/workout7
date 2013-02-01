@@ -1601,4 +1601,21 @@
 	<string name="exer_tabhost_tab_history">show history</string>
 
 
+	<!-- ============                   ============ -->
+	<!-- ============ Definitions for   ============ -->
+	<!-- ============ initial exercises ============ -->
+	<!-- ============              	    ============ -->
+
+	<string name="type_anaerobic">anaerobic</string>
+	<string name="type_aerobic">aerobic</string>
+	<string name="type_both">both</string>
+	<string name="type_misc">misc</string>
+
+	<string name="muscle_group_upper">upper</string>
+	<string name="muscle_group_lower">lower</string>
+	<string name="muscle_group_trunk">trunk</string>
+	<string name="muscle_group_all">all</string>
+	<string name="muscle_group_misc">misc</string>
+
+
 </resources>

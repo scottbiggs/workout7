@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
 	<string-array name="type_array">
-		<item>anaerobic</item>
-		<item>aerobic</item>
-		<item>both</item>
-		<item>misc</item>
+		<item>@string/type_anaerobic</item>
+		<item>@string/type_aerobic</item>
+		<item>@string/type_both</item>
+		<item>@string/type_misc</item>
 	</string-array>
 
 	<string-array name="muscle_group_array">
-		<item>upper</item>
-		<item>lower</item>
-		<item>trunk</item>
-		<item>all</item>
-		<item>misc</item>
+		<item>@string/muscle_group_upper</item>
+		<item>@string/muscle_group_lower</item>
+		<item>@string/muscle_group_trunk</item>
+		<item>@string/muscle_group_all</item>
+		<item>@string/muscle_group_misc</item>
 	</string-array>
 
 	<!--
