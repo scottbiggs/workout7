@@ -128,7 +128,6 @@ public class GraphActivity
 	protected void onCreate(Bundle savedInstanceState) {
 		String str;
 
-		Log.v(tag, "entering onCreate()");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.graphs);
 
@@ -184,8 +183,6 @@ public class GraphActivity
 	protected void onResume() {
 		super.onResume();
 
-		Log.v(tag, "onResume()");
-
 		// Do we need to reload the database and redraw everything?
 		if (m_db_dirty) {
 			Log.v(tag, "Redrawing the graph!");
@@ -205,7 +202,7 @@ public class GraphActivity
 		if (v.getId() == R.id.graph_logo) {
 			show_help_dialog(R.string.graph_help_title, R.string.graph_help_msg);
 		}
-		
+
 		else if (v == m_options_butt) {
 			// todo
 			itt = new Intent(this, GraphOptionsActivity.class);
@@ -758,10 +755,10 @@ public class GraphActivity
 		// While we're at it, set the legend to invisible.
 		TextView legend = (TextView) findViewById(R.id.graph_description_tv);
 		legend.setVisibility(View.INVISIBLE);
-		
+
 		// And you know what? the options doesn't make sense either.
 		m_options_butt.setVisibility(View.GONE);
-		
+
 		// Fill in the text.
 		String str = getString(R.string.graph_one_set_msg, m_exercise_data.name);
 
@@ -780,17 +777,17 @@ public class GraphActivity
 			str += "\ttime (" + m_exercise_data.time_unit + "): " + set_data_to_str(m_set_data.get(0).time) + "\n";
 		if (m_exercise_data.bother)
 			str += "\t" + m_exercise_data.other_title + " (" + m_exercise_data.other_unit + "): " + set_data_to_str(m_set_data.get(0).other) + "\n";
-		
+
 		tv.setText(str);
 	} // construct_one_set()
-	
+
 	/************************
-	 * Helper method that takes quantity in some set data 
+	 * Helper method that takes quantity in some set data
 	 * and spits out a string for that number.  This is needed
 	 * since a value of -1 mean NULL, not -1.
-	 * 
+	 *
 	 * @param num	The set data to convert to a string.
-	 * 
+	 *
 	 * @return	A printable string.
 	 */
 	private String set_data_to_str (int num) {
