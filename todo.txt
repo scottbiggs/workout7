@@ -1,5 +1,8 @@
 TODO:
 -----------------
+In the GraphActivity and the GraphOptionsActivity, the significant
+	aspect should be bold.
+
 Make an XML file for the initial workouts instead of hard-coding.
 
 Graphs need to be able to ZOOM IN/OUT!  What does that mean?

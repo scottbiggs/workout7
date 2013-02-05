@@ -16,7 +16,8 @@
 	</string-array>
 
 	<!--
-		Corresponds with the columns in DatabaseHelper
+		Corresponds with the column names in DatabaseHelper
+		(EXERCISE_COL_xxx). Update appropriately!
 	-->
 	<string-array name="exercise_column_names_array">
 		<item>_id</item>

@@ -22,10 +22,16 @@
  */
 package com.sleepfuriously.hpgworkout;
 
+import java.io.IOException;
 import java.util.Calendar;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.Resources;
+import android.content.res.XmlResourceParser;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -65,8 +71,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	/**
 	 * Strings for the column names of the exercise
 	 * definition table.
-	 *
-	 * NOTE:
+	 * <p>
+	 * <b>NOTE</b>:<br />
 	 * 		Corresponds to R.arrays.exercise_column_names_array.
 	 * 		Update appropriately!
 	 */
@@ -323,7 +329,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		Log.i(tag, "Creating new database file, " + EXERCISE_TABLE_CREATE_STRING);
 
 		db.execSQL (EXERCISE_TABLE_CREATE_STRING);
-		init_exercises (db);
+		init_exercises2 (db);
+//		init_exercises (db);
 
 		db.execSQL(SET_TABLE_CREATE_STRING);
 		init_sets (db);
@@ -524,390 +531,247 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	//	Exercise Table Methods
 	//--------------------------------------
 
-	//-----------------------
-	//	Called when the database is originally created.
-	//	This populates the database with a small set of
-	//	exercises to get the user going quickly with this
-	//	program.  They (almost certainly) will add exer-
-	//	cises later.
-	//
-	//	input:
-	//		db			The database to throw these
-	//					rows into.
-	//
-	//	NOTE:
-	//		It appears that the first entry to the
-	//		table has an _ID = 1
-	//
-	private void init_exercises (SQLiteDatabase db) {
-		ContentValues values = new ContentValues();
+	/*********************
+	 * Called to initially populate the exercise
+	 * table with some exercises from the
+	 * initial_exercises.xml file.
+	 *
+	 * Note that the first entry to the table has
+	 * an _ID = 1.
+	 *
+	 * @param db		A write-able database, probably
+	 * 				with nothing in it yet (except
+	 * 				an exercise table that's already
+	 * 				defined).
+	 */
+	private void init_exercises2 (SQLiteDatabase db) {
+		ContentValues values;
 
-		values.put (EXERCISE_COL_NAME, "bench press");
-		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_ANAEROBIC);
-		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_UPPER);
-		values.put (EXERCISE_COL_WEIGHT, true);
-		values.put (EXERCISE_COL_REP, true);
-		values.put (EXERCISE_COL_DIST, false);
-		values.put (EXERCISE_COL_TIME, false);
-		values.put (EXERCISE_COL_LEVEL, false);
-		values.put (EXERCISE_COL_OTHER, false);
-		values.put (EXERCISE_COL_WEIGHT_UNIT, "pounds");
-		values.put (EXERCISE_COL_DIST_UNIT, "");
-		values.put (EXERCISE_COL_TIME_UNIT, "");
-		values.put (EXERCISE_COL_OTHER_TITLE, "");
-		values.put (EXERCISE_COL_OTHER_UNIT, "");
-		values.put(EXERCISE_COL_LORDER, 2);
-		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_WEIGHT_NUM);
+		// Get access to resource files.
+		Resources res = m_context.getResources();
 
-		// new with version 6
-		values.put(EXERCISE_COL_GRAPH_WEIGHT, true);
-		values.put(EXERCISE_COL_GRAPH_REPS, true);
-		values.put(EXERCISE_COL_GRAPH_DIST, false);
-		values.put(EXERCISE_COL_GRAPH_TIME, false);
-		values.put(EXERCISE_COL_GRAPH_LEVEL, false);
-		values.put(EXERCISE_COL_GRAPH_CALS, false);
-		values.put(EXERCISE_COL_GRAPH_OTHER, false);
-		values.put(EXERCISE_COL_GRAPH_WITH_REPS, EXERCISE_COL_WEIGHT_NUM); // same as significant
+		// Get an xml parser.
+		XmlResourceParser parser = res.getXml(R.xml.initial_exercises);
 
 		try {
-			db.insertOrThrow(EXERCISE_TABLE_NAME, null, values);
+			// loop until the end of the xml file
+			int event = parser.getEventType();
+			while (event != XmlPullParser.END_DOCUMENT) {
+				//Search for record tags, which define each exercise
+				if ((event == XmlPullParser.START_TAG) &&
+					(parser.getName().equals("record"))) {
+
+					values = parse_init_exercise_values(parser);
+					db.insert(EXERCISE_TABLE_NAME, null, values);
+				}
+				event = parser.next();
+			} // while
 		}
-		catch (SQLException e) {
-			Toast.makeText (m_context,
-							"Database Error!  Problem creating initial exercise list--aborting!",
-							Toast.LENGTH_LONG)
-					.show();
-			return;
+
+		//Catch (some) errors
+		catch (XmlPullParserException e) {
+			Log.e(tag, e.getMessage(), e);
+		}
+		catch (IOException e) {
+			Log.e(tag, e.getMessage(), e);
+		}
+		finally {
+			//Close the xml file
+			parser.close();
 		}
 
-		values.clear();
-		values.put (EXERCISE_COL_NAME, "squats");
-		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_ANAEROBIC);
-		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_LOWER);
-		values.put (EXERCISE_COL_WEIGHT, true);
-		values.put (EXERCISE_COL_REP, true);
-		values.put (EXERCISE_COL_DIST, false);
-		values.put (EXERCISE_COL_TIME, false);
-		values.put (EXERCISE_COL_LEVEL, false);
-		values.put (EXERCISE_COL_OTHER, false);
-		values.put (EXERCISE_COL_WEIGHT_UNIT, "pounds");
-		values.put (EXERCISE_COL_DIST_UNIT, "");
-		values.put (EXERCISE_COL_TIME_UNIT, "");
-		values.put (EXERCISE_COL_OTHER_TITLE, "");
-		values.put (EXERCISE_COL_OTHER_UNIT, "");
-		values.put(EXERCISE_COL_LORDER, 3);
-		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_WEIGHT_NUM);
-		values.put(EXERCISE_COL_GRAPH_WEIGHT, true);
-		values.put(EXERCISE_COL_GRAPH_REPS, true);
-		values.put(EXERCISE_COL_GRAPH_DIST, false);
-		values.put(EXERCISE_COL_GRAPH_TIME, false);
-		values.put(EXERCISE_COL_GRAPH_LEVEL, false);
-		values.put(EXERCISE_COL_GRAPH_CALS, false);
-		values.put(EXERCISE_COL_GRAPH_OTHER, false);
-		values.put(EXERCISE_COL_GRAPH_WITH_REPS, EXERCISE_COL_WEIGHT_NUM);
-		db.insert(EXERCISE_TABLE_NAME, null, values);
-
-		values.clear();
-		values.put (EXERCISE_COL_NAME, "rows");
-		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_AEROBIC);
-		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_ALL);
-		values.put (EXERCISE_COL_WEIGHT, false);
-		values.put (EXERCISE_COL_REP, false);
-		values.put (EXERCISE_COL_DIST, true);
-		values.put (EXERCISE_COL_TIME, true);
-		values.put (EXERCISE_COL_LEVEL, true);
-		values.put (EXERCISE_COL_OTHER, false);
-		values.put (EXERCISE_COL_WEIGHT_UNIT, "");
-		values.put (EXERCISE_COL_DIST_UNIT, "miles");
-		values.put (EXERCISE_COL_TIME_UNIT, "minutes");
-		values.put (EXERCISE_COL_OTHER_TITLE, "");
-		values.put (EXERCISE_COL_OTHER_UNIT, "");
-		values.put(EXERCISE_COL_LORDER, 1);
-		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_TIME_NUM);
-		values.put(EXERCISE_COL_GRAPH_WEIGHT, false);
-		values.put(EXERCISE_COL_GRAPH_REPS, false);
-		values.put(EXERCISE_COL_GRAPH_DIST, true);
-		values.put(EXERCISE_COL_GRAPH_TIME, true);
-		values.put(EXERCISE_COL_GRAPH_LEVEL, false);
-		values.put(EXERCISE_COL_GRAPH_CALS, false);
-		values.put(EXERCISE_COL_GRAPH_OTHER, false);
-		values.put(EXERCISE_COL_GRAPH_WITH_REPS, EXERCISE_COL_WEIGHT_NUM);
-		db.insert(EXERCISE_TABLE_NAME, null, values);
-
-		values.clear();
-		values.put (EXERCISE_COL_NAME, "super winking");
-		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_BOTH);
-		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_UPPER);
-		values.put (EXERCISE_COL_WEIGHT, true);
-		values.put (EXERCISE_COL_REP, true);
-		values.put (EXERCISE_COL_DIST, true);
-		values.put (EXERCISE_COL_TIME, true);
-		values.put (EXERCISE_COL_LEVEL, true);
-		values.put (EXERCISE_COL_CALORIES, true);
-		values.put (EXERCISE_COL_OTHER, true);
-		values.put (EXERCISE_COL_WEIGHT_UNIT, "tids");
-		values.put (EXERCISE_COL_DIST_UNIT, "wankers");
-		values.put (EXERCISE_COL_TIME_UNIT, "clicks");
-		values.put (EXERCISE_COL_OTHER_TITLE, "tiddlies");
-		values.put (EXERCISE_COL_OTHER_UNIT, "winks");
-		values.put(EXERCISE_COL_LORDER, 4);
-		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_REP_NUM);
-		values.put(EXERCISE_COL_GRAPH_WEIGHT, true);
-		values.put(EXERCISE_COL_GRAPH_REPS, true);
-		values.put(EXERCISE_COL_GRAPH_DIST, true);
-		values.put(EXERCISE_COL_GRAPH_TIME, true);
-		values.put(EXERCISE_COL_GRAPH_LEVEL, true);
-		values.put(EXERCISE_COL_GRAPH_CALS, true);
-		values.put(EXERCISE_COL_GRAPH_OTHER, true);
-		values.put(EXERCISE_COL_GRAPH_WITH_REPS, EXERCISE_COL_WEIGHT_NUM);
-		db.insert(EXERCISE_TABLE_NAME, null, values);
-
-		values.clear();
-		values.put (EXERCISE_COL_NAME, "sit-ups");
-		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_MISC);
-		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_TRUNK);
-		values.put (EXERCISE_COL_WEIGHT, false);
-		values.put (EXERCISE_COL_REP, true);
-		values.put (EXERCISE_COL_DIST, false);
-		values.put (EXERCISE_COL_TIME, false);
-		values.put (EXERCISE_COL_LEVEL, false);
-		values.put (EXERCISE_COL_OTHER, true);
-		values.put (EXERCISE_COL_WEIGHT_UNIT, "");
-		values.put (EXERCISE_COL_DIST_UNIT, "");
-		values.put (EXERCISE_COL_TIME_UNIT, "");
-		values.put (EXERCISE_COL_OTHER_TITLE, "incline");
-		values.put (EXERCISE_COL_OTHER_UNIT, "degrees");
-		values.put(EXERCISE_COL_LORDER, 5);
-		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_REP_NUM);
-		values.put(EXERCISE_COL_GRAPH_WEIGHT, false);
-		values.put(EXERCISE_COL_GRAPH_REPS, true);
-		values.put(EXERCISE_COL_GRAPH_DIST, false);
-		values.put(EXERCISE_COL_GRAPH_TIME, false);
-		values.put(EXERCISE_COL_GRAPH_LEVEL, false);
-		values.put(EXERCISE_COL_GRAPH_CALS, false);
-		values.put(EXERCISE_COL_GRAPH_OTHER, false);
-		values.put(EXERCISE_COL_GRAPH_WITH_REPS, -1); // none
-		db.insert(EXERCISE_TABLE_NAME, null, values);
-
-		values.clear();
-		values.put (EXERCISE_COL_NAME, "bicep curls");
-		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_ANAEROBIC);
-		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_UPPER);
-		values.put (EXERCISE_COL_WEIGHT, true);
-		values.put (EXERCISE_COL_REP, true);
-		values.put (EXERCISE_COL_DIST, false);
-		values.put (EXERCISE_COL_TIME, false);
-		values.put (EXERCISE_COL_LEVEL, false);
-		values.put (EXERCISE_COL_OTHER, false);
-		values.put (EXERCISE_COL_WEIGHT_UNIT, "pounds");
-		values.put (EXERCISE_COL_DIST_UNIT, "");
-		values.put (EXERCISE_COL_TIME_UNIT, "");
-		values.put (EXERCISE_COL_OTHER_TITLE, "");
-		values.put (EXERCISE_COL_OTHER_UNIT, "");
-		values.put(EXERCISE_COL_LORDER, 6);
-		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_WEIGHT_NUM);
-		values.put(EXERCISE_COL_GRAPH_WEIGHT, true);
-		values.put(EXERCISE_COL_GRAPH_REPS, true);
-		values.put(EXERCISE_COL_GRAPH_DIST, false);
-		values.put(EXERCISE_COL_GRAPH_TIME, false);
-		values.put(EXERCISE_COL_GRAPH_LEVEL, false);
-		values.put(EXERCISE_COL_GRAPH_CALS, false);
-		values.put(EXERCISE_COL_GRAPH_OTHER, false);
-		values.put(EXERCISE_COL_GRAPH_WITH_REPS, EXERCISE_COL_WEIGHT_NUM);
-		db.insert(EXERCISE_TABLE_NAME, null, values);
-
-		values.clear();
-		values.put (EXERCISE_COL_NAME, "jogging");
-		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_AEROBIC);
-		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_LOWER);
-		values.put (EXERCISE_COL_WEIGHT, false);
-		values.put (EXERCISE_COL_REP, false);
-		values.put (EXERCISE_COL_DIST, true);
-		values.put (EXERCISE_COL_TIME, true);
-		values.put (EXERCISE_COL_LEVEL, false);
-		values.put (EXERCISE_COL_CALORIES, true);
-		values.put (EXERCISE_COL_OTHER, false);
-		values.put (EXERCISE_COL_WEIGHT_UNIT, "");
-		values.put (EXERCISE_COL_DIST_UNIT, "miles");
-		values.put (EXERCISE_COL_TIME_UNIT, "minutes");
-		values.put (EXERCISE_COL_OTHER_TITLE, "");
-		values.put (EXERCISE_COL_OTHER_UNIT, "");
-		values.put(EXERCISE_COL_LORDER, 0);
-		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_DIST_NUM);
-		values.put(EXERCISE_COL_GRAPH_WEIGHT, false);
-		values.put(EXERCISE_COL_GRAPH_REPS, false);
-		values.put(EXERCISE_COL_GRAPH_DIST, true);
-		values.put(EXERCISE_COL_GRAPH_TIME, true);
-		values.put(EXERCISE_COL_GRAPH_LEVEL, false);
-		values.put(EXERCISE_COL_GRAPH_CALS, true);
-		values.put(EXERCISE_COL_GRAPH_OTHER, false);
-		values.put(EXERCISE_COL_GRAPH_WITH_REPS, -1);
-		db.insert(EXERCISE_TABLE_NAME, null, values);
-
-		values.clear();
-		values.put (EXERCISE_COL_NAME, "chin-ups");
-		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_ANAEROBIC);
-		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_UPPER);
-		values.put (EXERCISE_COL_WEIGHT, false);
-		values.put (EXERCISE_COL_REP, true);
-		values.put (EXERCISE_COL_DIST, false);
-		values.put (EXERCISE_COL_TIME, false);
-		values.put (EXERCISE_COL_LEVEL, false);
-		values.put (EXERCISE_COL_OTHER, false);
-		values.put (EXERCISE_COL_WEIGHT_UNIT, "");
-		values.put (EXERCISE_COL_DIST_UNIT, "");
-		values.put (EXERCISE_COL_TIME_UNIT, "");
-		values.put (EXERCISE_COL_OTHER_TITLE, "");
-		values.put (EXERCISE_COL_OTHER_UNIT, "");
-		values.put(EXERCISE_COL_LORDER, 8);
-		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_REP_NUM);
-		values.put(EXERCISE_COL_GRAPH_WEIGHT, false);
-		values.put(EXERCISE_COL_GRAPH_REPS, true);
-		values.put(EXERCISE_COL_GRAPH_DIST, false);
-		values.put(EXERCISE_COL_GRAPH_TIME, false);
-		values.put(EXERCISE_COL_GRAPH_LEVEL, false);
-		values.put(EXERCISE_COL_GRAPH_CALS, false);
-		values.put(EXERCISE_COL_GRAPH_OTHER, false);
-		values.put(EXERCISE_COL_GRAPH_WITH_REPS, -1);
-		db.insert(EXERCISE_TABLE_NAME, null, values);
-
-		values.clear();
-		values.put (EXERCISE_COL_NAME, "push-ups");
-		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_ANAEROBIC);
-		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_UPPER);
-		values.put (EXERCISE_COL_WEIGHT, false);
-		values.put (EXERCISE_COL_REP, true);
-		values.put (EXERCISE_COL_DIST, false);
-		values.put (EXERCISE_COL_TIME, false);
-		values.put (EXERCISE_COL_LEVEL, false);
-		values.put (EXERCISE_COL_OTHER, false);
-		values.put (EXERCISE_COL_WEIGHT_UNIT, "");
-		values.put (EXERCISE_COL_DIST_UNIT, "");
-		values.put (EXERCISE_COL_TIME_UNIT, "");
-		values.put (EXERCISE_COL_OTHER_TITLE, "");
-		values.put (EXERCISE_COL_OTHER_UNIT, "");
-		values.put(EXERCISE_COL_LORDER, 9);
-		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_REP_NUM);
-		values.put(EXERCISE_COL_GRAPH_WEIGHT, false);
-		values.put(EXERCISE_COL_GRAPH_REPS, true);
-		values.put(EXERCISE_COL_GRAPH_DIST, false);
-		values.put(EXERCISE_COL_GRAPH_TIME, false);
-		values.put(EXERCISE_COL_GRAPH_LEVEL, false);
-		values.put(EXERCISE_COL_GRAPH_CALS, false);
-		values.put(EXERCISE_COL_GRAPH_OTHER, false);
-		values.put(EXERCISE_COL_GRAPH_WITH_REPS, -1);
-		db.insert(EXERCISE_TABLE_NAME, null, values);
-
-		values.clear();
-		values.put (EXERCISE_COL_NAME, "wrist-rolls");
-		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_ANAEROBIC);
-		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_UPPER);
-		values.put (EXERCISE_COL_WEIGHT, false);
-		values.put (EXERCISE_COL_REP, true);
-		values.put (EXERCISE_COL_DIST, false);
-		values.put (EXERCISE_COL_TIME, false);
-		values.put (EXERCISE_COL_LEVEL, false);
-		values.put (EXERCISE_COL_OTHER, false);
-		values.put (EXERCISE_COL_WEIGHT_UNIT, "");
-		values.put (EXERCISE_COL_DIST_UNIT, "");
-		values.put (EXERCISE_COL_TIME_UNIT, "");
-		values.put (EXERCISE_COL_OTHER_TITLE, "");
-		values.put (EXERCISE_COL_OTHER_UNIT, "");
-		values.put(EXERCISE_COL_LORDER, 10);
-		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_REP_NUM);
-		values.put(EXERCISE_COL_GRAPH_WEIGHT, false);
-		values.put(EXERCISE_COL_GRAPH_REPS, true);
-		values.put(EXERCISE_COL_GRAPH_DIST, false);
-		values.put(EXERCISE_COL_GRAPH_TIME, false);
-		values.put(EXERCISE_COL_GRAPH_LEVEL, false);
-		values.put(EXERCISE_COL_GRAPH_CALS, false);
-		values.put(EXERCISE_COL_GRAPH_OTHER, false);
-		values.put(EXERCISE_COL_GRAPH_WITH_REPS, -1);
-		db.insert(EXERCISE_TABLE_NAME, null, values);
-
-		values.clear();
-		values.put (EXERCISE_COL_NAME, "roman chair");
-		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_ANAEROBIC);
-		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_UPPER);
-		values.put (EXERCISE_COL_WEIGHT, false);
-		values.put (EXERCISE_COL_REP, true);
-		values.put (EXERCISE_COL_DIST, false);
-		values.put (EXERCISE_COL_TIME, false);
-		values.put (EXERCISE_COL_LEVEL, false);
-		values.put (EXERCISE_COL_OTHER, false);
-		values.put (EXERCISE_COL_WEIGHT_UNIT, "");
-		values.put (EXERCISE_COL_DIST_UNIT, "");
-		values.put (EXERCISE_COL_TIME_UNIT, "");
-		values.put (EXERCISE_COL_OTHER_TITLE, "");
-		values.put (EXERCISE_COL_OTHER_UNIT, "");
-		values.put(EXERCISE_COL_LORDER, 11);
-		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_REP_NUM);
-		values.put(EXERCISE_COL_GRAPH_WEIGHT, false);
-		values.put(EXERCISE_COL_GRAPH_REPS, true);
-		values.put(EXERCISE_COL_GRAPH_DIST, false);
-		values.put(EXERCISE_COL_GRAPH_TIME, false);
-		values.put(EXERCISE_COL_GRAPH_LEVEL, false);
-		values.put(EXERCISE_COL_GRAPH_CALS, false);
-		values.put(EXERCISE_COL_GRAPH_OTHER, false);
-		values.put(EXERCISE_COL_GRAPH_WITH_REPS, -1);
-		db.insert(EXERCISE_TABLE_NAME, null, values);
-
-		values.clear();
-		values.put (EXERCISE_COL_NAME, "military press");
-		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_ANAEROBIC);
-		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_UPPER);
-		values.put (EXERCISE_COL_WEIGHT, true);
-		values.put (EXERCISE_COL_REP, true);
-		values.put (EXERCISE_COL_DIST, false);
-		values.put (EXERCISE_COL_TIME, false);
-		values.put (EXERCISE_COL_LEVEL, false);
-		values.put (EXERCISE_COL_OTHER, false);
-		values.put (EXERCISE_COL_WEIGHT_UNIT, "tons");
-		values.put (EXERCISE_COL_DIST_UNIT, "");
-		values.put (EXERCISE_COL_TIME_UNIT, "");
-		values.put (EXERCISE_COL_OTHER_TITLE, "");
-		values.put (EXERCISE_COL_OTHER_UNIT, "");
-		values.put(EXERCISE_COL_LORDER, 12);
-		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_WEIGHT_NUM);
-		values.put(EXERCISE_COL_GRAPH_WEIGHT, true);
-		values.put(EXERCISE_COL_GRAPH_REPS, true);
-		values.put(EXERCISE_COL_GRAPH_DIST, false);
-		values.put(EXERCISE_COL_GRAPH_TIME, false);
-		values.put(EXERCISE_COL_GRAPH_LEVEL, false);
-		values.put(EXERCISE_COL_GRAPH_CALS, false);
-		values.put(EXERCISE_COL_GRAPH_OTHER, false);
-		values.put(EXERCISE_COL_GRAPH_WITH_REPS, EXERCISE_COL_WEIGHT_NUM);
-		db.insert(EXERCISE_TABLE_NAME, null, values);
+	} // init_exercises (db)
 
 
-		values.clear();
-		values.put (EXERCISE_COL_NAME, "med ball twister");
-		values.put (EXERCISE_COL_TYPE, WGlobals.EXER_TYPE_ANAEROBIC);
-		values.put (EXERCISE_COL_GROUP, WGlobals.EXER_GROUP_UPPER);
-		values.put (EXERCISE_COL_WEIGHT, true);
-		values.put (EXERCISE_COL_REP, true);
-		values.put (EXERCISE_COL_DIST, false);
-		values.put (EXERCISE_COL_TIME, false);
-		values.put (EXERCISE_COL_LEVEL, false);
-		values.put (EXERCISE_COL_OTHER, false);
-		values.put (EXERCISE_COL_WEIGHT_UNIT, "");
-		values.put (EXERCISE_COL_DIST_UNIT, "");
-		values.put (EXERCISE_COL_TIME_UNIT, "");
-		values.put (EXERCISE_COL_OTHER_TITLE, "");
-		values.put (EXERCISE_COL_OTHER_UNIT, "");
-		values.put(EXERCISE_COL_LORDER, 7);
-		values.put(EXERCISE_COL_SIGNIFICANT, EXERCISE_COL_REP_NUM);
-		values.put(EXERCISE_COL_GRAPH_WEIGHT, true);
-		values.put(EXERCISE_COL_GRAPH_REPS, true);
-		values.put(EXERCISE_COL_GRAPH_DIST, false);
-		values.put(EXERCISE_COL_GRAPH_TIME, false);
-		values.put(EXERCISE_COL_GRAPH_LEVEL, false);
-		values.put(EXERCISE_COL_GRAPH_CALS, false);
-		values.put(EXERCISE_COL_GRAPH_OTHER, false);
-		values.put(EXERCISE_COL_GRAPH_WITH_REPS, -1);
-		db.insert(EXERCISE_TABLE_NAME, null, values);
+	/************************
+	 * Given a parser that's looking at a resource to parse
+	 * a sample exercise, this creates a ContentValues and
+	 * fills it with all the appropriate data.
+	 * <p>
+	 * NOTE: This will throw all sorts of exceptions if the
+	 * 		data is improperly formatted.
+	 * <p>
+	 * @param parser		Primed and ready to read the resource.
+	 *
+	 * @return	A ContentValues ready to insert into a database.
+	 */
+	private ContentValues parse_init_exercise_values (XmlResourceParser parser) {
+		ContentValues values = new ContentValues();
 
-	} // init_exes (db)
+		//Record tag found, now get values and insert record
+		{
+			String name = parser.getAttributeValue(null, EXERCISE_COL_NAME);
+			values.put(EXERCISE_COL_NAME, name);
+		}
+
+		{
+			String type_str = parser.getAttributeValue(null, EXERCISE_COL_TYPE);
+			int type = Integer.parseInt(type_str);
+			values.put(EXERCISE_COL_TYPE, type);
+		}
+
+		{
+			String group_str = parser.getAttributeValue(null, EXERCISE_COL_GROUP);
+			int group = Integer.parseInt(group_str);
+			values.put(EXERCISE_COL_GROUP, group);
+		}
+
+		{
+			String rep_str = parser.getAttributeValue(null, EXERCISE_COL_REP);
+			boolean rep = Boolean.parseBoolean(rep_str);
+			values.put(EXERCISE_COL_REP, rep);
+			boolean g_rep = false;
+			if (rep) {
+				String g_rep_str = parser.getAttributeValue(null, EXERCISE_COL_GRAPH_REPS);
+				g_rep = Boolean.parseBoolean(g_rep_str);
+			}
+			values.put(EXERCISE_COL_GRAPH_REPS, g_rep);
+		}
+
+		{
+			String level_str = parser.getAttributeValue(null, EXERCISE_COL_LEVEL);
+			boolean level = Boolean.parseBoolean(level_str);
+			values.put(EXERCISE_COL_LEVEL, level);
+			boolean g_level = false;
+			if (level) {
+				String g_level_str = parser.getAttributeValue(null, EXERCISE_COL_GRAPH_LEVEL);
+				g_level = Boolean.parseBoolean(g_level_str);
+			}
+			values.put(EXERCISE_COL_GRAPH_LEVEL, g_level);
+		}
+
+		{
+			String cals_str = parser.getAttributeValue(null, EXERCISE_COL_CALORIES);
+			boolean cals = Boolean.parseBoolean(cals_str);
+			values.put(EXERCISE_COL_CALORIES, cals);
+			boolean g_cals = false;
+			if (cals) {
+				String g_cals_str = parser.getAttributeValue(null, EXERCISE_COL_GRAPH_CALS);
+				g_cals = Boolean.parseBoolean(g_cals_str);
+			}
+			values.put(EXERCISE_COL_GRAPH_CALS, g_cals);
+		}
+
+		{
+			String weight_str = parser.getAttributeValue(null, EXERCISE_COL_WEIGHT);
+			boolean weight = Boolean.parseBoolean(weight_str);
+			values.put(EXERCISE_COL_WEIGHT, weight);
+
+			String weight_unit = "";
+			boolean g_weight = false;
+
+			if (weight) {
+				weight_unit = parser.getAttributeValue(null, EXERCISE_COL_WEIGHT_UNIT);
+
+				String g_weight_str = parser.getAttributeValue(null, EXERCISE_COL_GRAPH_WEIGHT);
+				g_weight = Boolean.parseBoolean(g_weight_str);
+			}
+			values.put(EXERCISE_COL_WEIGHT_UNIT, weight_unit);
+			values.put(EXERCISE_COL_GRAPH_WEIGHT, g_weight);
+		}
+
+		{
+			String dist_str = parser.getAttributeValue(null, EXERCISE_COL_DIST);
+			boolean dist = Boolean.parseBoolean(dist_str);
+			values.put(EXERCISE_COL_DIST, dist);
+
+			String dist_unit = "";
+			boolean g_dist = false;
+
+			if (dist) {
+				dist_unit = parser.getAttributeValue(null, EXERCISE_COL_DIST_UNIT);
+
+				String g_dist_str = parser.getAttributeValue(null, EXERCISE_COL_GRAPH_DIST);
+				g_dist = Boolean.parseBoolean(g_dist_str);
+			}
+			values.put(EXERCISE_COL_DIST_UNIT, dist_unit);
+			values.put(EXERCISE_COL_GRAPH_DIST, g_dist);
+		}
+
+		{
+			String time_str = parser.getAttributeValue(null, EXERCISE_COL_TIME);
+			boolean time = Boolean.parseBoolean(time_str);
+			values.put(EXERCISE_COL_TIME, time);
+
+			String time_unit = "";
+			boolean g_time = false;
+
+			if (time) {
+				time_unit = parser.getAttributeValue(null, EXERCISE_COL_TIME_UNIT);
+
+				String g_time_str = parser.getAttributeValue(null, EXERCISE_COL_GRAPH_TIME);
+				g_time = Boolean.parseBoolean(g_time_str);
+			}
+			values.put(EXERCISE_COL_TIME_UNIT, time_unit);
+			values.put(EXERCISE_COL_GRAPH_TIME, g_time);
+		}
+
+		{
+			String other_str = parser.getAttributeValue(null, EXERCISE_COL_OTHER);
+			boolean other = Boolean.parseBoolean(other_str);
+			values.put(EXERCISE_COL_OTHER, other);
+
+			String other_title = "";
+			String other_unit = "";
+			boolean g_other = false;
+
+			if (other) {
+				other_title = parser.getAttributeValue(null, EXERCISE_COL_OTHER_TITLE);
+				other_unit = parser.getAttributeValue(null, EXERCISE_COL_OTHER_UNIT);
+
+				String g_other_str = parser.getAttributeValue(null, EXERCISE_COL_GRAPH_OTHER);
+				g_other = Boolean.parseBoolean(g_other_str);
+			}
+			values.put(EXERCISE_COL_OTHER_TITLE, other_title);
+			values.put(EXERCISE_COL_OTHER_UNIT, other_unit);
+			values.put(EXERCISE_COL_GRAPH_OTHER, g_other);
+		}
+
+		{
+			String lorder_str = parser.getAttributeValue(null, EXERCISE_COL_LORDER);
+			int lorder = Integer.parseInt(lorder_str);
+			values.put(EXERCISE_COL_LORDER, lorder);
+		}
+
+		{
+			String sig_str = parser.getAttributeValue(null, EXERCISE_COL_SIGNIFICANT);
+			int sig = -1;
+			if (sig_str.equals(EXERCISE_COL_REP)) {
+				sig = EXERCISE_COL_REP_NUM;
+			}
+			else if (sig_str.equals(EXERCISE_COL_LEVEL)) {
+				sig = EXERCISE_COL_LEVEL_NUM;
+			}
+			else if (sig_str.equals(EXERCISE_COL_CALORIES)) {
+				sig = EXERCISE_COL_CALORIE_NUM;
+			}
+			else if (sig_str.equals(EXERCISE_COL_WEIGHT)) {
+				sig = EXERCISE_COL_WEIGHT_NUM;
+			}
+			else if (sig_str.equals(EXERCISE_COL_DIST)) {
+				sig = EXERCISE_COL_DIST_NUM;
+			}
+			else if (sig_str.equals(EXERCISE_COL_TIME)) {
+				sig = EXERCISE_COL_TIME_NUM;
+			}
+			else if (sig_str.equals(EXERCISE_COL_OTHER)) {
+				sig = EXERCISE_COL_OTHER_NUM;
+			}
+			else {
+				Log.e(tag, "Hey, could not figure out the significant exercise in parse_init_exercise with the string '" + sig_str + "'.");
+			}
+			Log.d(tag, "parse_init_exercise_values(), sig_str = " + sig_str + ", sig = " + sig);
+			values.put(EXERCISE_COL_SIGNIFICANT, sig);
+		}
+
+		{
+			String graph_with_reps_str = parser.getAttributeValue(null, EXERCISE_COL_GRAPH_WITH_REPS);
+			int with_reps = Integer.parseInt(graph_with_reps_str);
+			values.put(EXERCISE_COL_GRAPH_WITH_REPS, with_reps);
+		}
+
+		return values;
+	} // parse_init_exercise_values (parser)
 
 
 	/**************************

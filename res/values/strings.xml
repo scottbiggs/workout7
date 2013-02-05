@@ -1605,6 +1605,9 @@
 	<!-- ============ Definitions for   ============ -->
 	<!-- ============ initial exercises ============ -->
 	<!-- ============              	    ============ -->
+	<!-- These are used in arrays.xmls and initial_exercise.xml
+		as well as the code that uses these files.
+	-->
 
 	<string name="type_anaerobic">anaerobic</string>
 	<string name="type_aerobic">aerobic</string>
@@ -1617,5 +1620,17 @@
 	<string name="muscle_group_all">all</string>
 	<string name="muscle_group_misc">misc</string>
 
+	<!-- Official names of the aspects!
+		DEPRECATED!
+		Use the definitions in arrays.xml instead!
+	-->
+<!--	<string name="aspect_reps">reps</string>
+	<string name="aspect_level">level</string>
+	<string name="aspect_cals">calories</string>
+	<string name="aspect_weight">weights</string>
+	<string name="aspect_dist">distanced</string>
+	<string name="aspect_time">timed</string>
+	<string name="aspect_other">other</string>
+-->
 
 </resources>
