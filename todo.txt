@@ -1,5 +1,7 @@
 TODO:
 -----------------
+Fill in the basic exercises for startup.
+
 In the GraphActivity and the GraphOptionsActivity, the significant
 	aspect should be bold.
 

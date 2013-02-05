@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteException;
@@ -21,19 +20,14 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
-import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.TextView.BufferType;
 
 public class GraphActivity
 					extends
@@ -345,7 +339,7 @@ public class GraphActivity
 	 * 	This should be done AFTER m_exercise_data has been filled out.
 	 * 	That'll make this a LOT easier!
 	 */
-	@Deprecated
+/*	@Deprecated
 	private void set_aspect_and_units() {
 		int col;
 		String str, unit;
@@ -428,7 +422,7 @@ public class GraphActivity
 		}
 
 	} // set_aspect_and_units()
-
+*/
 
 	/************************
 	 * Creates the legend that helps the user understand
@@ -448,28 +442,32 @@ public class GraphActivity
 		boolean needs_seperator = false;
 		if (m_exercise_data.g_reps) {
 			str = getString(R.string.reps_readable);
-			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_reps));
+			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_reps),
+											m_exercise_data.is_reps_significant());
 			needs_seperator = true;
 		}
 		if (m_exercise_data.g_level) {
 			if (needs_seperator)
 				builder.append (DEFAULT_LEGEND_SPACER);
 			str = getString(R.string.level_readable);
-			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_level));
+			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_level),
+											m_exercise_data.is_level_significant());
 			needs_seperator = true;
 		}
 		if (m_exercise_data.g_cals) {
 			if (needs_seperator)
 				builder.append (DEFAULT_LEGEND_SPACER);
 			str = getString(R.string.cals_readable);
-			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_cals));
+			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_cals),
+											m_exercise_data.is_cals_significant());
 			needs_seperator = true;
 		}
 		if (m_exercise_data.g_weight) {
 			if (needs_seperator)
 				builder.append (DEFAULT_LEGEND_SPACER);
 			str = getString(R.string.weight_readable);
-			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_weight));
+			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_weight),
+											m_exercise_data.is_weight_significant());
 			needs_seperator = true;
 		}
 
@@ -477,7 +475,8 @@ public class GraphActivity
 			if (needs_seperator)
 				builder.append (DEFAULT_LEGEND_SPACER);
 			str = getString(R.string.dist_readable);
-			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_dist));
+			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_dist),
+											m_exercise_data.is_dist_significant());
 			needs_seperator = true;
 		}
 
@@ -485,7 +484,8 @@ public class GraphActivity
 			if (needs_seperator)
 				builder.append (DEFAULT_LEGEND_SPACER);
 			str = getString(R.string.time_readable);
-			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_time));
+			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_time),
+											m_exercise_data.is_time_significant());
 			needs_seperator = true;
 		}
 
@@ -493,7 +493,8 @@ public class GraphActivity
 			if (needs_seperator)
 				builder.append (DEFAULT_LEGEND_SPACER);
 			str = m_exercise_data.other_title;
-			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_other));
+			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_other),
+											m_exercise_data.is_other_significant());
 			needs_seperator = true;
 		}
 
@@ -510,7 +511,8 @@ public class GraphActivity
 				with_name = get_nice_string_from_aspect_num(this, m_exercise_data.g_with_reps);
 			}
 			str = getString(R.string.with_readable, with_name);
-			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_with_reps));
+			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_with_reps),
+											  false);
 			needs_seperator = true;
 		}
 

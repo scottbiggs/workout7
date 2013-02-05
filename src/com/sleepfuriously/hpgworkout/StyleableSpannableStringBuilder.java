@@ -10,10 +10,13 @@
  */
 package com.sleepfuriously.hpgworkout;
 
+import android.graphics.Typeface;
+import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 
 public class StyleableSpannableStringBuilder
 					extends SpannableStringBuilder {
@@ -37,6 +40,25 @@ public class StyleableSpannableStringBuilder
 		return this;
 	} // appendWithStyle(text, style)
 
+	/************************
+	 * Same as @see #appendWithStyle (CharSequence, int, CharacterStyle),
+	 * except this allows us to apply two styles at the same time.
+	 *
+	 * @param text
+	 * @param style1
+	 * @param style2
+	 * @return
+	 */
+	public StyleableSpannableStringBuilder appendWithStyle(
+					CharSequence text,
+					CharacterStyle style1,
+					CharacterStyle style2) {
+		super.append(text);
+		int startPos = length() - text.length();
+		setSpan(style1, startPos, length(), 0);
+		setSpan(style2, startPos, length(), 0);
+		return this;
+	} // appendWithStyle(text, style)
 
 	/************************
 	 * Convenience method to easily append text with
@@ -46,11 +68,18 @@ public class StyleableSpannableStringBuilder
 	 * @param color		The color to apply to the text.
 	 * 					Warning, the COLOR, not the ResID
 	 * 					that defines the color.
+	 * @param bold	Should this be bold or not
 	 *
 	 * @return	The changed StyleableSpannableStringBuilder.
 	 */
 	public StyleableSpannableStringBuilder appendWithForegroundColor(
-				CharSequence text, int color) {
+				CharSequence text, int color, boolean bold) {
+
+		if (bold) {
+			return appendWithStyle(text,
+								   new StyleSpan(Typeface.BOLD),
+								   new ForegroundColorSpan(color));
+		}
 		return appendWithStyle(text, new ForegroundColorSpan(color));
 	} // appendWithColor(text, color)
 

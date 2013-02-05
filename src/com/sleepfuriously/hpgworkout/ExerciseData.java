@@ -224,4 +224,31 @@ public class ExerciseData {
 		}
 	} // set_aspect_by_num
 
+
+	/**************************
+	 * Checks to see if the specified aspect is the significant one
+	 * or not.
+	 */
+	public boolean is_reps_significant() {
+		return significant == DatabaseHelper.EXERCISE_COL_REP_NUM;
+	}
+	public boolean is_level_significant() {
+		return significant == DatabaseHelper.EXERCISE_COL_LEVEL_NUM;
+	}
+	public boolean is_cals_significant() {
+		return significant == DatabaseHelper.EXERCISE_COL_CALORIE_NUM;
+	}
+	public boolean is_weight_significant() {
+		return significant == DatabaseHelper.EXERCISE_COL_WEIGHT_NUM;
+	}
+	public boolean is_dist_significant() {
+		return significant == DatabaseHelper.EXERCISE_COL_DIST_NUM;
+	}
+	public boolean is_time_significant() {
+		return significant == DatabaseHelper.EXERCISE_COL_TIME_NUM;
+	}
+	public boolean is_other_significant() {
+		return significant == DatabaseHelper.EXERCISE_COL_OTHER_NUM;
+	}
+
 }
