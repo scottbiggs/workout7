@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+	This file holds exercise definitions.  It's used to supply
+	the user with a few exercises so that when they begin there's
+	something for them to do instead of waste lots of time adding
+	exercises!
+-->
 
 <exercises>
 <!--						This is a blank to simplify adding more...
