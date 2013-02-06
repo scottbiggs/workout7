@@ -11,7 +11,6 @@
  */
 package com.sleepfuriously.hpgworkout;
 
-import android.app.TabActivity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -21,7 +20,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
@@ -929,6 +927,7 @@ public class EditExerciseActivity
 			show_yes_no_dialog(R.string.editexer_cancel_warning_title, null,
 					R.string.editexer_cancel_warning_msg, null,
 					new View.OnClickListener() {
+						@Override
 						public void onClick(View v) {
 							// Yes, they want to cancel.
 							dismiss_all_dialogs();
@@ -953,6 +952,7 @@ public class EditExerciseActivity
 	/*********************
 	 * Handles all the click events.
 	 */
+	@Override
 	public void onClick(View v) {
 
 		// Is it a radio button?
@@ -1061,6 +1061,7 @@ public class EditExerciseActivity
 								new String[] {m_orig_exercise_name},
 								new View.OnClickListener() {
 
+				@Override
 				public void onClick(View v) {
 					// This happens ONLY if they said YES!
 					delete_entry();
@@ -1096,6 +1097,7 @@ public class EditExerciseActivity
 	 * We return true so that the OS won't try to do anything
 	 * after the long-click.
 	 */
+	@Override
 	public boolean onLongClick(View v) {
 
 		// All the Radio Buttons have the same help.
@@ -1175,6 +1177,7 @@ public class EditExerciseActivity
 	 * This is called whenever the user selects an
 	 * item from a MySpinner.
 	 */
+	@Override
 	public void onMySpinnerSelected(MySpinner spinner, int position, boolean new_item) {
 		m_dirty = true;
 		m_ok.setEnabled(true);
@@ -1223,12 +1226,15 @@ public class EditExerciseActivity
 	//--------------------------------------
 	//	To implement the TextWatcher interface.
 	//--------------------------------------
+	@Override
 	public void afterTextChanged(Editable s) {
 		// not used
 	}
+	@Override
 	public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 		// not used
 	}
+	@Override
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
 		if (!m_et_locked) {
 			m_dirty = true;
