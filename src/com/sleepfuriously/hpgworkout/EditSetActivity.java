@@ -53,10 +53,6 @@ public class EditSetActivity
 	//-------------------------
 
 	/** The labels */
-//	TextView m_calendar_date_label_tv, m_calendar_time_label_tv,
-//		m_reps_label_tv, m_weight_label_tv, m_level_label_tv,
-//		m_cals_label_tv, m_dist_label_tv, m_time_label_tv,
-//		m_other_label_tv, m_stress_label_tv, m_notes_label_tv;
 	TextView m_weight_label_tv, m_dist_label_tv,
 		m_time_label_tv, m_other_label_tv;
 
@@ -335,6 +331,7 @@ public class EditSetActivity
 
 
 	//-------------------------
+	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 			case R.id.editset_date_label_tv:
@@ -426,6 +423,7 @@ public class EditSetActivity
 							R.string.editset_delete_warning_msg,
 							msg_args,
 							new View.OnClickListener() {
+								@Override
 								public void onClick(View v) {
 									// YES, they want to delete it!
 									delete_set();
@@ -456,6 +454,7 @@ public class EditSetActivity
 					show_yes_no_dialog(R.string.editset_cancel_warning_title, null,
 							R.string.editset_cancel_warning_msg, null,
 							new View.OnClickListener() {
+						@Override
 						public void onClick(View v) {
 							// Yes, they want to cancel.
 							setResult(RESULT_CANCELED);
@@ -479,14 +478,17 @@ public class EditSetActivity
 	} // onClick (v)
 
 	//-------------------------
+	@Override
 	public boolean onLongClick(View v) {
-		// TODO Auto-generated method stub
+		// TODO
+		// why is this here?
 		return false;
 	}
 
 	//-------------------------
 	//	Fires once a date has been set with a dialog.
 	//
+	@Override
 	public void onDateSet(DatePicker v,
 						int year, int month, int day) {
 		m_set_date.set_year_month_day(year, month, day);
@@ -500,6 +502,7 @@ public class EditSetActivity
 	//-------------------------
 	//	Fires when the time has been changed via a TimePicker.
 	//
+	@Override
 	public void onTimeSet(TimePicker v, int hours, int mins) {
 		m_set_date.set_time(hours, mins, 0);
 		m_calendar_time_data_tv.setText(m_set_date.print_time(false));
@@ -686,68 +689,6 @@ public class EditSetActivity
 				DatabaseHelper.COL_ID + "=" + m_id, null);
 		m_db.close();
 	} // delete_set()
-
-
-	/**********************
-	 * Does the dirty work of finding out the milliseconds
-	 * from the date and time that's currently displayed.
-	 */
-	private long get_millis() {
-		String month_str, day_str, year_str,
-			hour_str, min_str;
-		int month, days, year, hours, mins;
-		boolean pm;
-		int counter;
-
-		// Start by seperating all the components into their
-		// respective strings.
-		CharSequence date_str = m_calendar_date_data_tv.getText();
-		if (date_str.charAt(0) == '1') {
-			month_str = "" + date_str.charAt(0) + date_str.charAt(1);
-			counter = 3;
-		}
-		else {
-			month_str = "" + date_str.charAt(0);
-			counter = 2;
-		}
-
-		day_str = "" + date_str.charAt(counter) + date_str.charAt(counter + 1);
-		counter += 3;
-
-		year_str = "" + date_str.charAt(counter) + date_str.charAt(counter + 1)
-				+ date_str.charAt(counter + 2) + date_str.charAt(counter + 3);
-
-
-		CharSequence time_str = m_calendar_time_data_tv.getText();
-		if (time_str.charAt(0) == '1') {
-			hour_str = "" + time_str.charAt(0) + time_str.charAt(1);
-			counter = 3;
-		}
-		else {
-			hour_str = "" + time_str.charAt(0);
-			counter = 2;
-		}
-
-		min_str = "" + time_str.charAt(counter) + time_str.charAt(counter + 1);
-		counter += 3;
-
-		pm = time_str.charAt(counter) == 'p' ? true : false;
-
-
-		// Now translate all these strings into numbers.
-		year = Integer.parseInt(year_str);
-		month = Integer.parseInt(month_str);
-		days = Integer.parseInt(day_str);
-		hours = Integer.parseInt(hour_str);
-		mins = Integer.parseInt(min_str);
-		if (pm) hours += 12;
-
-		MyCalendar cal = new MyCalendar();
-		cal.set_year_month_day(year, month, days);
-		cal.set_time(hours, mins, 0);
-
-		return cal.m_cal.getTimeInMillis();
-	} // get_millis()
 
 
 	/*********************
