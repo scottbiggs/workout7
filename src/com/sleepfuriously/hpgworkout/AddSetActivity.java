@@ -797,9 +797,9 @@ public class AddSetActivity
 	protected void setup_levels() {
 		TextView level_label_tv;
 		if (WGlobals.g_wheel)
-			level_label_tv = (TextView) findViewById(R.id.aset_level_label_tv);
-		else
 			level_label_tv = (TextView) findViewById(R.id.aset_wheel_level_label_tv);
+		else
+			level_label_tv = (TextView) findViewById(R.id.aset_level_label_tv);
 
 		if (m_ex_data.blevel) {
 			m_level_et.setEnabled(true);
