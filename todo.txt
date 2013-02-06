@@ -1,9 +1,11 @@
 TODO:
 -----------------
-Fill in the basic exercises for startup.
+BUG:  The legend of the graphs doesn't always show, especially
+	when an exercise is changed.  I think EditExerciseActivity
+	doesn't update the graph portions (don't remember making
+	it graph-aware at all!)
 
-In the GraphActivity and the GraphOptionsActivity, the significant
-	aspect should be bold.
+Fill in the basic exercises for startup.
 
 Make an XML file for the initial workouts instead of hard-coding.
 
@@ -200,6 +202,17 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+BUG: I changed the "test" exercise, and now it starts crashing.
+	It had just one aspect, reps--I think.  I changed it to
+	levels.  Now it crashes whenever the "test" exercise is
+	loaded.
+	- fixed.  Had a mix-up in setup_levels() in AddExercise; we
+	were referencing the wrong layout.
+
+In the GraphActivity and the GraphOptionsActivity, the significant
+	aspect should be bold.
+	- done
+
 Bug: Help doesn't work on the graph screen when it's not in a tab.
 	- fixed
 

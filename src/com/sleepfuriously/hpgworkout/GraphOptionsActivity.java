@@ -8,6 +8,9 @@
  *	correctly load up and modify the exercise definition.
  *	Use ITT_KEY_EXERCISE_NAME as the key.
  *
+ *	- An int, representing the signifcant aspect for this
+ *	exercise needs to be supplied.  Use ITT_KEY_EXERCISE_SIGNIFICANT.
+ *
  *	- A boolean needs to be set for all the valid aspects
  *	for this exercise.  Use ITT_KEY_ASPECT_ prefixes.
  *
@@ -34,6 +37,7 @@ package com.sleepfuriously.hpgworkout;
 import java.util.ArrayList;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -68,6 +72,13 @@ public class GraphOptionsActivity
 	 * The value will be a string.
 	 */
 	public static final String ITT_KEY_EXERCISE_NAME = "name_key";
+
+	/**
+	 * The key to access the number of the significant aspect
+	 * for this exercise.
+	 */
+	public static final String ITT_KEY_EXERCISE_SIGNIFICANT = "significant_key";
+
 
 	/**
 	 * These are the keys that tell this Activity
@@ -149,6 +160,12 @@ public class GraphOptionsActivity
 
 	/** The name of this exercise */
 	private String m_exercise_name;
+
+	/**
+	 * The number of the significant aspect for this exercise.
+	 * -1 means it has not been set.
+	 */
+	private int m_significant = -1;
 
 	/**
 	 * This is an array of aspects that the user may combine
@@ -380,6 +397,12 @@ public class GraphOptionsActivity
 		TextView name_tv = (TextView) findViewById(R.id.graph_options_name_tv);
 		name_tv.setText(m_exercise_name);
 
+		// Figure out the significant exercise.
+		m_significant = itt.getIntExtra(ITT_KEY_EXERCISE_SIGNIFICANT, -1);
+		if (m_significant == -1) {
+			Log.e (tag, "Error in read_intent()!  Could not get the significant aspect for this exercise!");
+		}
+
 		//
 		//	NOTE:
 		//		The ORDER of these aspects MUST match
@@ -396,7 +419,9 @@ public class GraphOptionsActivity
 		else {
 			// Should we turn the checkbox on?
 			m_reps_cb.setChecked(itt.getBooleanExtra(ITT_KEY_GRAPH_REPS, false));
-
+			if (m_significant == DatabaseHelper.EXERCISE_COL_REP_NUM) {
+				m_reps_cb.setTypeface(null, Typeface.BOLD);
+			}
 			// Note that we don't add REPS to the "with reps" stuff!
 			last_bar = bar;
 		}
@@ -408,6 +433,9 @@ public class GraphOptionsActivity
 		}
 		else {
 			m_level_cb.setChecked(itt.getBooleanExtra(ITT_KEY_GRAPH_LEVEL, false));
+			if (m_significant == DatabaseHelper.EXERCISE_COL_LEVEL_NUM) {
+				m_level_cb.setTypeface(null, Typeface.BOLD);
+			}
 
 			m_with_reps_list.add(getString(R.string.level_readable));
 			m_with_reps_list_ref.add(DatabaseHelper.EXERCISE_COL_LEVEL_NUM);
@@ -421,6 +449,9 @@ public class GraphOptionsActivity
 		}
 		else {
 			m_cals_cb.setChecked(itt.getBooleanExtra(ITT_KEY_GRAPH_CALS, false));
+			if (m_significant == DatabaseHelper.EXERCISE_COL_CALORIE_NUM) {
+				m_cals_cb.setTypeface(null, Typeface.BOLD);
+			}
 
 			m_with_reps_list.add(getString(R.string.cals_readable));
 			m_with_reps_list_ref.add(DatabaseHelper.EXERCISE_COL_CALORIE_NUM);
@@ -434,6 +465,9 @@ public class GraphOptionsActivity
 		}
 		else {
 			m_weight_cb.setChecked(itt.getBooleanExtra(ITT_KEY_GRAPH_WEIGHT, false));
+			if (m_significant == DatabaseHelper.EXERCISE_COL_WEIGHT_NUM) {
+				m_weight_cb.setTypeface(null, Typeface.BOLD);
+			}
 
 			m_with_reps_list.add(getString(R.string.weight_readable));
 			m_with_reps_list_ref.add(DatabaseHelper.EXERCISE_COL_WEIGHT_NUM);
@@ -447,6 +481,9 @@ public class GraphOptionsActivity
 		}
 		else {
 			m_dist_cb.setChecked(itt.getBooleanExtra(ITT_KEY_GRAPH_DIST, false));
+			if (m_significant == DatabaseHelper.EXERCISE_COL_DIST_NUM) {
+				m_dist_cb.setTypeface(null, Typeface.BOLD);
+			}
 
 			m_with_reps_list.add(getString(R.string.dist_readable));
 			m_with_reps_list_ref.add(DatabaseHelper.EXERCISE_COL_DIST_NUM);
@@ -460,6 +497,9 @@ public class GraphOptionsActivity
 		}
 		else {
 			m_time_cb.setChecked(itt.getBooleanExtra(ITT_KEY_GRAPH_TIME, false));
+			if (m_significant == DatabaseHelper.EXERCISE_COL_TIME_NUM) {
+				m_time_cb.setTypeface(null, Typeface.BOLD);
+			}
 
 			m_with_reps_list.add(getString(R.string.time_readable));
 			m_with_reps_list_ref.add(DatabaseHelper.EXERCISE_COL_TIME_NUM);
@@ -473,6 +513,9 @@ public class GraphOptionsActivity
 		}
 		else {
 			m_other_cb.setChecked(itt.getBooleanExtra(ITT_KEY_GRAPH_OTHER, false));
+			if (m_significant == DatabaseHelper.EXERCISE_COL_OTHER_NUM) {
+				m_other_cb.setTypeface(null, Typeface.BOLD);
+			}
 
 			// For the Other, we need to know the unit, which is in the intent.
 			m_with_reps_list.add(itt.getStringExtra(ITT_KEY_GRAPH_OTHER_NAME));

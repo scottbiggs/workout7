@@ -203,6 +203,8 @@ public class GraphActivity
 
 			// fill in the Intent
 			itt.putExtra(GraphOptionsActivity.ITT_KEY_EXERCISE_NAME, m_exercise_data.name);
+			
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_EXERCISE_SIGNIFICANT, m_exercise_data.significant);
 
 			itt.putExtra(GraphOptionsActivity.ITT_KEY_ASPECT_REPS, m_exercise_data.breps);
 			itt.putExtra(GraphOptionsActivity.ITT_KEY_ASPECT_LEVEL, m_exercise_data.blevel);
