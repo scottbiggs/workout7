@@ -1,10 +1,7 @@
 TODO:
 -----------------
-Also in EditSetActivity: it is OLD and doesn't use ExerciseData
-	to hold the exercise data.  May want to update that.
-Same for EditExerciseActivity!
-	- EditExerciseActivity done
-
+Test to see what happens if there's more than one exercise with
+	the same name!!
 
 Incorporate DropBox--perhaps for saving/loading data?
 
@@ -206,6 +203,11 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Also in EditSetActivity: it is OLD and doesn't use ExerciseData
+	to hold the exercise data.  May want to update that.
+Same for EditExerciseActivity!
+	- done
+
 Long-clicks don't do anything in EditSetActivity.
 	- They don't work on radio buttons that are inactive.
 	- They don't work on edit texts.

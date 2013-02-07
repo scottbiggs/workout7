@@ -1086,7 +1086,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	/****************************
 	 * Returns an ExerciseData instance with all the info filled
-	 * in for the named exercise.
+	 * in for the named exercise.  All you need is the name of
+	 * the exercise (if there's more than one...I don't know what
+	 * will happen).
 	 *
 	 * Use THIS method when loading up all the info for a single
 	 * exercise.  Really!  That way, you don't have to worry about
@@ -1130,6 +1132,58 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		}
 		return data;
 	} // getExerciseData (db, name)
+
+
+	/****************************
+	 * Returns an ExerciseData instance with all the info filled
+	 * in for the named exercise.  This version needs the _ID of
+	 * the exercise in question.
+	 *
+	 * Use THIS method when loading up all the info for a single
+	 * exercise.  Really!  That way, you don't have to worry about
+	 * that damn cursor hanging around.
+	 *
+	 * todo
+	 * 		Test this method!  Yeah, it's untested!
+	 *
+	 * @param db			DB ready to read.
+	 * @param name		The name of the exercise.
+	 * @return			- A class instance holding all the info about
+	 * 					this exercise.
+	 * 					- NULL if an error or the name could not be found.
+	 */
+	public static ExerciseData getExerciseData (SQLiteDatabase db,
+												int id) {
+		Cursor cursor = null;
+		ExerciseData data = null;
+
+		try {
+			cursor = db.query(EXERCISE_TABLE_NAME,
+							null,
+							COL_ID + "=?",
+							new String[] {"" + id},// selectionArgs[]
+							null,
+							null,
+							null);
+			cursor.moveToFirst();	// Oh so important!
+
+			// This is IT!  Yes, that's all there is, wheee!
+			data = getExerciseData(cursor);
+		}
+
+		catch (SQLiteException e) {
+			e.printStackTrace();
+		}
+
+		finally {
+			if (cursor != null) {
+				cursor.close();
+				cursor = null;
+			}
+		}
+		return data;
+
+	} // getExerciseData (db, id)
 
 
 	/****************************

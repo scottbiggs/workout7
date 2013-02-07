@@ -76,13 +76,10 @@ public class EditSetActivity
 	private boolean m_dirty = false;
 
 	/** Holds the ID for this exercise set */
-	private int m_id;
+	private int m_set_id;
 
-	/** The actual name of this exercise. Useful! */
-	private String m_exercise_name;
-
-	/** The number of the significant aspect of this exercise */
-	private int m_significant;
+	/** Holds all sorts of info about this exercise */
+	private ExerciseData m_exer_data = null;
 
 
 	///////////////////
@@ -218,7 +215,7 @@ public class EditSetActivity
 		fill_forms();
 
 		TextView name_tv = (TextView) findViewById(R.id.editset_ex_name_tv);
-		name_tv.setText(m_exercise_name);
+		name_tv.setText(m_exer_data.name);
 	} // onCreate (.)
 
 
@@ -413,10 +410,10 @@ public class EditSetActivity
 
 			case R.id.editset_delete_butt:
 				String msg_args[] = {
-										m_exercise_name,
-										m_exercise_name,
-										m_calendar_date_data_tv.getText().toString(),
-										m_calendar_time_data_tv.getText().toString()
+									m_exer_data.name,
+									m_exer_data.name,
+									m_calendar_date_data_tv.getText().toString(),
+									m_calendar_time_data_tv.getText().toString()
 					};
 					show_yes_no_dialog(R.string.editset_delete_warning_title,
 							null,
@@ -663,7 +660,7 @@ public class EditSetActivity
 		m_db = WGlobals.g_db_helper.getWritableDatabase();
 		int num_rows = m_db.update(DatabaseHelper.SET_TABLE_NAME,
 						values,
-						DatabaseHelper.COL_ID + "=" + m_id, null);
+						DatabaseHelper.COL_ID + "=" + m_set_id, null);
 		m_db.close();
 
 		Log.v(tag, "save_and_exit() updated " + num_rows + " rows");
@@ -674,7 +671,7 @@ public class EditSetActivity
 //		GraphActivity.m_db_dirty = true;
 
 		Intent itt = new Intent (this, InspectorActivity2.class);
-		itt.putExtra(EditSetActivity.ID_KEY, m_id);
+		itt.putExtra(EditSetActivity.ID_KEY, m_set_id);
 		setResult(RESULT_OK, itt);
 		finish();
 	} // save_and_exit()
@@ -686,7 +683,7 @@ public class EditSetActivity
 	private void delete_set() {
 		m_db = WGlobals.g_db_helper.getWritableDatabase();
 		m_db.delete(DatabaseHelper.SET_TABLE_NAME,
-				DatabaseHelper.COL_ID + "=" + m_id, null);
+				DatabaseHelper.COL_ID + "=" + m_set_id, null);
 		m_db.close();
 	} // delete_set()
 
@@ -701,13 +698,13 @@ public class EditSetActivity
 
 		// Get the info from the Intent that GridActivity sent.
 		Intent itt = getIntent();
-		m_id = itt.getIntExtra(ID_KEY, -1);
-		if (m_id == -1) {
+		m_set_id = itt.getIntExtra(ID_KEY, -1);
+		if (m_set_id == -1) {
 			Toast.makeText(this, "Problem trying to get the set ID in fill_forms()", Toast.LENGTH_LONG).show();
 			Log.e(tag, "Problem trying to get the set ID in fill_forms()");
 			return;
 		}
-		Log.v (tag, "fill_forms() for set id = " + m_id);
+		Log.v (tag, "fill_forms() for set id = " + m_set_id);
 
 
 		try {
@@ -719,54 +716,27 @@ public class EditSetActivity
 						DatabaseHelper.SET_TABLE_NAME,
 						null,	// all columns
 						DatabaseHelper.COL_ID + "=?",
-						new String[] {"" + m_id},
+						new String[] {"" + m_set_id},
 						null, null, null, null);
 				set_cursor.moveToFirst();
 
 				// Grab the name.
 				col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_NAME);
-				m_exercise_name = set_cursor.getString(col);
+				String exercise_name = set_cursor.getString(col);
 
-				// Need to know some stuff about this exercise.
-				Cursor ex_cursor = null;
-				try {
-					ex_cursor = m_db.query(
-								DatabaseHelper.EXERCISE_TABLE_NAME,	// table
-								null,			//	columns[]
-								DatabaseHelper.EXERCISE_COL_NAME + "=?",//selection
-								new String[] {m_exercise_name},// selectionArgs[]
-								null,	//	groupBy
-								null,	//	having
-								null,	//	orderBy
-								null);
-					ex_cursor.moveToFirst();
+				m_exer_data = DatabaseHelper.getExerciseData(m_db, exercise_name);
 
-					// Need to know a bit about this exercise
-					col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_SIGNIFICANT);
-					m_significant = ex_cursor.getInt(col);
-
-					// Fill the widgets
-					setup_date (set_cursor);
-					set_bar = setup_reps (ex_cursor, set_cursor);
-					set_bar = setup_weight (ex_cursor, set_cursor, set_bar);
-					set_bar = setup_level (ex_cursor, set_cursor, set_bar);
-					set_bar = setup_cals (ex_cursor, set_cursor, set_bar);
-					set_bar = setup_dist (ex_cursor, set_cursor, set_bar);
-					set_bar = setup_time (ex_cursor, set_cursor, set_bar);
-					set_bar = setup_other (ex_cursor, set_cursor, set_bar);
-					setup_stress (set_cursor);
-					setup_notes (set_cursor);
-
-
-				}
-				catch (SQLiteException e) {
-					e.printStackTrace();
-				}
-				finally {
-					if (ex_cursor != null) {
-						ex_cursor.close();
-					}
-				}
+				// Fill the widgets
+				setup_date (set_cursor);
+				set_bar = setup_reps (set_cursor);
+				set_bar = setup_weight (set_cursor, set_bar);
+				set_bar = setup_level (set_cursor, set_bar);
+				set_bar = setup_cals (set_cursor, set_bar);
+				set_bar = setup_dist (set_cursor, set_bar);
+				set_bar = setup_time (set_cursor, set_bar);
+				set_bar = setup_other (set_cursor, set_bar);
+				setup_stress (set_cursor);
+				setup_notes (set_cursor);
 			}
 			catch (SQLiteException e) {
 				e.printStackTrace();
@@ -811,9 +781,9 @@ public class EditSetActivity
 
 	/**
 	 * REPS
-	 *
-	 * @param ex_cursor		A Cursor that holds all the
-	 * 						info about this exercise.
+	 * <p>
+	 * Preconditions:<br/>
+	 * 		m_exer_data		Properly filled in.
 	 *
 	 * @param set_cursor		A Cursor that holds all the
 	 * 						info about this workout set.
@@ -821,16 +791,14 @@ public class EditSetActivity
 	 * @return	Whether or not to set the set_bar variable
 	 * 			to true.
 	 */
-	private boolean setup_reps (Cursor ex_cursor, Cursor set_cursor) {
+	private boolean setup_reps (Cursor set_cursor) {
 		LinearLayout reps_ll = (LinearLayout) findViewById(R.id.editset_reps_ll);
 
-		int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_REP);
-		boolean reps = ex_cursor.getInt(col) == 1 ? true : false;
-		if (reps) {
+		if (m_exer_data.breps) {
 			NumString data = get_data_str (set_cursor, DatabaseHelper.SET_COL_REPS, false);
 			m_reps_data_tv.setText(data.str);
 			m_reps = data.i;
-			if (DatabaseHelper.EXERCISE_COL_REP_NUM == m_significant) {
+			if (DatabaseHelper.EXERCISE_COL_REP_NUM == m_exer_data.significant) {
 				TextView reps_label_tv = (TextView) findViewById(R.id.editset_reps_label_tv);
 				reps_label_tv.setTypeface(null, Typeface.BOLD);
 			}
@@ -851,22 +819,17 @@ public class EditSetActivity
 	 * 					used to know if we need to draw
 	 * 					it or not.
 	 */
-	private boolean setup_weight (Cursor ex_cursor, Cursor set_cursor,
+	private boolean setup_weight (Cursor set_cursor,
 								boolean set_bar) {
 		LinearLayout weight_ll = (LinearLayout) findViewById(R.id.editset_weight_ll);
 		View bar = findViewById(R.id.editset_weight_bar);
 
-		int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_WEIGHT);
-		boolean weight = ex_cursor.getInt(col) == 1 ? true : false;
-		if (weight) {
+		if (m_exer_data.bweight) {
 			// Unit of Weight
-			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_WEIGHT_UNIT);
-			String weight_unit = ex_cursor.getString(col);
-
 			m_weight_label_tv = (TextView) findViewById(R.id.editset_weight_label_tv);
-			String weight_label_str = getString (R.string.editset_weight_label, (Object[]) new String[] {weight_unit});
+			String weight_label_str = getString (R.string.editset_weight_label, (Object[]) new String[] {m_exer_data.weight_unit});
 			m_weight_label_tv.setText(weight_label_str);
-			if (DatabaseHelper.EXERCISE_COL_WEIGHT_NUM == m_significant) {
+			if (DatabaseHelper.EXERCISE_COL_WEIGHT_NUM == m_exer_data.significant) {
 				m_weight_label_tv.setTypeface(null, Typeface.BOLD);
 			}
 
@@ -894,20 +857,18 @@ public class EditSetActivity
 	/**
 	 * LEVEL
 	 */
-	private boolean setup_level (Cursor ex_cursor, Cursor set_cursor,
+	private boolean setup_level (Cursor set_cursor,
 								boolean set_bar) {
 		View bar = findViewById(R.id.editset_level_bar);
 		LinearLayout level_ll = (LinearLayout)
 			findViewById(R.id.editset_level_ll);
 
-		int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_LEVEL);
-		boolean level = ex_cursor.getInt(col) == 1 ? true : false;
-		if (level) {
+		if (m_exer_data.blevel) {
 			NumString data = get_data_str (set_cursor, DatabaseHelper.SET_COL_LEVELS, false);
 			m_level_data_tv = (TextView)
 				findViewById(R.id.editset_level_data_tv);
 			m_level_data_tv.setText(data.str);
-			if (DatabaseHelper.EXERCISE_COL_LEVEL_NUM == m_significant) {
+			if (DatabaseHelper.EXERCISE_COL_LEVEL_NUM == m_exer_data.significant) {
 				TextView level_label_tv = (TextView) findViewById(R.id.editset_level_label_tv);
 				level_label_tv.setTypeface(null, Typeface.BOLD);
 			}
@@ -929,18 +890,16 @@ public class EditSetActivity
 	/**
 	 * CALORIES
 	 */
-	private boolean setup_cals (Cursor ex_cursor, Cursor set_cursor,
+	private boolean setup_cals (Cursor set_cursor,
 								boolean set_bar) {
 		LinearLayout cals_ll = (LinearLayout) findViewById(R.id.editset_cals_ll);
 		View bar = findViewById(R.id.editset_cals_bar);
 
-		int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_CALORIES);
-		boolean cals = ex_cursor.getInt(col) == 1 ? true : false;
-		if (cals) {
+		if (m_exer_data.bcals) {
 			NumString data = get_data_str (set_cursor, DatabaseHelper.SET_COL_CALORIES, false);
 			m_cals_data_tv = (TextView) findViewById(R.id.editset_cals_data_tv);
 			m_cals_data_tv.setText(data.str);
-			if (DatabaseHelper.EXERCISE_COL_CALORIE_NUM == m_significant) {
+			if (DatabaseHelper.EXERCISE_COL_CALORIE_NUM == m_exer_data.significant) {
 				TextView cals_label_tv = (TextView) findViewById(R.id.editset_cals_label_tv);
 				cals_label_tv.setTypeface(null, Typeface.BOLD);
 			}
@@ -962,22 +921,17 @@ public class EditSetActivity
 	/**
 	 * DIST
 	 */
-	private boolean setup_dist (Cursor ex_cursor, Cursor set_cursor,
+	private boolean setup_dist (Cursor set_cursor,
 								boolean set_bar) {
 		LinearLayout dist_ll = (LinearLayout) findViewById(R.id.editset_dist_ll);
 		View bar = findViewById(R.id.editset_dist_bar);
 
-		int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_DIST);
-		boolean dist = ex_cursor.getInt(col) == 1 ? true : false;
-		if (dist) {
+		if (m_exer_data.bdist) {
 			// Unit of Distance
-			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_DIST_UNIT);
-			String dist_unit = ex_cursor.getString(col);
-
 			m_dist_label_tv = (TextView) findViewById(R.id.editset_dist_label_tv);
-			String dist_label_str = getString (R.string.inspector_set_dist_label, dist_unit);
+			String dist_label_str = getString (R.string.inspector_set_dist_label, m_exer_data.dist_unit);
 			m_dist_label_tv.setText(dist_label_str);
-			if (DatabaseHelper.EXERCISE_COL_DIST_NUM == m_significant) {
+			if (DatabaseHelper.EXERCISE_COL_DIST_NUM == m_exer_data.significant) {
 				m_dist_label_tv.setTypeface(null, Typeface.BOLD);
 			}
 
@@ -1003,22 +957,18 @@ public class EditSetActivity
 	/**
 	 * TIME
 	 */
-	private boolean setup_time (Cursor ex_cursor, Cursor set_cursor,
+	private boolean setup_time (Cursor set_cursor,
 								boolean set_bar) {
 		LinearLayout time_ll = (LinearLayout) findViewById(R.id.editset_time_ll);
 		View bar = findViewById(R.id.editset_time_bar);
 
-		int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_TIME);
-		boolean time = ex_cursor.getInt(col) == 1 ? true : false;
-		if (time) {
+		if (m_exer_data.btime) {
 			// Unit of Time
-			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_TIME_UNIT);
-			String time_unit = ex_cursor.getString(col);
 
 			m_time_label_tv = (TextView) findViewById(R.id.editset_time_label_tv);
-			String time_label_str = getString (R.string.inspector_set_time_label, time_unit);
+			String time_label_str = getString (R.string.inspector_set_time_label, m_exer_data.time_unit);
 			m_time_label_tv.setText(time_label_str);
-			if (DatabaseHelper.EXERCISE_COL_TIME_NUM == m_significant) {
+			if (DatabaseHelper.EXERCISE_COL_TIME_NUM == m_exer_data.significant) {
 				m_time_label_tv.setTypeface(null, Typeface.BOLD);
 			}
 
@@ -1043,27 +993,16 @@ public class EditSetActivity
 	/**
 	 * OTHER
 	 */
-	private boolean setup_other (Cursor ex_cursor, Cursor set_cursor,
+	private boolean setup_other (Cursor set_cursor,
 								boolean set_bar) {
 		LinearLayout other_ll = (LinearLayout) findViewById(R.id.editset_other_ll);
 		View bar = findViewById(R.id.editset_other_bar);
 
-		int col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_OTHER);
-		boolean other = ex_cursor.getInt(col) == 1 ? true : false;
-		if (other) {
-			// Other Label (this is a combo of the title
-			// and unit)--different from the others.
-			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_OTHER_TITLE);
-			String other_title = ex_cursor.getString(col);
-
-			// the unit
-			col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_OTHER_UNIT);
-			String other_unit = ex_cursor.getString(col);
-
+		if (m_exer_data.bother) {
 			m_other_label_tv = (TextView) findViewById(R.id.editset_other_label_tv);
-			String other_label_str = getString (R.string.inspector_set_other_label, other_title, other_unit);
+			String other_label_str = getString (R.string.inspector_set_other_label, m_exer_data.other_title, m_exer_data.other_unit);
 			m_other_label_tv.setText(other_label_str);
-			if (DatabaseHelper.EXERCISE_COL_OTHER_NUM == m_significant) {
+			if (DatabaseHelper.EXERCISE_COL_OTHER_NUM == m_exer_data.significant) {
 				m_other_label_tv.setTypeface(null, Typeface.BOLD);
 			}
 
