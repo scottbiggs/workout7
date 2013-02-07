@@ -73,18 +73,8 @@ public class EditExerciseActivity
 	//	Other Data
 	//-------------------
 
-	/**
-	 * Holds the Database's official name of this
-	 * exercise.
-	 */
-	String m_orig_exercise_name;
-
-	/**
-	 * Holds the order that this exercise appears.  It's
-	 * not kept in any widgets, so I have to hang on to
-	 * it with a data member directly.
-	 */
-	int m_lorder;
+	/** Holds all the exercise info */
+	ExerciseData m_orig_ex_data;
 
 	/** TRUE when the user changes something. */
 	boolean m_dirty = false;
@@ -104,7 +94,6 @@ public class EditExerciseActivity
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-//		Log.v(tag, "entering onCreate()");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.editexercise);
 
@@ -386,214 +375,138 @@ public class EditExerciseActivity
 	 * 			false - problems.
 	 */
 	private boolean fill_forms() {
-//		Log.d(tag, "entering fill_forms().");
-		int col;		// used to fill in the views.
-
-		// Get the info from the Intent that GridActivity sent.
-		Intent itt = getIntent();
-		m_orig_exercise_name = itt.getStringExtra("name");
-		if (m_orig_exercise_name == null) {
-			Log.e(tag, "Problem trying to get the exercise name: " + m_orig_exercise_name + " in fill_forms()");
-			return false;
+		String orig_exercise_name = null;
+		{
+			// Get the info from the Intent that GridActivity sent.
+			Intent itt = getIntent();
+			orig_exercise_name = itt.getStringExtra("name");
+			if (orig_exercise_name == null) {
+				Log.e(tag, "Problem trying to get the exercise name: " + orig_exercise_name + " in fill_forms()! Aborting!");
+				return false;
+			}
 		}
 
-//		Log.v(tag, "fill_forms() received an intent for exercise "
-//					+ m_orig_exercise_name);
-
-		// Read in that row from the database.
+		// Read in the exercise row from the database.
 		// Here's the select statement:
 		//		select * from exercise_table where _ID = <id>
 		m_db = WGlobals.g_db_helper.getReadableDatabase();
-		Cursor cursor = null;
-		try {
-			cursor = m_db.query(
-								DatabaseHelper.EXERCISE_TABLE_NAME,	// table
-								null,			//	columns[]
-								DatabaseHelper.EXERCISE_COL_NAME + "=?",//selection
-								new String[] {m_orig_exercise_name},// selectionArgs[]
-								null,	//	groupBy
-								null,	//	having
-								null,	//	orderBy
-								null);	//	limit
+		m_orig_ex_data = DatabaseHelper.getExerciseData(m_db, orig_exercise_name);
 
-			// Necessary!  Too bad no one told me that.
-			cursor.moveToFirst();
 
-			// Exercise NAME
-			{
-				col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_NAME);
-				String name = cursor.getString(col);
-
-//				m_exer_name_et.setText(name);
-				set_text_lock (m_exer_name_et, name);
-			}
-
-			// TYPE MySpinner
-			{
-				col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_TYPE);
-				int type = cursor.getInt(col);
-				m_exer_type_msp.set_selected(type);
-				m_exer_type_msp.setText (m_exer_type_msp.get_item(type));
-			}
-
-			// GROUP spinner
-			{
-				col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_GROUP);
-				int group = cursor.getInt(col);
-				m_exer_group_msp.set_selected(group);
-				m_exer_group_msp.setText (m_exer_group_msp.get_item(group));
-			}
-
-			// REPS checkbox
-			{
-				col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_REP);
-				boolean reps = cursor.getInt(col) == 1 ? true : false;
-				m_exer_rep_cb.setChecked(reps);
-				m_exer_rep_rb.setEnabled(reps);
-			}
-
-			// LEVELS checkbox
-			{
-				col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_LEVEL);
-				boolean levels = cursor.getInt(col) == 1 ? true : false;
-				m_exer_level_cb.setChecked(levels);
-				m_exer_level_rb.setEnabled(levels);
-			}
-
-			// CALORIES checkbox
-			{
-				col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_CALORIES);
-				boolean calories = cursor.getInt(col) == 1 ? true : false;
-				m_exer_calorie_cb.setChecked(calories);
-				m_exer_calorie_rb.setEnabled(calories);
-			}
-
-			// WEIGHTS widgets
-			{
-				col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_WEIGHT);
-				boolean weight = cursor.getInt(col) == 1 ? true : false;
-				m_exer_weight_cb.setChecked(weight);
-				m_exer_weight_msp.setEnabled(weight);
-				m_exer_weight_rb.setEnabled(weight);
-				if (weight) {
-					m_exer_weight_msp.setClickable(true);
-					col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_WEIGHT_UNIT);
-					String weight_unit = cursor.getString(col);
-					int weight_pos = m_exer_weight_msp.get_pos(weight_unit);
-					if (weight_pos == -1) {
-						// Not in our array, so it's a custom.  Add it!
-						m_exer_weight_msp.add_to_array(weight_unit);
-						weight_pos = m_exer_weight_msp.length() - 1;
-					}
-					m_exer_weight_msp.set_selected(weight_pos);
-					m_exer_weight_msp.setTextFromPos(weight_pos);
-				}
-			}
-
-			// DISTANCE widgets
-			{
-				col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_DIST);
-				boolean distanced = cursor.getInt(col) == 1 ? true : false;
-				m_exer_dist_cb.setChecked(distanced);
-				m_exer_dist_msp.setEnabled(distanced);
-				m_exer_dist_rb.setEnabled(distanced);
-				if (distanced) {
-					col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_DIST_UNIT);
-					String dist_unit = cursor.getString(col);
-					int dist_pos = m_exer_dist_msp.get_pos(dist_unit);
-					if (dist_pos == -1) {
-						// Custom distance
-						m_exer_dist_msp.add_to_array(dist_unit);
-						dist_pos = m_exer_dist_msp.length() - 1;
-					}
-					m_exer_dist_msp.set_selected(dist_pos);
-					m_exer_dist_msp.setTextFromPos(dist_pos);
-				}
-			}
-
-			// TIME widgets
-			{
-				col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_TIME);
-				boolean timed = cursor.getInt(col) == 1 ? true : false;
-				m_exer_time_cb.setChecked(timed);
-				m_exer_time_rb.setEnabled(timed);
-				m_exer_time_msp.setEnabled(timed);
-				if (timed) {
-					col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_TIME_UNIT);
-					String time_unit = cursor.getString(col);
-					int time_pos = m_exer_time_msp.get_pos(time_unit);
-					if (time_pos == -1) {
-						m_exer_time_msp.add_to_array(time_unit);
-						time_pos = m_exer_time_msp.length() - 1;
-					}
-					m_exer_time_msp.set_selected(time_pos);
-					m_exer_time_msp.setTextFromPos(time_pos);
-				}
-			}
-
-			// OTHER widgets
-			{
-				col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_OTHER);
-				boolean other = cursor.getInt(col) == 1 ? true : false;
-				m_exer_other_cb.setChecked(other);
-				m_exer_other_rb.setEnabled(other);
-				m_exer_other_name_et.setEnabled(other);
-				m_exer_other_name_et.setFocusable(other);	// Hack to work-around bug in setEnabled() for EditTexts.
-				m_exer_other_name_et.setFocusableInTouchMode(other);
-				m_exer_other_unit_et.setEnabled(other);
-				m_exer_other_unit_et.setFocusable(other);
-				m_exer_other_unit_et.setFocusableInTouchMode(other);
-				if (other) {
-					col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_OTHER_TITLE);
-					String title = cursor.getString(col);
-					if (title != "") {
-						set_text_lock (m_exer_other_name_et, title);
-//						m_exer_other_name_et.setText(title);
-					}
-					col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_OTHER_UNIT);
-					String unit = cursor.getString(col);
-					if (unit != "") {
-//						m_exer_other_unit_et.setText(unit);
-						set_text_lock (m_exer_other_unit_et, unit);
-					}
-				}
-			}
-
-			// SIGNIFICANT radio buttons
-			{
-				col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_SIGNIFICANT);
-				int sig = cursor.getInt(col);
-				set_radio (sig);
-			}
-
-			// Lastly, we need to save the lorder of this
-			// exercise.  It's needed to update the lorder
-			// of the other exercises if this one is
-			// deleted.
-			// OH YEAH!  I need to put it in when saving, too!
-			{
-				col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_LORDER);
-				m_lorder = cursor.getInt(col);
-			}
-
+		// Exercise NAME
+		{
+			set_text_lock (m_exer_name_et, m_orig_ex_data.name);
 		}
-		catch (SQLException e) {
-			Log.e(tag, "problem querying the database!");
-			e.printStackTrace();
-			return false;
-		}
-		finally {
-			// Clean up.
-			if (cursor != null) {
-				cursor.close();
-				cursor = null;
-			}
-			if (m_db != null) {
-				m_db.close();
-				m_db = null;
-			}
 
+		// TYPE MySpinner
+		{
+			m_exer_type_msp.set_selected(m_orig_ex_data.type);
+			m_exer_type_msp.setText (m_exer_type_msp.get_item(m_orig_ex_data.type));
 		}
+
+		// GROUP spinner
+		{
+			m_exer_group_msp.set_selected(m_orig_ex_data.group);
+			m_exer_group_msp.setText (m_exer_group_msp.get_item(m_orig_ex_data.group));
+		}
+
+		// REPS checkbox
+		{
+			m_exer_rep_cb.setChecked(m_orig_ex_data.breps);
+			m_exer_rep_rb.setEnabled(m_orig_ex_data.breps);
+		}
+
+		// LEVELS checkbox
+		{
+			m_exer_level_cb.setChecked(m_orig_ex_data.blevel);
+			m_exer_level_rb.setEnabled(m_orig_ex_data.blevel);
+		}
+
+		// CALORIES checkbox
+		{
+			m_exer_calorie_cb.setChecked(m_orig_ex_data.bcals);
+			m_exer_calorie_rb.setEnabled(m_orig_ex_data.bcals);
+		}
+
+		// WEIGHTS widgets
+		{
+			m_exer_weight_cb.setChecked(m_orig_ex_data.bweight);
+			m_exer_weight_msp.setEnabled(m_orig_ex_data.bweight);
+			m_exer_weight_rb.setEnabled(m_orig_ex_data.bweight);
+			if (m_orig_ex_data.bweight) {
+				m_exer_weight_msp.setClickable(true);
+				int weight_pos = m_exer_weight_msp.get_pos(m_orig_ex_data.weight_unit);
+				if (weight_pos == -1) {
+					// Not in our array, so it's a custom.  Add it!
+					m_exer_weight_msp.add_to_array(m_orig_ex_data.weight_unit);
+					weight_pos = m_exer_weight_msp.length() - 1;
+				}
+				m_exer_weight_msp.set_selected(weight_pos);
+				m_exer_weight_msp.setTextFromPos(weight_pos);
+			}
+		}
+
+		// DISTANCE widgets
+		{
+			m_exer_dist_cb.setChecked(m_orig_ex_data.bdist);
+			m_exer_dist_msp.setEnabled(m_orig_ex_data.bdist);
+			m_exer_dist_rb.setEnabled(m_orig_ex_data.bdist);
+			if (m_orig_ex_data.bdist) {
+				int dist_pos = m_exer_dist_msp.get_pos(m_orig_ex_data.dist_unit);
+				if (dist_pos == -1) {
+					// Custom distance
+					m_exer_dist_msp.add_to_array(m_orig_ex_data.dist_unit);
+					dist_pos = m_exer_dist_msp.length() - 1;
+				}
+				m_exer_dist_msp.set_selected(dist_pos);
+				m_exer_dist_msp.setTextFromPos(dist_pos);
+			}
+		}
+
+		// TIME widgets
+		{
+			m_exer_time_cb.setChecked(m_orig_ex_data.btime);
+			m_exer_time_rb.setEnabled(m_orig_ex_data.btime);
+			m_exer_time_msp.setEnabled(m_orig_ex_data.btime);
+			if (m_orig_ex_data.btime) {
+				int time_pos = m_exer_time_msp.get_pos(m_orig_ex_data.time_unit);
+				if (time_pos == -1) {
+					m_exer_time_msp.add_to_array(m_orig_ex_data.time_unit);
+					time_pos = m_exer_time_msp.length() - 1;
+				}
+				m_exer_time_msp.set_selected(time_pos);
+				m_exer_time_msp.setTextFromPos(time_pos);
+			}
+		}
+
+		// OTHER widgets
+		{
+			m_exer_other_cb.setChecked(m_orig_ex_data.bother);
+			m_exer_other_rb.setEnabled(m_orig_ex_data.bother);
+			m_exer_other_name_et.setEnabled(m_orig_ex_data.bother);
+			m_exer_other_name_et.setFocusable(m_orig_ex_data.bother);	// Hack to work-around bug in setEnabled() for EditTexts.
+			m_exer_other_name_et.setFocusableInTouchMode(m_orig_ex_data.bother);
+			m_exer_other_unit_et.setEnabled(m_orig_ex_data.bother);
+			m_exer_other_unit_et.setFocusable(m_orig_ex_data.bother);
+			m_exer_other_unit_et.setFocusableInTouchMode(m_orig_ex_data.bother);
+			if (m_orig_ex_data.bother) {
+				if (m_orig_ex_data.other_title != "") {
+					set_text_lock (m_exer_other_name_et, m_orig_ex_data.other_title);
+				}
+				if (m_orig_ex_data.other_unit != "") {
+					set_text_lock (m_exer_other_unit_et, m_orig_ex_data.other_unit);
+				}
+			}
+		}
+
+		// SIGNIFICANT radio buttons
+		{
+			set_radio (m_orig_ex_data.significant);
+		}
+
+		// Clean up!
+		m_db.close();
+		m_db = null;
 
 		return true;
 	} // fill_forms()
@@ -612,7 +525,7 @@ public class EditExerciseActivity
 		// First, remove the current row.
 		if (m_db.delete(DatabaseHelper.EXERCISE_TABLE_NAME,
 				DatabaseHelper.EXERCISE_COL_NAME + "=?",
-				new String[] {m_orig_exercise_name})
+				new String[] {m_orig_ex_data.name})
 				== 0) {
 			Log.e(tag, "Error deleting row in save_data()!");
 			return;
@@ -687,7 +600,7 @@ public class EditExerciseActivity
 				break;
 		}
 
-		values.put(DatabaseHelper.EXERCISE_COL_LORDER, m_lorder);
+		values.put(DatabaseHelper.EXERCISE_COL_LORDER, m_orig_ex_data.lorder);
 
 		m_db.insert(DatabaseHelper.EXERCISE_TABLE_NAME, null, values);
 
@@ -697,7 +610,7 @@ public class EditExerciseActivity
 		// sets using this name no longer refer to this exercise.
 		// Time to fix this.
 
-		if (!m_orig_exercise_name.equals(new_name)) {
+		if (!m_orig_ex_data.name.equals(new_name)) {
 			fix_name (m_db, new_name);
 		}
 
@@ -713,10 +626,10 @@ public class EditExerciseActivity
 	 * fixes that.
 	 *
 	 * preconditions:
-	 * 		m_orig_exercise_name holds the old name (the same
+	 * 		m_orig_ex_data.name holds the old name (the same
 	 * 			that's in the SET table.
 	 *
-	 * 		new_name is different from m_orig_exercise_name
+	 * 		new_name is different from m_orig_ex_data.name
 	 *
 	 * @param db			A writable database, ready to roll.
 	 *
@@ -730,7 +643,7 @@ public class EditExerciseActivity
 
 		int count = db.update(DatabaseHelper.SET_TABLE_NAME,
 				values,
-				DatabaseHelper.SET_COL_NAME + "='" + m_orig_exercise_name + "'",
+				DatabaseHelper.SET_COL_NAME + "='" + m_orig_ex_data.name + "'",
 				null);
 		Log.i (tag, "fix_name() renamed " + count + " rows in the SET table.");
 	} // fix_name (db, new_name)
@@ -743,7 +656,7 @@ public class EditExerciseActivity
 	 * be handled).
 	 *
 	 * preconditions:
-	 * 		m_orig_exercise_name		is properly set.
+	 * 		m_orig_ex_data		is properly set.
 	 */
 	private void delete_entry() {
 		int col, id;
@@ -755,9 +668,9 @@ public class EditExerciseActivity
 			// Remove the current row.
 			if (m_db.delete(DatabaseHelper.EXERCISE_TABLE_NAME,
 					DatabaseHelper.EXERCISE_COL_NAME + "=?",
-					new String[] {m_orig_exercise_name})
+					new String[] {m_orig_ex_data.name})
 					== 0) {
-				Log.e(tag, "Error deleting row in delete_entry()!  m_orig_exercise_name = " + m_orig_exercise_name);
+				Log.e(tag, "Error deleting row in delete_entry()!  m_orig_ex_data.name = " + m_orig_ex_data.name);
 				return;
 			}
 
@@ -766,7 +679,7 @@ public class EditExerciseActivity
 				cursor = m_db.query(
 						DatabaseHelper.EXERCISE_TABLE_NAME,	// table
 						new String[] {DatabaseHelper.COL_ID, DatabaseHelper.EXERCISE_COL_NAME, DatabaseHelper.EXERCISE_COL_LORDER},
-						DatabaseHelper.EXERCISE_COL_LORDER + " > " + m_lorder,//selection
+						DatabaseHelper.EXERCISE_COL_LORDER + " > " + m_orig_ex_data.lorder,//selection
 						null,// selectionArgs[]
 						null,	//	groupBy
 						null,	//	having
@@ -785,7 +698,7 @@ public class EditExerciseActivity
 					id = cursor.getInt(col);
 
 					ContentValues values = new ContentValues();
-					values.put(DatabaseHelper.EXERCISE_COL_LORDER, i + m_lorder);
+					values.put(DatabaseHelper.EXERCISE_COL_LORDER, i + m_orig_ex_data.lorder);
 					m_db.update(DatabaseHelper.EXERCISE_TABLE_NAME,
 							values,
 							DatabaseHelper.COL_ID + " = " + id,
@@ -805,9 +718,9 @@ public class EditExerciseActivity
 			// Now delete all the entries in the SET table
 			// that use this exercise.
 			int num = m_db.delete(DatabaseHelper.SET_TABLE_NAME,
-					DatabaseHelper.SET_COL_NAME + "='" + m_orig_exercise_name + "'",
+					DatabaseHelper.SET_COL_NAME + "='" + m_orig_ex_data.name + "'",
 					null);
-			Log.i(tag, "delete_entry() removed " + num + "set entries when deleting the " + m_orig_exercise_name + " exercise.");
+			Log.i(tag, "delete_entry() removed " + num + "set entries when deleting the " + m_orig_ex_data.name + " exercise.");
 
 		} // try new db
 
@@ -1089,9 +1002,9 @@ public class EditExerciseActivity
 		else if (v == m_delete) {
 			//	a dialog and then delete!!!
 			show_yes_no_dialog (R.string.editexer_delete_confirm_title,
-								new String[] {m_orig_exercise_name},
+								new String[] {m_orig_ex_data.name},
 								R.string.editexer_delete_confirm_msg,
-								new String[] {m_orig_exercise_name},
+								new String[] {m_orig_ex_data.name},
 								new View.OnClickListener() {
 
 				@Override
@@ -1169,27 +1082,27 @@ public class EditExerciseActivity
 
 		else if (v == m_exer_other_name_et)
 			show_help_dialog(R.string.add_other_name_et_help_title,
-							 R.string.add_other_name_et_help_msg);
+							R.string.add_other_name_et_help_msg);
 		else if (v == m_exer_other_unit_et)
 			show_help_dialog(R.string.add_other_unit_et_help_title,
-							 R.string.add_other_unit_et_help_msg);
+							R.string.add_other_unit_et_help_msg);
 
 		// The buttons at the bottom
 		else if (v == m_ok)
 			show_help_dialog(R.string.editexer_ok_title,
-							 R.string.editexer_ok_msg);
+							R.string.editexer_ok_msg);
 
 		else if (v == m_delete)
 			show_help_dialog(R.string.editexer_delete_help_title,
-							 R.string.editexer_delete_help_msg);
+							R.string.editexer_delete_help_msg);
 
 		else if (v == m_reset)
 			show_help_dialog(R.string.editexer_reset_butt_help_title,
-							 R.string.editexer_reset_butt_help_msg);
+							R.string.editexer_reset_butt_help_msg);
 
 		else if (v == m_exer_name_tv) {
 			show_help_dialog(R.string.editexer_name_help_title,
-							 R.string.editexer_name_help_msg);
+							R.string.editexer_name_help_msg);
 		}
 
 		else {

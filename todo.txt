@@ -3,6 +3,8 @@ TODO:
 Also in EditSetActivity: it is OLD and doesn't use ExerciseData
 	to hold the exercise data.  May want to update that.
 Same for EditExerciseActivity!
+	- EditExerciseActivity done
+
 
 Incorporate DropBox--perhaps for saving/loading data?
 
