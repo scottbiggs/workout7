@@ -1308,8 +1308,12 @@ public class EditExerciseActivity
 //		m_exer_rep_rb.setFocusableInTouchMode(on);
 		if (!on) {
 			// The box has been turned off.  Turn off
-			// the significant radio button.
-			m_exer_rep_rb.setChecked(false);
+			// the significant radio button and turn
+			// ON our best guess at a significant.
+			if (m_exer_rep_rb.isChecked()) {
+				m_exer_rep_rb.setChecked(false);
+				turn_on_best_significant();
+			}
 		}
 		else if (is_all_radio_buttons_off()) {
 			// This is the first button to be turned on.
@@ -1318,13 +1322,17 @@ public class EditExerciseActivity
 		}
 	} // set_rep_check (v)
 
+
 	private void set_level_check (View v) {
 		boolean on = ((CheckBox) v).isChecked();
 		m_exer_level_rb.setEnabled(on);
 		m_exer_level_rb.setFocusable(on);
 //		m_exer_level_rb.setFocusableInTouchMode(on);
 		if (!on) {
-			m_exer_level_rb.setChecked(false);
+			if (m_exer_level_rb.isChecked()) {
+				m_exer_level_rb.setChecked(false);
+				turn_on_best_significant();
+			}
 		}
 		else if (is_all_radio_buttons_off()) {
 			m_exer_level_rb.setChecked(true);
@@ -1337,7 +1345,10 @@ public class EditExerciseActivity
 		m_exer_calorie_rb.setFocusable(on);
 //		m_exer_calorie_rb.setFocusableInTouchMode(on);
 		if (!on) {
-			m_exer_calorie_rb.setChecked(false);
+			if (m_exer_calorie_rb.isChecked()) {
+				m_exer_calorie_rb.setChecked(false);
+				turn_on_best_significant();
+			}
 		}
 		else if (is_all_radio_buttons_off()) {
 			m_exer_calorie_rb.setChecked(true);
@@ -1353,7 +1364,10 @@ public class EditExerciseActivity
 		m_exer_weight_msp.setFocusable(on);
 //		m_exer_weight_msp.setFocusableInTouchMode(on);
 		if (!on) {
-			m_exer_weight_rb.setChecked(false);
+			if (m_exer_weight_rb.isChecked()) {
+				m_exer_weight_rb.setChecked(false);
+				turn_on_best_significant();
+			}
 		}
 		else if (is_all_radio_buttons_off()) {
 			m_exer_weight_rb.setChecked(true);
@@ -1369,7 +1383,10 @@ public class EditExerciseActivity
 		m_exer_dist_msp.setFocusable(on);
 //		m_exer_dist_msp.setFocusableInTouchMode(on);
 		if (!on) {
-			m_exer_dist_rb.setChecked(false);
+			if (m_exer_dist_rb.isChecked()) {
+				m_exer_dist_rb.setChecked(false);
+				turn_on_best_significant();
+			}
 		}
 		else if (is_all_radio_buttons_off()) {
 			m_exer_dist_rb.setChecked(true);
@@ -1385,7 +1402,10 @@ public class EditExerciseActivity
 		m_exer_time_msp.setFocusable(on);
 //		m_exer_time_msp.setFocusableInTouchMode(on);
 		if (!on) {
-			m_exer_time_rb.setChecked(false);
+			if (m_exer_time_rb.isChecked()) {
+				m_exer_time_rb.setChecked(false);
+				turn_on_best_significant();
+			}
 		}
 		else if (is_all_radio_buttons_off()) {
 			m_exer_time_rb.setChecked(true);
@@ -1397,7 +1417,10 @@ public class EditExerciseActivity
 		boolean on = ((CheckBox) v).isChecked();
 		m_exer_other_rb.setEnabled(on);
 		if (!on) {
-			m_exer_other_rb.setChecked(false);
+			if (m_exer_other_rb.isChecked()) {
+				m_exer_other_rb.setChecked(false);
+				turn_on_best_significant();
+			}
 		}
 		else if (is_all_radio_buttons_off()) {
 			m_exer_other_rb.setChecked(true);
@@ -1413,6 +1436,55 @@ public class EditExerciseActivity
 		m_exer_other_unit_et.setFocusable(on);
 		m_exer_other_unit_et.setFocusableInTouchMode(on);
 	}
+
+
+	/****************
+	 * Call this when the significant exercise has
+	 * been turned OFF.  This method assumes that
+	 * there is currently no significant radio button
+	 * active.
+	 *
+	 * This finds the first one available and then turns
+	 * it on.
+	 *
+	 * @return	the DatabaseHelper.EXERCISE_COL_xxx_NUM
+	 * 			corresponding to whatever was turned on. <br/>
+	 * 			-1 if there aren't any check buttons that
+	 * 			are on.
+	 */
+	private int turn_on_best_significant() {
+		Log.v(tag, "turn_on_best_significant()!");
+		if (m_exer_rep_cb.isChecked()) {
+			m_exer_rep_rb.setChecked(true);
+			return DatabaseHelper.EXERCISE_COL_REP_NUM;
+		}
+		if (m_exer_level_cb.isChecked()) {
+			m_exer_level_rb.setChecked(true);
+			return DatabaseHelper.EXERCISE_COL_LEVEL_NUM;
+		}
+		if (m_exer_calorie_cb.isChecked()) {
+			m_exer_calorie_rb.setChecked(true);
+			return DatabaseHelper.EXERCISE_COL_CALORIE_NUM;
+		}
+		if (m_exer_weight_cb.isChecked()) {
+			m_exer_weight_rb.setChecked(true);
+			return DatabaseHelper.EXERCISE_COL_WEIGHT_NUM;
+		}
+		if (m_exer_dist_cb.isChecked()) {
+			m_exer_dist_rb.setChecked(true);
+			return DatabaseHelper.EXERCISE_COL_DIST_NUM;
+		}
+		if (m_exer_time_cb.isChecked()) {
+			m_exer_time_rb.setChecked(true);
+			return DatabaseHelper.EXERCISE_COL_TIME_NUM;
+		}
+		if (m_exer_other_cb.isChecked()) {
+			m_exer_other_rb.setChecked(true);
+			return DatabaseHelper.EXERCISE_COL_OTHER_NUM;
+		}
+		return -1;
+	} // turn_on_best_significant()
+
 
 	/****************
 	 * This tests all the widgets to make sure that

@@ -1,9 +1,5 @@
 TODO:
 -----------------
-In EditSetActivity, if you uncheck the significant exercise, the
-	significant radio-button just turns off.  It SHOULD move to
-	the highest currently-checked item.
-
 Long-clicks don't do anything in EditSetActivity.
 
 Also in EditSetActivity: it is OLD and doesn't use ExerciseData
@@ -210,6 +206,11 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+In EditSetActivity, if you uncheck the significant exercise, the
+	significant radio-button just turns off.  It SHOULD move to
+	the highest currently-checked item.
+	- fixed
+
 Make an XML file for the initial workouts instead of hard-coding.
 	- done
 
