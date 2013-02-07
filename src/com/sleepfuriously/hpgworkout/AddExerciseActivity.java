@@ -1142,7 +1142,6 @@ public class AddExerciseActivity
 	 * 			existing name.
 	 */
 	private boolean is_duplicate_name (String name) {
-		int col;
 		boolean ret_val = false;
 
 		if (m_db != null) {
@@ -1152,33 +1151,8 @@ public class AddExerciseActivity
 		try {
 			m_db = WGlobals.g_db_helper.getReadableDatabase();
 
-			Cursor cursor = null;
-			try {
-				cursor = m_db.query(
-						DatabaseHelper.EXERCISE_TABLE_NAME,	// table
-						new String[] {DatabaseHelper.EXERCISE_COL_NAME},
-						null,//selection
-						null,// selectionArgs[]
-						null,	//	groupBy
-						null,	//	having
-						null,	//	orderBy
-						null);	//	limit
+			return DatabaseHelper.isExerciseNameExist(m_db, name);
 
-				while (cursor.moveToNext()) {
-					col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_NAME);
-					if (cursor.getString(col).equalsIgnoreCase(name)) {
-						ret_val = true;
-					}
-				}
-			} catch (SQLiteException e) {
-				e.printStackTrace();
-			}
-			finally {
-				if (cursor != null) {
-					cursor.close();
-					cursor = null;
-				}
-			}
 		} catch (SQLiteException e) {
 			e.printStackTrace();
 		}

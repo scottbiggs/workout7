@@ -1294,6 +1294,56 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	} // getNameFromLOrder (lorder)
 
 
+	/********************
+	 * Goes through the database and sees if there is an
+	 * exercise with the given name.
+	 * <p>
+	 * NOTE:
+	 * 	Case is ignored!!!
+	 *
+	 * @param db		A database ready for reading.
+	 *
+	 * @param name	The name to test against the DB
+	 *
+	 * @return	TRUE iff the name is identical to an
+	 * 			existing name.
+	 */
+	public static boolean isExerciseNameExist (SQLiteDatabase db, String name) {
+		int col;
+		boolean ret_val = false;
+
+		Cursor cursor = null;
+		try {
+			cursor = db.query(
+					DatabaseHelper.EXERCISE_TABLE_NAME,	// table
+					new String[] {DatabaseHelper.EXERCISE_COL_NAME},
+					null,//selection
+					null,// selectionArgs[]
+					null,	//	groupBy
+					null,	//	having
+					null,	//	orderBy
+					null);	//	limit
+
+			while (cursor.moveToNext()) {
+				col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_NAME);
+				if (cursor.getString(col).equalsIgnoreCase(name)) {
+					ret_val = true;
+				}
+			}
+		} catch (SQLiteException e) {
+			e.printStackTrace();
+		}
+		finally {
+			if (cursor != null) {
+				cursor.close();
+				cursor = null;
+			}
+		}
+
+		return ret_val;
+	} // is_duplicate_name (name)
+
+
 	//--------------------------------------
 	//	Set Table Methods
 	//--------------------------------------

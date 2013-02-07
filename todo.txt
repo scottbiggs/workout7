@@ -1,8 +1,5 @@
 TODO:
 -----------------
-Test to see what happens if there's more than one exercise with
-	the same name!!
-
 Incorporate DropBox--perhaps for saving/loading data?
 
 Fill in the basic exercises for startup (in the xml file).
@@ -203,6 +200,12 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Test to see what happens if there's more than one exercise with
+	the same name!!
+	!! It *can* be done in EditExerciseActivity! (but not in
+	AddExerciseActivity).
+	- fixed
+
 Also in EditSetActivity: it is OLD and doesn't use ExerciseData
 	to hold the exercise data.  May want to update that.
 Same for EditExerciseActivity!

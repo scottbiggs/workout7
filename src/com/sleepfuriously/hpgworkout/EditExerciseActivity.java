@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -1428,6 +1429,15 @@ public class EditExerciseActivity
 			return false;
 		}
 
+		// Test to make sure that name isn't a repeat
+		if (is_duplicate_name(name.toString())) {
+			if (warn) {
+				msg = getString(R.string.editexer_dup_name_msg);
+				my_toast(this, msg);
+			}
+			return false;
+		}
+
 		// Make sure they selected a type and group.
 		int selection = m_exer_type_msp.get_current_selection();
 		if (selection < 0) {
@@ -1516,6 +1526,42 @@ public class EditExerciseActivity
 	} // check_good_exercise (warn)
 
 
+	/********************
+	 * Goes through the database and sees if there is an
+	 * exercise with the same name.
+	 *
+	 * NOTE:
+	 * 	Case is ignored!!!
+	 *
+	 * @param name	The name to test against the DB
+	 *
+	 * @return	TRUE iff the name is identical to an
+	 * 			existing name.
+	 */
+	private boolean is_duplicate_name (String name) {
+		boolean ret_val = false;
+
+		if (m_db != null) {
+			Log.e(tag, "WARNING! m_db is active in is_duplicate_name()!!!");
+		}
+
+		try {
+			m_db = WGlobals.g_db_helper.getReadableDatabase();
+
+			return DatabaseHelper.isExerciseNameExist(m_db, name);
+
+		} catch (SQLiteException e) {
+			e.printStackTrace();
+		}
+		finally {
+			if (m_db != null) {
+				m_db.close();
+				m_db = null;
+			}
+		}
+
+		return ret_val;
+	} // is_duplicate_name (name)
 
 	/**********************
 	 * Sets the UI so that it's just like at the beginning.
