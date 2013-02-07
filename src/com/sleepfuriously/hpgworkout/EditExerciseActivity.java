@@ -27,6 +27,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class EditExerciseActivity
@@ -48,6 +49,8 @@ public class EditExerciseActivity
 	//-------------------
 	//	Widget Data
 	//-------------------
+
+	TextView m_exer_name_tv;
 
 	EditText m_exer_name_et,
 		m_exer_other_name_et, m_exer_other_unit_et;
@@ -121,6 +124,8 @@ public class EditExerciseActivity
 		// name
 		m_exer_name_et = (EditText) findViewById (R.id.editexer_name_et);
 		m_exer_name_et.addTextChangedListener(this);
+		m_exer_name_tv = (TextView) findViewById(R.id.editexer_name_tv);
+		m_exer_name_tv.setOnLongClickListener(this);
 
 		// type
 		m_exer_type_msp = (MySpinner) findViewById (R.id.edit_exer_type_msp);
@@ -1102,21 +1107,6 @@ public class EditExerciseActivity
 
 	} // onClick (v)
 
-	/**********************
-	 * Sets the UI so that it's just like at the beginning.
-	 */
-	void reset() {
-		m_exer_weight_msp.setText(null);
-		m_exer_dist_msp.setText(null);
-		m_exer_time_msp.setText(null);
-		m_exer_other_name_et.setText(null);
-		m_exer_other_unit_et.setText(null);
-		fill_forms();
-		m_dirty = false;
-		m_ok.setEnabled(false);
-		m_reset.setEnabled(false);
-	}
-
 
 	/*********************
 	 * Long clicks are used for specific help on specific
@@ -1179,24 +1169,32 @@ public class EditExerciseActivity
 
 		else if (v == m_exer_other_name_et)
 			show_help_dialog(R.string.add_other_name_et_help_title,
-					R.string.add_other_name_et_help_msg);
+							 R.string.add_other_name_et_help_msg);
 		else if (v == m_exer_other_unit_et)
 			show_help_dialog(R.string.add_other_unit_et_help_title,
-					R.string.add_other_unit_et_help_msg);
+							 R.string.add_other_unit_et_help_msg);
 
 		// The buttons at the bottom
 		else if (v == m_ok)
 			show_help_dialog(R.string.editexer_ok_title,
-					R.string.editexer_ok_msg);
+							 R.string.editexer_ok_msg);
 
 		else if (v == m_delete)
 			show_help_dialog(R.string.editexer_delete_help_title,
-					R.string.editexer_delete_help_msg);
+							 R.string.editexer_delete_help_msg);
 
 		else if (v == m_reset)
 			show_help_dialog(R.string.editexer_reset_butt_help_title,
-					R.string.editexer_reset_butt_help_msg);
+							 R.string.editexer_reset_butt_help_msg);
 
+		else if (v == m_exer_name_tv) {
+			show_help_dialog(R.string.editexer_name_help_title,
+							 R.string.editexer_name_help_msg);
+		}
+
+		else {
+			Log.e (tag, "Can't figure out the long click event!");
+		}
 		return true;
 	}
 
@@ -1603,5 +1601,22 @@ public class EditExerciseActivity
 
 		return true;
 	} // check_good_exercise (warn)
+
+
+
+	/**********************
+	 * Sets the UI so that it's just like at the beginning.
+	 */
+	void reset() {
+		m_exer_weight_msp.setText(null);
+		m_exer_dist_msp.setText(null);
+		m_exer_time_msp.setText(null);
+		m_exer_other_name_et.setText(null);
+		m_exer_other_unit_et.setText(null);
+		fill_forms();
+		m_dirty = false;
+		m_ok.setEnabled(false);
+		m_reset.setEnabled(false);
+	}
 
 }

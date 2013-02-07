@@ -1,7 +1,5 @@
 TODO:
 -----------------
-Long-clicks don't do anything in EditSetActivity.
-
 Also in EditSetActivity: it is OLD and doesn't use ExerciseData
 	to hold the exercise data.  May want to update that.
 Same for EditExerciseActivity!
@@ -206,6 +204,11 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Long-clicks don't do anything in EditSetActivity.
+	- They don't work on radio buttons that are inactive.
+	- They don't work on edit texts.
+	- So I made the text label long-clickable.
+
 In EditSetActivity, if you uncheck the significant exercise, the
 	significant radio-button just turns off.  It SHOULD move to
 	the highest currently-checked item.
