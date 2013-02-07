@@ -1,13 +1,18 @@
 TODO:
 -----------------
-BUG:  The legend of the graphs doesn't always show, especially
-	when an exercise is changed.  I think EditExerciseActivity
-	doesn't update the graph portions (don't remember making
-	it graph-aware at all!)
+In EditSetActivity, if you uncheck the significant exercise, the
+	significant radio-button just turns off.  It SHOULD move to
+	the highest currently-checked item.
 
-Fill in the basic exercises for startup.
+Long-clicks don't do anything in EditSetActivity.
 
-Make an XML file for the initial workouts instead of hard-coding.
+Also in EditSetActivity: it is OLD and doesn't use ExerciseData
+	to hold the exercise data.  May want to update that.
+Same for EditExerciseActivity!
+
+Incorporate DropBox--perhaps for saving/loading data?
+
+Fill in the basic exercises for startup (in the xml file).
 
 Graphs need to be able to ZOOM IN/OUT!  What does that mean?
 	When the user pinches, the screen should respond accordingly.
@@ -123,6 +128,9 @@ Need to remove the HistoryActivity from the project.
 ---------------------------------------------------
 Hmmmmmmmmmmmmmmmmmmmmmm
 ---------------------------------------------------
+In the legend of the GraphActivity, it'd be nice if we put the
+	units, too?
+
 When the Inspector tries to display an exercise with no sets
 	(empty), please don't say what the order is!  It's ugly.
 	- don't see the problem anymore
@@ -202,6 +210,16 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Make an XML file for the initial workouts instead of hard-coding.
+	- done
+
+BUG:  The legend of the graphs doesn't always show, especially
+	when an exercise is changed.  I think EditExerciseActivity
+	doesn't update the graph portions (don't remember making
+	it graph-aware at all!)
+	- fixed.  I think making it graph-aware also fixed the
+	legend part of this bug.
+
 BUG: I changed the "test" exercise, and now it starts crashing.
 	It had just one aspect, reps--I think.  I changed it to
 	levels.  Now it crashes whenever the "test" exercise is

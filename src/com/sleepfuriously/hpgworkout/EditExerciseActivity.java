@@ -654,6 +654,34 @@ public class EditExerciseActivity
 
 		values.put(DatabaseHelper.EXERCISE_COL_SIGNIFICANT, get_radio());
 
+		// Turn on the corresponding graph.
+		switch (get_radio()) {
+			case DatabaseHelper.EXERCISE_COL_REP_NUM:
+				values.put(DatabaseHelper.EXERCISE_COL_GRAPH_REPS, true);
+				break;
+			case DatabaseHelper.EXERCISE_COL_LEVEL_NUM:
+				values.put(DatabaseHelper.EXERCISE_COL_GRAPH_LEVEL, true);
+				break;
+			case DatabaseHelper.EXERCISE_COL_CALORIE_NUM:
+				values.put(DatabaseHelper.EXERCISE_COL_GRAPH_CALS, true);
+				break;
+			case DatabaseHelper.EXERCISE_COL_WEIGHT_NUM:
+				values.put(DatabaseHelper.EXERCISE_COL_GRAPH_WEIGHT, true);
+				break;
+			case DatabaseHelper.EXERCISE_COL_DIST_NUM:
+				values.put(DatabaseHelper.EXERCISE_COL_GRAPH_DIST, true);
+				break;
+			case DatabaseHelper.EXERCISE_COL_TIME_NUM:
+				values.put(DatabaseHelper.EXERCISE_COL_GRAPH_TIME, true);
+				break;
+			case DatabaseHelper.EXERCISE_COL_OTHER_NUM:
+				values.put(DatabaseHelper.EXERCISE_COL_GRAPH_OTHER, true);
+				break;
+			default:
+				Log.e(tag, "Illegal radio value in save_data()!");
+				break;
+		}
+
 		values.put(DatabaseHelper.EXERCISE_COL_LORDER, m_lorder);
 
 		m_db.insert(DatabaseHelper.EXERCISE_TABLE_NAME, null, values);

@@ -672,21 +672,22 @@
 		exactly what you think it does:
 		\nIt completely removes this particular exercise from the app.
 		\n\nAlso note that any earlier workout sets that you
-		recorded with this exercise will be deleted, too. So
+		recorded with this exercise will be <b>deleted</b>, too. So
 		think a bit before hitting this button.
 		\n\nAnd since this IS kind of a big deal, a confirmation
 		dialog will pop up. It\'s the least I could do.
 	</string>
-	<string name="editexer_delete_confirm_title">Delete \'%s\'\?</string>
+	<string name="editexer_delete_confirm_title">Delete \"%s\"\?</string>
 	<string name="editexer_delete_confirm_msg">Hey you! Pay
 		attention!
-		\n\nYou are about to completely remove the \"%s\" exercise from
+		\n\nYou are about to COMPLETELY REMOVE the \"%s\" exercise from
 		this program. That means that all data using this
-		exercise will be lost.
+		exercise will be LOST.
 		\n\nIf you are thinking, \"Of course, that is exactly what I
 		want,\" then press \'yes\'.
 		\n\nOtherwise, I think you will want to tap \'no\'
-		(or hit the \'back\' button).
+		or hit the \'back\' button.
+		\n\n(Sorry about the caps, but this IS potentially disastrous!)
 		</string>
 
 	<!-- Error Messages -->

@@ -132,7 +132,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		EXERCISE_COL_OTHER_TITLE_NUM = 14,
 		EXERCISE_COL_OTHER_UNIT_NUM = 15,
 		EXERCISE_COL_SIGNIFICANT_NUM = 16,
-		EXERCISE_COL_ORDER_NUM = 17,
+		EXERCISE_COL_LORDER_NUM = 17,
 			// new
 		EXERCISE_COL_GRAPH_WEIGHT_NUM = 18,
 		EXERCISE_COL_GRAPH_REPS_NUM = 19,
@@ -472,7 +472,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				return EXERCISE_COL_OTHER_UNIT;
 			case EXERCISE_COL_SIGNIFICANT_NUM:
 				return EXERCISE_COL_SIGNIFICANT;
-			case EXERCISE_COL_ORDER_NUM:				// todo: need to refactor to lorder
+			case EXERCISE_COL_LORDER_NUM:
 				return EXERCISE_COL_LORDER;
 
 			case EXERCISE_COL_GRAPH_WEIGHT_NUM:
