@@ -44,12 +44,11 @@ import java.util.List;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.Log;
 
-
+@Deprecated
 public class GraphLine {
 
 	//-------------------------------
@@ -84,16 +83,19 @@ public class GraphLine {
 	 * The original points for this class.  All mapping is
 	 * done relative to these.
 	 */
-	protected List<PointF> m_orig_pts;
+	protected List<PointD> m_orig_pts;
 
 	/**
 	 * Our points after they have been mapped to the
 	 * canvas' rectangle.
 	 */
-	protected PointF[] m_pts = null;
+	protected PointD[] m_pts = null;
 
 	/** The logical bounds of the numbers */
 	protected RectF m_rect_bounds;
+
+	/** Holds the logical rect for resetting */
+	protected RectF m_orig_rect_bounds = null;
 
 	/** The canvas draw area. */
 	protected Rect m_draw_rect;
@@ -103,7 +105,7 @@ public class GraphLine {
 	 * screen location (same system as m_pts) of the last
 	 * point that was drawn.
 	 */
-	protected PointF m_last_pt = new PointF();
+	protected PointD m_last_pt = new PointD();
 
 	/** Minimum distance between two points to draw a big dot */
 	public float m_min_dist = GView.DEFAULT_MIN_POINT_DISTANCE;
@@ -135,8 +137,8 @@ public class GraphLine {
 	 * 						graph in.  Need this to properly
 	 * 						set up the mapping functions.
 	 */
-	public GraphLine (List<PointF> pts, RectF bounds, Rect draw_area) {
-		m_orig_pts = new ArrayList<PointF>(pts);
+	public GraphLine (List<PointD> pts, RectF bounds, Rect draw_area) {
+		m_orig_pts = new ArrayList<PointD>(pts);
 		m_pts_dirty = true;
 		set_bounds(bounds);
 		set_draw_area(draw_area);
@@ -159,10 +161,10 @@ public class GraphLine {
 	 * 						points, but could be bigger.
 	 *
 	 */
-	public GraphLine (List<PointF> pts, RectF bounds) {
+	public GraphLine (List<PointD> pts, RectF bounds) {
 		m_pts_dirty = true;
 		set_bounds(bounds);
-		m_orig_pts = new ArrayList<PointF>(pts);
+		m_orig_pts = new ArrayList<PointD>(pts);
 	}
 
 	/***************************
@@ -170,16 +172,16 @@ public class GraphLine {
 	 *
 	 * @param pts
 	 */
-	public GraphLine (List<PointF> pts) {
+	public GraphLine (List<PointD> pts) {
 		m_pts_dirty = true;
-		m_orig_pts = new ArrayList<PointF>(pts);
+		m_orig_pts = new ArrayList<PointD>(pts);
 	}
 
 	/***************************
 	 * The most basic constructor.
 	 */
 	public GraphLine() {
-		m_orig_pts = new ArrayList<PointF>();
+		m_orig_pts = new ArrayList<PointD>();
 		m_pts_dirty = true;
 	}
 
@@ -208,7 +210,7 @@ public class GraphLine {
 	 *
 	 * @return	The number of points added.
 	 */
-	public int set_points (List<PointF> pts) {
+	public int set_points (List<PointD> pts) {
 		// Clear our original list and copy the new list into it.
 		m_orig_pts.clear();
 		m_orig_pts.addAll(pts);
@@ -227,7 +229,7 @@ public class GraphLine {
 	 *
 	 * @return	The total number of points in our list.
 	 */
-	public int add_points (List<PointF> pts) {
+	public int add_points (List<PointD> pts) {
 		m_orig_pts.addAll(pts);
 		m_pts_dirty = true;
 		return m_orig_pts.size();
@@ -248,7 +250,7 @@ public class GraphLine {
 	 *
 	 * @return	The number of points total.
 	 */
-	public int add_point (PointF pt) {
+	public int add_point (PointD pt) {
 		m_orig_pts.add(pt);
 		m_pts_dirty = true;
 		return m_orig_pts.size();
@@ -272,7 +274,7 @@ public class GraphLine {
 	 */
 	public void map_points() {
 //		Log.d(tag, "map_points(): " + m_rect_bounds + " ==> " + m_draw_rect);
-		m_pts = new PointF[m_orig_pts.size()];
+		m_pts = new PointD[m_orig_pts.size()];
 
 		GraphMap2D mapper2D = new GraphMap2D(m_rect_bounds, m_draw_rect);
 
@@ -285,7 +287,7 @@ public class GraphLine {
 			}
 			// Check for a null value (which is -1 here).
 			else if (m_orig_pts.get(i).y == -1) {
-				m_pts[i] = new PointF(m_orig_pts.get(i).x, -1);	// The x is never used, but here for completeness.
+				m_pts[i] = new PointD(m_orig_pts.get(i).x, -1);	// The x is never used, but here for completeness.
 			}
 			else {
 				m_pts[i] = mapper2D.map(m_orig_pts.get(i));
@@ -425,7 +427,7 @@ public class GraphLine {
 	 * @param pt			The point to draw (in Canvas coords).
 	 * @param radius		The requested radius for a point.
 	 */
-	private void draw_pt (Canvas canvas, Paint paint, PointF pt) {
+	private void draw_pt (Canvas canvas, Paint paint, PointD pt) {
 		float radius = m_radius;
 
 		if ((pt.x - m_last_pt.x <= m_min_dist) &&
@@ -454,7 +456,7 @@ public class GraphLine {
 	 * @param paint		What to draw with.
 	 */
 	private void draw_line (Canvas canvas, Paint paint,
-					PointF a, PointF b) {
+					PointD a, PointD b) {
 		m_last_pt.set(a);
 		GraphDrawPrimitives.draw_line(canvas, a.x, a.y, b.x, b.y, paint);
 //		Log.d(tag, "drawing line from (" + a.x + ", " + a.y + ") to (" + b.x + ", " + b.y + ")");
@@ -464,4 +466,45 @@ public class GraphLine {
 		}
 		m_last_pt.set(b);
 	} // draw_line (canvas, paint)
+
+
+	/*****************************
+	 * Does a zoom effect on the data here.  The number
+	 * represents how much bigger or smaller to draw our
+	 * line graph.
+	 * <p>
+	 * Strategy: Change the starting and ending points of
+	 * the <i>logical</i> x-axis to reflect the scale amount.
+	 * Then recalculate the m_pts to reflect the change.  We
+	 * don't really zoom along the y-axis, so that stuff won't
+	 * change.
+	 *
+	 * @param amount		The amount of pixels to zoom.  Positive
+	 * 					zooms out, negaitve zooms in.
+	 */
+	public void scale (float amount) {
+		if (m_orig_rect_bounds == null) {
+			// This is the first time this has been called,
+			// so save the original so that we can reset if
+			// necessary.
+			m_orig_rect_bounds = new RectF(m_rect_bounds);
+		}
+
+		m_rect_bounds.left -= amount / 2f;
+		m_rect_bounds.right += amount / 2f;
+
+		Log.d(tag, "scale(): amount = " + amount);
+		Log.d(tag, "    m_pts[0] = (" + m_pts[0].x + ", " + m_pts[0].y + ")");
+		map_points();
+		Log.d(tag, "        ==> m_pts[0] = (" + m_pts[0].x + ", " + m_pts[0].y + ")");
+	} // scale (amount)
+
+	/****************************
+	 * Resets the scale to the original settings.
+	 */
+	public void scale_reset() {
+		m_rect_bounds.set(m_orig_rect_bounds);
+		map_points();
+	}
+
 }

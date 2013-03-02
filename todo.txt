@@ -1,6 +1,8 @@
 TODO:
 -----------------
-Incorporate DropBox--perhaps for saving/loading data?
+Do something about the time the Grid takes to load.  Maybe I'm
+	loading EVERYTHING from the DB?  If I just load the dates
+	and the significant...that should be a lot faster?
 
 Fill in the basic exercises for startup (in the xml file).
 
@@ -15,12 +17,6 @@ Enable data backups.  See http://developer.android.com/guide/topics/data/backup.
 Remember to make Grid and the Inspector only load so many
 	dates.  Need to provide buttons (or swipes) to load
 	the rest in groups.
-
-Bug: The graph doesn't seem to like entries with the same date
-	on just one day.
-Bug: Something's wrong with the graph sometimes.  Looks
-	like it happens more often with just a few items.
-	Test it for weird cases (where numbers are missing?).
 
 Minor Bug: I get warnings from SQLite when loading the Grid
 	and there are LOTS of exercises.  Seems it runs out of
@@ -79,12 +75,6 @@ Need to make a preferences screen.
 	* Keep screen on.
 	- done
 
-When doing aset, make it obvious which is the significant
-	row!  Something like a tick, or making it a different color.
-	Also, it might be nice to start with that one on top (or at
-	least have the cursor begin in that EditText).
-	-- partially done...
-
 Try some custom Themes to make things look original.
 	http://developer.android.com/guide/topics/ui/themes.html
 
@@ -97,7 +87,8 @@ Check out: http://developer.android.com/resources/articles/faster-screen-orienta
 	This should be applied to the grid screen to make
 	orientation changes much faster.
 
-Be nice if users can add a blank to their rows.
+Be nice if users can add a blank to their rows.  Do this in
+	the order screen.
 
 How about some very nice sound effects for when the person
 	finishes a set and a workout!
@@ -152,14 +143,7 @@ In the graphs, instead of horizontal lines, divide up into
 ---------------------------------------------------
 TABLED (for later versions)
 ---------------------------------------------------
-BUG: When exiting the program (particularly through the "back"
-	button, but sometimes the regular way, too), re-entering
-	can cause an error Toast about too many instances of
-	DatabaseHelper.  Don't know if this causes problems.
-	- fixed.  Just removed the instance counter--doesn't
-	really seem to be necessary.  I don't think it's possible
-	to have two instances of the app going at once, conflicting
-	the database's writes.
+Incorporate DropBox--perhaps for saving/loading data?
 
 Be nice if the database can be transmitted to a web-site.
 
@@ -200,6 +184,32 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+BUG:  What does the graph do when there's invalid data?  Looks like
+	it freaks out.  See my phone, eliptical->level.
+	* Also, some things are 0 when it doesn't make sense.  See
+	eliptical->calories.
+Bug: The graph doesn't seem to like entries with the same date
+	on just one day.
+Bug: Something's wrong with the graph sometimes.  Looks
+	like it happens more often with just a few items.
+	Test it for weird cases (where numbers are missing?).
+	- fixed (pretty sure)
+
+BUG: When exiting the program (particularly through the "back"
+	button, but sometimes the regular way, too), re-entering
+	can cause an error Toast about too many instances of
+	DatabaseHelper.  Don't know if this causes problems.
+	- fixed.  Just removed the instance counter--doesn't
+	really seem to be necessary.  I don't think it's possible
+	to have two instances of the app going at once, conflicting
+	the database's writes.
+
+When doing aset, make it obvious which is the significant
+	row!  Something like a tick, or making it a different color.
+	Also, it might be nice to start with that one on top (or at
+	least have the cursor begin in that EditText).
+	-- partially done...The Significant is bold
+
 Test to see what happens if there's more than one exercise with
 	the same name!!
 	!! It *can* be done in EditExerciseActivity! (but not in

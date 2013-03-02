@@ -5,7 +5,6 @@
  */
 package com.sleepfuriously.hpgworkout;
 
-import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.Log;
@@ -48,8 +47,8 @@ public class GraphMap2D {
 	 * @return	The resulting point.
 	 *
 	 */
-	public PointF map (PointF pt) {
-		PointF new_pt = new PointF(x_mapper.map(pt.x),
+	public PointD map (PointD pt) {
+		PointD new_pt = new PointD(x_mapper.map(pt.x),
 								y_mapper.map(pt.y));
 //		Log.d(tag, "mapping (" + pt.x + ", " + pt.y + ") --> (" + new_pt.x + ", " + new_pt.y + ")");
 		return new_pt;

@@ -18,14 +18,12 @@
  */
 package com.sleepfuriously.hpgworkout;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.text.Layout;
@@ -94,7 +92,6 @@ public class GView extends View {
 	/** Very useful to have! */
 	private Context m_context;
 
-
 	/**
 	 * Holds the all the data to be graphed.  The caller can reference
 	 * them by their ID.
@@ -108,18 +105,8 @@ public class GView extends View {
 	 */
 	public GraphXAxis m_graph_x_axis = null;
 
-
-
 	/** Used during onDraw(). */
 	Paint m_paint = null;
-
-	/**
-	 * Also used in onDraw().  Like the others, allocation is taken
-	 * out of that method to speed things up (and eliminate garbage
-	 * collection during that important method!).
-	 */
-	List <Float> m_unique_graph_nums = null;
-
 
 	/** The size of the message text */
 	protected float m_msg_text_size = DEFAULT_MSG_TEXT_SIZE;
@@ -153,7 +140,8 @@ public class GView extends View {
 	 *  Describes the area that the GraphLine classes
 	 *  draw in (in my coord system).
 	 */
-	private Rect m_graphline_rect = new Rect();
+//	private Rect m_graphline_rect = new Rect();
+	private RectF m_graphline_rect = new RectF();
 
 	/**
 	 * Describes the draw area of the x-axis within this
@@ -214,10 +202,6 @@ public class GView extends View {
 		m_paint.setColor(getResources().getColor(color.ghost_white));
 		m_paint.setAntiAlias(true);
 		m_paint.setTextSize(DEFAULT_LABEL_TEXT_SIZE);
-
-		if (m_unique_graph_nums == null) {
-			m_unique_graph_nums = new ArrayList<Float>();
-		}
 
 		setWillNotDraw(false);	// The default, but just in case something weird happens
 	} // init()
@@ -356,9 +340,11 @@ public class GView extends View {
 		m_paint.setAntiAlias(true);
 		m_paint.setStrokeWidth(LINE_STROKE_WIDTH);
 		for (GraphCollection graph : m_graphlist) {
-			if (graph.m_line_graph.is_draw_area_set() == false) {
+//			if (graph.m_line_graph.is_draw_area_set() == false) {
+			if (graph.m_line_graph.get_view_rect() == null) {
 				Log.e(tag, "onDraw(): a GraphLine draw area is not set! Setting the draw area to continue, sigh.");
-				graph.m_line_graph.set_draw_area(m_graphline_rect);	// Could slow down the drawing quite a bit
+//				graph.m_line_graph.set_draw_area(m_graphline_rect);	// Could slow down the drawing quite a bit
+				graph.m_line_graph.set_view_rect(m_graphline_rect);
 			}
 			m_paint.setColor(graph.m_color);
 			graph.m_line_graph.draw(canvas, m_paint);
@@ -459,17 +445,19 @@ public class GView extends View {
 		// Loop through all the graphs (include the y-axis, too!)
 		for (int i = 0; i < m_graphlist.size(); i++) {
 			// The GraphLine instance
-			m_graphlist.get(i).m_line_graph.set_draw_area(m_graphline_rect);
-			m_graphlist.get(i).m_line_graph.map_points();
+//			m_graphlist.get(i).m_line_graph.set_draw_area(m_graphline_rect);
+			m_graphlist.get(i).m_line_graph.set_view_rect(m_graphline_rect);
+//			m_graphlist.get(i).m_line_graph.map_points();
 
 			// The GrapyYAxis instance
 			m_graphlist.get(i).m_y_axis_graph.m_draw_area = find_y_axis_area(i);
 		}
 
 		// Rests just below m_graphline_rect
-		m_x_axis_rect.set(m_graphline_rect);
+//		m_x_axis_rect.set(m_graphline_rect);
+		m_x_axis_rect.set((int)m_graphline_rect.left, (int)m_graphline_rect.top, (int)m_graphline_rect.right, (int)m_graphline_rect.bottom);
 		m_x_axis_rect.bottom = 0;
-		m_x_axis_rect.top = m_graphline_rect.bottom;
+		m_x_axis_rect.top = (int) m_graphline_rect.bottom;
 		m_x_axis_rect.top -= X_AXIS_GAP;
 
 		// Set the x-axis
@@ -523,9 +511,9 @@ public class GView extends View {
 	 * 			to set their draw areas.<br/>
 	 * 			-Returns null on an error.
 	 */
-	protected Rect find_GraphLine_area (int num_y_axii) {
+	protected RectF find_GraphLine_area (int num_y_axii) {
 //		Log.d(tag, "find_GraphLine_area() called, num_y_axii = " + num_y_axii);
-		Rect draw_area = new Rect (m_canvas_padded_rect);
+		RectF draw_area = new RectF (m_canvas_padded_rect);
 		draw_area.left += num_y_axii * (DEFAULT_Y_AXIS_WIDTH + Y_AXIS_GAP);
 		if (draw_area.left >= draw_area.right) {
 			Log.e (tag, "Error in find_GraphLine_area()! Don't have enough room to draw all the y-axii!");
@@ -579,5 +567,66 @@ public class GView extends View {
 		m_graphlist.clear();
 	}
 
+	/*********************
+	 * Scales the graph by the specified amount.  Use this
+	 * to zoom in/out of the graph AFTER all the data has
+	 * been properly set up.
+	 * <p>
+	 * Because of how this graph works, the zoom will only be
+	 * along the x-axis (no y-zooming).
+	 * <p>
+	 * <b>NOTE</b>:	The amount is RELATIVE!  That means that
+	 * a scale amount of 0 will do nothing. Reset the graph by
+	 * calling scale_reset().
+	 *
+	 * @param amount		Amount of pixels to increase/decrease
+	 * 					the view by.
+	 */
+	public void scale (float amount) {
+		for (GraphCollection graph : m_graphlist) {
+			RectD window = graph.m_line_graph.get_world_rect();
+			window.left -= amount / 2f;
+			window.right += amount / 2f;
+			graph.m_line_graph.set_world_rect(window);
+		}
+	} // scale (amount)
 
+	/**********************
+	 * Resets the scaling to the default.
+	 *
+	 * todo
+	 * 		implement this
+	 */
+	public void scale_reset() {
+		for (GraphCollection graph : m_graphlist) {
+			// todo
+		}
+	} // scale_reset()
+
+
+	/**********************
+	 * Pans the graph left or right by the specified number
+	 * of pixels.
+	 * <p>
+	 * <b>NOTE</b>:	This is a RELATIVE pan!  That means that
+	 * 0 will do nothing.  Call pan_reset() to set to original
+	 * settings.<br/>
+	 * Positive numbers to
+	 * pan right (as if you're dragging right), and use negative
+	 * numbers to pan left.
+	 *
+	 * @param x		The pan amount in pixels. Positive numbers
+	 * 				scroll in the positive X direction or right (as
+	 * 				if you're dragging right). Negatives go left.
+	 */
+	public void pan (float x) {
+		// todo
+	} // scroll (x)
+
+	/**********************
+	 * Resets the scroll to the default (which should be centered).
+	 */
+	public void pan_reset() {
+		// todo
+	} // scroll_reset()
 }

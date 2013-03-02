@@ -16,14 +16,16 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteException;
-import android.graphics.PointF;
-import android.graphics.RectF;
+import android.graphics.Matrix;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.FloatMath;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,7 +35,8 @@ public class GraphActivity
 					extends
 						BaseDialogActivity
 					implements
-						OnClickListener {
+						OnClickListener,
+						OnTouchListener {
 
 	//-------------------------
 	//	Constants
@@ -52,6 +55,13 @@ public class GraphActivity
 
 	/** Goes in-between items in the legend part of the Activity */
 	protected static final String DEFAULT_LEGEND_SPACER = "   ";
+
+
+	/**
+	 * The minimum distance between the two fingers for a touch
+	 * event to be used (we ignore distances smaller than this).
+	 */
+	public static final float MIN_PINCH_DISTANCE = 10f;
 
 
 	//-------------------------
@@ -117,6 +127,33 @@ public class GraphActivity
 	public static boolean m_loading = false;
 
 
+	//--------
+	//	To handle Touch Events
+	//--------
+
+	/**
+	 * The states that we can be in (in relation to what the
+	 * fingers are doing).
+	 */
+	static final int
+			NONE = 0,
+			DRAG = 1,
+			ZOOM = 2;
+
+	/** Our current state */
+	private int m_touch_mode = NONE;
+
+	/** Used to move and zoom the image */
+//	private Matrix	m_touch_matrix = new Matrix(),
+//					m_saved_touch_matrix = new Matrix();
+
+	private PointD	m_touch_start = new PointD(),
+					m_touch_mid = new PointD();
+
+	private float m_old_touch_dist = 1f;
+
+
+
 	//-------------------------
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +169,7 @@ public class GraphActivity
 		m_view = (GView) findViewById(R.id.graph_view);
 		int text_size = getResources().getDimensionPixelSize(R.dimen.font_size_very_small);
 		m_view.set_label_size(text_size);
+		m_view.setOnTouchListener(this);
 
 		// Make sure we load the database each time onCreate() is called.
 		m_db_dirty = true;
@@ -203,7 +241,7 @@ public class GraphActivity
 
 			// fill in the Intent
 			itt.putExtra(GraphOptionsActivity.ITT_KEY_EXERCISE_NAME, m_exercise_data.name);
-			
+
 			itt.putExtra(GraphOptionsActivity.ITT_KEY_EXERCISE_SIGNIFICANT, m_exercise_data.significant);
 
 			itt.putExtra(GraphOptionsActivity.ITT_KEY_ASPECT_REPS, m_exercise_data.breps);
@@ -289,21 +327,157 @@ public class GraphActivity
 
 
 	//***********************
+	//	All touch events will be for zoom and moving around
+	//	of the GView.
+	//
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		if (v != m_view) {
+			return true;			// Ignore. We only care about the GView
+		}
+
+		// debugging only
+//		touch_dump_event(event);
+
+		// Handle the touch events
+		switch (event.getAction() & MotionEvent.ACTION_MASK) {
+			case MotionEvent.ACTION_DOWN:
+//				m_saved_touch_matrix.set(m_touch_matrix);
+				m_touch_start.set(event.getX(), event.getY());
+//				Log.d(tag, "mode = DRAG");
+				m_touch_mode = DRAG;
+				break;
+
+			case MotionEvent.ACTION_UP:
+			case MotionEvent.ACTION_POINTER_UP:
+				m_touch_mode = NONE;
+//				Log.d(tag, "mode = NONE");
+				// todo
+				//	finish a zoom or move event
+				break;
+
+			case MotionEvent.ACTION_POINTER_DOWN:
+				m_old_touch_dist = touch_spacing(event);
+//				Log.d(tag, "m_old_dist = " + m_old_touch_dist);
+				if (m_old_touch_dist > MIN_PINCH_DISTANCE) {
+					// todo
+					//	begin (setup) a zoom event
+//					m_saved_touch_matrix.set(m_touch_matrix);
+//					touch_midpoint (m_touch_mid, event);
+					m_touch_mode = ZOOM;
+//					Log.d(tag, "mode = ZOOM");
+				}
+				break;
+
+			case MotionEvent.ACTION_MOVE:
+				if (m_touch_mode == DRAG) {
+					// todo
+					//	Send a move event to GView
+//					m_touch_matrix.set(m_saved_touch_matrix);
+//					m_touch_matrix.postTranslate(event.getX() - m_touch_start.x,
+//										event.getY() - m_touch_start.y);
+				}
+
+				else if (m_touch_mode == ZOOM) {
+					float new_dist = touch_spacing(event);
+//					Log.d(tag, "new_dist = " + new_dist);
+					if (new_dist > MIN_PINCH_DISTANCE) {
+						// todo
+						// send a pinch event to GView
+//						m_touch_matrix.set(m_saved_touch_matrix);
+//						float scale = new_dist / m_old_touch_dist;
+						float amount = new_dist - m_old_touch_dist;
+						Log.d(tag, "Zoom event: amount = " + amount);
+						m_view.scale(amount);
+//						m_touch_matrix.postScale(scale, scale, m_touch_mid.x, m_touch_mid.y);
+						m_view.invalidate();
+					}
+				}
+				break;
+		}
+
+		return true;		// event was handled
+	} // onTouch (v, event)
+
+
+	/**********************
+	 * Euclidean[sic] distance to calculate spacing.
+	 *
+	 * Note: actually, it's the Pythagorean distance.
+	 */
+	float touch_spacing (MotionEvent event) {
+		float x = event.getX(0) - event.getX(1);
+		float y = event.getX(0) - event.getY(1);
+		return FloatMath.sqrt(x * x + y * y);
+	}
+
+	/**********************
+	 * Find the midpoint between the two finger events.
+	 *
+	 * @param point		Holds the result.  Passing a param
+	 * 					like this avoids allocating a new
+	 * 					var and the garbage collection.
+	 *
+	 * @param event		The event to analyze.
+	 */
+	void touch_midpoint (PointD point, MotionEvent event) {
+		float x = event.getX(0) + event.getX(1);
+		float y = event.getY(0) + event.getY(1);
+		point.set(x / 2f, y / 2f);
+	}
+
+	/**********************
+	 * Show touch events in the logcat.
+	 */
+	private void touch_dump_event (MotionEvent event) {
+		String names[] = {
+						"DOWN",
+						"UP",
+						"MOVE",
+						"CANCEL",
+						"OUTSIDE",
+						"POINTER_DOWN",
+						"POINTER_UP",
+						"7?",
+						"8?",
+						"9?"
+		};
+
+		StringBuilder sb = new StringBuilder();
+		int action = event.getAction();
+		int action_code = action & MotionEvent.ACTION_MASK;
+
+		sb.append("event ACTION_").append(names[action_code]);
+		if ((action_code == MotionEvent.ACTION_POINTER_DOWN) ||
+			(action_code == MotionEvent.ACTION_POINTER_UP)) {
+			sb.append("(pid ").append(action >> MotionEvent.ACTION_POINTER_ID_SHIFT);
+			sb.append(")");
+		}
+
+		sb.append("[");
+		for (int i = 0; i < event.getPointerCount(); i++) {
+			sb.append("#").append(i);
+			sb.append("(pid ").append(event.getPointerId(i));
+			sb.append(")=").append((int) event.getX());
+			sb.append(",").append((int) event.getY());
+			if (i + 1 < event.getPointerCount()) {
+				sb.append(";");
+			}
+		}
+
+		sb.append("]");
+		Log.d(tag, sb.toString());
+	} // touch_dump_event (event)
+
+
+	//***********************
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
 	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//		if ((requestCode == WGlobals.GRAPHACTIVITY) &&
-//			(resultCode == RESULT_OK)) {
-//			// The user modified the settings, reload!
-//			m_db_dirty = true;
-//			onResume();
-//		}
-
 		if ((requestCode == WGlobals.GRAPHOPTIONSACTIVITY) &&
 			(resultCode == RESULT_OK)) {
-			// todo
 			// Grab the info from our intent and update
 			// our data (and possibly the database, too).
 			m_exercise_data.g_reps = data.getBooleanExtra(GraphOptionsActivity.ITT_KEY_GRAPH_REPS, false);
@@ -331,100 +505,6 @@ public class GraphActivity
 
 	} // onActivityResult(...)
 
-
-	/************************
-	 * Part of onCreate(), this looks into the database and figures
-	 * out which aspect is most significant.  It then sets the title
-	 * of the graph to the aspect and unit (if necessary).
-	 *
-	 * todo:
-	 * 	This should be done AFTER m_exercise_data has been filled out.
-	 * 	That'll make this a LOT easier!
-	 */
-/*	@Deprecated
-	private void set_aspect_and_units() {
-		int col;
-		String str, unit;
-
-		TextView tv = (TextView) findViewById(R.id.graph_description_tv);
-		try {
-			test_m_db();
-
-			m_db = WGlobals.g_db_helper.getReadableDatabase();
-			Cursor cursor = null;
-			try {
-				cursor = DatabaseHelper.getAllExerciseInfoByName(m_db, m_ex_name);
-				cursor.moveToFirst();
-				col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_SIGNIFICANT);
-				int sig = cursor.getInt(col);
-				switch (sig) {
-					case DatabaseHelper.EXERCISE_COL_REP_NUM:
-						tv.setText(R.string.aset_reps_label);
-						break;
-
-					case DatabaseHelper.EXERCISE_COL_WEIGHT_NUM:
-						col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_WEIGHT_UNIT);
-						unit = cursor.getString(col);
-						str = getString(R.string.aset_weight_label, unit);
-						tv.setText(str);
-						break;
-
-					case DatabaseHelper.EXERCISE_COL_LEVEL_NUM:
-						tv.setText(R.string.aset_level_label);
-						break;
-
-					case DatabaseHelper.EXERCISE_COL_CALORIE_NUM:
-						tv.setText(R.string.aset_calorie_label);
-						break;
-
-					case DatabaseHelper.EXERCISE_COL_DIST_NUM:
-						col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_DIST_UNIT);
-						unit = cursor.getString(col);
-						str = getString(R.string.aset_distance_label, unit);
-						tv.setText(str);
-						break;
-
-					case DatabaseHelper.EXERCISE_COL_TIME_NUM:
-						col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_TIME_UNIT);
-						unit = cursor.getString(col);
-						str = getString(R.string.aset_time_label, unit);
-						tv.setText(str);
-						break;
-
-					case DatabaseHelper.EXERCISE_COL_OTHER_NUM:
-						col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_OTHER_TITLE);
-						String other_title = cursor.getString(col);
-						col = cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_OTHER_UNIT);
-						unit = cursor.getString(col);
-						str = getString(R.string.aset_other_label, other_title, unit);
-						tv.setText(str);
-						break;
-				}
-			} // cursor
-
-			catch (SQLiteException e) {
-				e.printStackTrace();
-			}
-			finally {
-				if (cursor != null) {
-					cursor.close();
-					cursor = null;
-				}
-			}
-		} // m_db
-
-		catch (SQLiteException e) {
-			e.printStackTrace();
-		}
-		finally {
-			if (m_db != null) {
-				m_db.close();
-				m_db = null;
-			}
-		}
-
-	} // set_aspect_and_units()
-*/
 
 	/************************
 	 * Creates the legend that helps the user understand
@@ -514,7 +594,7 @@ public class GraphActivity
 			}
 			str = getString(R.string.with_readable, with_name);
 			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_with_reps),
-											  false);
+											false);
 			needs_seperator = true;
 		}
 
@@ -539,55 +619,55 @@ public class GraphActivity
 	 *
 	 */
 	protected void construct_collections_for_aspects() {
-		float radius = GraphLine.BIG_DOT_RADIUS;
+		float radius = Graph2.BIG_DOT_RADIUS;
 
 		if (m_exercise_data.g_reps) {
 			add_new_collection(DatabaseHelper.EXERCISE_COL_REP_NUM,
 							getResources().getColor(R.color.color_reps),
 							radius);
-			radius -= GraphLine.DOT_RADIUS_INCREMENT;
+			radius -= Graph2.DOT_RADIUS_INCREMENT;
 		}
 
 		if (m_exercise_data.g_cals) {
 			add_new_collection(DatabaseHelper.EXERCISE_COL_CALORIE_NUM,
 							getResources().getColor(R.color.color_cals),
 							radius);
-			radius -= GraphLine.DOT_RADIUS_INCREMENT;
+			radius -= Graph2.DOT_RADIUS_INCREMENT;
 		}
 
 		if (m_exercise_data.g_level) {
 			add_new_collection(DatabaseHelper.EXERCISE_COL_LEVEL_NUM,
 							getResources().getColor(R.color.color_level),
 							radius);
-			radius -= GraphLine.DOT_RADIUS_INCREMENT;
+			radius -= Graph2.DOT_RADIUS_INCREMENT;
 		}
 
 		if (m_exercise_data.g_weight) {
 			add_new_collection(DatabaseHelper.EXERCISE_COL_WEIGHT_NUM,
 							getResources().getColor(R.color.color_weight),
 							radius);
-			radius -= GraphLine.DOT_RADIUS_INCREMENT;
+			radius -= Graph2.DOT_RADIUS_INCREMENT;
 		}
 
 		if (m_exercise_data.g_dist) {
 			add_new_collection(DatabaseHelper.EXERCISE_COL_DIST_NUM,
 							getResources().getColor(R.color.color_dist),
 							radius);
-			radius -= GraphLine.DOT_RADIUS_INCREMENT;
+			radius -= Graph2.DOT_RADIUS_INCREMENT;
 		}
 
 		if (m_exercise_data.g_time) {
 			add_new_collection(DatabaseHelper.EXERCISE_COL_TIME_NUM,
 							getResources().getColor(R.color.color_time),
 							radius);
-			radius -= GraphLine.DOT_RADIUS_INCREMENT;
+			radius -= Graph2.DOT_RADIUS_INCREMENT;
 		}
 
 		if (m_exercise_data.g_other) {
 			add_new_collection(DatabaseHelper.EXERCISE_COL_OTHER_NUM,
 							getResources().getColor(R.color.color_other),
 							radius);
-			radius -= GraphLine.DOT_RADIUS_INCREMENT;
+			radius -= Graph2.DOT_RADIUS_INCREMENT;
 		}
 	} // construct_collections_for_aspects()
 
@@ -615,13 +695,13 @@ public class GraphActivity
 
 		// Find the reps data and put it in a GraphCollection.
 		GraphCollection collection = new GraphCollection();
-		collection.m_line_graph = new GraphLine();
+		collection.m_line_graph = new Graph2();
 
-		RectF bounds = new RectF(Float.MAX_VALUE, -Float.MAX_VALUE,
-								-Float.MAX_VALUE, Float.MAX_VALUE);
+		RectD bounds = new RectD(Double.MAX_VALUE, -Double.MAX_VALUE,
+								-Double.MAX_VALUE, Double.MAX_VALUE);
 
 		for (SetData set_data : m_set_data) {
-			PointF pt = new PointF();
+			PointD pt = new PointD();
 
 			pt.x = set_data.millis;
 			if (pt.x < bounds.left)
@@ -671,7 +751,7 @@ public class GraphActivity
 					bounds.top = pt.y;
 			}
 
-			collection.m_line_graph.add_point(pt);
+			collection.m_line_graph.add_world_pt(pt);
 		}
 
 
@@ -687,7 +767,8 @@ public class GraphActivity
 			bounds.bottom -= 2;
 		}
 
-		collection.m_line_graph.set_bounds(bounds);
+		collection.m_line_graph.set_world_rect(bounds);
+
 		collection.m_id = DatabaseHelper.EXERCISE_COL_REP_NUM;	// Using this for ID. Convenient and unique.
 		collection.m_color = getResources().getColor(R.color.color_with_reps);
 
@@ -700,10 +781,10 @@ public class GraphActivity
 		//		Move things around so that we set the y-axis stuff
 		//		BEFORE the GraphLine--that way we don't do things
 		//		twice as we do here.
-		RectF modified_rect = new RectF(bounds);
+		RectD modified_rect = new RectD(bounds);
 		modified_rect.bottom = collection.m_y_axis_graph.get_min();
 		modified_rect.top = collection.m_y_axis_graph.get_max();
-		collection.m_line_graph.set_bounds(modified_rect);
+		collection.m_line_graph.set_world_rect(modified_rect);
 
 		m_view.add_graph_collection(collection);
 	} // setup_with_reps()
@@ -734,8 +815,7 @@ public class GraphActivity
 				right = set_data.millis;
 		}
 
-		// todo:
-		//	Do we need to check to see if left = right?
+		// Do we need to check to see if left = right?
 		// Nope, it should be taken care of via construct_one_set().
 		m_view.m_graph_x_axis.set_bounds(left, right);
 
@@ -890,13 +970,13 @@ public class GraphActivity
 
 		// Find the reps data and put it in a GraphCollection.
 		GraphCollection collection = new GraphCollection();
-		collection.m_line_graph = new GraphLine();
+		collection.m_line_graph = new Graph2();
 
-		RectF bounds = new RectF(Float.MAX_VALUE, -Float.MAX_VALUE,
-								-Float.MAX_VALUE, Float.MAX_VALUE);
+		RectD bounds = new RectD(Double.MAX_VALUE, -Double.MAX_VALUE,
+								-Double.MAX_VALUE, Double.MAX_VALUE);
 
 		for (SetData set_data : m_set_data) {
-			PointF pt = new PointF();
+			PointD pt = new PointD();
 
 			pt.x = set_data.millis;
 			if (pt.x < bounds.left)
@@ -941,7 +1021,7 @@ public class GraphActivity
 					bounds.top = pt.y;
 			}
 
-			collection.m_line_graph.add_point(pt);
+			collection.m_line_graph.add_world_pt(pt);
 		}
 
 		// HACK!  The GraphLine and the GraphYAxis classes hate
@@ -956,10 +1036,10 @@ public class GraphActivity
 			bounds.bottom -= 2;
 		}
 
-		collection.m_line_graph.set_bounds(bounds);
+		collection.m_line_graph.set_world_rect(bounds);
 		collection.m_id = DatabaseHelper.EXERCISE_COL_REP_NUM;	// Using this for ID. Convenient and unique.
 		collection.m_color = color;
-		collection.m_line_graph.m_radius = radius;
+		collection.m_line_graph.m_dot_radius = radius;
 
 		// Do the y-axis that's attached to this graph line.
 		collection.m_y_axis_graph = new GraphYAxis(bounds.bottom, bounds.top);
@@ -970,10 +1050,10 @@ public class GraphActivity
 		//		Move things around so that we set the y-axis stuff
 		//		BEFORE the GraphLine--that way we don't do things
 		//		twice as we do here.
-		RectF modified_rect = new RectF(bounds);
+		RectD modified_rect = new RectD(bounds);
 		modified_rect.bottom = collection.m_y_axis_graph.get_min();
 		modified_rect.top = collection.m_y_axis_graph.get_max();
-		collection.m_line_graph.set_bounds(modified_rect);
+		collection.m_line_graph.set_world_rect(modified_rect);
 
 		m_view.add_graph_collection(collection);
 	} // add_new_collection (aspect)
@@ -1096,7 +1176,6 @@ public class GraphActivity
 			m_db.insert(DatabaseHelper.EXERCISE_TABLE_NAME, null, values);
 
 		} catch (SQLiteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			if (m_db != null) {
@@ -1157,6 +1236,7 @@ public class GraphActivity
 		Log.e(tag, "Illegal value in get_nice_string_from_aspect_num (" + num + ")!");
 		return null;
 	} // get_nice_string_from_aspect_num (num);
+
 
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1293,11 +1373,11 @@ public class GraphActivity
 			// If there's just one set, do something special
 			if (m_set_data.size() == 1) {
 				construct_one_set();
-				stop_progress_dialog();
 				m_view.invalidate();		// Necessary to make sure that
 										// it's drawn AFTER all the db
 										// stuff happens.
 				m_loading = false;
+				stop_progress_dialog();
 				return;
 			}
 

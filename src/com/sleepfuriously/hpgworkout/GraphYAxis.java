@@ -53,7 +53,7 @@ public class GraphYAxis {
 	 * The min and max y values.  <i>Original</i>
 	 * values (not converted to screen coords).
 	 */
-	protected float m_orig_min = NaN, m_orig_max = NaN;
+	protected double m_orig_min = NaN, m_orig_max = NaN;
 
 	/**
 	 * The graph limits as the Heckbert algorithm sees
@@ -64,7 +64,7 @@ public class GraphYAxis {
 	 * When polled, these are the numbers returned and should
 	 * be used by the corresponding GraphLine class.
 	 */
-	protected float m_heckbert_min = NaN, m_heckbert_max = NaN;
+	protected double m_heckbert_min = NaN, m_heckbert_max = NaN;
 
 	/**
 	 * The rectangle to draw our y axis.  It's part
@@ -72,13 +72,13 @@ public class GraphYAxis {
 	 */
 	protected RectF m_draw_area = null;
 
-	public float m_line_spacing = DEFAULT_LINE_SPACING;
+	public double m_line_spacing = DEFAULT_LINE_SPACING;
 
 	/** The color to draw the horizontal lines */
 	public int m_line_color = DEFAULT_Y_LINE_COLOR;
 
 	/** The spacing the for the tic-marks. */
-	private float m_tick_spacing = NaN;
+	private double m_tick_spacing = NaN;
 
 
 	//-------------------------------
@@ -108,7 +108,7 @@ public class GraphYAxis {
 	 * 					- The width (left & right) describe
 	 * 					the total width (lines and text).
 	 */
-	public GraphYAxis (float min, float max, RectF draw_area) {
+	public GraphYAxis (double min, double max, RectF draw_area) {
 		set_range(min, max);
 		m_draw_area = draw_area;
 	} // constructor
@@ -127,7 +127,7 @@ public class GraphYAxis {
 	 * 				y-value point in the original list of
 	 * 				the corresponding GraphLine class.
 	 */
-	public GraphYAxis (float min, float max) {
+	public GraphYAxis (double min, double max) {
 		set_range(min, max);
 	}
 
@@ -149,10 +149,10 @@ public class GraphYAxis {
 	 * @param min	The lowest number we'll graph.
 	 * @param max	The largest.
 	 */
-	public void set_range (float min, float max) {
+	public void set_range (double min, double max) {
 		m_orig_min = min;
 		m_orig_max = max;
-		
+
 		if (m_orig_min == m_orig_max) {
 			Log.e(tag, "Hey, you're trying to set the min and max to the same value!.  I'll fix it for you, but this stuff's gotta stop! Btw, they are both " + min);
 			m_orig_min--;
@@ -166,7 +166,7 @@ public class GraphYAxis {
 	 * Returns the current logical floor of the
 	 * y-axis.  Returns NaN if it hasn't been set.
 	 */
-	public float get_min() {
+	public double get_min() {
 		return m_heckbert_min;
 	}
 
@@ -174,7 +174,7 @@ public class GraphYAxis {
 	 * Returns the current logical ceiling of the
 	 * y-axis.  Returns NaN if it hasn't been set.
 	 */
-	public float get_max() {
+	public double get_max() {
 		return m_heckbert_max;
 	}
 
@@ -191,7 +191,7 @@ public class GraphYAxis {
 	 * min or the max have not been set, this will
 	 * return NaN!
 	 */
-	protected float map (float num) {
+	protected double map (double num) {
 		if ((m_orig_min == NaN) ||
 			(m_orig_max == NaN) ||
 			(m_draw_area == null)) {
@@ -238,9 +238,9 @@ public class GraphYAxis {
 
 		// Draw the vertical line
 		draw_line(canvas,
-				  m_draw_area.right, m_draw_area.bottom,
-				  m_draw_area.right, m_draw_area.top,
-				  paint);
+				m_draw_area.right, m_draw_area.bottom,
+				m_draw_area.right, m_draw_area.top,
+				paint);
 
 		// Draw the y-axis lines.
 		heckbert_loose_label(canvas, paint);
@@ -271,21 +271,21 @@ public class GraphYAxis {
 	 * 			to find the bottom of our drawing!<br/>
 	 * 			- NaN on error.
 	 */
-	protected float heckbert_loose_label (//float min, float max,
+	protected double heckbert_loose_label (//float min, float max,
 //										int ntick,
 										Canvas canvas,
 										Paint paint) {
 		int nfrac;
 //		float d;			// Tick mark spacing
 //		float m_heckbert_min, m_heckbert_max;	// graph range min & max
-		float /* range,*/ y;
+		double /* range,*/ y;
 
 //		range = heckbert_nicenum(max - min, false);
 //		d = heckbert_nicenum(range / (ntick - 1), true);
 //		m_heckbert_min = (float) (Math.floor(min / d) * d);
 //		m_heckbert_max = (float) (Math.ceil(max / d) * d);
 
-		if (Float.isNaN(m_heckbert_min) || Float.isNaN(m_heckbert_max)) {
+		if (Double.isNaN(m_heckbert_min) || Double.isNaN(m_heckbert_max)) {
 			Log.e(tag, "Can't continue--the heckbert min or max has not been calculated yet! Aborting!");
 			return NaN;
 		}
@@ -307,7 +307,7 @@ public class GraphYAxis {
 			y += m_tick_spacing) {
 			paint.setAntiAlias(false);	// just a horiz line
 //			paint.setColor(m_line_color);
-			float y2 = mapper.map(y);
+			double y2 = mapper.map(y);
 
 			draw_line(canvas, m_draw_area.centerX(), y2, m_draw_area.right, y2, paint);
 
@@ -320,7 +320,7 @@ public class GraphYAxis {
 
 			paint.setColor(text_color);
 			// +2 to seperate the text from the line
-			draw_text(canvas, str, m_draw_area.left, y2 + 2, paint);
+			draw_text(canvas, str, m_draw_area.left, y2 + 2d, paint);
 		}
 
 		return m_heckbert_min;
@@ -347,10 +347,10 @@ public class GraphYAxis {
 	 * 	<i>m_tick_spacing</i> is set here.
 	 */
 	void heckbert_calc_range () {
-		float range;
+		double range;
 		int num_ticks = DEFAULT_NUM_TICKS;
 
-		if (Float.isNaN(m_orig_min) || Float.isNaN(m_orig_max)) {
+		if (Double.isNaN(m_orig_min) || Double.isNaN(m_orig_max)) {
 			Log.e (tag, "Trying to calculate the Heckbert range before the original min and max are set. Aborting!");
 			return;
 		}
@@ -365,11 +365,11 @@ public class GraphYAxis {
 				Log.v(tag, "heckbert_cal_range(): resetting to default number of ticks.");
 			}
 		}
-		
+
 		range = heckbert_nicenum(m_orig_max - m_orig_min, false);
 		m_tick_spacing = heckbert_nicenum(range / (num_ticks - 1), true);
-		m_heckbert_min = (float) (Math.floor(m_orig_min / m_tick_spacing) * m_tick_spacing);
-		m_heckbert_max = (float) (Math.ceil(m_orig_max / m_tick_spacing) * m_tick_spacing);
+		m_heckbert_min = Math.floor(m_orig_min / m_tick_spacing) * m_tick_spacing;
+		m_heckbert_max = Math.ceil(m_orig_max / m_tick_spacing) * m_tick_spacing;
 	} // calc_heckbert_range (ntick)
 
 
@@ -384,13 +384,13 @@ public class GraphYAxis {
 	 *
 	 * @return	The nice number version of x.
 	 */
-	protected float heckbert_nicenum (float x, boolean round) {
+	protected double heckbert_nicenum (double x, boolean round) {
 		int exp;		// Exponent of x.
-		float frac;	// Fractional part of x.
-		float nf;	// Nice, rounded fraction.
+		double frac;	// Fractional part of x.
+		double nf;	// Nice, rounded fraction.
 
 		exp = ((int) (Math.floor(Math.log10(x))));
-		frac = x / (float)Math.pow(10f, exp);
+		frac = x / Math.pow(10f, exp);
 
 		if (round) {
 			if (frac < 1.5)
@@ -412,7 +412,7 @@ public class GraphYAxis {
 			else nf = 10;
 		}
 
-		return nf * (float) Math.pow(10, exp);
+		return nf * Math.pow(10, exp);
 	} // heckbert_nicenum (x, round)
 
 }

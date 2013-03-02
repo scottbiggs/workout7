@@ -33,7 +33,7 @@ public class GraphMap {
 
 	private static final String tag = "GraphMap";
 
-	float a, b, r, s, delta_ab, delta_rs;
+	double a, b, r, s, delta_ab, delta_rs;
 
 
 	/*******************************
@@ -48,8 +48,8 @@ public class GraphMap {
 	 *  @param	s	The highest of the TO.
 	 *
 	 */
-	GraphMap (float _a, float _b,
-			float _r, float _s) {
+	GraphMap (double _a, double _b,
+			double _r, double _s) {
 		if (_a == _b) {
 			Log.e(tag, "a == b in Constructor!!!  Get ready for a divide by zero!!!");
 		}
@@ -73,8 +73,8 @@ public class GraphMap {
 	 *
 	 * @return	The resulting number in the [r, s] space.
 	 */
-	public float map (float n) {
-		float val = (n - a) * (delta_rs / delta_ab) + r;
+	public double map (double n) {
+		double val = (n - a) * (delta_rs / delta_ab) + r;
 //		Log.d(tag, "mapping " + n + " --> " + val);
 		return val;
 	} // map (n)

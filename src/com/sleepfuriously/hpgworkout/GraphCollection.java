@@ -21,8 +21,7 @@ public class GraphCollection {
 	public int m_id = -1;
 
 
-	public GraphLine m_line_graph = null;
-//	public GraphXAxis m_x_axis_graph = null;
+	public Graph2 m_line_graph = null;
 	public GraphYAxis m_y_axis_graph = null;
 
 	/** The color to draw this particular graph */
@@ -46,11 +45,9 @@ public class GraphCollection {
 		if (m_line_graph == null)
 			return false;
 
-		if (m_line_graph.m_orig_pts == null)
+		if (m_line_graph.get_num_world_pts() == 0) {
 			return false;
-
-		if (m_line_graph.m_orig_pts.size() == 0)
-			return false;
+		}
 
 		// Otherwise assume there's some data here.
 		return true;
