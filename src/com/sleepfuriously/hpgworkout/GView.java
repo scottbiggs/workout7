@@ -35,9 +35,7 @@ import android.view.View;
 
 import com.sleepfuriously.hpgworkout.R.color;
 import static com.sleepfuriously.hpgworkout.GraphDrawPrimitives.draw_text;
-import static com.sleepfuriously.hpgworkout.GraphDrawPrimitives.draw_line;
-import static com.sleepfuriously.hpgworkout.GraphDrawPrimitives.draw_box;
-import static com.sleepfuriously.hpgworkout.GraphDrawPrimitives.draw_rect;
+
 
 
 public class GView extends View {
@@ -103,7 +101,8 @@ public class GView extends View {
 	 * to draw for our graph.  It'll be created externally,
 	 * but this class will have to fill in the draw area.
 	 */
-	public GraphXAxis m_graph_x_axis = null;
+//	public GraphXAxis m_graph_x_axis = null;
+	public GraphXAxis2 m_graph_x_axis = null;
 
 	/** Used during onDraw(). */
 	Paint m_paint = null;
@@ -148,12 +147,6 @@ public class GView extends View {
 	 * widget.
 	 */
 	private Rect m_x_axis_rect = new Rect();
-
-	/**
-	 * Temp to hold a rectangle for a y-axis.
-	 * Used to prevent memory allocation during onDraw().
-	 */
-	private Rect m_y_axis_rect = new Rect();
 
 	/**
 	 * Used during onDraw() occassionally. It's defined outside
@@ -310,9 +303,11 @@ public class GView extends View {
 
 		//	Draw the x-axii here
 		if (m_graph_x_axis != null) {
-			if (m_graph_x_axis.is_draw_area_set() == false) {
-				Log.w(tag, "onDraw(): m_graph_x_axis.is_draw_area_set() is false! Setting the draw area to continue, sigh.");
-				m_graph_x_axis.set_draw_area(m_x_axis_rect);
+//			if (m_graph_x_axis.is_draw_area_set() == false) {
+			if (m_graph_x_axis.get_view_rect() == null) {
+				Log.w(tag, "onDraw(): m_graph_x_axis.view_rect is null! Setting the draw area to continue, sigh.");
+//				m_graph_x_axis.set_draw_area(m_x_axis_rect);
+				m_graph_x_axis.set_view_rect(m_x_axis_rect);
 			}
 			m_paint.setColor(getResources().getColor(color.ghost_white));
 			m_graph_x_axis.draw(canvas, m_paint);
@@ -462,8 +457,9 @@ public class GView extends View {
 
 		// Set the x-axis
 		if (m_graph_x_axis != null) {
-			m_graph_x_axis.set_draw_area(m_x_axis_rect);
-			m_graph_x_axis.map_points();
+//			m_graph_x_axis.set_draw_area(m_x_axis_rect);
+			m_graph_x_axis.set_view_rect(m_x_axis_rect);
+//			m_graph_x_axis.map_points();
 		}
 
 	} // update_changeable_rects()
@@ -584,6 +580,7 @@ public class GView extends View {
 	 * 					indicates a pinch.
 	 */
 	public void scale (double amount) {
+		double scale_ratio = 0d, world_amount = 0d;
 //		Log.d(tag, "scale (" + amount + ")");
 
 		//	THOUGHTS:
@@ -604,12 +601,20 @@ public class GView extends View {
 		for (GraphCollection graph : m_graphlist) {
 			RectD world_window = graph.m_line_graph.get_world_rect();
 			RectF screen_window = graph.m_line_graph.get_view_rect();
-			double scale_ratio = amount / ((double)screen_window.width());
-			double world_amount = scale_ratio * world_window.width();
+			scale_ratio = amount / ((double)screen_window.width());
+			world_amount = scale_ratio * world_window.width();
 			world_window.left += world_amount / 2d;
 			world_window.right -= world_amount / 2d;
 			graph.m_line_graph.set_world_rect(world_window);
 		}
+
+		// scale the x-axis, too!
+		double x_left = m_graph_x_axis.get_date_window_left();
+		double x_right = m_graph_x_axis.get_date_window_right();
+
+		x_left += world_amount / 2d;
+		x_right -= world_amount / 2d;
+		m_graph_x_axis.set_date_window(x_left, x_right);
 
 	} // scale (amount)
 
@@ -643,16 +648,25 @@ public class GView extends View {
 	 * 				if you're dragging right). Negatives go left.
 	 */
 	public void pan (float x) {
+		double scale_ratio = 0d, world_amount = 0d;
+
 		for (GraphCollection graph : m_graphlist) {
 			RectD world_window = graph.m_line_graph.get_world_rect();
 			RectF screen_window = graph.m_line_graph.get_view_rect();
-			double scale_ratio = x / ((double)screen_window.width());
-			double world_amount = scale_ratio * world_window.width();
+			scale_ratio = x / ((double)screen_window.width());
+			world_amount = scale_ratio * world_window.width();
 			world_window.left += world_amount;
 			world_window.right += world_amount;
 			graph.m_line_graph.set_world_rect(world_window);
 		}
-		
+
+		// Pan the x-axis, too!
+		double x_left = m_graph_x_axis.get_date_window_left();
+		double x_right = m_graph_x_axis.get_date_window_right();
+
+		x_left += world_amount;
+		x_right += world_amount;
+		m_graph_x_axis.set_date_window(x_left, x_right);
 	} // scroll (x)
 
 	/**********************

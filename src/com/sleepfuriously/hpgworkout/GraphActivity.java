@@ -101,13 +101,6 @@ public class GraphActivity
 	protected ArrayList<SetData> m_set_data;
 
 	/**
-	 * Holds the exact time of the first and last set.  This is used
-	 * to figure out the labels in the x-axis.
-	 */
-	@Deprecated
-	MyCalendar m_start_cal = null, m_end_cal = null;
-
-	/**
 	 * This tells the Activity when it needs to load data.  It
 	 * is set to true by OTHER Activities (ASet, EditSet) when
 	 * the database is changed and the list of exercise sets
@@ -143,12 +136,7 @@ public class GraphActivity
 	/** Our current state */
 	private int m_touch_mode = NONE;
 
-	/** Used to move and zoom the image */
-//	private Matrix	m_touch_matrix = new Matrix(),
-//					m_saved_touch_matrix = new Matrix();
-
-	private PointD	m_touch_start = new PointD(),
-					m_touch_mid = new PointD();
+	private PointD	m_touch_start = new PointD();
 
 	private float m_old_touch_dist = 1f;
 
@@ -212,9 +200,6 @@ public class GraphActivity
 			logo.setOnClickListener(this);
 		}
 
-		// Set the aspect that we're displaying.
-//		set_aspect_and_units();		this should be done AFTER the DB has been loaded.
-
 		// Continued in onResume()
 
 	} // onCreate (.)
@@ -246,7 +231,6 @@ public class GraphActivity
 		}
 
 		else if (v == m_options_butt) {
-			// todo
 			itt = new Intent(this, GraphOptionsActivity.class);
 
 			// fill in the Intent
@@ -346,64 +330,42 @@ public class GraphActivity
 			return true;			// Ignore. We only care about the GView
 		}
 
-		// debugging only
-//		touch_dump_event(event);
-
 		// Handle the touch events
 		switch (event.getAction() & MotionEvent.ACTION_MASK) {
 			case MotionEvent.ACTION_DOWN:
-//				m_saved_touch_matrix.set(m_touch_matrix);
 				m_touch_start.set(event.getX(), event.getY());
 				m_last_touch_pos.set(event.getX(), event.getY());
-//				Log.d(tag, "mode = DRAG");
 				m_touch_mode = DRAG;
 				break;
 
 			case MotionEvent.ACTION_UP:
 			case MotionEvent.ACTION_POINTER_UP:
 				m_touch_mode = NONE;
-//				Log.d(tag, "mode = NONE");
-				// todo
-				//	finish a zoom or move event
 				break;
 
 			case MotionEvent.ACTION_POINTER_DOWN:
 				m_old_touch_dist = get_double_touch_spacing(event);
-//				Log.d(tag, "m_old_dist = " + m_old_touch_dist);
 				if (m_old_touch_dist > MIN_PINCH_DISTANCE) {
-					// todo
 					//	begin (setup) a zoom event
-//					m_saved_touch_matrix.set(m_touch_matrix);
-//					touch_midpoint (m_touch_mid, event);
 					m_touch_mode = ZOOM;
-//					Log.d(tag, "mode = ZOOM");
 					m_last_zoom_dist = get_double_touch_spacing(event);
 				}
 				break;
 
 			case MotionEvent.ACTION_MOVE:
 				if (m_touch_mode == DRAG) {
-					Log.d(tag, "DRAG event.  Pan amount = " + event.getX());
+//					Log.d(tag, "DRAG event.  Pan amount = " + event.getX());
 					// Only interested in left-right pans
-
-//					m_last_touch_pos
 					m_view.pan((float) (m_last_touch_pos.x - event.getX()));
 					m_view.invalidate();
 					m_last_touch_pos.set(event.getX(), event.getY());
-					// todo
-					//	Send a pan event to GView
-//					m_touch_matrix.set(m_saved_touch_matrix);
-//					m_touch_matrix.postTranslate(event.getX() - m_touch_start.x,
-//										event.getY() - m_touch_start.y);
 				}
 
 				else if (m_touch_mode == ZOOM) {
 					float new_dist = get_double_touch_spacing(event);
-//					Log.d(tag, "new_dist = " + new_dist);
 					if (new_dist > MIN_PINCH_DISTANCE) {
 						// send a zoom event to GView
 						float amount = new_dist - m_last_zoom_dist;
-//						Log.d(tag, "Zoom event: amount = " + amount);
 						m_view.scale(amount);
 						m_last_zoom_dist = new_dist;
 						m_view.invalidate();
@@ -427,7 +389,7 @@ public class GraphActivity
 		return FloatMath.sqrt(x * x + y * y);
 	}
 
-	
+
 	/**********************
 	 * Find the midpoint between the two finger events.
 	 *
@@ -819,13 +781,15 @@ public class GraphActivity
 	 *  			created for it.
 	 */
 	protected void construct_x_axis() {
-		m_view.m_graph_x_axis = new GraphXAxis();
+//		m_view.m_graph_x_axis = new GraphXAxis();
+		m_view.m_graph_x_axis = new GraphXAxis2();
 		long left = Long.MAX_VALUE, right = -Long.MAX_VALUE;
 
 		for (SetData set_data : m_set_data) {
 			MyCalendar cal = new MyCalendar(set_data.millis);
 			String str = cal.print_month_day_numbers();
-			m_view.m_graph_x_axis.add_num(set_data.millis, str);
+			m_view.m_graph_x_axis.add_date(set_data.millis);
+			m_view.m_graph_x_axis.add_label(str);
 			if (set_data.millis < left)
 				left = set_data.millis;
 			if (set_data.millis > right)
@@ -834,7 +798,8 @@ public class GraphActivity
 
 		// Do we need to check to see if left = right?
 		// Nope, it should be taken care of via construct_one_set().
-		m_view.m_graph_x_axis.set_bounds(left, right);
+//		m_view.m_graph_x_axis.set_bounds(left, right);
+		m_view.m_graph_x_axis.set_date_window(left, right);
 
 	} // construct_x_axis()
 
@@ -1291,8 +1256,6 @@ public class GraphActivity
 		 */
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			int col;	// temp to hold column info.  Should be used briefly.
-
 			try {
 				test_m_db();
 				m_db = WGlobals.g_db_helper.getReadableDatabase();
@@ -1325,14 +1288,6 @@ public class GraphActivity
 						//	Here is where we would publish our progress.
 					}
 
-					// Setting the first and last labels of the x-axis.
-					set_cursor.moveToFirst();
-					col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_DATEMILLIS);
-					m_start_cal = new MyCalendar(set_cursor.getLong(col));
-
-					set_cursor.moveToLast();
-					col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_DATEMILLIS);
-					m_end_cal = new MyCalendar(set_cursor.getLong(col));
 				} // try reading the SET table
 
 				catch (SQLException e) {

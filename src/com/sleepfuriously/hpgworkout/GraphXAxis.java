@@ -5,18 +5,21 @@
  *
  * The method:
  *
- *	1.	Define a list of numbers to plot alongthe x-axis.
+ *	1.	Define a list of numbers to plot along the x-axis.
  *		The list's only requirement is that the numbers
  *		are in increasing order.
  *		@see	 m_orig
  *
- *	2.	Define a list of strings that match the list of
+ *	2.	Define the boundaries of the m_org list.
+ *		@see set_bounds (double, double)
+ *
+ *	3.	Define a list of strings that match the list of
  *		numbers.  An element can be null or "" to indicate
  *		that nothing will be written for that particular
  *		corresponding number.
  *		@see m_labels
  *
- * 	3.	Define the drawing rectangle.  This is area that
+ * 	4.	Define the drawing rectangle.  This is area that
  * 		we're allowed to draw in.
  * 		@see m_draw_rect
  *
@@ -37,7 +40,7 @@ import static java.lang.Double.NaN;
 import static com.sleepfuriously.hpgworkout.GraphDrawPrimitives.draw_line;
 import static com.sleepfuriously.hpgworkout.GraphDrawPrimitives.draw_text;
 
-
+@Deprecated
 public class GraphXAxis {
 
 	//-------------------------------
@@ -416,7 +419,7 @@ public class GraphXAxis {
 
 	/*****************************
 	 * If the logical boundaries of this data changes, call this!
-	 * (eg. when zooming).
+	 * (eg. when zooming and panning).
 	 *
 	 * @param left		The logical left boundary (lowest number)
 	 * 					in the original number space.
@@ -427,6 +430,22 @@ public class GraphXAxis {
 		m_logical_left = left;
 		m_logical_right = right;
 		m_dirty = true;
+	}
+
+	/*****************************
+	 * Returns the current left-side boundary of the
+	 * logical points.
+	 */
+	public double get_left_boundary() {
+		return m_logical_left;
+	}
+
+	/*****************************
+	 * Returns the current right-side boundary of the
+	 * logical points.
+	 */
+	public double get_right_boundary() {
+		return m_logical_right;
 	}
 
 	/*****************************
@@ -453,6 +472,15 @@ public class GraphXAxis {
 	}
 
 	/*****************************
+	 * Returns a copy of the draw area rectangle.
+	 * @return
+	 */
+	public Rect get_draw_area() {
+		return new Rect(m_draw_rect);
+	}
+
+
+	/*****************************
 	 * Has the draw area rectangle been set?
 	 */
 	public boolean is_draw_area_set() {
@@ -475,7 +503,7 @@ public class GraphXAxis {
 	 */
 	public void draw(Canvas canvas, Paint paint) {
 		if (m_dirty) {
-			Log.w(tag, "Trying to draw with dirty numbers!  But I'll do it anyway, even if it is slow.");
+//			Log.w(tag, "Trying to draw with dirty numbers!  But I'll do it anyway, even if it is slow.");
 			map_points();
 		}
 
