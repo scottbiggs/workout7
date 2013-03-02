@@ -1,10 +1,6 @@
 /**
  * This Activity displays a/some graph/s!
  *
- * TODO:
- * 	UI	- add double taps to zoom in and out.
- * 		- pinching to zoom in and out.
- *
  */
 package com.sleepfuriously.hpgworkout;
 
