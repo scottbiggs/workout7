@@ -56,7 +56,7 @@ public class Graph2 {
 	//	Constants
 	//--------------------------------
 
-	private static final String tag = Graph2.class.getName();
+	private static final String tag = "Graph2";
 
 	/** Size of big dots when drawn on the Canvas */
 	public static final float BIG_DOT_RADIUS = 5.3f;
@@ -271,7 +271,7 @@ public class Graph2 {
 	 * @param paint		What to draw with.
 	 */
 	public void draw (Canvas canvas, Paint paint) {
-		Log.d(tag, "draw()");
+//		Log.d(tag, "draw()");
 
 		if (m_dirty) {
 			calc_view_pts();
@@ -386,8 +386,6 @@ public class Graph2 {
 	 * 		m_view_rect
 	 */
 	protected void calc_view_pts() {
-		Log.d(tag, "calc_view_pts()");
-		Log.v(tag, "m_world_rect = " + m_world_rect.toString());
 
 		// First, prep the view list.
 		if (m_view_pts == null) {

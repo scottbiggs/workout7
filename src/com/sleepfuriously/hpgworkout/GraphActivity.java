@@ -152,6 +152,16 @@ public class GraphActivity
 
 	private float m_old_touch_dist = 1f;
 
+	/**
+	 * The position of the last move event
+	 */
+	private PointD m_last_touch_pos = new PointD();
+
+	/**
+	 * The distance that the fingers are apart from the last
+	 * zoom event.
+	 */
+	private float m_last_zoom_dist = 1f;
 
 
 	//-------------------------
@@ -344,6 +354,7 @@ public class GraphActivity
 			case MotionEvent.ACTION_DOWN:
 //				m_saved_touch_matrix.set(m_touch_matrix);
 				m_touch_start.set(event.getX(), event.getY());
+				m_last_touch_pos.set(event.getX(), event.getY());
 //				Log.d(tag, "mode = DRAG");
 				m_touch_mode = DRAG;
 				break;
@@ -357,7 +368,7 @@ public class GraphActivity
 				break;
 
 			case MotionEvent.ACTION_POINTER_DOWN:
-				m_old_touch_dist = touch_spacing(event);
+				m_old_touch_dist = get_double_touch_spacing(event);
 //				Log.d(tag, "m_old_dist = " + m_old_touch_dist);
 				if (m_old_touch_dist > MIN_PINCH_DISTANCE) {
 					// todo
@@ -366,30 +377,35 @@ public class GraphActivity
 //					touch_midpoint (m_touch_mid, event);
 					m_touch_mode = ZOOM;
 //					Log.d(tag, "mode = ZOOM");
+					m_last_zoom_dist = get_double_touch_spacing(event);
 				}
 				break;
 
 			case MotionEvent.ACTION_MOVE:
 				if (m_touch_mode == DRAG) {
+					Log.d(tag, "DRAG event.  Pan amount = " + event.getX());
+					// Only interested in left-right pans
+
+//					m_last_touch_pos
+					m_view.pan((float) (m_last_touch_pos.x - event.getX()));
+					m_view.invalidate();
+					m_last_touch_pos.set(event.getX(), event.getY());
 					// todo
-					//	Send a move event to GView
+					//	Send a pan event to GView
 //					m_touch_matrix.set(m_saved_touch_matrix);
 //					m_touch_matrix.postTranslate(event.getX() - m_touch_start.x,
 //										event.getY() - m_touch_start.y);
 				}
 
 				else if (m_touch_mode == ZOOM) {
-					float new_dist = touch_spacing(event);
+					float new_dist = get_double_touch_spacing(event);
 //					Log.d(tag, "new_dist = " + new_dist);
 					if (new_dist > MIN_PINCH_DISTANCE) {
-						// todo
-						// send a pinch event to GView
-//						m_touch_matrix.set(m_saved_touch_matrix);
-//						float scale = new_dist / m_old_touch_dist;
-						float amount = new_dist - m_old_touch_dist;
-						Log.d(tag, "Zoom event: amount = " + amount);
+						// send a zoom event to GView
+						float amount = new_dist - m_last_zoom_dist;
+//						Log.d(tag, "Zoom event: amount = " + amount);
 						m_view.scale(amount);
-//						m_touch_matrix.postScale(scale, scale, m_touch_mid.x, m_touch_mid.y);
+						m_last_zoom_dist = new_dist;
 						m_view.invalidate();
 					}
 				}
@@ -405,12 +421,13 @@ public class GraphActivity
 	 *
 	 * Note: actually, it's the Pythagorean distance.
 	 */
-	float touch_spacing (MotionEvent event) {
+	float get_double_touch_spacing (MotionEvent event) {
 		float x = event.getX(0) - event.getX(1);
-		float y = event.getX(0) - event.getY(1);
+		float y = event.getY(0) - event.getY(1);
 		return FloatMath.sqrt(x * x + y * y);
 	}
 
+	
 	/**********************
 	 * Find the midpoint between the two finger events.
 	 *

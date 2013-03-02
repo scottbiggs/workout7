@@ -579,16 +579,38 @@ public class GView extends View {
 	 * a scale amount of 0 will do nothing. Reset the graph by
 	 * calling scale_reset().
 	 *
-	 * @param amount		Amount of pixels to increase/decrease
-	 * 					the view by.
+	 * @param amount		Pixels that the fingers moved apart.
+	 * 					Positive means they spread, negative
+	 * 					indicates a pinch.
 	 */
-	public void scale (float amount) {
+	public void scale (double amount) {
+//		Log.d(tag, "scale (" + amount + ")");
+
+		//	THOUGHTS:
+		//	so what does the amount really mean?  It's the number
+		//	of pixels that the finger moved.  So if the fingers
+		//	moved 20 pixels, then what?
+		//
+		//	Let's say that the view window is 150 pixels across.
+		//	Then the fingers spreading 30 pixels out (or 20% of
+		//	the screen), would indicate a 20% increase in size.
+		//	That's a 20% DECREASE in the size of the world rect.
+		//
+		//	So we need to calculate what the ratio change the
+		//	input is in screen coords, apply that ratio to
+		//	the world coords, and then decrease the world rect
+		//	by that amount.
+
 		for (GraphCollection graph : m_graphlist) {
-			RectD window = graph.m_line_graph.get_world_rect();
-			window.left -= amount / 2f;
-			window.right += amount / 2f;
-			graph.m_line_graph.set_world_rect(window);
+			RectD world_window = graph.m_line_graph.get_world_rect();
+			RectF screen_window = graph.m_line_graph.get_view_rect();
+			double scale_ratio = amount / ((double)screen_window.width());
+			double world_amount = scale_ratio * world_window.width();
+			world_window.left += world_amount / 2d;
+			world_window.right -= world_amount / 2d;
+			graph.m_line_graph.set_world_rect(world_window);
 		}
+
 	} // scale (amount)
 
 	/**********************
@@ -598,9 +620,10 @@ public class GView extends View {
 	 * 		implement this
 	 */
 	public void scale_reset() {
-		for (GraphCollection graph : m_graphlist) {
-			// todo
-		}
+		Log.e(tag, "scale_reset() is not implemented yet.");
+//		for (GraphCollection graph : m_graphlist) {
+//			// todo
+//		}
 	} // scale_reset()
 
 
@@ -620,13 +643,23 @@ public class GView extends View {
 	 * 				if you're dragging right). Negatives go left.
 	 */
 	public void pan (float x) {
-		// todo
+		for (GraphCollection graph : m_graphlist) {
+			RectD world_window = graph.m_line_graph.get_world_rect();
+			RectF screen_window = graph.m_line_graph.get_view_rect();
+			double scale_ratio = x / ((double)screen_window.width());
+			double world_amount = scale_ratio * world_window.width();
+			world_window.left += world_amount;
+			world_window.right += world_amount;
+			graph.m_line_graph.set_world_rect(world_window);
+		}
+		
 	} // scroll (x)
 
 	/**********************
 	 * Resets the scroll to the default (which should be centered).
 	 */
 	public void pan_reset() {
+		Log.e(tag, "pan_reset() is not implemented yet.");
 		// todo
 	} // scroll_reset()
 }

@@ -88,7 +88,7 @@ public class GraphDrawPrimitives {
 	 */
 	public static void draw_circle (Canvas canvas, float x, float y,
 									float radius, Paint paint) {
-		Log.d(tag, "drawCircle called at " + x + ", " + y);
+//		Log.d(tag, "drawCircle called at " + x + ", " + y);
 		y = convert_y(canvas, y);
 		canvas.drawCircle(x, y, radius, paint);
 	} // draw_circle (canvas, x, y, radius, paint)
@@ -104,7 +104,7 @@ public class GraphDrawPrimitives {
 	 */
 	public static void draw_circle (Canvas canvas, double x, double y,
 									float radius, Paint paint) {
-		Log.d(tag, "drawCircle called at " + x + ", " + y);
+//		Log.d(tag, "drawCircle called at " + x + ", " + y);
 		y = convert_y(canvas, y);
 		canvas.drawCircle((float)x, (float)y, radius, paint);
 	} // draw_circle (canvas, x, y, radius, paint)
@@ -299,8 +299,8 @@ public class GraphDrawPrimitives {
 	 * @see android.graphics.Canvas#drawText(String, float, float, Paint)
 	 */
 	public static void draw_text (Canvas canvas, String text,
-								  double x, double y,
-								  Paint paint) {
+								double x, double y,
+								Paint paint) {
 		canvas.drawText(text, (float)x, (float)convert_y (canvas, y), paint);
 	}
 }

@@ -71,5 +71,18 @@ public class PointD {
 		return "PointD (" + x + ", " + y + ")";
 	}
 
+	/** Finds the distance from this point to another. */
+	public double distance (PointD pt2) {
+		return Math.sqrt((x - pt2.x) * (x - pt2.x) + (y - pt2.y) * (y - pt2.y));
+	}
+	/** Finds the distance from this point to another. */
+	public double distance (PointF pt2) {
+		return Math.sqrt((x - (double)pt2.x) * (x - (double)pt2.x) + (y - (double)pt2.y) * (y - (double)pt2.y));
+	}
+	/** Finds the distance from this point to another. */
+	public double distance (double x, double y) {
+		return Math.sqrt((this.x - x) * (this.x - x) + (this.y - y) * (this.y - y));
+	}
+
 
 }
