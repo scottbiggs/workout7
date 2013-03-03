@@ -1,9 +1,5 @@
 TODO:
 -----------------
-Do something about the time the Grid takes to load.  Maybe I'm
-	loading EVERYTHING from the DB?  If I just load the dates
-	and the significant...that should be a lot faster?
-
 Fill in the basic exercises for startup (in the xml file).
 
 Enable data backups.  See http://developer.android.com/guide/topics/data/backup.html
@@ -178,6 +174,12 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Do something about the time the Grid takes to load.  Maybe I'm
+	loading EVERYTHING from the DB?  If I just load the dates
+	and the significant...that should be a lot faster?
+	- killed, it's already pretty efficient (considering that
+	it displays row-by-row in-progress).
+
 Graphs need to be able to ZOOM IN/OUT!  What does that mean?
 	When the user pinches, the screen should respond accordingly.
 	For me, that means that the mapping of the graphs changes.

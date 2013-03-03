@@ -254,6 +254,7 @@ public class GridActivity extends BaseDialogActivity
 
 
 	//------------------------------
+	@Override
 	public void onClick(View v) {
 		Intent itt;
 
@@ -267,9 +268,6 @@ public class GridActivity extends BaseDialogActivity
 		else {
 			switch (v.getId()) {
 				case R.id.grid_add_exercise_button:
-					// todo:
-					//	debug
-					Log.d(tag, "onClick(), about to call AddExerciseActivity, and m_db = " + m_db);
 					itt = new Intent(this, AddExerciseActivity.class);
 					startActivityForResult(itt, WGlobals.ADDEXERCISEACTIVITY);
 					break;
@@ -296,6 +294,7 @@ public class GridActivity extends BaseDialogActivity
 	 *
 	 * @return true iff the click is completely handled
 	 */
+	@Override
 	public boolean onLongClick(View v) {
 		Intent itt;	// For possible new Activities.
 
@@ -382,7 +381,7 @@ public class GridActivity extends BaseDialogActivity
 		if (id % 2 == 1) {
 			// Start a loading dialog
 			start_progress_dialog(R.string.loading_str);
-			
+
 			// If the id is odd, they clicked the header.  So we'll
 			// go directly to the ASet tab.
 			itt.putExtra(ExerciseTabHostActivity.KEY_SET_ID, -1);
@@ -462,7 +461,7 @@ public class GridActivity extends BaseDialogActivity
 			if (lines) {
 				TableRow.LayoutParams lp =
 						new TableRow.LayoutParams (1,
-								   TableRow.LayoutParams.FILL_PARENT);
+								TableRow.LayoutParams.FILL_PARENT);
 				View line = new View(this);
 				line.setLayoutParams(lp);
 				line.setBackgroundColor(Color.WHITE);
@@ -547,7 +546,7 @@ public class GridActivity extends BaseDialogActivity
 			if (lines) {
 				TableRow.LayoutParams lp =
 						new TableRow.LayoutParams (1,
-								   TableRow.LayoutParams.FILL_PARENT);
+								TableRow.LayoutParams.FILL_PARENT);
 				View line = new View(this);
 				line.setLayoutParams(lp);
 				line.setBackgroundColor(Color.WHITE);
