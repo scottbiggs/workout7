@@ -451,7 +451,7 @@ public class GraphXAxis2 {
 	private void draw_label (Canvas canvas, Paint paint,
 							String label, double x_pos,
 							boolean centered) {
-		Log.d(tag, "draw_label(): x_pos = " + x_pos + ", string = " + label + ", centereed = " + centered);
+//		Log.d(tag, "draw_label(): x_pos = " + x_pos + ", string = " + label + ", centereed = " + centered);
 		double x, y;
 		Rect rect = new Rect();
 
