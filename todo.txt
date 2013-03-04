@@ -29,10 +29,6 @@ Issue:  The graph adds up weight on the same day, that's
 	or show the max?  Or maybe have the user select, as
 	described above?
 
-Graph by muscle group.
-
-Graph by exercise type.
-
 BUG: When the GraphActivity removes x-axis tick lines because they
 	are too close together, the date on the last tick line can be
 	wrong.
@@ -142,6 +138,14 @@ In the graphs, instead of horizontal lines, divide up into
 ---------------------------------------------------
 TABLED (for later versions)
 ---------------------------------------------------
+Implement fragments.  Specifically: from the graph selection
+	page to the graph itself.  It's PERFECT for fragments.
+	Also from the Grid to the tabs.
+
+Graph by muscle group.
+
+Graph by exercise type.
+
 Incorporate DropBox--perhaps for saving/loading data?
 
 Be nice if the database can be transmitted to a web-site.

@@ -36,6 +36,8 @@
 		android:text="@string/graph_selector_title"
 		/>
 
+<!--		Commented out until I implement these graph types.
+
 	<LinearLayout
 		android:id="@+id/graph_selector_top_buttons_ll"
 		android:layout_width="fill_parent"
@@ -76,11 +78,12 @@
 			android:textStyle="bold" />
 
 	</LinearLayout>
+-->
 
 	<LinearLayout
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:layout_below="@id/graph_selector_top_buttons_ll"
+		android:layout_below="@id/graph_selector_title_tv"
 		android:layout_marginBottom="10dp"
 		android:layout_marginLeft="5dp"
 		android:layout_marginRight="5dp"
