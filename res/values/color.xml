@@ -90,9 +90,9 @@
 	<color name="brown_camel">#C19A6B</color>
 	<color name="salmon">#FA8072</color>
 
-	<color name="color_reps">@color/orange_peel</color>
+	<color name="color_reps">@color/yellow_maize</color>
 	<color name="color_level">@color/brown_camel</color>
-	<color name="color_cals">@color/yellow_maize</color>
+	<color name="color_cals">@color/orange_peel</color>
 	<color name="color_weight">@color/blue_dodger</color>
 	<color name="color_dist">@color/green_bright</color>
 	<color name="color_time">@color/purple_amethyst</color>

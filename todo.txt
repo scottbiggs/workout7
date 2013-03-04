@@ -4,10 +4,6 @@ To speed up the Grid, make it just use the data from the
 	onActivityResult() and load JUST THAT EXERCISE.  Be able
 	to leave everything else as it is.
 
-Make sure that the colors are very contrasty, so that they can
-	be seen easily when they overlap.  Especially the colors
-	that are used a lot with each other, like reps and weight.
-
 Need a way to indicate <nothing> when entering data for a set.
 	And this should be the default if the last set done doesn't
 	have any data for that aspect.
@@ -187,6 +183,11 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Make sure that the colors are very contrasty, so that they can
+	be seen easily when they overlap.  Especially the colors
+	that are used a lot with each other, like reps and weight.
+	- done
+
 Need more than one line of encouragement when an exercise is
 	entered.  In fact, make it a little smarter and say they
 	can do better if the exercise is pretty wimpy (use the
