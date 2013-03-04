@@ -864,8 +864,42 @@
 	<string name="aset_title">Do a Set!</string>
 
 	<string name="aset_enter_butt">enter set</string>
-	<string name="aset_entered_msg">You entered a %s set.
+	<string name="aset_entered_ok_msg0">You entered a %s set.
 		Good job!</string>
+	<string name="aset_entered_ok_msg1">You entered a %s set.
+		Keep it up!</string>
+	<string name="aset_entered_ok_msg2">You entered a %s set.
+		Getting stronger every day!</string>
+	<string name="aset_entered_ok_msg3">You entered a %s set.
+		Go for it!</string>
+
+	<string name="aset_entered_plus_msg0">You entered a %s set.
+		Time to move up!</string>
+	<string name="aset_entered_plus_msg1">You entered a %s set.
+		Getting easy!</string>
+	<string name="aset_entered_plus_msg2">You entered a %s set.
+		You can do better!</string>
+	<string name="aset_entered_plus_msg3">You entered a %s set.
+		Aw, that was too easy!</string>
+
+	<string name="aset_entered_minus_msg0">You entered a %s set.
+		You\'ll get it!</string>
+	<string name="aset_entered_minus_msg1">You entered a %s set.
+		Trying a little to hard?</string>
+	<string name="aset_entered_minus_msg2">You entered a %s set.
+		That\'s the spirit, but try a little easier next time.</string>
+	<string name="aset_entered_minus_msg3">You entered a %s set.
+		Careful, don\'t hurt yourself!</string>
+
+	<string name="aset_entered_x_msg0">You entered a %s set.
+		Ow!</string>
+	<string name="aset_entered_x_msg1">You entered a %s set.
+		Do you need to see a doctor?</string>
+	<string name="aset_entered_x_msg2">You entered a %s set.
+		Sorry, I bet that hurt.</string>
+	<string name="aset_entered_x_msg3">You entered a %s set.
+		Oooh, that looked painful!</string>
+
 
 	<string name="aset_help_title">Enter a Set Help</string>
 	<string name="aset_help_msg">You\'re now working hard,

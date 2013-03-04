@@ -12,17 +12,8 @@ Need a way to indicate <nothing> when entering data for a set.
 	And this should be the default if the last set done doesn't
 	have any data for that aspect.
 
-Need more than one line of encouragement when an exercise is
-	entered.  In fact, make it a little smarter and say they
-	can do better if the exercise is pretty wimpy. Maybe.
-
-BUG:  EditExercise is buggy again.  It won't let you make changes,
-	saying that the name is already used!
-
 To finalize, remove "super winking" from the startup exercise
 	file.  :)
-
-Fill in the basic exercises for startup (in the xml file).
 
 Enable data backups.  See http://developer.android.com/guide/topics/data/backup.html
 
@@ -196,6 +187,19 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Need more than one line of encouragement when an exercise is
+	entered.  In fact, make it a little smarter and say they
+	can do better if the exercise is pretty wimpy (use the
+	condition component to make the messages smart).
+	- done
+
+Fill in the basic exercises for startup (in the xml file).
+	- done
+
+BUG:  EditExercise is buggy again.  It won't let you make changes,
+	saying that the name is already used!
+	- fixed
+
 Do something about the time the Grid takes to load.  Maybe I'm
 	loading EVERYTHING from the DB?  If I just load the dates
 	and the significant...that should be a lot faster?

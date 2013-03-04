@@ -23,6 +23,7 @@ package com.sleepfuriously.hpgworkout;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Random;
 
 import android.content.ContentValues;
 import android.content.Intent;
@@ -1154,6 +1155,106 @@ public class AddSetActivity
 		}
 	}
 
+
+	/*************************
+	 * Displays a nice toast that both informs the user
+	 * that they entered a set and encourages them.
+	 *
+	 * @param name	The name of the exercise they completed.
+	 */
+	private void entered_set_msg (String name) {
+		String[] args = {name};
+		int msg_id = 0;
+
+		// What message we use depends on the condition.
+		if (m_ok_rb.isChecked()) {
+			// Pick one of the 'ok' messages.
+			switch ((int) (Math.random() * 4)) {
+				case 0:
+					msg_id = R.string.aset_entered_ok_msg0;
+					break;
+				case 1:
+					msg_id = R.string.aset_entered_ok_msg1;
+					break;
+				case 2:
+					msg_id = R.string.aset_entered_ok_msg2;
+					break;
+				case 3:
+					msg_id = R.string.aset_entered_ok_msg3;
+					break;
+				default:
+					Log.e(tag, "Illegal random value for OK!");
+					break;
+			}
+		}
+		else if (m_plus_rb.isChecked()) {
+			switch ((int) (Math.random() * 4)) {
+				case 0:
+					msg_id = R.string.aset_entered_plus_msg0;
+					break;
+				case 1:
+					msg_id = R.string.aset_entered_plus_msg1;
+					break;
+				case 2:
+					msg_id = R.string.aset_entered_plus_msg2;
+					break;
+				case 3:
+					msg_id = R.string.aset_entered_plus_msg3;
+					break;
+				default:
+					Log.e(tag, "Illegal random value for OK!");
+					break;
+			}
+		}
+		else if (m_minus_rb.isChecked()) {
+			switch ((int) (Math.random() * 4)) {
+				case 0:
+					msg_id = R.string.aset_entered_minus_msg0;
+					break;
+				case 1:
+					msg_id = R.string.aset_entered_minus_msg1;
+					break;
+				case 2:
+					msg_id = R.string.aset_entered_minus_msg2;
+					break;
+				case 3:
+					msg_id = R.string.aset_entered_minus_msg3;
+					break;
+				default:
+					Log.e(tag, "Illegal random value for OK!");
+					break;
+			}
+		}
+		else if (m_x_rb.isChecked()) {
+			switch ((int) (Math.random() * 4)) {
+				case 0:
+					msg_id = R.string.aset_entered_x_msg0;
+					break;
+				case 1:
+					msg_id = R.string.aset_entered_x_msg1;
+					break;
+				case 2:
+					msg_id = R.string.aset_entered_x_msg2;
+					break;
+				case 3:
+					msg_id = R.string.aset_entered_x_msg3;
+					break;
+				default:
+					Log.e(tag, "Illegal random value for OK!");
+					break;
+			}
+		}
+		else {		//SET_COND_NONE;
+			Log.e(tag, "Illegal stress condition while saving!");
+			return;
+		}
+
+		my_toast(this, msg_id, args);
+
+	} // entered_set_msg (name)
+
+
+
 	/*************************
 	 * Assumes that it's time to save the data (no checks
 	 * needed).  So put it into the DB and kill this Activity.
@@ -1256,8 +1357,8 @@ public class AddSetActivity
 			}
 		}
 
-		String[] args = {m_ex_data.name};
-		my_toast(this, R.string.aset_entered_msg, args);
+		entered_set_msg (m_ex_data.name);
+//		my_toast(this, R.string.aset_entered_msg, args);
 		// todo
 		//	Maybe turn the EditTexts into hints???  Go to the History tab???
 		//	DEFINITELY a sound should play (if not in silent mode).
