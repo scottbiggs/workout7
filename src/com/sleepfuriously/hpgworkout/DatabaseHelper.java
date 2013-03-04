@@ -556,12 +556,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		try {
 			// loop until the end of the xml file
 			int event = parser.getEventType();
+			int counter = 0;
 			while (event != XmlPullParser.END_DOCUMENT) {
 				//Search for record tags, which define each exercise
 				if ((event == XmlPullParser.START_TAG) &&
 					(parser.getName().equals("record"))) {
 
-					values = parse_init_exercise_values(parser);
+					values = parse_init_exercise_values(parser, counter);
 					db.insert(EXERCISE_TABLE_NAME, null, values);
 				}
 				event = parser.next();
@@ -593,9 +594,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * <p>
 	 * @param parser		Primed and ready to read the resource.
 	 *
+	 * @param count		The count for this set of values.  Starts
+	 * 					with 0.  Used to make the lorder.
+	 *
 	 * @return	A ContentValues ready to insert into a database.
 	 */
-	private ContentValues parse_init_exercise_values (XmlResourceParser parser) {
+	private ContentValues parse_init_exercise_values (XmlResourceParser parser,
+													int count) {
 		ContentValues values = new ContentValues();
 
 		//Record tag found, now get values and insert record
@@ -728,9 +733,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		}
 
 		{
-			String lorder_str = parser.getAttributeValue(null, EXERCISE_COL_LORDER);
-			int lorder = Integer.parseInt(lorder_str);
-			values.put(EXERCISE_COL_LORDER, lorder);
+//			String lorder_str = parser.getAttributeValue(null, EXERCISE_COL_LORDER);
+//			int lorder = Integer.parseInt(lorder_str);
+			values.put(EXERCISE_COL_LORDER, count);
 		}
 
 		{

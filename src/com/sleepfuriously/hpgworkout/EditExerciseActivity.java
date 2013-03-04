@@ -1528,7 +1528,10 @@ public class EditExerciseActivity
 
 	/********************
 	 * Goes through the database and sees if there is an
-	 * exercise with the same name.
+	 * exercise with the same name.  This will not complain
+	 * if the name is the same as the original exercise name.
+	 * Because in that case, OF COURSE it'll be the same name!
+	 * Duh.
 	 *
 	 * NOTE:
 	 * 	Case is ignored!!!
@@ -1541,6 +1544,10 @@ public class EditExerciseActivity
 	private boolean is_duplicate_name (String name) {
 		boolean ret_val = false;
 
+		if (name.contentEquals(m_orig_ex_data.name)) {
+			return false;
+		}
+		
 		if (m_db != null) {
 			Log.e(tag, "WARNING! m_db is active in is_duplicate_name()!!!");
 		}

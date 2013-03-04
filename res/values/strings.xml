@@ -12,6 +12,7 @@
 				colon			==> \u003a		(unicode)
 				less than		==>	\u003c		(unicode)
 				greater than		==>	\u003e		(unicode)
+				ampersand &		==> \u0026		(unicode)
 	-->
 
 	<!-- General strings -->
