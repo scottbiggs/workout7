@@ -156,6 +156,8 @@ public class TextActivity
 	//----------------------------
 	@Override
 	public void onClick(View v) {
+		WGlobals.button_click();
+
 		if (v == m_done) {
 			Intent itt = new Intent();
 			itt.putExtra(ITT_KEY_RETURN_STRING, m_note.getText().toString());

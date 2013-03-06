@@ -100,6 +100,11 @@ public class WelcomeActivity extends BaseDialogActivity
 //		m_export_butt.setOnLongClickListener(this);
 //		m_export_butt.setEnabled(false);
 
+		// Start the sound system.
+		SoundManager.getInstance();
+		SoundManager.initSounds(this);
+		SoundManager.addSound(WGlobals.SOUND_CLICK, R.raw.button_click);
+
 		// Get the DatabaseHelper going.  Since this is the
 		// first Activity, this should take care of the life
 		// cycle ot g_db_helper.
@@ -113,6 +118,8 @@ public class WelcomeActivity extends BaseDialogActivity
 	//
 	@Override
 	protected void onDestroy() {
+		SoundManager.cleanup();
+
 		if (WGlobals.g_db_helper != null) {
 			WGlobals.g_db_helper.close();
 			WGlobals.g_db_helper = null;
@@ -128,11 +135,13 @@ public class WelcomeActivity extends BaseDialogActivity
 
 		switch (v.getId()) {
 			case R.id.welcome_start_butt:
+				WGlobals.button_click();
 				itt = new Intent (this, GridActivity.class);
 				startActivity (itt);
 				break;
 
 			case R.id.welcome_settings_butt:
+				WGlobals.button_click();
 				itt = new Intent (this, PrefsActivity.class);
 				startActivityForResult(itt, WGlobals.PREFSACTIVITY);
 				break;
@@ -141,16 +150,19 @@ public class WelcomeActivity extends BaseDialogActivity
 //				break;
 
 			case R.id.welcome_graph_butt:
+				WGlobals.button_click();
 				itt = new Intent (this, GraphSelectorActivity.class);
 				startActivity(itt);
 				break;
 
 			case R.id.welcome_exit_butt:
+				WGlobals.button_click();
 				finish();
 				break;
 
 			case R.id.welcome_help_butt:
 			case R.id.welcome_logo_id:
+				WGlobals.button_click();
 				show_help_dialog(R.string.welcome_help_help_title,
 						R.string.welcome_help_help_msg);
 				break;

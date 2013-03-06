@@ -214,8 +214,11 @@ public class NumberActivity
 
 
 	//----------------------------
+	@Override
 	public void onClick(View v) {
 		int id = v.getId();
+
+		WGlobals.button_click();
 
 		switch (id) {
 			case R.id.enter_a_number_ok_butt:
@@ -246,8 +249,10 @@ public class NumberActivity
 					show_yes_no_dialog(R.string.enter_a_number_cancel_warn_title,
 						R.string.enter_a_number_cancel_warn_msg,
 						new View.OnClickListener() {
+							@Override
 							public void onClick(View v) {
 								// Yes, cancel!
+								WGlobals.button_click();
 								setResult(RESULT_CANCELED);
 								dismiss_all_dialogs();
 								finish();

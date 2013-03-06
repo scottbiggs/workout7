@@ -5,7 +5,6 @@
  */
 package com.sleepfuriously.hpgworkout;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.TabActivity;
 import android.content.Intent;
@@ -262,7 +261,10 @@ public class ExerciseTabHostActivity
 
 
 	//--------------------------------
+	@Override
 	public void onClick(View v) {
+		WGlobals.button_click();
+
 		if (v == m_help) {
 			int title = -1, msg = -1;
 
@@ -335,6 +337,7 @@ public class ExerciseTabHostActivity
 	//		that a tab has changed--it cannot be relied upon for
 	//		timing.
 	//
+	@Override
 	public void onTabChanged(String tabId) {
 		int tab = getTabHost().getCurrentTab();
 //		Log.v(tag, "onTabChanged().  current tab = " + tab);
@@ -370,7 +373,9 @@ public class ExerciseTabHostActivity
 
 		Button ok_butt = (Button) m_dialog.findViewById(R.id.dialog_help_ok_butt);
 		ok_butt.setOnClickListener(new OnClickListener() {
+			@Override
 			public void onClick(View v) {
+				WGlobals.button_click();
 				m_dialog.dismiss();
 				m_dialog = null;		// Allows garbage collection
 			}

@@ -39,7 +39,7 @@ public class AddTimeItemActivity extends BaseDialogActivity
 		m_time_et = (EditText) findViewById(R.id.add_time_item_et);
 		m_time_et.setOnLongClickListener(this);
 		m_time_et.addTextChangedListener(this);
-		
+
 		m_ok = (Button) findViewById(R.id.add_time_item_ok_butt);
 		m_ok.setOnClickListener(this);
 
@@ -57,6 +57,7 @@ public class AddTimeItemActivity extends BaseDialogActivity
 	 */
 	@Override
 	public void onClick(View v) {
+		WGlobals.button_click();
 
 		if (v == m_ok) {		// Clicked the ok button. Save and exit.
 			Intent itt = getIntent();

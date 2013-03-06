@@ -108,6 +108,13 @@ public class WGlobals extends Application {
 		EXER_GROUP_MISC = 4;
 
 
+	/**
+	 * Defines the indices (handles) for the various sounds.
+	 */
+	public static final int
+		SOUND_CLICK = 1;
+
+
 	//----------------------------------
 	//	Global Variables
 	//----------------------------------
@@ -139,6 +146,11 @@ public class WGlobals extends Application {
 	// todo:
 	//	Set the default and use this.
 	public static int g_sound_volume;
+
+	/**
+	 * Controller of the sound system.
+	 */
+	public static SoundManager g_sound_mgr;	// Controls our sound system.
 
 	/**
 	 * When TRUE, the history/inspector lists all the
@@ -317,5 +329,16 @@ public class WGlobals extends Application {
 			// called.
 		cursor.moveToPosition(pos);
 	} // log_cursor_contents()
+
+
+	/******************
+	 * Plays a click sound.  But only if the user's preferences
+	 * have sound turned on.
+	 */
+	public static void button_click() {
+		if (g_sound) {
+			SoundManager.playSound(SOUND_CLICK);
+		}
+	} // button_click()
 
 }

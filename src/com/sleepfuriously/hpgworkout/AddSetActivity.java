@@ -23,7 +23,6 @@ package com.sleepfuriously.hpgworkout;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Random;
 
 import android.content.ContentValues;
 import android.content.Intent;
@@ -210,6 +209,8 @@ public class AddSetActivity
 		m_ok_rb.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				WGlobals.button_click();
+
 				m_ok_rb.setChecked(true);
 				m_plus_rb.setChecked(false);
 				m_minus_rb.setChecked(false);
@@ -222,6 +223,8 @@ public class AddSetActivity
 		m_plus_rb.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				WGlobals.button_click();
+
 				m_ok_rb.setChecked(false);
 				m_plus_rb.setChecked(true);
 				m_minus_rb.setChecked(false);
@@ -234,6 +237,8 @@ public class AddSetActivity
 		m_minus_rb.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				WGlobals.button_click();
+
 				m_ok_rb.setChecked(false);
 				m_plus_rb.setChecked(false);
 				m_minus_rb.setChecked(true);
@@ -246,6 +251,8 @@ public class AddSetActivity
 		m_x_rb.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				WGlobals.button_click();
+
 				m_ok_rb.setChecked(false);
 				m_plus_rb.setChecked(false);
 				m_minus_rb.setChecked(false);
@@ -321,6 +328,8 @@ public class AddSetActivity
 		m_ok_rb.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				WGlobals.button_click();
+
 				m_ok_rb.setChecked(true);
 				m_plus_rb.setChecked(false);
 				m_minus_rb.setChecked(false);
@@ -333,6 +342,8 @@ public class AddSetActivity
 		m_plus_rb.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				WGlobals.button_click();
+
 				m_ok_rb.setChecked(false);
 				m_plus_rb.setChecked(true);
 				m_minus_rb.setChecked(false);
@@ -345,6 +356,8 @@ public class AddSetActivity
 		m_minus_rb.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				WGlobals.button_click();
+
 				m_ok_rb.setChecked(false);
 				m_plus_rb.setChecked(false);
 				m_minus_rb.setChecked(true);
@@ -357,6 +370,8 @@ public class AddSetActivity
 		m_x_rb.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				WGlobals.button_click();
+
 				m_ok_rb.setChecked(false);
 				m_plus_rb.setChecked(false);
 				m_minus_rb.setChecked(false);
@@ -504,6 +519,8 @@ public class AddSetActivity
 	//-----------------------------------
 	@Override
 	public void onClick(View v) {
+		WGlobals.button_click();
+
 		if (v == m_done) {
 			test_to_save();
 		} // m_ok
@@ -1425,6 +1442,7 @@ public class AddSetActivity
 						new View.OnClickListener() {
 							@Override
 							public void onClick(View v) {
+								WGlobals.button_click();
 								save();
 								dismiss_all_dialogs();
 							}
@@ -1571,6 +1589,7 @@ public class AddSetActivity
 				@Override
 				public void onClick(View v) {
 					// They said yes, so
+					WGlobals.button_click();
 					save();
 					dismiss_all_dialogs();
 				}

@@ -1,12 +1,19 @@
 TODO:
 -----------------
+Add a special sound for:
+		long-clicks
+		completing a set
+		deleting a set
+		deleting an exercise
+		help
+		adding a new set
+		spinning wheels
+
+Add clicks to Preferences selections (when appropriate).
+
 To speed up the Grid, make it just use the data from the
 	onActivityResult() and load JUST THAT EXERCISE.  Be able
 	to leave everything else as it is.
-
-Need a way to indicate <nothing> when entering data for a set.
-	And this should be the default if the last set done doesn't
-	have any data for that aspect.
 
 To finalize, remove "super winking" from the startup exercise
 	file.  :)
@@ -73,12 +80,7 @@ Need to make a preferences screen.
 Try some custom Themes to make things look original.
 	http://developer.android.com/guide/topics/ui/themes.html
 
-Click on a date, and get a summary of that day.  You also
-	get the option to edit those sets and even delete them.
-	Long-click to delete that day (with confirmation, of
-	course).
-
-Check out: http://developer.android.com/resources/articles/faster-screen-orientation-change.html
+Check out: http://android-developers.blogspot.com/2009/02/faster-screen-orientation-change.html
 	This should be applied to the grid screen to make
 	orientation changes much faster.
 
@@ -104,8 +106,11 @@ Need to remove the HistoryActivity from the project.
 ---------------------------------------------------
 Hmmmmmmmmmmmmmmmmmmmmmm
 ---------------------------------------------------
-In the legend of the GraphActivity, it'd be nice if we put the
-	units, too?
+Need a way to indicate <nothing> when entering data for a set.
+	And this should be the default if the last set done doesn't
+	have any data for that aspect.
+	- the Wheels don't have a blank setting, so this is
+	very problematic.
 
 When the Inspector tries to display an exercise with no sets
 	(empty), please don't say what the order is!  It's ugly.
@@ -138,6 +143,11 @@ In the graphs, instead of horizontal lines, divide up into
 ---------------------------------------------------
 TABLED (for later versions)
 ---------------------------------------------------
+Click on a date, and get a summary of that day.  You also
+	get the option to edit those sets and even delete them.
+	Long-click to delete that day (with confirmation, of
+	course).
+
 Implement fragments.  Specifically: from the graph selection
 	page to the graph itself.  It's PERFECT for fragments.
 	Also from the Grid to the tabs.
@@ -187,6 +197,14 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+When cancelling a number while editing a set,
+	the click doesn't play for 'yes'.
+	- fixed
+
+In the legend of the GraphActivity, it'd be nice if we put the
+	units, too?
+	- done
+
 Make sure that the colors are very contrasty, so that they can
 	be seen easily when they overlap.  Especially the colors
 	that are used a lot with each other, like reps and weight.

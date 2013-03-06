@@ -877,6 +877,8 @@ public class EditExerciseActivity
 						@Override
 						public void onClick(View v) {
 							// Yes, they want to cancel.
+							WGlobals.button_click();
+
 							dismiss_all_dialogs();
 							if (ExerciseTabHostActivity.m_dirty)
 								tabbed_set_result(RESULT_OK);
@@ -901,6 +903,7 @@ public class EditExerciseActivity
 	 */
 	@Override
 	public void onClick(View v) {
+		WGlobals.button_click();
 
 		// Is it a radio button?
 		if (v.getClass() == RadioButton.class) {
@@ -1011,6 +1014,8 @@ public class EditExerciseActivity
 				@Override
 				public void onClick(View v) {
 					// This happens ONLY if they said YES!
+					WGlobals.button_click();
+
 					delete_entry();
 					tabbed_set_result(RESULT_OK);
 					dismiss_all_dialogs();
@@ -1547,7 +1552,7 @@ public class EditExerciseActivity
 		if (name.contentEquals(m_orig_ex_data.name)) {
 			return false;
 		}
-		
+
 		if (m_db != null) {
 			Log.e(tag, "WARNING! m_db is active in is_duplicate_name()!!!");
 		}

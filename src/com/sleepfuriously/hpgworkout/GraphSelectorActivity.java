@@ -11,10 +11,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -24,7 +22,6 @@ import android.widget.AdapterView.OnItemClickListener;
 public class GraphSelectorActivity
 				extends BaseDialogActivity
 				implements OnClickListener,
-						OnLongClickListener,
 						OnItemClickListener {
 
 	//------------------------
@@ -84,30 +81,21 @@ public class GraphSelectorActivity
 
 
 	//----------------------------
+	@Override
 	public void onClick(View v) {
+		WGlobals.button_click();
 		if (v == m_help) {
 			show_help_dialog(R.string.graph_selector_help_title,
 					R.string.graph_selector_help_msg);
 		}
-
-		// todo
-
 	} // onClick(v)
-
-
-	//----------------------------
-	public boolean onLongClick(View v) {
-
-		// todo
-
-		return false;
-	}
 
 
 	//----------------------------
 	//	This hits when the use clicks on an item (part
 	//	of the ListView).
 	//
+	@Override
 	public void onItemClick(AdapterView<?> parent, View v,
 							int pos, long id) {
 

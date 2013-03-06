@@ -266,6 +266,8 @@ public class GridActivity extends BaseDialogActivity
 		}
 
 		else {
+			WGlobals.button_click();
+
 			switch (v.getId()) {
 				case R.id.grid_add_exercise_button:
 					itt = new Intent(this, AddExerciseActivity.class);
@@ -282,8 +284,8 @@ public class GridActivity extends BaseDialogActivity
 									R.string.grid_help_msg);
 					break;
 			}
-
 		} // else
+
 	} // onClick(v)
 
 
@@ -379,6 +381,8 @@ public class GridActivity extends BaseDialogActivity
 		// Is this a row header (and therefore a click on an exercise)
 		// or a grid cell (and therefore call up the Inspector)?
 		if (id % 2 == 1) {
+			WGlobals.button_click();
+
 			// Start a loading dialog
 			start_progress_dialog(R.string.loading_str);
 
@@ -398,6 +402,9 @@ public class GridActivity extends BaseDialogActivity
 			if (ge == null) {
 				return;		// clicked in empty space?
 			}
+
+			WGlobals.button_click();
+
 			if (ge.m_count < 1) {
 				Log.w(tag, "start_exercise_tabs() could not get an ID for the grid element!");
 				itt.putExtra(ExerciseTabHostActivity.KEY_SET_ID, -1);

@@ -226,6 +226,8 @@ public class RowEditActivity
 	//-----------------------------
 	@Override
 	public void onClick(View v) {
+		WGlobals.button_click();
+
 		switch (v.getId()) {
 			case R.id.row_edit_ok_butt:
 				if (m_dirty) {
@@ -248,6 +250,8 @@ public class RowEditActivity
 						@Override
 						public void onClick(View v) {
 							// Yes, they want to cancel.
+							WGlobals.button_click();
+
 							setResult(RESULT_CANCELED);
 							dismiss_all_dialogs();
 							finish();
@@ -284,6 +288,8 @@ public class RowEditActivity
 				@Override
 				public void onClick(View v) {
 					// Yes, they want to cancel.
+					WGlobals.button_click();
+
 					setResult(RESULT_CANCELED);
 					dismiss_all_dialogs();
 					finish();
@@ -390,6 +396,8 @@ public class RowEditActivity
 				holder.up.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
+						WGlobals.button_click();
+
 						ViewHolder holder = (ViewHolder) v.getTag();
 						int pos = holder.pos;
 //						Toast.makeText (mm_context, "Up for " + holder.text.getText() + ", at position " + holder.pos, Toast.LENGTH_SHORT).show();
@@ -420,6 +428,8 @@ public class RowEditActivity
 				holder.down.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
+						WGlobals.button_click();
+
 						ViewHolder holder = (ViewHolder) v.getTag();
 						int pos = holder.pos;
 //						Toast.makeText (mm_context, "Down for " + holder.text.getText() + ", at position " + holder.pos, Toast.LENGTH_SHORT).show();

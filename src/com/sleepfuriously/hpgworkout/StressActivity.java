@@ -148,7 +148,10 @@ public class StressActivity
 
 
 	//----------------------------
+	@Override
 	public void onClick(View v) {
+		WGlobals.button_click();
+
 		if (v == m_ok_table) {
 			// Only do something if this is a new button.
 			if (m_stress_num != DatabaseHelper.SET_COND_OK) {

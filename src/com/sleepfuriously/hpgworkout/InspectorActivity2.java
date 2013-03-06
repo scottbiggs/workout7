@@ -246,6 +246,7 @@ public class InspectorActivity2
 
 
 	//------------------------------
+	@Override
 	public boolean onLongClick(View v) {
 		Intent itt;
 

@@ -221,6 +221,8 @@ public class GraphActivity
 	public void onClick(View v) {
 		Intent itt;
 
+		WGlobals.button_click();
+
 		// Did they hit the help button?
 		if (v.getId() == R.id.graph_logo) {
 			show_help_dialog(R.string.graph_help_title, R.string.graph_help_msg);

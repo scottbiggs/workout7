@@ -183,7 +183,9 @@ public class BaseDialogActivity extends Activity {
 
 		Button ok_butt = (Button) m_custom_dialog.findViewById(R.id.dialog_help_ok_butt);
 		ok_butt.setOnClickListener(new OnClickListener() {
+			@Override
 			public void onClick(View v) {
+				WGlobals.button_click();
 				m_custom_dialog.dismiss();
 			}
 		});
@@ -213,7 +215,9 @@ public class BaseDialogActivity extends Activity {
 
 		Button ok_butt = (Button) m_custom_dialog.findViewById(R.id.dialog_help_ok_butt);
 		ok_butt.setOnClickListener(new OnClickListener() {
+			@Override
 			public void onClick(View v) {
+				WGlobals.button_click();
 				m_custom_dialog.dismiss();
 			}
 		});
@@ -262,7 +266,9 @@ public class BaseDialogActivity extends Activity {
 
 		Button ok_butt = (Button) m_custom_dialog.findViewById(R.id.dialog_help_ok_butt);
 		ok_butt.setOnClickListener(new OnClickListener() {
+			@Override
 			public void onClick(View v) {
+				WGlobals.button_click();
 				m_custom_dialog.dismiss();
 			}
 		});
@@ -290,7 +296,7 @@ public class BaseDialogActivity extends Activity {
 	 * 						if you want the dialog to close!!!
 	 */
 	protected void show_yes_no_dialog (int title_id, int msg_id,
-							View.OnClickListener listener) {
+									View.OnClickListener listener) {
 
 		// Build the dialog.
 		m_custom_dialog = new Dialog (this);
@@ -311,7 +317,9 @@ public class BaseDialogActivity extends Activity {
 
 		Button no_butt = (Button) m_custom_dialog.findViewById(R.id.dialog_yes_no_negative_butt);
 		no_butt.setOnClickListener(new OnClickListener() {
+			@Override
 			public void onClick(View v) {
+				WGlobals.button_click();
 				m_custom_dialog.dismiss();
 			}
 		});
@@ -357,7 +365,9 @@ public class BaseDialogActivity extends Activity {
 
 				Button no_butt = (Button) m_custom_dialog.findViewById(R.id.dialog_yes_no_negative_butt);
 				no_butt.setOnClickListener(new OnClickListener() {
+					@Override
 					public void onClick(View v) {
+						WGlobals.button_click();
 						m_custom_dialog.dismiss();
 					}
 				});
@@ -422,7 +432,9 @@ public class BaseDialogActivity extends Activity {
 
 		Button no_butt = (Button) m_custom_dialog.findViewById(R.id.dialog_yes_no_negative_butt);
 		no_butt.setOnClickListener(new OnClickListener() {
+			@Override
 			public void onClick(View v) {
+				WGlobals.button_click();
 				m_custom_dialog.dismiss();
 			}
 		});
@@ -497,9 +509,6 @@ public class BaseDialogActivity extends Activity {
 	 * Makes a custom Toast and shows it.  Just like
 	 * the standard one, but even easier as you don't
 	 * have to call show().
-	 *
-	 * todo:
-	 * 		Add sound effects (if sound is turned on)
 	 *
 	 * @param ctx	The Context of the Activity (use
 	 * 				'this' or getApplicationContext()

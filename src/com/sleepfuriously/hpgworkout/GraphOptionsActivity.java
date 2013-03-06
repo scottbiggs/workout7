@@ -287,6 +287,8 @@ public class GraphOptionsActivity
 	 */
 	@Override
 	public void onClick(View v) {
+		WGlobals.button_click();
+
 		if (v == m_done) {
 			if (!m_dirty) {	// didn't do anything (this shouldn't be possible!)
 				Log.e(tag, "Clicked 'done' without anything being dirty!  How'd they do that?");

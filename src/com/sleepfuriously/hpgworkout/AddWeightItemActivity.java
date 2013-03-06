@@ -54,6 +54,7 @@ public class AddWeightItemActivity extends BaseDialogActivity
 	//------------------------------
 	@Override
 	public void onClick(View v) {
+		WGlobals.button_click();
 
 		if (v == m_ok) {		// Clicked the ok button. Save and exit.
 			Intent itt = getIntent();

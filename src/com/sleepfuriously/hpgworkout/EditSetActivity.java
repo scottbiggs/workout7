@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -30,7 +29,6 @@ public class EditSetActivity
 						BaseDialogActivity
 					implements
 						OnClickListener,
-						OnLongClickListener,
 						DatePickerDialog.OnDateSetListener,
 						TimePickerDialog.OnTimeSetListener {
 
@@ -330,6 +328,8 @@ public class EditSetActivity
 	//-------------------------
 	@Override
 	public void onClick(View v) {
+		WGlobals.button_click();
+
 		switch (v.getId()) {
 			case R.id.editset_date_label_tv:
 			case R.id.editset_date_data_tv:
@@ -423,6 +423,7 @@ public class EditSetActivity
 								@Override
 								public void onClick(View v) {
 									// YES, they want to delete it!
+									WGlobals.button_click();
 									delete_set();
 									setResult(RESULT_OK);
 									dismiss_all_dialogs();
@@ -454,6 +455,7 @@ public class EditSetActivity
 						@Override
 						public void onClick(View v) {
 							// Yes, they want to cancel.
+							WGlobals.button_click();
 							setResult(RESULT_CANCELED);
 							dismiss_all_dialogs();
 							finish();
@@ -474,13 +476,6 @@ public class EditSetActivity
 
 	} // onClick (v)
 
-	//-------------------------
-	@Override
-	public boolean onLongClick(View v) {
-		// TODO
-		// why is this here?
-		return false;
-	}
 
 	//-------------------------
 	//	Fires once a date has been set with a dialog.
