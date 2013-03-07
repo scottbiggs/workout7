@@ -339,6 +339,7 @@ public class ExerciseTabHostActivity
 	//
 	@Override
 	public void onTabChanged(String tabId) {
+		WGlobals.button_click();
 		int tab = getTabHost().getCurrentTab();
 //		Log.v(tag, "onTabChanged().  current tab = " + tab);
 //		Log.v(tag, "onTabChanged().  tabId = " + tabId);
