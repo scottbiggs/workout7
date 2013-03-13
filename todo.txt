@@ -21,8 +21,6 @@ Add a special sound for:
 		spinning wheels
 		MySpinner
 
-Add clicks to list selections (GraphSelectionActivity).
-
 Add clicks to Preferences selections (when appropriate).
 
 To speed up the Grid, make it just use the data from the
@@ -211,6 +209,9 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Add clicks to list selections (GraphSelectionActivity).
+	- fixed
+
 BUG: Cancelling an AddExercise doesn't click (when you go through
 	the dialog and say 'yes').
 	- fixed

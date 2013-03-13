@@ -97,6 +97,8 @@ public class GraphSelectorActivity
 	public void onItemClick(AdapterView<?> parent, View v,
 							int pos, long id) {
 
+		WGlobals.button_click();
+
 		// Finding the name they clicked on.  This seems oddly tricky.
 		// Because views are recycled, getChildAt() returns the position
 		// of selected item among the VISIBLE lines (starting at 0).  To
