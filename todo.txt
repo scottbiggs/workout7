@@ -1,5 +1,9 @@
 TODO:
 -----------------
+Take away the global preferences.  Make each class access the
+	shared preferences the right way.  This is messy and very
+	spaghetti code.
+
 Add a special sound for:
 		long-clicks
 		completing a set
@@ -9,6 +13,11 @@ Add a special sound for:
 		adding a new set
 		spinning wheels
 		MySpinner
+
+BUG: Cancelling an AddExercise doesn't click (when you go through
+	the dialog and say 'yes').
+
+Add clicks to list selections (GraphSelectionActivity).
 
 Add clicks to Preferences selections (when appropriate).
 

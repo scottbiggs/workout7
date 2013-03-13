@@ -1371,6 +1371,7 @@
 	<string name="prefs_category_general">GENERAL</string>
 	<string name="prefs_category_inspector">WORKOUT HISTORY</string>
 	<string name="prefs_category_wheels">WHEELS</string>
+	<string name="prefs_category_sound">SOUND</string>
 
 	<string name="prefs_nag_key">nag</string>
 	<string name="prefs_nag_title">Nag</string>
@@ -1390,6 +1391,10 @@
 		Yeah, I think this program is trying to make some noises!</string>
 	<string name="prefs_sound_off_msg">Shhhhh, we\'re playing
 		the quiet game now. Don\'t make a sound.</string>
+	<string name="prefs_sound_volume_key">volume</string>
+	<string name="prefs_sound_volume_title">Volume</string>
+	<string name="prefs_sound_volume_msg">Adjust the volume of the
+		sound effects with a slider.</string>
 
 	<string name="prefs_display_key">display</string>
 	<string name="prefs_display_title">Disable Screen Saver</string>

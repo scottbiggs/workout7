@@ -47,8 +47,6 @@ public class GraphSelectorActivity
 
 	Cursor m_set_cursor = null;
 
-	Cursor cursor = null;
-
 
 	//------------------------
 	//
@@ -65,7 +63,7 @@ public class GraphSelectorActivity
 		// 1.
 		m_lv = (ListView) findViewById(R.id.graph_selector_lv);
 
-		String name_array[] = WGlobals.g_db_helper.getAllExerciseNames();
+		String name_array[] = DatabaseHelper.getAllExerciseNames();
 
 
 		ArrayAdapter<String> adapter =

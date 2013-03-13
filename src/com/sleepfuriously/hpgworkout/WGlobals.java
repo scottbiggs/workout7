@@ -12,6 +12,7 @@ package com.sleepfuriously.hpgworkout;
 import android.app.Activity;
 import android.app.Application;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -141,16 +142,6 @@ public class WGlobals extends Application {
 	 * Tells whether to play sounds or not.
 	 */
 	public static boolean g_sound = true;
-
-	/** Volume of the sound (when it's ON). */
-	// todo:
-	//	Set the default and use this.
-	public static int g_sound_volume;
-
-	/**
-	 * Controller of the sound system.
-	 */
-	public static SoundManager g_sound_mgr;	// Controls our sound system.
 
 	/**
 	 * When TRUE, the history/inspector lists all the

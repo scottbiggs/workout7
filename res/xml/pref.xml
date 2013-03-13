@@ -9,6 +9,7 @@
 		android:title="@string/prefs_nag_title" />
 
 	<com.sleepfuriously.hpgworkout.LongCheckboxPreference
+		android:id="@+id/prefs_volume_checkbox"
 		android:key="@string/prefs_sound_key"
 		android:defaultValue="true"
 		android:summaryOff="@string/prefs_sound_off_msg"
@@ -22,6 +23,7 @@
 		android:summaryOn="@string/prefs_display_keep_on_msg"
 		android:title="@string/prefs_display_title" />
 
+	<!-- Wheels -->
 	<PreferenceCategory
 		android:title="@string/prefs_category_wheels"
 		android:summary="category summary will be written here."
@@ -32,55 +34,7 @@
 			android:summaryOff="@string/prefs_wheel_off_msg"
 			android:summaryOn="@string/prefs_wheel_on_msg"
 			android:title="@string/prefs_wheel_title" />
-<!--
-		<EditTextPreference
-			android:key="@string/prefs_wheel_left_key"
-			android:defaultValue="4"
-			android:title="@string/prefs_wheel_left_title"
-			android:summary="@string/prefs_wheel_left_msg"
-			android:dependency="@string/prefs_wheel_key"
-			android:dialogTitle="@string/prefs_wheel_left_dialog_title"
-			android:dialogMessage="@string/prefs_wheel_left_dialog_msg"
-			android:dialogIcon="@drawable/hpglogo_small"
-			android:inputType="number"
-			/>
 
-		<EditTextPreference
-			android:key="@string/prefs_wheel_right_key"
-			android:defaultValue="1"
-			android:title="@string/prefs_wheel_right_title"
-			android:summary="@string/prefs_wheel_right_msg"
-			android:dependency="@string/prefs_wheel_key"
-			android:dialogTitle="@string/prefs_wheel_right_dialog_title"
-			android:dialogMessage="@string/prefs_wheel_right_dialog_msg"
-			android:dialogIcon="@drawable/hpglogo_small"
-			android:inputType="number"
-			/>
-
-		<EditTextPreference
-			android:key="@string/prefs_wheel_text_size_key"
-			android:defaultValue="12"
-			android:title="@string/prefs_wheel_text_size_title"
-			android:summary="@string/prefs_wheel_text_size_msg"
-			android:dependency="@string/prefs_wheel_key"
-			android:dialogTitle="@string/prefs_wheel_text_size_dialog_title"
-			android:dialogMessage="@string/prefs_wheel_text_size_dialog_msg"
-			android:dialogIcon="@drawable/hpglogo_small"
-			android:inputType="number"
-			/>
-
-		<EditTextPreference
-			android:key="@string/prefs_wheel_width_key"
-			android:defaultValue="10"
-			android:title="@string/prefs_wheel_width_title"
-			android:summary="@string/prefs_wheel_width_msg"
-			android:dependency="@string/prefs_wheel_key"
-			android:dialogTitle="@string/prefs_wheel_width_dialog_title"
-			android:dialogMessage="@string/prefs_wheel_width_dialog_msg"
-			android:dialogIcon="@drawable/hpglogo_small"
-			android:inputType="number"
-			/>
--->			
 		<com.sleepfuriously.hpgworkout.LongCheckboxPreference
 			android:key="@string/prefs_wheel_width_key"
 			android:dependency="@string/prefs_wheel_key"

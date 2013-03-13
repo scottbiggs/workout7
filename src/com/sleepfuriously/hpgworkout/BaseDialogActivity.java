@@ -36,6 +36,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -88,6 +89,10 @@ public class BaseDialogActivity extends Activity {
 		super.onCreate(savedInstanceState);
 //		WGlobals.tryFullScreen(this);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+		// Set the volume buttons to control the volume of our sounds
+		// (music).
+		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
 		// Do the preferences.
 		WGlobals.load_prefs(this);
@@ -168,6 +173,10 @@ public class BaseDialogActivity extends Activity {
 
 		m_custom_dialog.setContentView(R.layout.dialog_help);
 
+		// Set the volume buttons to control the volume of our sounds
+		// (music).
+		m_custom_dialog.setVolumeControlStream(AudioManager.STREAM_MUSIC);
+		
 		// Fill in the Views (title & msg).
 		TextView title = (TextView) m_custom_dialog.findViewById(R.id.dialog_help_title_tv);
 		if (title_id == -1)
@@ -207,6 +216,10 @@ public class BaseDialogActivity extends Activity {
 
 		m_custom_dialog.setContentView(R.layout.dialog_help);
 
+		// Set the volume buttons to control the volume of our sounds
+		// (music).
+		m_custom_dialog.setVolumeControlStream(AudioManager.STREAM_MUSIC);
+		
 		// Fill in the Views (title & msg).
 		TextView title_tv = (TextView) m_custom_dialog.findViewById(R.id.dialog_help_title_tv);
 		title_tv.setText(title);
@@ -248,6 +261,10 @@ public class BaseDialogActivity extends Activity {
 		m_custom_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		m_custom_dialog.setContentView(R.layout.dialog_help);
 
+		// Set the volume buttons to control the volume of our sounds
+		// (music).
+		m_custom_dialog.setVolumeControlStream(AudioManager.STREAM_MUSIC);
+		
 		TextView title_tv = (TextView) m_custom_dialog.findViewById(R.id.dialog_help_title_tv);
 		if (title_id == -1)
 			title_tv.setText(null);
@@ -303,6 +320,10 @@ public class BaseDialogActivity extends Activity {
 		m_custom_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		m_custom_dialog.setContentView(R.layout.dialog_yes_no);
 
+		// Set the volume buttons to control the volume of our sounds
+		// (music).
+		m_custom_dialog.setVolumeControlStream(AudioManager.STREAM_MUSIC);
+		
 		TextView title_tv = (TextView) m_custom_dialog.findViewById(R.id.dialog_yes_no_title_tv);
 		if (title_id == -1)
 			title_tv.setText("");
@@ -352,31 +373,35 @@ public class BaseDialogActivity extends Activity {
 	 */
 	protected void show_yes_no_dialog (String title, String msg,
 									View.OnClickListener listener) {
-				// Build the dialog.
-				m_custom_dialog = new Dialog (this);
-				m_custom_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-				m_custom_dialog.setContentView(R.layout.dialog_yes_no);
+		// Build the dialog.
+		m_custom_dialog = new Dialog (this);
+		m_custom_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		m_custom_dialog.setContentView(R.layout.dialog_yes_no);
 
-				TextView title_tv = (TextView) m_custom_dialog.findViewById(R.id.dialog_yes_no_title_tv);
-				title_tv.setText(title);
+		// Set the volume buttons to control the volume of our sounds
+		// (music).
+		m_custom_dialog.setVolumeControlStream(AudioManager.STREAM_MUSIC);
+		
+		TextView title_tv = (TextView) m_custom_dialog.findViewById(R.id.dialog_yes_no_title_tv);
+		title_tv.setText(title);
 
-				TextView msg_tv = (TextView) m_custom_dialog.findViewById(R.id.dialog_yes_no_msg_tv);
-				msg_tv.setText(msg);
+		TextView msg_tv = (TextView) m_custom_dialog.findViewById(R.id.dialog_yes_no_msg_tv);
+		msg_tv.setText(msg);
 
-				Button no_butt = (Button) m_custom_dialog.findViewById(R.id.dialog_yes_no_negative_butt);
-				no_butt.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						WGlobals.button_click();
-						m_custom_dialog.dismiss();
-					}
-				});
+		Button no_butt = (Button) m_custom_dialog.findViewById(R.id.dialog_yes_no_negative_butt);
+		no_butt.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				WGlobals.button_click();
+				m_custom_dialog.dismiss();
+			}
+		});
 
-				Button yes_butt = (Button) m_custom_dialog.findViewById(R.id.dialog_yes_no_affirmative_butt);
-				yes_butt.setOnClickListener(listener);
+		Button yes_butt = (Button) m_custom_dialog.findViewById(R.id.dialog_yes_no_affirmative_butt);
+		yes_butt.setOnClickListener(listener);
 
-				m_custom_dialog.show();
-			} // show_yes_no_dialog (title_id, msg_id, listener)
+		m_custom_dialog.show();
+	} // show_yes_no_dialog (title_id, msg_id, listener)
 
 
 	/******************
@@ -414,6 +439,10 @@ public class BaseDialogActivity extends Activity {
 		m_custom_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		m_custom_dialog.setContentView(R.layout.dialog_yes_no);
 
+		// Set the volume buttons to control the volume of our sounds
+		// (music).
+		m_custom_dialog.setVolumeControlStream(AudioManager.STREAM_MUSIC);
+		
 		TextView title_tv = (TextView) m_custom_dialog.findViewById(R.id.dialog_yes_no_title_tv);
 		if (title_id == -1)
 			title_tv.setText("");
@@ -497,6 +526,11 @@ public class BaseDialogActivity extends Activity {
 		m_prog_dialog.setMessage(getString(R.string.loading_str));
 		m_prog_dialog.setIndeterminate(true);
 		m_prog_dialog.setCancelable(false);
+
+		// Set the volume buttons to control the volume of our sounds
+		// (music).
+		m_prog_dialog.setVolumeControlStream(AudioManager.STREAM_MUSIC);
+		
 		m_prog_dialog.show();
 	} // start_progress_dialog()
 

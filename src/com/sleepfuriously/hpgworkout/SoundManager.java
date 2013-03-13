@@ -12,9 +12,18 @@ import java.util.HashMap;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.util.Log;
 
 
 public class SoundManager {
+
+	private static final String tag = "SoundManager";
+
+	/**
+	 * The maximum number of sounds this class can handle.  If
+	 * you don't like it, just change this number.
+	 */
+	public static final int MAX_SOUNDS = 4;
 
 	/** To make sure that there's just one instance of this class */
 	private static SoundManager _instance = null;
@@ -72,7 +81,7 @@ public class SoundManager {
 	 */
 	public static void initSounds(Context context) {
 		mContext = context;
-		mSoundPool = new SoundPool (2,
+		mSoundPool = new SoundPool (MAX_SOUNDS,
 									AudioManager.STREAM_MUSIC,
 									0);
 		mSoundPoolMap = new HashMap<Integer, Integer>();
@@ -105,7 +114,7 @@ public class SoundManager {
 	 */
 	public static void addSound (int index, int SoundID) {
 		mSoundPoolMap.put (index,
-						   mSoundPool.load(mContext, SoundID, 1));
+						mSoundPool.load(mContext, SoundID, 1));
 	} // addSound (index, SoundID)
 
 
@@ -115,14 +124,11 @@ public class SoundManager {
 	 * @param index - The Index of the Sound to be played
 	 */
 	public static void playSound(int index) {
-		float streamVolume = mAudioManager
-				.getStreamVolume(AudioManager.STREAM_MUSIC);
-		streamVolume = streamVolume
-			/ mAudioManager
-				.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+		// There's some weirdness, as the volume of play() requires
+		// fraction of max volume (left & right channels).
+		float streamVolume = (float) get_current_music_volume();
+		streamVolume = streamVolume / get_max_volume();
 
-			// The example from the web would not compile here.
-//		mSoundPool.play (index,
 		mSoundPool.play (mSoundPoolMap.get(index),		// see if this works...
 						streamVolume, streamVolume, 1, 0, 1f);
 	} // playSound
@@ -133,12 +139,9 @@ public class SoundManager {
 	 * @param index - The Index of the Sound to be played
 	 */
 	public static void playLoopedSound(int index) {
-		float streamVolume = mAudioManager
-				.getStreamVolume(AudioManager.STREAM_MUSIC);
-		streamVolume = streamVolume
-			/ mAudioManager
-				.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-			// The example from the web would not compile here.
+		float streamVolume = (float) get_current_music_volume();
+		streamVolume = streamVolume / get_max_volume();
+
 		mSoundPool.play (index,
 						streamVolume, streamVolume, 1, -1, 1f);
 	} // playLoopedSound (index)
@@ -150,8 +153,32 @@ public class SoundManager {
 	 * @param index - index of the sound to be stopped
 	 */
 	public static void stopSound(int index) {
-			mSoundPool.stop(mSoundPoolMap.get(index));
+		mSoundPool.stop(mSoundPoolMap.get(index));
 	}
 
+	/*****************
+	 * Returns the current media volume of the sound system.
+	 * Or -1 on error.
+	 */
+	public static int get_current_music_volume() {
+		if (mAudioManager == null) {
+			Log.e(tag, "mAudioManager is NULL when calling get_volume()! Aborting!");
+			return -1;
+		}
+		return mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+	}
+
+
+	/*****************
+	 * Returns the maximum volume possible for this app.
+	 * Or -1 on error.
+	 */
+	public static int get_max_volume() {
+		if (mAudioManager == null) {
+			Log.e(tag, "mAudioManager is NULL when calling get_volume()! Aborting!");
+			return -1;
+		}
+		return mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+	}
 
 }

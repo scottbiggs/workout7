@@ -63,15 +63,20 @@ public class WelcomeActivity extends BaseDialogActivity
 	//------------------------------
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		Log.v(tag, "entering onCreate()");
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.welcome);
 
 		// Load in the default preferences (but don't
-		// override the user's settings).
+		// override the user's settings).  This is done
+		// once and only once for the very first Activity
+		// the very first time it's run.
 		PreferenceManager.setDefaultValues(this,
 										R.xml.pref,
 										false);	// Prevents overriding user's saved preferences.
+
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.welcome);
+
+
+
 
 		m_start_butt = (Button) findViewById(R.id.welcome_start_butt);
 		m_start_butt.setOnClickListener(this);
