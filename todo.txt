@@ -4,12 +4,11 @@ Take away the global preferences vars.  Make each class access the
 	shared preferences the right way.  This is messy and very
 	spaghetti code.  You could do some static methods to make it
 	easier, maybe?
-	Doesn't work:
-	- MySpinners
+
+Volume doesn't work:
+	- MySpinners - FIXED
 	- changing the date of a workout set
 	- changing the time of a workout set
-	- changing the exercise type
-	- changing the exercise muscle group
 
 Add a special sound for:
 		long-clicks
@@ -19,7 +18,7 @@ Add a special sound for:
 		help
 		adding a new set
 		spinning wheels
-		MySpinner
+		MySpinner - now is a click
 
 Add clicks to Preferences selections (when appropriate).
 

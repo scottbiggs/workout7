@@ -171,6 +171,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -779,7 +780,10 @@ public class MySpinner extends Button
 	 *
 	 * @param	v		This.  Not used.
 	 */
+	@Override
 	public void onClick(View v) {
+		WGlobals.button_click();
+
 		// Build the dialog...
 		AlertDialog.Builder builder =
 			new AlertDialog.Builder(m_context);
@@ -800,7 +804,9 @@ public class MySpinner extends Button
 //		MyDialogClickListener dialog = new MyDialogClickListener();
 //		builder.setSingleChoiceItems(m_aa, m_selection, dialog);
 		builder.setSingleChoiceItems(m_aa, m_selection, new DialogInterface.OnClickListener() {
+			@Override
 			public void onClick(DialogInterface dialog, int which) {
+				WGlobals.button_click();
 
 				if (which == m_user_add_pos) {
 					// Launch the specified Activity and get
@@ -818,6 +824,12 @@ public class MySpinner extends Button
 		});
 
 		m_dialog = builder.create();
+		
+		// Set the volume buttons to control the volume of our sounds
+		// (music).
+		m_dialog.setVolumeControlStream(AudioManager.STREAM_MUSIC);
+
+
 		m_dialog.show();
 
 	} // onClick (v)
