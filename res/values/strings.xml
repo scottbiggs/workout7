@@ -1381,14 +1381,14 @@
 		out forms and fields that I don\'t have time to fool with!)
 	</string>
 	<string name="prefs_nagging_is_on_msg">Nagging is on.
-		\n\n(I like being reminded of things that I may have
-		forgotten to do.)
+		\n\nI like being reminded of things that I may have
+		forgotten to do (default).
 	</string>
 
 	<string name="prefs_sound_key">sound</string>
 	<string name="prefs_sound_title">Play Sounds</string>
 	<string name="prefs_sound_on_msg">Can you hear that\?
-		Yeah, I think this program is trying to make some noises!</string>
+		Yeah, I think this program is trying to make some noises (default)!</string>
 	<string name="prefs_sound_off_msg">Shhhhh, we\'re playing
 		the quiet game now. Don\'t make a sound.</string>
 	<string name="prefs_sound_volume_key">volume</string>
@@ -1397,12 +1397,12 @@
 		sound effects with a slider.</string>
 
 	<string name="prefs_display_key">display</string>
-	<string name="prefs_display_title">Disable Screen Saver</string>
+	<string name="prefs_display_title">Enable Screen Saver</string>
 	<string name="prefs_display_keep_on_msg">The display will
 		stay on as long as this app is activie.</string>
 	<string name="prefs_display_save_screen_msg">While using
 		this app, the screen saver will kick in
-		according to your system settings.</string>
+		according to your system settings (default).</string>
 
 	<string name="prefs_inspector_quickview_key">quickview</string>
 	<string name="prefs_inspector_quickview_title">Brief History</string>
@@ -1434,7 +1434,7 @@
 		I find those number wheels annoying, so they are
 		now gone. Good riddance!
 	</string>
-
+<!--
 	<string name="prefs_wheel_left_key">wheel_left</string>
 	<string name="prefs_wheel_left_title">Number of Wheels</string>
 	<string name="prefs_wheel_left_msg">
@@ -1460,12 +1460,12 @@
 		Enter the number of wheels to the right of the decimal
 		point. Valid numbers are between 0 and 3 (1 is default).
 	</string>
-
+-->
 	<string name="prefs_wheel_width_key">wheel_width</string>
 	<string name="prefs_wheel_width_title">Enable Fat Wheels</string>
 	<string name="prefs_wheel_width_fat">
 		Thin wheels are now displayed. Good for slender fingers and
-		a clean interface.
+		a clean interface (default).
 	</string>
 	<string name="prefs_wheel_width_skinny">
 		Now displaying fat wheels\u2014good for tired or stumpy fingers.

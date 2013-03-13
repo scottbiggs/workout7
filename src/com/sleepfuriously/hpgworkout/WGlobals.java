@@ -157,20 +157,6 @@ public class WGlobals extends Application {
 	public static boolean g_wheel;
 
 	/**
-	 * How many wheels to the left of the decimal point
-	 * to represent a given number.  Can be modified
-	 * via preferences.  Works for both integer and
-	 * float wheels.
-	 */
-	public static int g_wheel_num_left = 4;
-
-	/**
-	 * The number of wheels to the right of a decimal
-	 * point for float wheels.
-	 */
-	public static int g_wheel_num_right = 1;
-
-	/**
 	 * The number of pixels wide for each wheel.  Also
 	 * set via preferences.
 	 */
@@ -225,11 +211,6 @@ public class WGlobals extends Application {
 
 		g_wheel = prefs.getBoolean(activity.getString(R.string.prefs_wheel_key),
 				true);
-		g_wheel_num_left = Integer.parseInt(prefs.getString(activity.getString(R.string.prefs_wheel_left_key),
-															"" + DEFAULT_WHEELS_NUM_LEFT));
-
-		g_wheel_num_right = Integer.parseInt(prefs.getString(activity.getString(R.string.prefs_wheel_right_key),
-															"" + DEFAULT_WHEELS_NUM_RIGHT));
 
 		String width_key = activity.getString(R.string.prefs_wheel_width_key);
 		g_wheel_width_fat = prefs.getBoolean(width_key, false);
