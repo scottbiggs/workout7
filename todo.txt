@@ -1,8 +1,15 @@
 TODO:
 -----------------
-Take away the global preferences.  Make each class access the
+Take away the global preferences vars.  Make each class access the
 	shared preferences the right way.  This is messy and very
-	spaghetti code.
+	spaghetti code.  You could do some static methods to make it
+	easier, maybe?
+	Doesn't work:
+	- MySpinners
+	- changing the date of a workout set
+	- changing the time of a workout set
+	- changing the exercise type
+	- changing the exercise muscle group
 
 Add a special sound for:
 		long-clicks
@@ -13,9 +20,6 @@ Add a special sound for:
 		adding a new set
 		spinning wheels
 		MySpinner
-
-BUG: Cancelling an AddExercise doesn't click (when you go through
-	the dialog and say 'yes').
 
 Add clicks to list selections (GraphSelectionActivity).
 
@@ -207,6 +211,10 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+BUG: Cancelling an AddExercise doesn't click (when you go through
+	the dialog and say 'yes').
+	- fixed
+
 Tabs don't click!
 	- fixed
 

@@ -711,6 +711,7 @@ public class AddExerciseActivity
 					@Override
 					public void onClick(View v) {
 						// Yes, they want to cancel.
+						WGlobals.button_click();
 						setResult(RESULT_CANCELED);
 						dismiss_all_dialogs();
 						finish();
