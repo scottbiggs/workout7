@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Typeface;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -333,20 +334,25 @@ public class EditSetActivity
 		switch (v.getId()) {
 			case R.id.editset_date_label_tv:
 			case R.id.editset_date_data_tv:
-				new DatePickerDialog(this, this,
-									m_set_date.get_year(),
-									m_set_date.get_month(),
-									m_set_date.get_day())
-					.show();
+				DatePickerDialog date_dialog =
+						new DatePickerDialog(this, this,
+											 m_set_date.get_year(),
+											 m_set_date.get_month(),
+											 m_set_date.get_day());
+				// Have the volume work correctly.
+				date_dialog.setVolumeControlStream(AudioManager.STREAM_MUSIC);
+				date_dialog.show();
 				break;
 
 			case R.id.editset_calendar_time_label_tv:
 			case R.id.editset_calendar_time_data_tv:
-				new TimePickerDialog(this, this,
-									m_set_date.get_hour(),
-									m_set_date.get_minutes(),
-									true)
-					.show();
+				TimePickerDialog time_dialog =
+						new TimePickerDialog(this, this,
+											 m_set_date.get_hour(),
+											 m_set_date.get_minutes(),
+											 true);
+				time_dialog.setVolumeControlStream(AudioManager.STREAM_MUSIC);
+				time_dialog.show();
 				break;
 
 			case R.id.editset_reps_label_tv:

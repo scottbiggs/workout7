@@ -5,11 +5,6 @@ Take away the global preferences vars.  Make each class access the
 	spaghetti code.  You could do some static methods to make it
 	easier, maybe?
 
-Volume doesn't work:
-	- MySpinners - FIXED
-	- changing the date of a workout set
-	- changing the time of a workout set
-
 Add a special sound for:
 		long-clicks
 		completing a set
@@ -208,6 +203,11 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Volume doesn't work:
+	- MySpinners - FIXED
+	- changing the date of a workout set - FIXED
+	- changing the time of a workout set - FIXED
+
 Add clicks to list selections (GraphSelectionActivity).
 	- fixed
 
