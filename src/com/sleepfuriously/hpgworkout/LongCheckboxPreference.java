@@ -44,4 +44,15 @@ public class LongCheckboxPreference extends CheckBoxPreference {
 		summary.setMaxLines(8);
 	}
 
+	/* (non-Javadoc)
+	 * @see android.preference.CheckBoxPreference#onClick()
+	 */
+	@Override
+	protected void onClick() {
+		WGlobals.play_short_click();
+		super.onClick();
+	}
+
+	
+	
 }

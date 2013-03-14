@@ -15,8 +15,6 @@ Add a special sound for:
 		spinning wheels
 		MySpinner - now is a click
 
-Add clicks to Preferences selections (when appropriate).
-
 To speed up the Grid, make it just use the data from the
 	onActivityResult() and load JUST THAT EXERCISE.  Be able
 	to leave everything else as it is.
@@ -208,6 +206,9 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Add clicks to Preferences selections (when appropriate).
+	- done
+
 Volume doesn't work:
 	- MySpinners - FIXED
 	- changing the date of a workout set - FIXED
