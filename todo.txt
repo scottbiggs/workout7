@@ -13,7 +13,7 @@ Add a special sound for:
 		help
 		adding a new exercise
 		spinning wheels
-		MySpinner - now is a click
+		MySpinner 				- now is a click
 
 To speed up the Grid, make it just use the data from the
 	onActivityResult() and load JUST THAT EXERCISE.  Be able
@@ -81,9 +81,6 @@ Need to make a preferences screen.
 	* Keep screen on.
 	- done
 
-Try some custom Themes to make things look original.
-	http://developer.android.com/guide/topics/ui/themes.html
-
 Check out: http://android-developers.blogspot.com/2009/02/faster-screen-orientation-change.html
 	This should be applied to the grid screen to make
 	orientation changes much faster.
@@ -110,6 +107,9 @@ Need to remove the HistoryActivity from the project.
 ---------------------------------------------------
 Hmmmmmmmmmmmmmmmmmmmmmm
 ---------------------------------------------------
+Try some custom Themes to make things look original.
+	http://developer.android.com/guide/topics/ui/themes.html
+
 Need a way to indicate <nothing> when entering data for a set.
 	And this should be the default if the last set done doesn't
 	have any data for that aspect.
