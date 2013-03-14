@@ -156,7 +156,7 @@ public class TextActivity
 	//----------------------------
 	@Override
 	public void onClick(View v) {
-		WGlobals.button_click();
+		WGlobals.play_short_click();
 
 		if (v == m_done) {
 			Intent itt = new Intent();

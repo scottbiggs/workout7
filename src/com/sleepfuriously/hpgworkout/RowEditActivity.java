@@ -226,7 +226,7 @@ public class RowEditActivity
 	//-----------------------------
 	@Override
 	public void onClick(View v) {
-		WGlobals.button_click();
+		WGlobals.play_short_click();
 
 		switch (v.getId()) {
 			case R.id.row_edit_ok_butt:
@@ -250,7 +250,7 @@ public class RowEditActivity
 						@Override
 						public void onClick(View v) {
 							// Yes, they want to cancel.
-							WGlobals.button_click();
+							WGlobals.play_short_click();
 
 							setResult(RESULT_CANCELED);
 							dismiss_all_dialogs();
@@ -288,7 +288,7 @@ public class RowEditActivity
 				@Override
 				public void onClick(View v) {
 					// Yes, they want to cancel.
-					WGlobals.button_click();
+					WGlobals.play_short_click();
 
 					setResult(RESULT_CANCELED);
 					dismiss_all_dialogs();
@@ -396,7 +396,7 @@ public class RowEditActivity
 				holder.up.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						WGlobals.button_click();
+						WGlobals.play_short_click();
 
 						ViewHolder holder = (ViewHolder) v.getTag();
 						int pos = holder.pos;
@@ -428,7 +428,7 @@ public class RowEditActivity
 				holder.down.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						WGlobals.button_click();
+						WGlobals.play_short_click();
 
 						ViewHolder holder = (ViewHolder) v.getTag();
 						int pos = holder.pos;

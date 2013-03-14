@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteException;
-import android.graphics.Matrix;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.FloatMath;
@@ -221,7 +220,7 @@ public class GraphActivity
 	public void onClick(View v) {
 		Intent itt;
 
-		WGlobals.button_click();
+		WGlobals.play_short_click();
 
 		// Did they hit the help button?
 		if (v.getId() == R.id.graph_logo) {

@@ -877,7 +877,7 @@ public class EditExerciseActivity
 						@Override
 						public void onClick(View v) {
 							// Yes, they want to cancel.
-							WGlobals.button_click();
+							WGlobals.play_short_click();
 
 							dismiss_all_dialogs();
 							if (ExerciseTabHostActivity.m_dirty)
@@ -903,7 +903,7 @@ public class EditExerciseActivity
 	 */
 	@Override
 	public void onClick(View v) {
-		WGlobals.button_click();
+		WGlobals.play_short_click();
 
 		// Is it a radio button?
 		if (v.getClass() == RadioButton.class) {
@@ -1014,7 +1014,7 @@ public class EditExerciseActivity
 				@Override
 				public void onClick(View v) {
 					// This happens ONLY if they said YES!
-					WGlobals.button_click();
+					WGlobals.play_short_click();
 
 					delete_entry();
 					tabbed_set_result(RESULT_OK);
@@ -1036,6 +1036,8 @@ public class EditExerciseActivity
 	 */
 	@Override
 	public boolean onLongClick(View v) {
+
+		WGlobals.play_long_click();
 
 		// All the Radio Buttons have the same help.
 		if (v.getClass() == RadioButton.class) {

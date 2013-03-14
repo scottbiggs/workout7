@@ -266,7 +266,7 @@ public class GridActivity extends BaseDialogActivity
 		}
 
 		else {
-			WGlobals.button_click();
+			WGlobals.play_short_click();
 
 			switch (v.getId()) {
 				case R.id.grid_add_exercise_button:
@@ -299,6 +299,8 @@ public class GridActivity extends BaseDialogActivity
 	@Override
 	public boolean onLongClick(View v) {
 		Intent itt;	// For possible new Activities.
+
+		WGlobals.play_long_click();
 
 		int id = v.getId();
 
@@ -381,7 +383,7 @@ public class GridActivity extends BaseDialogActivity
 		// Is this a row header (and therefore a click on an exercise)
 		// or a grid cell (and therefore call up the Inspector)?
 		if (id % 2 == 1) {
-			WGlobals.button_click();
+			WGlobals.play_short_click();
 
 			// Start a loading dialog
 			start_progress_dialog(R.string.loading_str);
@@ -403,7 +405,7 @@ public class GridActivity extends BaseDialogActivity
 				return;		// clicked in empty space?
 			}
 
-			WGlobals.button_click();
+			WGlobals.play_short_click();
 
 			if (ge.m_count < 1) {
 				Log.w(tag, "start_exercise_tabs() could not get an ID for the grid element!");

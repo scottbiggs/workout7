@@ -194,7 +194,7 @@ public class BaseDialogActivity extends Activity {
 		ok_butt.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				WGlobals.button_click();
+				WGlobals.play_short_click();
 				m_custom_dialog.dismiss();
 			}
 		});
@@ -230,7 +230,7 @@ public class BaseDialogActivity extends Activity {
 		ok_butt.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				WGlobals.button_click();
+				WGlobals.play_short_click();
 				m_custom_dialog.dismiss();
 			}
 		});
@@ -285,7 +285,7 @@ public class BaseDialogActivity extends Activity {
 		ok_butt.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				WGlobals.button_click();
+				WGlobals.play_short_click();
 				m_custom_dialog.dismiss();
 			}
 		});
@@ -340,7 +340,7 @@ public class BaseDialogActivity extends Activity {
 		no_butt.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				WGlobals.button_click();
+				WGlobals.play_short_click();
 				m_custom_dialog.dismiss();
 			}
 		});
@@ -392,7 +392,7 @@ public class BaseDialogActivity extends Activity {
 		no_butt.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				WGlobals.button_click();
+				WGlobals.play_short_click();
 				m_custom_dialog.dismiss();
 			}
 		});
@@ -463,7 +463,7 @@ public class BaseDialogActivity extends Activity {
 		no_butt.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				WGlobals.button_click();
+				WGlobals.play_short_click();
 				m_custom_dialog.dismiss();
 			}
 		});

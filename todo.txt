@@ -6,12 +6,12 @@ Take away the global preferences vars.  Make each class access the
 	easier, maybe?
 
 Add a special sound for:
-		long-clicks
-		completing a set
+		long-clicks				- longclick		- done
+		completing a set			- wineclink		- done
 		deleting a set
 		deleting an exercise
 		help
-		adding a new set
+		adding a new exercise
 		spinning wheels
 		MySpinner - now is a click
 
@@ -149,6 +149,11 @@ In the graphs, instead of horizontal lines, divide up into
 ---------------------------------------------------
 TABLED (for later versions)
 ---------------------------------------------------
+Make custom DatePicker and TimePicker to match the widgets
+	of this program.  And while we're at it, add sound to
+	these, too.
+BUG: Clicks don't happen in the Time or Date dialogs!
+
 Click on a date, and get a summary of that day.  You also
 	get the option to edit those sets and even delete them.
 	Long-click to delete that day (with confirmation, of

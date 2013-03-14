@@ -109,6 +109,8 @@ public class WelcomeActivity extends BaseDialogActivity
 		SoundManager.getInstance();
 		SoundManager.initSounds(this);
 		SoundManager.addSound(WGlobals.SOUND_CLICK, R.raw.button_click);
+		SoundManager.addSound(WGlobals.SOUND_LONG_CLICK, R.raw.longclick);
+		SoundManager.addSound(WGlobals.SOUND_COMPLETE, R.raw.wineclink);
 
 		// Get the DatabaseHelper going.  Since this is the
 		// first Activity, this should take care of the life
@@ -138,15 +140,14 @@ public class WelcomeActivity extends BaseDialogActivity
 	public void onClick(View v) {
 		Intent itt;
 
+		WGlobals.play_short_click();
 		switch (v.getId()) {
 			case R.id.welcome_start_butt:
-				WGlobals.button_click();
 				itt = new Intent (this, GridActivity.class);
 				startActivity (itt);
 				break;
 
 			case R.id.welcome_settings_butt:
-				WGlobals.button_click();
 				itt = new Intent (this, PrefsActivity.class);
 				startActivityForResult(itt, WGlobals.PREFSACTIVITY);
 				break;
@@ -155,19 +156,16 @@ public class WelcomeActivity extends BaseDialogActivity
 //				break;
 
 			case R.id.welcome_graph_butt:
-				WGlobals.button_click();
 				itt = new Intent (this, GraphSelectorActivity.class);
 				startActivity(itt);
 				break;
 
 			case R.id.welcome_exit_butt:
-				WGlobals.button_click();
 				finish();
 				break;
 
 			case R.id.welcome_help_butt:
 			case R.id.welcome_logo_id:
-				WGlobals.button_click();
 				show_help_dialog(R.string.welcome_help_help_title,
 						R.string.welcome_help_help_msg);
 				break;
@@ -183,6 +181,7 @@ public class WelcomeActivity extends BaseDialogActivity
 	//------------------------------
 	@Override
 	public boolean onLongClick(View v) {
+		WGlobals.play_long_click();
 		switch (v.getId()) {
 			case R.id.welcome_start_butt:
 				show_help_dialog(R.string.welcome_start_help_title, R.string.welcome_start_help_msg);

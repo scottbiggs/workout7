@@ -57,7 +57,7 @@ public class AddTimeItemActivity extends BaseDialogActivity
 	 */
 	@Override
 	public void onClick(View v) {
-		WGlobals.button_click();
+		WGlobals.play_short_click();
 
 		if (v == m_ok) {		// Clicked the ok button. Save and exit.
 			Intent itt = getIntent();
@@ -80,6 +80,7 @@ public class AddTimeItemActivity extends BaseDialogActivity
 	//-----------------------------
 	@Override
 	public boolean onLongClick(View v) {
+		WGlobals.play_long_click();
 		if (v == m_time_et) {
 			show_help_dialog(R.string.add_time_item_et_help_title,
 						R.string.add_time_item_et_help_msg);

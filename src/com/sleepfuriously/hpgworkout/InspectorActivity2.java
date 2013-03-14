@@ -253,6 +253,7 @@ public class InspectorActivity2
 		// Did they long-click one of the displayed exercise
 		// sets?
 		if (v.getClass() == LinearLayout.class) {
+			WGlobals.play_long_click();
 			itt = new Intent (this, EditSetActivity.class);
 			itt.putExtra(EditSetActivity.ID_KEY, v.getId());
 			startActivityForResult(itt, WGlobals.EDITSETACTIVITY);

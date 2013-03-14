@@ -43,7 +43,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -287,7 +286,7 @@ public class GraphOptionsActivity
 	 */
 	@Override
 	public void onClick(View v) {
-		WGlobals.button_click();
+		WGlobals.play_short_click();
 
 		if (v == m_done) {
 			if (!m_dirty) {	// didn't do anything (this shouldn't be possible!)
@@ -354,6 +353,8 @@ public class GraphOptionsActivity
 	 */
 	@Override
 	public boolean onLongClick(View v) {
+		WGlobals.play_long_click();
+
 		if (v == m_with_reps_myspin) {
 			show_help_dialog(R.string.graph_options_with_help_title,
 							R.string.graph_options_with_help_msg);

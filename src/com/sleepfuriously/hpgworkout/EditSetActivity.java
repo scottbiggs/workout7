@@ -329,7 +329,7 @@ public class EditSetActivity
 	//-------------------------
 	@Override
 	public void onClick(View v) {
-		WGlobals.button_click();
+		WGlobals.play_short_click();
 
 		switch (v.getId()) {
 			case R.id.editset_date_label_tv:
@@ -429,7 +429,7 @@ public class EditSetActivity
 								@Override
 								public void onClick(View v) {
 									// YES, they want to delete it!
-									WGlobals.button_click();
+									WGlobals.play_short_click();
 									delete_set();
 									setResult(RESULT_OK);
 									dismiss_all_dialogs();
@@ -461,7 +461,7 @@ public class EditSetActivity
 						@Override
 						public void onClick(View v) {
 							// Yes, they want to cancel.
-							WGlobals.button_click();
+							WGlobals.play_short_click();
 							setResult(RESULT_CANCELED);
 							dismiss_all_dialogs();
 							finish();

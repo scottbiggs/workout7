@@ -218,7 +218,7 @@ public class NumberActivity
 	public void onClick(View v) {
 		int id = v.getId();
 
-		WGlobals.button_click();
+		WGlobals.play_short_click();
 
 		switch (id) {
 			case R.id.enter_a_number_ok_butt:
@@ -252,7 +252,7 @@ public class NumberActivity
 							@Override
 							public void onClick(View v) {
 								// Yes, cancel!
-								WGlobals.button_click();
+								WGlobals.play_short_click();
 								setResult(RESULT_CANCELED);
 								dismiss_all_dialogs();
 								finish();

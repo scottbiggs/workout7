@@ -209,7 +209,7 @@ public class AddSetActivity
 		m_ok_rb.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				WGlobals.button_click();
+				WGlobals.play_short_click();
 
 				m_ok_rb.setChecked(true);
 				m_plus_rb.setChecked(false);
@@ -223,7 +223,7 @@ public class AddSetActivity
 		m_plus_rb.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				WGlobals.button_click();
+				WGlobals.play_short_click();
 
 				m_ok_rb.setChecked(false);
 				m_plus_rb.setChecked(true);
@@ -237,7 +237,7 @@ public class AddSetActivity
 		m_minus_rb.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				WGlobals.button_click();
+				WGlobals.play_short_click();
 
 				m_ok_rb.setChecked(false);
 				m_plus_rb.setChecked(false);
@@ -251,7 +251,7 @@ public class AddSetActivity
 		m_x_rb.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				WGlobals.button_click();
+				WGlobals.play_short_click();
 
 				m_ok_rb.setChecked(false);
 				m_plus_rb.setChecked(false);
@@ -328,7 +328,7 @@ public class AddSetActivity
 		m_ok_rb.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				WGlobals.button_click();
+				WGlobals.play_short_click();
 
 				m_ok_rb.setChecked(true);
 				m_plus_rb.setChecked(false);
@@ -342,7 +342,7 @@ public class AddSetActivity
 		m_plus_rb.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				WGlobals.button_click();
+				WGlobals.play_short_click();
 
 				m_ok_rb.setChecked(false);
 				m_plus_rb.setChecked(true);
@@ -356,7 +356,7 @@ public class AddSetActivity
 		m_minus_rb.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				WGlobals.button_click();
+				WGlobals.play_short_click();
 
 				m_ok_rb.setChecked(false);
 				m_plus_rb.setChecked(false);
@@ -370,7 +370,7 @@ public class AddSetActivity
 		m_x_rb.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				WGlobals.button_click();
+				WGlobals.play_short_click();
 
 				m_ok_rb.setChecked(false);
 				m_plus_rb.setChecked(false);
@@ -519,7 +519,7 @@ public class AddSetActivity
 	//-----------------------------------
 	@Override
 	public void onClick(View v) {
-		WGlobals.button_click();
+		WGlobals.play_short_click();
 
 		if (v == m_done) {
 			test_to_save();
@@ -535,6 +535,8 @@ public class AddSetActivity
 	//-----------------------------------
 	@Override
 	public boolean onLongClick(View v) {
+		WGlobals.play_long_click();
+
 		if (v == m_reps_et) {
 			show_help_dialog (R.string.aset_reps_help_title,
 					R.string.aset_reps_help_msg);
@@ -1177,11 +1179,15 @@ public class AddSetActivity
 	 * Displays a nice toast that both informs the user
 	 * that they entered a set and encourages them.
 	 *
+	 * Also plays a nice sound.
+	 *
 	 * @param name	The name of the exercise they completed.
 	 */
 	private void entered_set_msg (String name) {
 		String[] args = {name};
 		int msg_id = 0;
+
+		WGlobals.play_completion_sound();
 
 		// What message we use depends on the condition.
 		if (m_ok_rb.isChecked()) {
@@ -1442,7 +1448,7 @@ public class AddSetActivity
 						new View.OnClickListener() {
 							@Override
 							public void onClick(View v) {
-								WGlobals.button_click();
+								WGlobals.play_short_click();
 								save();
 								dismiss_all_dialogs();
 							}
@@ -1589,7 +1595,7 @@ public class AddSetActivity
 				@Override
 				public void onClick(View v) {
 					// They said yes, so
-					WGlobals.button_click();
+					WGlobals.play_short_click();
 					save();
 					dismiss_all_dialogs();
 				}

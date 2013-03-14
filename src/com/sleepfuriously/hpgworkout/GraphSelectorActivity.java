@@ -81,7 +81,7 @@ public class GraphSelectorActivity
 	//----------------------------
 	@Override
 	public void onClick(View v) {
-		WGlobals.button_click();
+		WGlobals.play_short_click();
 		if (v == m_help) {
 			show_help_dialog(R.string.graph_selector_help_title,
 					R.string.graph_selector_help_msg);
@@ -97,7 +97,7 @@ public class GraphSelectorActivity
 	public void onItemClick(AdapterView<?> parent, View v,
 							int pos, long id) {
 
-		WGlobals.button_click();
+		WGlobals.play_short_click();
 
 		// Finding the name they clicked on.  This seems oddly tricky.
 		// Because views are recycled, getChildAt() returns the position

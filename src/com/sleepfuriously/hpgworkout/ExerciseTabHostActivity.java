@@ -263,7 +263,7 @@ public class ExerciseTabHostActivity
 	//--------------------------------
 	@Override
 	public void onClick(View v) {
-		WGlobals.button_click();
+		WGlobals.play_short_click();
 
 		if (v == m_help) {
 			int title = -1, msg = -1;
@@ -339,7 +339,7 @@ public class ExerciseTabHostActivity
 	//
 	@Override
 	public void onTabChanged(String tabId) {
-		WGlobals.button_click();
+		WGlobals.play_short_click();
 		int tab = getTabHost().getCurrentTab();
 //		Log.v(tag, "onTabChanged().  current tab = " + tab);
 //		Log.v(tag, "onTabChanged().  tabId = " + tabId);
@@ -376,7 +376,7 @@ public class ExerciseTabHostActivity
 		ok_butt.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				WGlobals.button_click();
+				WGlobals.play_short_click();
 				m_dialog.dismiss();
 				m_dialog = null;		// Allows garbage collection
 			}

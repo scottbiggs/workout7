@@ -782,7 +782,7 @@ public class MySpinner extends Button
 	 */
 	@Override
 	public void onClick(View v) {
-		WGlobals.button_click();
+		WGlobals.play_short_click();
 
 		// Build the dialog...
 		AlertDialog.Builder builder =
@@ -806,7 +806,7 @@ public class MySpinner extends Button
 		builder.setSingleChoiceItems(m_aa, m_selection, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				WGlobals.button_click();
+				WGlobals.play_short_click();
 
 				if (which == m_user_add_pos) {
 					// Launch the specified Activity and get

@@ -113,7 +113,9 @@ public class WGlobals extends Application {
 	 * Defines the indices (handles) for the various sounds.
 	 */
 	public static final int
-		SOUND_CLICK = 1;
+		SOUND_CLICK = 1,
+		SOUND_LONG_CLICK = 2,
+		SOUND_COMPLETE = 3;
 
 
 	//----------------------------------
@@ -307,10 +309,34 @@ public class WGlobals extends Application {
 	 * Plays a click sound.  But only if the user's preferences
 	 * have sound turned on.
 	 */
-	public static void button_click() {
+	public static void play_short_click() {
 		if (g_sound) {
 			SoundManager.playSound(SOUND_CLICK);
 		}
 	} // button_click()
+
+	/******************
+	 * Plays a sound for when the user long-clicks.
+	 * But only if the user's preferences
+	 * have sound turned on.
+	 */
+	public static void play_long_click() {
+		if (g_sound) {
+			SoundManager.playSound(SOUND_LONG_CLICK);
+		}
+	} // button_click()
+
+	/******************
+	 * Plays a nice sound when the user does something good.
+	 * But only if the user's preferences
+	 * have sound turned on.
+	 */
+	public static void play_completion_sound() {
+		if (g_sound) {
+			SoundManager.playSound(SOUND_COMPLETE);
+		}
+	} // button_click()
+
+
 
 }

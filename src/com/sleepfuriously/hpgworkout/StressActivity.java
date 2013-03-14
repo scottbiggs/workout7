@@ -150,7 +150,7 @@ public class StressActivity
 	//----------------------------
 	@Override
 	public void onClick(View v) {
-		WGlobals.button_click();
+		WGlobals.play_short_click();
 
 		if (v == m_ok_table) {
 			// Only do something if this is a new button.

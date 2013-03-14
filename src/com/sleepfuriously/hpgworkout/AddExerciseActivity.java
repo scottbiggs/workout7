@@ -620,7 +620,7 @@ public class AddExerciseActivity
 				@Override
 				public void onClick(View v) {
 					// Yes, they want to cancel.
-					WGlobals.button_click();
+					WGlobals.play_short_click();
 					setResult(RESULT_CANCELED);
 					dismiss_all_dialogs();
 					finish();
@@ -638,7 +638,7 @@ public class AddExerciseActivity
 	 */
 	@Override
 	public void onClick(View v) {
-		WGlobals.button_click();
+		WGlobals.play_short_click();
 
 		// Is it a radio button?
 		if (v.getClass() == RadioButton.class) {
@@ -711,7 +711,7 @@ public class AddExerciseActivity
 					@Override
 					public void onClick(View v) {
 						// Yes, they want to cancel.
-						WGlobals.button_click();
+						WGlobals.play_short_click();
 						setResult(RESULT_CANCELED);
 						dismiss_all_dialogs();
 						finish();
@@ -740,6 +740,7 @@ public class AddExerciseActivity
 	 */
 	@Override
 	public boolean onLongClick(View v) {
+		WGlobals.play_long_click();
 
 		// All the Radio Buttons have the same help.
 		if (v.getClass() == RadioButton.class) {
@@ -810,7 +811,7 @@ public class AddExerciseActivity
 					R.string.addexer_ok_msg);
 
 		return true;
-	}
+	} // onLongClick(v)
 
 
 	/*********************
