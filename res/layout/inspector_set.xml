@@ -38,31 +38,16 @@
 		android:paddingRight="8dp"
 		android:paddingTop="5dp" >
 
-		<LinearLayout
-			android:layout_width="fill_parent"
+		<TextView
+			android:id="@+id/inspector_set_time_tv"
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:orientation="horizontal"
-			>
+			android:layout_marginBottom="5dp"
+			android:layout_marginLeft="12dp"
+			android:text="@string/inspector_set_time_error"
+			style="@style/white_text_small"
+			android:textColor="@color/ivory" />
 
-			<TextView
-				android:id="@+id/inspector_set_title_tv"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/inspector_set_title"
-				style="@style/white_text_medium"
-				android:textColor="@color/ivory" />
-
-			<TextView
-				android:id="@+id/inspector_set_time_tv"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_marginBottom="5dp"
-				android:layout_marginLeft="12dp"
-				android:text="@string/inspector_set_time_error"
-				style="@style/white_text_small"
-				android:textColor="@color/ivory" />
-
-		</LinearLayout>
 
 		<LinearLayout
 			android:id="@+id/inspector_set_reps_ll"
@@ -381,6 +366,7 @@
 		</LinearLayout>
 
 		<View
+			android:id="@+id/inspector_set_notes_bar"
 			android:layout_width="fill_parent"
 			android:layout_height="1dp"
 			android:layout_marginBottom="8dp"

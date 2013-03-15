@@ -12,6 +12,7 @@ import java.text.DecimalFormat;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Typeface;
@@ -24,6 +25,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnLongClickListener;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -52,7 +54,17 @@ public class InspectorActivity2
 
 	LinearLayout m_main_ll;
 
+	/** The ScrollView which holds all the workout sets. */
 	ScrollView m_sv;
+
+	/**
+	 * If we're in landscape mode, this is used instead of
+	 * m_sv.  Otherwise, this is null.
+	 */
+//	HorizontalScrollView m_hsv = null;
+
+	/** Tells if we're in landscape mode or not. */
+	private boolean m_landscape = false;
 
 	TextView m_desc_tv;
 
@@ -124,6 +136,14 @@ public class InspectorActivity2
 //		Log.v(tag, "entering onCreate()");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.inspector);
+
+		// Are we in landscape mode?
+		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			m_landscape = true;
+		}
+		else {
+			m_landscape = false;
+		}
 
 		// Load in our preferences.
 		SharedPreferences prefs =
@@ -319,39 +339,69 @@ public class InspectorActivity2
 		s_id = id;
 
 		// Set the scroll to the right value.
-		m_sv = (ScrollView) findViewById(R.id.inspector_sv);
+//		if (m_landscape) {
+//			m_hsv = (HorizontalScrollView) findViewById(R.id.inspector_sv);
+//		}
+//		else {
+			m_sv = (ScrollView) findViewById(R.id.inspector_sv);
+//		}
 
 		// For the times we need to scroll to a given child of the
 		// scrollview.
 		if (id == -1) {
-			m_sv.scrollTo(0, 0);		// Go to the top.
+//			if (m_landscape) {
+//				m_hsv.scrollTo(0, 0);	// Go to the left.
+//			}
+//			else {
+				m_sv.scrollTo(0, 0);		// Go to the top.
+//			}
 			return;
 		}
 
 		// Make it scroll, but first we have to wait for
 		// everything to be set up.
-		m_sv.post(new Runnable() {
-			public void run() {
-				// Now we can figure out heights.  Go through the
-				// children, measuring them until we find the right
-				// id.
-				int height_of_views = 0;
+//		if (m_landscape) {
+//			m_hsv.post(new Runnable() {
+//				@Override
+//				public void run() {
+//					// Now we can figure out heights.  Go through the
+//					// children, measuring them until we find the right
+//					// id.
+//					int width_of_views = 0;
+//
+//					for (int i = 0; i < m_main_ll.getChildCount(); i++) {
+//						View child = m_main_ll.getChildAt(i);
+//						if (s_id == child.getId()) {
+//							break;
+//						}
+//						width_of_views += child.getWidth();
+//					}
+//
+//					m_hsv.scrollTo(width_of_views, 0);
+//				}
+//			});
+//		}
+//		else {
+			m_sv.post(new Runnable() {
+				@Override
+				public void run() {
+					// Now we can figure out heights.  Go through the
+					// children, measuring them until we find the right
+					// id.
+					int height_of_views = 0;
 
-//				Log.v (tag, "Starting to scroll " + m_main_ll.getChildCount() + " child views.");
-
-				for (int i = 0; i < m_main_ll.getChildCount(); i++) {
-					View child = m_main_ll.getChildAt(i);
-					if (s_id == child.getId()) {
-						break;
+					for (int i = 0; i < m_main_ll.getChildCount(); i++) {
+						View child = m_main_ll.getChildAt(i);
+						if (s_id == child.getId()) {
+							break;
+						}
+						height_of_views += child.getHeight();
 					}
-					height_of_views += child.getHeight();
-//					Log.v(tag, "  - added " + child.getHeight() + " to scroll amount...");
-				}
 
-//				Log.v(tag, "Scrolling: " + height_of_views);
-				m_sv.scrollTo(0, height_of_views);
-			}
-		});
+					m_sv.scrollTo(0, height_of_views);
+				}
+			});
+//		}
 	} // scroll_to_child (id)
 
 
@@ -444,8 +494,8 @@ public class InspectorActivity2
 
 		// todo:		USE THIS!!!
 		// Not using the title currently.
-		TextView title_tv = (TextView) set_ll.findViewById(R.id.inspector_set_title_tv);
-		title_tv.setText("");
+//		TextView title_tv = (TextView) set_ll.findViewById(R.id.inspector_set_title_tv);
+//		title_tv.setText("");
 
 		// The date and time of this set.
 		setup_date (layout_values, set_ll);
@@ -862,10 +912,19 @@ public class InspectorActivity2
 	 */
 	private void setup_notes (SetLayout vals,
 							LinearLayout set_ll) {
+		TextView notes_tv = (TextView) set_ll.findViewById(R.id.inspector_set_notes_tv);
+
 		if ((vals.data.notes != null) && (vals.data.notes.length() > 0)) {
 			// There's a note!  Display it.
-			TextView notes_tv = (TextView) set_ll.findViewById(R.id.inspector_set_notes_tv);
 			notes_tv.setText(vals.data.notes);
+		}
+		else {
+			View bar = set_ll.findViewById(R.id.inspector_set_notes_bar);
+			// No notes, so display nothing.
+			bar.setVisibility(View.GONE);
+			TextView notes_label_tv = (TextView) set_ll.findViewById(R.id.inspector_set_notes_label_tv);
+			notes_label_tv.setVisibility(View.GONE);
+			notes_tv.setVisibility(View.GONE);
 		}
 	} // notes
 
