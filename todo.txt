@@ -1,5 +1,13 @@
 TODO:
 -----------------
+Minor Bug: The Inspector scrolls to the LAST exercise of that
+	day when in Chronological Order.  I think the first day
+	makes more sense. AND, when doing Most Recent First, it
+	scrolls to the EARLIEST of that day (not the most recent).
+	Looks like I got these two confused with one-another.
+
+BUG: Crashes when changing the orientation when at the tabs!!!
+
 Take away the global preferences vars.  Make each class access the
 	shared preferences the right way.  This is messy and very
 	spaghetti code.  You could do some static methods to make it
@@ -100,8 +108,6 @@ Fix the strings: there are lots of redundant strings for add
 	and edit screens.
 
 Make sure that all the drawables are in the correct directories.
-
-Need to remove the HistoryActivity from the project.
 
 
 ---------------------------------------------------
@@ -206,6 +212,9 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Need to remove the HistoryActivity from the project.
+	- done
+
 Add clicks to Preferences selections (when appropriate).
 	- done
 

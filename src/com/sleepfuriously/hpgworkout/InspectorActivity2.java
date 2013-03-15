@@ -15,6 +15,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -61,7 +63,7 @@ public class InspectorActivity2
 	 * If we're in landscape mode, this is used instead of
 	 * m_sv.  Otherwise, this is null.
 	 */
-//	HorizontalScrollView m_hsv = null;
+	HorizontalScrollView m_hsv = null;
 
 	/** Tells if we're in landscape mode or not. */
 	private boolean m_landscape = false;
@@ -264,7 +266,6 @@ public class InspectorActivity2
 	}
 
 
-
 	//------------------------------
 	@Override
 	public boolean onLongClick(View v) {
@@ -294,8 +295,6 @@ public class InspectorActivity2
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode,
 									Intent data) {
-//		Log.i(tag, "onActivityResult()");
-
 		if (resultCode == RESULT_CANCELED) {
 			return;	// don't do anything
 		}
@@ -339,49 +338,49 @@ public class InspectorActivity2
 		s_id = id;
 
 		// Set the scroll to the right value.
-//		if (m_landscape) {
-//			m_hsv = (HorizontalScrollView) findViewById(R.id.inspector_sv);
-//		}
-//		else {
+		if (m_landscape) {
+			m_hsv = (HorizontalScrollView) findViewById(R.id.inspector_sv);
+		}
+		else {
 			m_sv = (ScrollView) findViewById(R.id.inspector_sv);
-//		}
+		}
 
 		// For the times we need to scroll to a given child of the
 		// scrollview.
 		if (id == -1) {
-//			if (m_landscape) {
-//				m_hsv.scrollTo(0, 0);	// Go to the left.
-//			}
-//			else {
+			if (m_landscape) {
+				m_hsv.scrollTo(0, 0);	// Go to the left.
+			}
+			else {
 				m_sv.scrollTo(0, 0);		// Go to the top.
-//			}
+			}
 			return;
 		}
 
 		// Make it scroll, but first we have to wait for
 		// everything to be set up.
-//		if (m_landscape) {
-//			m_hsv.post(new Runnable() {
-//				@Override
-//				public void run() {
-//					// Now we can figure out heights.  Go through the
-//					// children, measuring them until we find the right
-//					// id.
-//					int width_of_views = 0;
-//
-//					for (int i = 0; i < m_main_ll.getChildCount(); i++) {
-//						View child = m_main_ll.getChildAt(i);
-//						if (s_id == child.getId()) {
-//							break;
-//						}
-//						width_of_views += child.getWidth();
-//					}
-//
-//					m_hsv.scrollTo(width_of_views, 0);
-//				}
-//			});
-//		}
-//		else {
+		if (m_landscape) {
+			m_hsv.post(new Runnable() {
+				@Override
+				public void run() {
+					// Now we can figure out heights.  Go through the
+					// children, measuring them until we find the right
+					// id.
+					int width_of_views = 0;
+
+					for (int i = 0; i < m_main_ll.getChildCount(); i++) {
+						View child = m_main_ll.getChildAt(i);
+						if (s_id == child.getId()) {
+							break;
+						}
+						width_of_views += child.getWidth();
+					}
+
+					m_hsv.scrollTo(width_of_views, 0);
+				}
+			});
+		}
+		else {
 			m_sv.post(new Runnable() {
 				@Override
 				public void run() {
@@ -401,7 +400,7 @@ public class InspectorActivity2
 					m_sv.scrollTo(0, height_of_views);
 				}
 			});
-//		}
+		}
 	} // scroll_to_child (id)
 
 
@@ -492,10 +491,6 @@ public class InspectorActivity2
 		MyCalendar cal = new MyCalendar(layout_values.data.millis);
 		date_tv.setText(cal.print_date(this));
 
-		// todo:		USE THIS!!!
-		// Not using the title currently.
-//		TextView title_tv = (TextView) set_ll.findViewById(R.id.inspector_set_title_tv);
-//		title_tv.setText("");
 
 		// The date and time of this set.
 		setup_date (layout_values, set_ll);
@@ -526,8 +521,11 @@ public class InspectorActivity2
 		setup_notes (layout_values, set_ll);
 
 		// Make this respond to long clicks.  Use the set ID.
-		set_ll.setId(layout_values.data._id);
-		set_ll.setOnLongClickListener(this);
+		LinearLayout clickable_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_ll);
+//		set_ll.setId(layout_values.data._id);
+//		set_ll.setOnLongClickListener(this);
+		clickable_ll.setId(layout_values.data._id);
+		clickable_ll.setOnLongClickListener(this);
 
 
 		// Lastly we add this layout to m_main_ll.  But first,
@@ -564,7 +562,6 @@ public class InspectorActivity2
 							R.string.inspector_oldest_first_msg :
 							R.string.inspector_newest_first_msg);
 	} // init_ui()
-
 
 
 	/********************
