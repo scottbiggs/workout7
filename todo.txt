@@ -1,5 +1,8 @@
 TODO:
 -----------------
+Make sure that the buttons at the bottom in landscape mode
+	aren't too big!  See land/addexercise.xml for an example.
+
 Minor Bug: The Inspector scrolls to the LAST exercise of that
 	day when in Chronological Order.  I think the first day
 	makes more sense. AND, when doing Most Recent First, it
@@ -212,6 +215,11 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Issue:  When I cancel an Add Exercise, it reloads the Grid!
+	- killed.  This only happens when the orientation is
+	changed while doing Add Exercise.  The grid needs to reload
+	to support the orientation change.  This is normal behavior.
+
 Need to remove the HistoryActivity from the project.
 	- done
 

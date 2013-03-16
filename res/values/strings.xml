@@ -275,7 +275,7 @@
 	<string name="addexer_title_add_msg">Add a New Exercise</string>
 
 	<!-- The TextView label preceeds name edittext widget. -->
-	<string name="addexer_name_label">new name</string>
+	<string name="addexer_name_label">name</string>
 	<string name="addexer_name_hint">exercise name</string>
 
 	<!-- These are for the AlertDialog that comes up as a ContextMenu -->
@@ -288,6 +288,7 @@
 
 	<!-- The Type label and spinner -->
 	<string name="addexer_type_label">exercise type</string>
+	<string name="addexer_type_label_landscape">exercise\ntype</string>
 	<string name="addexer_type_help_title">Exercise Type</string>
 	<string name="addexer_type_help_msg">Exercises work your
 		body in different ways. Aerobic workouts are for
@@ -303,6 +304,7 @@
 
 	<!-- For the Muscle Group -->
 	<string name="addexer_musclegroup_label">muscle group</string>
+	<string name="addexer_musclegroup_label_landscape">muscle\ngroup</string>
 	<string name="addexer_musclegroup_str">Which group of muscles\?</string>
 	<string name="addexer_musclegroup_help_title">Muscle Group</string>
 	<string name="addexer_musclegroup_help_msg">Tell this program

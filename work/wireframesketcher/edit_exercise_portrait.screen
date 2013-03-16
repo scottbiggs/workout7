@@ -10,24 +10,21 @@
     <screen xsi:type="model:WidgetGroup" href="assets/Android.screen#Status Bar"/>
   </widgets>
   <widgets xsi:type="model:VScrollbar" id="5" x="341" y="161" height="428" measuredWidth="17" measuredHeight="428"/>
-  <widgets xsi:type="model:Button" id="7" x="38" y="588" width="125" text="save" measuredWidth="125" measuredHeight="36" background="#666666">
-    <font size="22"/>
+  <widgets xsi:type="model:Button" id="7" x="38" y="588" width="125" text="cancel" measuredWidth="125" measuredHeight="36" background="#666666">
+    <font size="22pt"/>
   </widgets>
-  <widgets xsi:type="model:Button" id="8" x="232" y="588" width="126" text="cancel" measuredWidth="126" measuredHeight="36" background="#666666">
-    <font size="22"/>
-  </widgets>
-  <widgets xsi:type="model:Button" id="9" x="174" y="588" width="49" text="?" measuredWidth="49" measuredHeight="36" background="#666666">
-    <font size="22"/>
+  <widgets xsi:type="model:Button" id="8" x="232" y="588" width="126" text="save" measuredWidth="126" measuredHeight="36" background="#666666">
+    <font size="22pt"/>
   </widgets>
   <widgets xsi:type="model:TextField" id="10" x="198" y="168" width="144" text="jogging" measuredWidth="144" measuredHeight="29">
-    <font size="18" bold="true"/>
+    <font size="18pt" bold="true"/>
   </widgets>
   <widgets xsi:type="model:Label" id="11" x="61" y="168" text="exercise name" measuredWidth="138" measuredHeight="29" foreground="#ffffff">
-    <font size="18" bold="true"/>
+    <font size="18pt" bold="true"/>
   </widgets>
   <widgets xsi:type="model:Panel" id="14" x="38" y="116" width="320" height="46" measuredWidth="320" measuredHeight="46" background="#000000" alpha="192" foreground="#ffffff" border="none"/>
   <widgets xsi:type="model:Label" id="6" x="38" y="116" width="320" text="Edit Exercise" measuredWidth="320" measuredHeight="46" textAlignment="Center" foreground="#ffffff">
-    <font size="32"/>
+    <font size="32pt"/>
   </widgets>
   <widgets xsi:type="model:RadioButton" id="15" x="48" y="320" measuredWidth="20" measuredHeight="26">
     <font/>
@@ -102,5 +99,5 @@
   <vRuler>
     <guides position="-42"/>
   </vRuler>
-  <font/>
+  <font size="16px"/>
 </model:Screen>

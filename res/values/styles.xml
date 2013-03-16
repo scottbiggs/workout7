@@ -29,12 +29,32 @@
 	<!-- Text Styles										-->
 	<!-- =============================================== -->
 
-	<!-- Note: shouldn't these be size sp instead of dp? -->
+	<style
+		name="white_text_tiny"
+		parent="@android:style/TextAppearance">
+		<item name="android:textColor">@color/ivory</item>
+		<item name="android:textSize">12sp</item>
+	</style>
+
+	<style
+		name="white_text_smaller"
+		parent="@android:style/TextAppearance">
+		<item name="android:textColor">@color/ivory</item>
+		<item name="android:textSize">14sp</item>
+	</style>
+
 	<style
 		name="white_text_small"
 		parent="@android:style/TextAppearance">
 		<item name="android:textColor">@color/ivory</item>
 		<item name="android:textSize">15sp</item>
+	</style>
+
+	<style
+		name="white_text_smallish"
+		parent="@android:style/TextAppearance">
+		<item name="android:textColor">@color/ivory</item>
+		<item name="android:textSize">16sp</item>
 	</style>
 
 	<style

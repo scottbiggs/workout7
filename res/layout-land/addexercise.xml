@@ -1,0 +1,594 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	The Add Exercise Screen
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:background="@color/gray_darkest"
+	android:gravity="center" >
+
+	<!-- Title and Logo -->
+	<RelativeLayout
+		android:id="@+id/addexer_title_rl"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="8dp"
+		android:orientation="horizontal" >
+
+		<TextView
+			android:id="@+id/addexer_title_tv"
+			style="@style/white_text_large"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentLeft="true"
+			android:layout_alignParentTop="true"
+			android:layout_gravity="center_vertical"
+			android:layout_marginBottom="3dp"
+			android:layout_marginLeft="18dp"
+			android:layout_marginRight="3dp"
+			android:layout_marginTop="5dp"
+			android:text="@string/addexer_title_add_msg" />
+
+		<ImageView
+			android:id="@+id/addexer_logo_id"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentRight="true"
+			android:layout_alignBottom="@id/addexer_title_tv"
+			android:layout_marginBottom="3dp"
+			android:layout_marginLeft="5dp"
+			android:layout_marginRight="5dp"
+			android:src="@drawable/hpglogo_small" />
+
+	</RelativeLayout>
+
+
+	<!-- Save/Cancel Buttons -->
+
+	<Button
+		android:id="@+id/addexer_null_butt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_centerHorizontal="true"
+		android:layout_marginBottom="3dp"
+		android:layout_marginLeft="5dp"
+		android:layout_marginRight="5dp"
+		android:background="@drawable/button_shiny_black"
+		android:paddingLeft="15dp"
+		android:paddingRight="15dp"
+		android:text="@string/null_string"
+		android:textColor="@color/ivory"
+		android:visibility="invisible" />
+
+	<Button
+		android:id="@+id/addexer_ok_butt"
+		android:layout_width="100dp"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_marginBottom="3dp"
+		android:layout_toRightOf="@id/addexer_null_butt"
+		android:background="@drawable/button_shiny_black"
+		android:enabled="false"
+		android:text="@string/ok"
+		android:textColor="@color/ivory" />
+
+	<Button
+		android:id="@+id/addexer_cancel_butt"
+		android:layout_width="100dp"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_marginBottom="3dp"
+		android:layout_toLeftOf="@id/addexer_null_butt"
+		android:background="@drawable/button_shiny_black"
+		android:text="@string/cancel"
+		android:textColor="@color/ivory" />
+
+
+	<!-- The top line, holds the name, the type, and
+		the group.
+	-->
+	<LinearLayout
+		android:id="@+id/addexer_first_line_ll"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentLeft="true"
+		android:layout_below="@id/addexer_title_rl"
+		android:orientation="horizontal"
+		>
+
+		<!-- Name of the Exercise -->
+
+		<LinearLayout
+			android:id="@+id/addexer_name_ll"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="3dp"
+			android:layout_marginTop="3dp"
+			android:layout_weight="32"
+			android:orientation="horizontal" >
+
+			<TextView
+				android:id="@+id/addexer_name_label_tv"
+				style="@style/white_text_smaller"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="8dp"
+				android:layout_marginRight="4dp"
+				android:text="@string/addexer_name_label" />
+
+			<!-- Make this the first focused widget via the
+					"requestFocus" thing below.
+			-->
+
+			<EditText
+				android:id="@+id/addexer_name_et"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:hint="@string/addexer_name_hint"
+				android:minWidth="110dp"
+				android:singleLine="true"
+				android:textSize="14sp" >
+
+			</EditText>
+		</LinearLayout>
+
+		<!-- Type and Group -->
+
+		<LinearLayout
+			android:id="@+id/addexer_type_and_name_ll"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_margin="5dp"
+			android:layout_weight="68"
+			android:background="@drawable/rounded_edges_dark"
+			android:orientation="horizontal"
+			android:paddingBottom="3dp"
+			android:paddingTop="3dp" >
+
+			<!-- Just Type -->
+			<LinearLayout
+				android:layout_width="0px"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				>
+
+				<TextView
+					android:id="@+id/addexer_type_label_tv"
+					style="@style/white_text_smaller"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_vertical"
+					android:layout_marginLeft="5dp"
+					android:layout_marginRight="5dp"
+					android:gravity="right"
+					android:text="@string/addexer_type_label_landscape" />
+
+				<com.sleepfuriously.hpgworkout.MySpinner
+					android:id="@+id/addexer_type_msp"
+					style="@style/white_text_smaller"
+					android:layout_width="110dp"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_vertical"
+					android:background="@drawable/button_shiny_black"
+					android:drawableRight="@android:drawable/arrow_down_float"
+					android:gravity="center"
+					android:hint="@string/select"
+					android:textColorHint="@color/gray_cool_lightest" />
+
+			</LinearLayout>
+
+			<!-- Just Group -->
+
+			<LinearLayout
+				android:layout_width="0px"
+				android:layout_height="wrap_content"
+				android:layout_weight="1" >
+
+				<TextView
+					style="@style/white_text_smaller"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_vertical"
+					android:layout_marginRight="5dp"
+					android:layout_span="1"
+					android:gravity="right"
+					android:text="@string/addexer_musclegroup_label_landscape" />
+
+				<com.sleepfuriously.hpgworkout.MySpinner
+					android:id="@+id/addexer_group_msp"
+					style="@style/white_text_smaller"
+					android:layout_width="110dp"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_vertical"
+					android:background="@drawable/button_shiny_black"
+					android:drawableRight="@android:drawable/arrow_down_float"
+					android:gravity="center"
+					android:hint="@string/select"
+					android:textColorHint="@color/gray_cool_lightest" />
+
+			</LinearLayout>
+
+		</LinearLayout>
+	</LinearLayout>
+
+
+	<!-- The Aspects -->
+
+	<HorizontalScrollView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_above="@id/addexer_null_butt"
+		android:layout_below="@id/addexer_first_line_ll"
+		android:layout_marginBottom="4dp"
+		android:layout_marginLeft="5dp"
+		android:layout_marginRight="5dp"
+		android:background="@drawable/rounded_edges_dark" >
+
+		<LinearLayout
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal" >
+
+			<!-- ============= -->
+			<!-- REPS -->
+			<!-- ============= -->
+			<RelativeLayout
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"
+				android:orientation="vertical"
+				android:minWidth="150dp"
+				android:layout_marginLeft="8dp"
+				android:layout_marginRight="8dp" >
+
+				<CheckBox
+					android:id="@+id/addexer_reps_cb"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentLeft="true"
+					android:layout_alignParentTop="true"
+					android:text="@string/addexer_rep_label"
+					style="@style/white_text_medium"
+					/>
+
+				<RadioButton
+					android:id="@+id/addexer_reps_rad"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentRight="true"
+					android:layout_alignParentTop="true"
+					android:layout_marginRight="5dp"
+					android:enabled="false" />
+
+			</RelativeLayout>
+
+			<!-- Separator -->
+			<View
+				android:layout_width="1dp"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="15dp"
+				android:layout_marginLeft="3dp"
+				android:layout_marginRight="3dp"
+				android:layout_marginTop="15dp"
+				android:background="#808080" />
+
+			<!-- ============= -->
+			<!-- Levels -->
+			<!-- ============= -->
+			<RelativeLayout
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"
+				android:minWidth="150dp"
+				android:orientation="vertical"
+				android:layout_marginLeft="8dp"
+				android:layout_marginRight="8dp" >
+
+				<CheckBox
+					android:id="@+id/addexer_level_cb"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentLeft="true"
+					android:layout_alignParentTop="true"
+					android:text="@string/addexer_level_label"
+					style="@style/white_text_medium"
+					/>
+
+				<RadioButton
+					android:id="@+id/addexer_level_rad"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentRight="true"
+					android:layout_alignParentTop="true"
+					android:layout_marginRight="5dp"
+					android:enabled="false" />
+
+			</RelativeLayout>
+			<View
+				android:layout_width="1dp"
+				android:layout_height="fill_parent"
+				android:layout_marginBottom="15dp"
+				android:layout_marginLeft="3dp"
+				android:layout_marginRight="3dp"
+				android:layout_marginTop="15dp"
+				android:background="#808080" />
+
+			<!-- ============= -->
+			<!-- Calories -->
+			<!-- ============= -->
+
+			<RelativeLayout
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"
+				android:layout_marginLeft="8dp"
+				android:layout_marginRight="8dp"
+				android:minWidth="175dp"
+				android:orientation="vertical" >
+
+				<CheckBox
+					android:id="@+id/addexer_calorie_cb"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentLeft="true"
+					android:layout_alignParentTop="true"
+					android:text="@string/addexer_calorie_label"
+					style="@style/white_text_medium"
+					/>
+
+				<RadioButton
+					android:id="@+id/addexer_calorie_rad"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentRight="true"
+					android:layout_alignParentTop="true"
+					android:layout_marginRight="5dp"
+					android:enabled="false" />
+
+			</RelativeLayout>
+			<View
+				android:layout_width="1dp"
+				android:layout_height="fill_parent"
+				android:layout_marginBottom="15dp"
+				android:layout_marginLeft="3dp"
+				android:layout_marginRight="3dp"
+				android:layout_marginTop="15dp"
+				android:background="#808080" />
+
+			<!-- ============= -->
+			<!-- Weight -->
+			<!-- ============= -->
+
+			<RelativeLayout
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"
+				android:layout_marginLeft="8dp"
+				android:layout_marginRight="8dp"
+				android:minWidth="175dp"
+				android:orientation="vertical" >
+
+				<CheckBox
+					android:id="@+id/addexer_weight_cb"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentLeft="true"
+					android:layout_alignParentTop="true"
+					android:text="@string/addexer_weight_label"
+					style="@style/white_text_medium"
+					/>
+
+				<RadioButton
+					android:id="@+id/addexer_weights_rad"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentRight="true"
+					android:layout_alignParentTop="true"
+					android:layout_marginRight="5dp"
+					android:enabled="false" />
+
+				<com.sleepfuriously.hpgworkout.MySpinner
+					android:id="@+id/addexer_weight_unit_msp"
+					style="@style/white_text_small"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_below="@id/addexer_weight_cb"
+					android:layout_centerHorizontal="true"
+					android:layout_marginBottom="5dp"
+					android:background="@drawable/button_shiny_black"
+					android:drawableRight="@android:drawable/arrow_down_float"
+					android:minWidth="150dp"
+					android:enabled="false"
+					android:hint="@string/unit"
+					android:textColorHint="@color/gray_cool_lightest"
+					android:visibility="visible" />
+
+			</RelativeLayout>
+			<View
+				android:layout_width="1dp"
+				android:layout_height="fill_parent"
+				android:layout_marginBottom="15dp"
+				android:layout_marginLeft="3dp"
+				android:layout_marginRight="3dp"
+				android:layout_marginTop="15dp"
+				android:background="#808080" />
+
+			<!-- ============= -->
+			<!-- Distance -->
+			<!-- ============= -->
+
+			<RelativeLayout
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"
+				android:layout_marginLeft="8dp"
+				android:layout_marginRight="8dp"
+				android:minWidth="175dp"
+				android:orientation="vertical" >
+
+				<CheckBox
+					android:id="@+id/addexer_dist_cb"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentLeft="true"
+					android:layout_alignParentTop="true"
+					android:text="@string/addexer_dist_label"
+					style="@style/white_text_medium"
+					/>
+
+				<RadioButton
+					android:id="@+id/addexer_dist_rad"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentRight="true"
+					android:layout_alignParentTop="true"
+					android:layout_marginRight="5dp"
+					android:enabled="false" />
+
+				<com.sleepfuriously.hpgworkout.MySpinner
+					android:id="@+id/addexer_dist_unit_msp"
+					style="@style/white_text_small"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_below="@id/addexer_dist_cb"
+					android:layout_centerHorizontal="true"
+					android:layout_marginBottom="5dp"
+					android:background="@drawable/button_shiny_black"
+					android:drawableRight="@android:drawable/arrow_down_float"
+					android:minWidth="150dp"
+					android:enabled="false"
+					android:hint="@string/unit"
+					android:textColorHint="@color/gray_cool_lightest"
+					android:visibility="visible" />
+
+			</RelativeLayout>
+			<View
+				android:layout_width="1dp"
+				android:layout_height="fill_parent"
+				android:layout_marginBottom="15dp"
+				android:layout_marginLeft="3dp"
+				android:layout_marginRight="3dp"
+				android:layout_marginTop="15dp"
+				android:background="#808080" />
+
+			<!-- ============= -->
+			<!-- Time -->
+			<!-- ============= -->
+			<RelativeLayout
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"
+				android:orientation="vertical"
+				android:minWidth="150dp"
+				android:layout_marginLeft="8dp"
+				android:layout_marginRight="8dp" >
+
+				<CheckBox
+					android:id="@+id/addexer_time_cb"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentLeft="true"
+					android:layout_alignParentTop="true"
+					android:text="@string/addexer_time_label"
+					style="@style/white_text_medium"
+					/>
+
+				<RadioButton
+					android:id="@+id/addexer_time_rad"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentRight="true"
+					android:layout_alignParentTop="true"
+					android:layout_marginRight="5dp"
+					android:enabled="false" />
+
+				<com.sleepfuriously.hpgworkout.MySpinner
+					android:id="@+id/addexer_time_unit_msp"
+					style="@style/white_text_small"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_centerHorizontal="true"
+					android:layout_below="@id/addexer_time_cb"
+					android:layout_marginBottom="5dp"
+					android:background="@drawable/button_shiny_black"
+					android:drawableRight="@android:drawable/arrow_down_float"
+					android:enabled="false"
+					android:hint="@string/unit"
+					android:minWidth="150dp"
+					android:textColorHint="@color/gray_cool_lightest"
+					android:visibility="visible" />
+
+			</RelativeLayout>
+			<View
+				android:layout_width="1dp"
+				android:layout_height="fill_parent"
+				android:layout_marginBottom="15dp"
+				android:layout_marginLeft="3dp"
+				android:layout_marginRight="3dp"
+				android:layout_marginTop="15dp"
+				android:background="#808080" />
+
+			<!-- ============= -->
+			<!-- Other (always more complicatd) -->
+			<!-- ============= -->
+			<RelativeLayout
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"
+				android:orientation="vertical"
+				android:minWidth="150dp"
+				android:layout_marginLeft="8dp"
+				android:layout_marginRight="8dp" >
+
+				<CheckBox
+					android:id="@+id/addexer_other_cb"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentLeft="true"
+					android:layout_alignParentTop="true"
+					android:text="@string/addexer_other_label"
+					style="@style/white_text_medium"
+					/>
+
+				<RadioButton
+					android:id="@+id/addexer_other_rad"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentRight="true"
+					android:layout_alignParentTop="true"
+					android:layout_marginRight="5dp"
+					android:enabled="false" />
+
+				<EditText
+					android:id="@+id/addexer_other_name_et"
+					android:layout_width="140dp"
+					android:layout_height="wrap_content"
+					android:layout_below="@id/addexer_other_cb"
+					android:layout_centerHorizontal="true"
+					android:clickable="false"
+					android:enabled="false"
+					android:focusable="false"
+					android:gravity="center"
+					android:hint="@string/name" />
+
+				<EditText
+					android:id="@+id/addexer_other_unit_et"
+					android:layout_width="140dp"
+					android:layout_height="wrap_content"
+					android:layout_below="@id/addexer_other_name_et"
+					android:layout_centerHorizontal="true"
+					android:layout_marginBottom="5dp"
+					android:clickable="false"
+					android:enabled="false"
+					android:focusable="false"
+					android:gravity="center"
+					android:hint="@string/unit" />
+
+			</RelativeLayout>
+
+
+
+
+
+		</LinearLayout>
+
+	</HorizontalScrollView>
+
+
+</RelativeLayout>
+
