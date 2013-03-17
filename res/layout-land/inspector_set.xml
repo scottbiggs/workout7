@@ -14,15 +14,14 @@
 	>
 
 	<TextView
-		android:id="@+id/inspector_set_date_tv"
-		style="@style/white_text_large"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_marginBottom="2dp"
-		android:layout_marginLeft="28dp"
-		android:layout_marginRight="3dp"
-		android:layout_marginTop="5dp"
-		android:text="@string/inspector_set_day_label" />
+	    android:id="@+id/inspector_set_date_tv"
+	    style="@style/white_text_large"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_marginBottom="2dp"
+	    android:layout_marginLeft="28dp"
+	    android:layout_marginRight="3dp"
+	    android:text="@string/inspector_set_day_label" />
 
 	<ScrollView
 		android:id="@+id/inspector_set_sv"
@@ -31,18 +30,18 @@
 		>
 
 	<LinearLayout
-		android:id="@+id/inspector_set_ll"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_marginBottom="8dp"
-		android:layout_marginLeft="8dp"
-		android:layout_marginRight="8dp"
-		android:background="@drawable/rounded_edges_dark"
-		android:orientation="vertical"
-		android:paddingBottom="5dp"
-		android:paddingLeft="8dp"
-		android:paddingRight="8dp"
-		android:paddingTop="5dp" >
+	    android:id="@+id/inspector_set_ll"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_marginBottom="2dp"
+	    android:layout_marginLeft="8dp"
+	    android:layout_marginRight="8dp"
+	    android:background="@drawable/rounded_edges_dark"
+	    android:orientation="vertical"
+	    android:paddingBottom="5dp"
+	    android:paddingLeft="8dp"
+	    android:paddingRight="8dp"
+	    android:paddingTop="5dp" >
 
 		<TextView
 			android:id="@+id/inspector_set_time_tv"
