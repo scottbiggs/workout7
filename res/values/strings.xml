@@ -1546,7 +1546,7 @@
 	<string name="graph_one_set_msg">
 		There\'s just one set for the %s exercise, so there is
 		nothing to graph.
-		\n\nBut here is the data for it:\n\n
+		\n\nBut here is the data for it:
 	</string>
 	<string name="graph_null">null</string>
 

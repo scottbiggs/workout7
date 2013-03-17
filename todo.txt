@@ -1,5 +1,8 @@
 TODO:
 -----------------
+BUG: When there's just one exercise set, the graph does not
+	show the condition nor the comment.
+
 BUG: Crashes when changing the orientation when at the tabs!!!
 BUG: Crashes when changing orientation at the grid!!!
 
