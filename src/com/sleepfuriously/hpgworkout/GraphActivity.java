@@ -23,6 +23,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -812,6 +813,10 @@ public class GraphActivity
 	protected void construct_one_set() {
 		// First, turn off the GView and turn on the TextView.
 		m_view.setVisibility(View.GONE);
+
+		ScrollView sv = (ScrollView) findViewById(R.id.graph_gview_sv);
+		sv.setVisibility(View.VISIBLE);
+
 		TextView tv = (TextView) findViewById(R.id.graph_gview_tv);
 		tv.setVisibility(View.VISIBLE);
 
@@ -827,19 +832,43 @@ public class GraphActivity
 
 		// Append to the string, depending on the current aspects.
 		if (m_exercise_data.breps)
-			str += "\treps: " + set_data_to_str(m_set_data.get(0).reps) + "\n";
+			str += "\n\treps: " + set_data_to_str(m_set_data.get(0).reps);
 		if (m_exercise_data.blevel)
-			str += "\tlevels: " + set_data_to_str(m_set_data.get(0).levels) + "\n";
+			str += "\n\tlevels: " + set_data_to_str(m_set_data.get(0).levels);
 		if (m_exercise_data.bcals)
-			str += "\tcalories: " + set_data_to_str(m_set_data.get(0).cals) + "\n";
+			str += "\n\tcalories: " + set_data_to_str(m_set_data.get(0).cals);
 		if (m_exercise_data.bweight)
-			str += "\tweight (" + m_exercise_data.weight_unit + "): " + set_data_to_str(m_set_data.get(0).weight) + "\n";
+			str += "\n\tweight (" + m_exercise_data.weight_unit + "): " + set_data_to_str(m_set_data.get(0).weight);
 		if (m_exercise_data.bdist)
-			str += "\tdistance (" + m_exercise_data.dist_unit + "): " + set_data_to_str(m_set_data.get(0).dist) + "\n";
+			str += "\n\tdistance (" + m_exercise_data.dist_unit + "): " + set_data_to_str(m_set_data.get(0).dist);
 		if (m_exercise_data.btime)
-			str += "\ttime (" + m_exercise_data.time_unit + "): " + set_data_to_str(m_set_data.get(0).time) + "\n";
+			str += "\n\ttime (" + m_exercise_data.time_unit + "): " + set_data_to_str(m_set_data.get(0).time);
 		if (m_exercise_data.bother)
-			str += "\t" + m_exercise_data.other_title + " (" + m_exercise_data.other_unit + "): " + set_data_to_str(m_set_data.get(0).other) + "\n";
+			str += "\n\t" + m_exercise_data.other_title + " (" + m_exercise_data.other_unit + "): " + set_data_to_str(m_set_data.get(0).other);
+		switch (m_set_data.get(0).cond) {
+			case DatabaseHelper.SET_COND_OK:
+				str += "\n\tcondition: OK";
+				break;
+			case DatabaseHelper.SET_COND_MINUS:
+				str += "\n\tcondition: Too Hard";
+				break;
+			case DatabaseHelper.SET_COND_PLUS:
+				str += "\n\tcondition: Too Easy";
+				break;
+			case DatabaseHelper.SET_COND_INJURY:
+				str += "\n\tcondition: Injury";
+				break;
+			case DatabaseHelper.SET_COND_NONE:
+				break;
+			default:
+				Log.e (tag, "Illegal condition in construct_one_set()!");
+				str += "\n\tcondition: unknown";
+				break;
+		}
+		String notes = m_set_data.get(0).notes;
+		if ((notes != null) && (notes.length() > 0)) {
+			str += "\n\n\t" + notes;
+		}
 
 		tv.setText(str);
 	} // construct_one_set()

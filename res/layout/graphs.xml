@@ -42,16 +42,16 @@
 	</RelativeLayout>
 
 	<TextView
-	    android:id="@+id/graph_description_tv"
-	    style="@style/white_text_small"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_below="@id/graph_title_rl"
-	    android:layout_marginLeft="24dp"
-	    android:layout_marginRight="12dp"
-	    android:layout_marginTop="3dp"
-	    android:text="@string/loading_str"
-	    android:textColor="@color/off_white" />
+		android:id="@+id/graph_description_tv"
+		style="@style/white_text_small"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/graph_title_rl"
+		android:layout_marginLeft="24dp"
+		android:layout_marginRight="12dp"
+		android:layout_marginTop="3dp"
+		android:text="@string/loading_str"
+		android:textColor="@color/off_white" />
 
 	<Button
 		android:id="@+id/graph_options_butt"
@@ -89,16 +89,23 @@
 			android:background="@drawable/rounded_edges_dark_blue"
 			android:padding="25dp"/>
 
-		<TextView
-			android:id="@+id/graph_gview_tv"
+		<ScrollView
+			android:id="@+id/graph_gview_sv"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			style="@style/white_text_medium"
-			android:background="@drawable/rounded_edges_dark_blue"
-			android:layout_margin="12dp"
-			android:padding="8dp"
 			android:visibility="gone"
-			/>
+			>
+			<TextView
+				android:id="@+id/graph_gview_tv"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				style="@style/white_text_medium"
+				android:background="@drawable/rounded_edges_dark_blue"
+				android:layout_margin="12dp"
+				android:padding="8dp"
+				android:visibility="gone"
+				/>
+		</ScrollView>
 	</LinearLayout>
 
 </RelativeLayout>
