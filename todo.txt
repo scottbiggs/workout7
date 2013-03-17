@@ -1,12 +1,11 @@
 TODO:
 -----------------
-BUG: When there's just one exercise set, the graph does not
-	show the condition nor the comment.
 
 BUG: Crashes when changing the orientation when at the tabs!!!
 BUG: Crashes when changing orientation at the grid!!!
 
-The icons for the tabs need re-doing.
+The icons for the tabs need re-doing. Make 'em shorter/smaller
+	so they don't take as much space.
 
 Make sure that the buttons at the bottom in landscape mode
 	aren't too big!  See land/addexercise.xml for an example.
@@ -221,6 +220,10 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+BUG: When there's just one exercise set, the graph does not
+	show the condition nor the comment.
+	- fixed
+
 Issue:  When I cancel an Add Exercise, it reloads the Grid!
 	- killed.  This only happens when the orientation is
 	changed while doing Add Exercise.  The grid needs to reload
