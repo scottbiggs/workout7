@@ -1,5 +1,10 @@
 TODO:
 -----------------
+BUG: Crashes when changing the orientation when at the tabs!!!
+BUG: Crashes when changing orientation at the grid!!!
+
+The icons for the tabs need re-doing.
+
 Make sure that the buttons at the bottom in landscape mode
 	aren't too big!  See land/addexercise.xml for an example.
 
@@ -8,8 +13,6 @@ Minor Bug: The Inspector scrolls to the LAST exercise of that
 	makes more sense. AND, when doing Most Recent First, it
 	scrolls to the EARLIEST of that day (not the most recent).
 	Looks like I got these two confused with one-another.
-
-BUG: Crashes when changing the orientation when at the tabs!!!
 
 Take away the global preferences vars.  Make each class access the
 	shared preferences the right way.  This is messy and very

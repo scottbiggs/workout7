@@ -99,15 +99,15 @@ public class EditExerciseActivity
 		setContentView(R.layout.editexercise);
 
 		// The standard buttons.
-		m_ok = (Button) findViewById(R.id.edit_exer_ok_butt);
+		m_ok = (Button) findViewById(R.id.editexer_ok_butt);
 		m_ok.setOnClickListener(this);
 		m_ok.setOnLongClickListener(this);
 
-		m_delete = (Button) findViewById(R.id.edit_exer_delete_butt);
+		m_delete = (Button) findViewById(R.id.editexer_delete_butt);
 		m_delete.setOnClickListener(this);
 		m_delete.setOnLongClickListener(this);
 
-		m_reset = (Button) findViewById(R.id.edit_exer_reset_butt);
+		m_reset = (Button) findViewById(R.id.editexer_reset_butt);
 		m_reset.setOnClickListener(this);
 		m_reset.setOnLongClickListener(this);
 
@@ -118,7 +118,7 @@ public class EditExerciseActivity
 		m_exer_name_tv.setOnLongClickListener(this);
 
 		// type
-		m_exer_type_msp = (MySpinner) findViewById (R.id.edit_exer_type_msp);
+		m_exer_type_msp = (MySpinner) findViewById (R.id.editexer_type_msp);
 		m_exer_type_msp.setMySpinnerListener(this);
 		m_exer_type_msp.set_array(R.array.type_array);
 		m_exer_type_msp.set_prompt(R.string.addexer_type_str);
@@ -126,7 +126,7 @@ public class EditExerciseActivity
 		m_exer_type_msp.setOnLongClickListener(this);
 
 		// group
-		m_exer_group_msp = (MySpinner) findViewById (R.id.edit_exer_group_msp);
+		m_exer_group_msp = (MySpinner) findViewById (R.id.editexer_group_msp);
 		m_exer_group_msp.setMySpinnerListener(this);
 		m_exer_group_msp.set_array(R.array.muscle_group_array);
 		m_exer_group_msp.set_prompt(R.string.addexer_musclegroup_str);
@@ -134,37 +134,37 @@ public class EditExerciseActivity
 		m_exer_group_msp.setOnLongClickListener(this);
 
 		// reps
-		m_exer_rep_cb = (CheckBox) findViewById(R.id.edit_exer_reps_cb);
+		m_exer_rep_cb = (CheckBox) findViewById(R.id.editexer_reps_cb);
 		m_exer_rep_cb.setOnClickListener(this);
 		m_exer_rep_cb.setOnLongClickListener(this);
-		m_exer_rep_rb = (RadioButton) findViewById(R.id.edit_exer_reps_rad);
+		m_exer_rep_rb = (RadioButton) findViewById(R.id.editexer_reps_rad);
 		m_exer_rep_rb.setOnClickListener(this);
 		m_exer_rep_rb.setOnLongClickListener(this);
 
 		// levels
-		m_exer_level_cb = (CheckBox) findViewById(R.id.edit_exer_level_cb);
+		m_exer_level_cb = (CheckBox) findViewById(R.id.editexer_level_cb);
 		m_exer_level_cb.setOnClickListener(this);
 		m_exer_level_cb.setOnLongClickListener(this);
-		m_exer_level_rb = (RadioButton) findViewById(R.id.edit_exer_level_rad);
+		m_exer_level_rb = (RadioButton) findViewById(R.id.editexer_level_rad);
 		m_exer_level_rb.setOnClickListener(this);
 		m_exer_level_rb.setOnLongClickListener(this);
 
 		// calorie
-		m_exer_calorie_cb = (CheckBox) findViewById(R.id.edit_exer_calorie_cb);
+		m_exer_calorie_cb = (CheckBox) findViewById(R.id.editexer_calorie_cb);
 		m_exer_calorie_cb.setOnClickListener(this);
 		m_exer_calorie_cb.setOnLongClickListener(this);
-		m_exer_calorie_rb = (RadioButton) findViewById(R.id.edit_exer_calorie_rad);
+		m_exer_calorie_rb = (RadioButton) findViewById(R.id.editexer_calorie_rad);
 		m_exer_calorie_rb.setOnClickListener(this);
 		m_exer_calorie_rb.setOnLongClickListener(this);
 
 		// weights
-		m_exer_weight_rb = (RadioButton) findViewById(R.id.edit_exer_weights_rad);
+		m_exer_weight_rb = (RadioButton) findViewById(R.id.editexer_weights_rad);
 		m_exer_weight_rb.setOnClickListener(this);
 		m_exer_weight_rb.setOnLongClickListener(this);
-		m_exer_weight_cb = (CheckBox) findViewById(R.id.edit_exer_weight_cb);
+		m_exer_weight_cb = (CheckBox) findViewById(R.id.editexer_weight_cb);
 		m_exer_weight_cb.setOnClickListener(this);
 		m_exer_weight_cb.setOnLongClickListener(this);
-		m_exer_weight_msp = (MySpinner) findViewById (R.id.edit_exer_weight_unit_msp);
+		m_exer_weight_msp = (MySpinner) findViewById (R.id.editexer_weight_unit_msp);
 		m_exer_weight_msp.setMySpinnerListener(this);
 		m_exer_weight_msp.set_array(R.array.weight_unit_array);
 		m_exer_weight_msp.set_prompt(R.string.addexer_weight_unit_title);
@@ -181,13 +181,13 @@ public class EditExerciseActivity
 		}
 
 		// distanced
-		m_exer_dist_rb = (RadioButton) findViewById(R.id.edit_exer_dist_rad);
+		m_exer_dist_rb = (RadioButton) findViewById(R.id.editexer_dist_rad);
 		m_exer_dist_rb.setOnClickListener(this);
 		m_exer_dist_rb.setOnLongClickListener(this);
-		m_exer_dist_cb = (CheckBox) findViewById(R.id.edit_exer_dist_cb);
+		m_exer_dist_cb = (CheckBox) findViewById(R.id.editexer_dist_cb);
 		m_exer_dist_cb.setOnClickListener(this);
 		m_exer_dist_cb.setOnLongClickListener(this);
-		m_exer_dist_msp = (MySpinner) findViewById (R.id.edit_exer_dist_unit_msp);
+		m_exer_dist_msp = (MySpinner) findViewById (R.id.editexer_dist_unit_msp);
 		m_exer_dist_msp.setMySpinnerListener(this);
 		m_exer_dist_msp.set_array(R.array.dist_unit_array);
 		m_exer_dist_msp.set_prompt(R.string.addexer_dist_unit_title);
@@ -204,13 +204,13 @@ public class EditExerciseActivity
 		}
 
 		// time
-		m_exer_time_rb = (RadioButton) findViewById(R.id.edit_exer_time_rad);
+		m_exer_time_rb = (RadioButton) findViewById(R.id.editexer_time_rad);
 		m_exer_time_rb.setOnClickListener(this);
 		m_exer_time_rb.setOnLongClickListener(this);
-		m_exer_time_cb = (CheckBox) findViewById(R.id.edit_exer_time_cb);
+		m_exer_time_cb = (CheckBox) findViewById(R.id.editexer_time_cb);
 		m_exer_time_cb.setOnClickListener(this);
 		m_exer_time_cb.setOnLongClickListener(this);
-		m_exer_time_msp = (MySpinner) findViewById (R.id.edit_exer_time_unit_msp);
+		m_exer_time_msp = (MySpinner) findViewById (R.id.editexer_time_unit_msp);
 		m_exer_time_msp.setMySpinnerListener(this);
 		m_exer_time_msp.set_array(R.array.time_unit_array);
 		m_exer_time_msp.set_prompt(R.string.addexer_time_unit_title);
@@ -227,16 +227,16 @@ public class EditExerciseActivity
 		}
 
 		// other
-		m_exer_other_rb = (RadioButton) findViewById(R.id.edit_exer_other_rad);
+		m_exer_other_rb = (RadioButton) findViewById(R.id.editexer_other_rad);
 		m_exer_other_rb.setOnClickListener(this);
 		m_exer_other_rb.setOnLongClickListener(this);
-		m_exer_other_cb = (CheckBox) findViewById(R.id.edit_exer_other_cb);
+		m_exer_other_cb = (CheckBox) findViewById(R.id.editexer_other_cb);
 		m_exer_other_cb.setOnClickListener(this);
 		m_exer_other_cb.setOnLongClickListener(this);
-		m_exer_other_name_et = (EditText) findViewById(R.id.edit_exer_other_name_et);
+		m_exer_other_name_et = (EditText) findViewById(R.id.editexer_other_name_et);
 		m_exer_other_name_et.setOnLongClickListener(this);
 		m_exer_other_name_et.addTextChangedListener(this);
-		m_exer_other_unit_et = (EditText) findViewById(R.id.edit_exer_other_unit_et);
+		m_exer_other_unit_et = (EditText) findViewById(R.id.editexer_other_unit_et);
 		m_exer_other_unit_et.setOnLongClickListener(this);
 		m_exer_other_unit_et.addTextChangedListener(this);
 
