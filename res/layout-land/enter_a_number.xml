@@ -62,31 +62,31 @@
 			android:text="@string/question_mark" />
 
 		<Button
-			android:id="@+id/enter_a_number_ok_butt"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignParentBottom="true"
-			android:layout_alignParentRight="true"
-			android:layout_marginRight="8dp"
-			android:layout_toRightOf="@id/enter_a_number_help_butt"
-			android:background="@drawable/button_shiny_black"
-			android:textColor="@color/ivory"
-			android:textSize="@dimen/font_size_button_default"
-			android:enabled="false"
-			android:text="@string/done" />
+		    android:id="@+id/enter_a_number_ok_butt"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentBottom="true"
+		    android:layout_marginRight="8dp"
+		    android:layout_toRightOf="@id/enter_a_number_help_butt"
+		    android:background="@drawable/button_shiny_black"
+		    android:enabled="false"
+		    android:minWidth="100dp"
+		    android:text="@string/done"
+		    android:textColor="@color/ivory"
+		    android:textSize="@dimen/font_size_button_default" />
 
 		<Button
-			android:id="@+id/enter_a_number_cancel_butt"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignParentBottom="true"
-			android:layout_alignParentLeft="true"
-			android:layout_marginLeft="8dp"
-			android:layout_toLeftOf="@id/enter_a_number_help_butt"
-			android:background="@drawable/button_shiny_black"
-			android:textColor="@color/ivory"
-			android:textSize="@dimen/font_size_button_default"
-			android:text="@string/cancel" />
+		    android:id="@+id/enter_a_number_cancel_butt"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentBottom="true"
+		    android:layout_marginLeft="8dp"
+		    android:layout_toLeftOf="@id/enter_a_number_help_butt"
+		    android:background="@drawable/button_shiny_black"
+		    android:minWidth="100dp"
+		    android:text="@string/cancel"
+		    android:textColor="@color/ivory"
+		    android:textSize="@dimen/font_size_button_default" />
 
 		<TextView
 			android:id="@+id/enter_a_number_instruction_tv"
