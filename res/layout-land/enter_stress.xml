@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Allows the user to change the stress levels of a
+	workout set.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical"
+	android:background="@color/gray_darkest"
+	>
+
+	<RelativeLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		>
+
+		<TextView
+			android:id="@+id/enter_stress_title_tv"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentLeft="true"
+			android:layout_alignParentTop="true"
+			android:layout_gravity="center_vertical"
+			android:layout_marginBottom="3dp"
+			android:layout_marginLeft="10dp"
+			android:layout_marginRight="3dp"
+			android:layout_marginTop="5dp"
+			android:text="@string/enter_stress_title"
+			style="@style/white_text_large"
+			/>
+
+		<ImageView
+			android:id="@+id/enter_stress_logo"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentRight="true"
+			android:layout_marginRight="8dp"
+			android:layout_marginTop="6dp"
+			android:src="@drawable/hpglogo_small" />
+	</RelativeLayout>
+
+	<RelativeLayout
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent" >
+
+		<!-- Dummy in the center of the screen -->
+
+		<TextView
+		    android:id="@+id/enter_stress_center_null"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_centerInParent="true"
+		    android:text="@string/null_string"
+		    android:visibility="invisible" />
+
+		<!-- ============= -->
+		<!-- Buttons -->
+		<!-- ============= -->
+
+		<Button
+			android:id="@+id/enter_stress_null_butt"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			android:layout_centerHorizontal="true"
+			android:layout_marginLeft="5dp"
+			android:layout_marginRight="5dp"
+			android:clickable="false"
+			android:enabled="false"
+			android:focusable="false"
+			android:focusableInTouchMode="false"
+			android:longClickable="false"
+			android:paddingLeft="15dp"
+			android:paddingRight="15dp"
+			android:text="@string/question_mark"
+			android:visibility="invisible" />
+
+		<Button
+			android:id="@+id/enter_stress_ok_butt"
+			style="@style/white_text_medium"
+			android:background="@drawable/button_shiny_black"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			android:minWidth="100dp"
+			android:layout_marginBottom="8dp"
+			android:layout_toRightOf="@id/enter_stress_null_butt"
+			android:enabled="false"
+			android:text="@string/done" />
+
+		<Button
+			android:id="@+id/enter_stress_cancel_butt"
+			style="@style/white_text_small"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			android:layout_marginBottom="8dp"
+			android:layout_toLeftOf="@id/enter_stress_null_butt"
+			android:minWidth="100dp"
+			android:background="@drawable/button_shiny_black"
+			android:text="@string/cancel" />
+
+		<TextView
+			android:id="@+id/enter_stress_value_tv"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentLeft="true"
+			android:layout_below="@id/enter_stress_title_tv"
+			android:layout_marginLeft="25dp"
+			android:layout_marginRight="12dp"
+			android:layout_marginTop="5dp"
+			android:shadowColor="@color/hpg_orange"
+			android:shadowDx="3"
+			android:shadowDy="3"
+			android:shadowRadius="5"
+			android:text="@string/enter_stress_prod"
+			style="@style/white_text_medium"
+			/>
+
+		<!-- ============== -->
+		<!-- Table			-->
+		<!-- ============== -->
+
+		<TableLayout
+			android:id="@+id/enter_stress_tablelayout"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/enter_stress_value_tv"
+			android:layout_toLeftOf="@id/enter_stress_center_null"
+			android:layout_centerHorizontal="false"
+			android:layout_centerInParent="true" >
+
+			<TableRow
+				android:id="@+id/enter_stress_table_row_ok"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="4dp"
+				android:layout_marginLeft="5dp"
+				android:layout_marginRight="5dp"
+				android:layout_marginTop="8dp"
+				android:background="@drawable/rounded_edges_dark"
+				android:clickable="true"
+				android:gravity="center_horizontal"
+				android:padding="3dp" >
+
+				<TextView
+					android:id="@+id/enter_stress_ok_tv"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="right|center_vertical"
+					android:layout_marginLeft="5dp"
+					android:text="@string/enter_stress_cond_stress_ok" />
+
+				<RadioButton
+					android:id="@+id/enter_stress_ok_rb"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_vertical"
+					android:layout_marginLeft="5dp"
+					android:layout_marginRight="8dp"
+					android:clickable="false" />
+
+				<ImageView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_vertical"
+					android:background="@drawable/rounded_edges_medium"
+					android:src="@drawable/stress_just_right" />
+
+			</TableRow>
+
+			<TableRow
+				android:id="@+id/enter_stress_table_row_too_hard"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="4dp"
+				android:layout_marginLeft="5dp"
+				android:layout_marginRight="5dp"
+				android:layout_marginTop="4dp"
+				android:background="@drawable/rounded_edges_dark"
+				android:clickable="true"
+				android:gravity="center_horizontal"
+				android:padding="3dp" >
+
+				<TextView
+					android:id="@+id/enter_stress_too_hard_tv"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="right|center_vertical"
+					android:layout_marginLeft="5dp"
+					android:text="@string/enter_stress_cond_stress_too_hard" />
+
+				<RadioButton
+					android:id="@+id/enter_stress_too_hard_rb"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_vertical"
+					android:layout_marginLeft="5dp"
+					android:layout_marginRight="8dp"
+					android:clickable="false" />
+
+				<ImageView
+					android:src="@drawable/stress_too_heavy"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:background="@drawable/rounded_edges_medium"
+					android:layout_gravity="center_vertical"
+					/>
+			</TableRow>
+
+		</TableLayout>
+
+
+
+
+		<!-- #2 -->
+		<TableLayout
+			android:id="@+id/enter_stress_tablelayout"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/enter_stress_value_tv"
+			android:layout_toRightOf="@id/enter_stress_center_null"
+			android:layout_centerHorizontal="false"
+			android:layout_centerInParent="true" >
+
+			<TableRow
+			    android:id="@+id/enter_stress_table_row_too_easy"
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_marginBottom="4dp"
+			    android:layout_marginLeft="5dp"
+			    android:layout_marginRight="5dp"
+			    android:layout_marginTop="8dp"
+			    android:background="@drawable/rounded_edges_dark"
+			    android:clickable="true"
+			    android:gravity="center_horizontal"
+			    android:padding="3dp" >
+
+				<TextView
+					android:id="@+id/enter_stress_too_easy_tv"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="right|center_vertical"
+					android:layout_marginLeft="5dp"
+					android:text="@string/enter_stress_cond_stress_too_easy" />
+
+				<RadioButton
+					android:id="@+id/enter_stress_too_easy_rb"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_vertical"
+					android:layout_marginLeft="5dp"
+					android:layout_marginRight="8dp"
+					android:clickable="false" />
+
+				<ImageView
+					android:src="@drawable/stress_too_easy"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:background="@drawable/rounded_edges_medium"
+					android:layout_gravity="center_vertical"
+					/>
+			</TableRow>
+
+			<TableRow
+				android:id="@+id/enter_stress_table_row_injury"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="8dp"
+				android:layout_marginLeft="5dp"
+				android:layout_marginRight="5dp"
+				android:layout_marginTop="4dp"
+				android:background="@drawable/rounded_edges_dark"
+				android:clickable="true"
+				android:gravity="center_horizontal"
+				android:padding="3dp" >
+
+				<TextView
+					android:id="@+id/enter_stress_injury_tv"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="right|center_vertical"
+					android:layout_marginLeft="5dp"
+					android:text="@string/enter_stress_cond_stress_injury" />
+
+				<RadioButton
+					android:id="@+id/enter_stress_injury_rb"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_vertical"
+					android:layout_marginLeft="5dp"
+					android:layout_marginRight="8dp"
+					android:clickable="false" />
+
+				<ImageView
+					android:src="@drawable/stress_injury"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:background="@drawable/rounded_edges_medium"
+					android:layout_gravity="center_vertical"
+					/>
+			</TableRow>
+
+		</TableLayout>
+
+
+
+
+
+
+
+	</RelativeLayout>
+
+</LinearLayout>
