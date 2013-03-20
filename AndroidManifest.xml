@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?> <!-- TODO: Is this needed? -->
+<!-- Version names:
+					Alpha [0.5 .. 0.8),
+					Beta [0.8 .. 1.0)
+					Release [1.0 ..
+
+		Pro version will be a seperate project, but will have
+		similar numbering.
+-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.sleepfuriously.hpgworkout"
 	android:versionCode="1"
-	android:versionName="1.0"
+	android:versionName="0.5"
 	android:installLocation="auto"
 	>
 

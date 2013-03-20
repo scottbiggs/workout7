@@ -146,4 +146,15 @@
 		android:textStyle="bold"
 		android:typeface="serif" />
 
+	<TextView
+		android:id="@+id/welcome_version_tv"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignBaseline="@+id/welcome_help_butt"
+		android:layout_alignBottom="@+id/welcome_help_butt"
+		android:layout_alignLeft="@+id/welcome_settings_butt"
+		android:text="@string/welcome_version_number"
+		android:textColor="@color/red"
+		android:textAppearance="?android:attr/textAppearanceSmall" />
+
 </RelativeLayout>
