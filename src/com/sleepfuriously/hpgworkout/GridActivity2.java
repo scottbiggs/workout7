@@ -2,6 +2,10 @@
  * This Activity displays the 2D grid of all the workouts.
  * From here the user selects workouts to do.
  *
+ * Version #2:
+ * 		This uses a STATIC AsyncTask, in an attempt to work
+ * 		during an orientation change.
+ *
  * UI Details:
  * -----------
  *
@@ -49,6 +53,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.AsyncTask.Status;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
@@ -65,7 +70,7 @@ import android.widget.Toast;
 
 
 //==================================================
-public class GridActivity extends BaseDialogActivity
+public class GridActivity2 extends BaseDialogActivity
 					implements OnClickListener,
 							OnLongClickListener {
 
@@ -123,23 +128,22 @@ public class GridActivity extends BaseDialogActivity
 	//	Other Data
 	//-------------------
 
-	private static GridSyncTask m_sync_task;
+//	private GridASyncTask m_sync_task;
+
+	/**
+	 * Since GridASyncTask is static, it may persist
+	 * when this Activity is destroyed.  This variable
+	 * will be passed back to us via
+	 * onRetainLastConfiguationInstance() and
+	 * getLastNonConfigurationInstance().
+	 */
+	private GridASyncTask m_task = null;
 
 	/*
 	 * This is used to number the rows (and keep track of
 	 * how many we have).  It's incremented in onProgressUpdate().
 	 */
 	int m_row_count = 0;
-
-	/**
-	 * This is the main data structure for this Activity.
-	 * Each element of this array holds all the information
-	 * to draw a row.  add_row() will know what to do with it.
-	 *
-	 * Once used to construct the grid, these should be deleted
-	 * to save space.  onPostExecute() would be a good place.
-	 */
-	GridRow m_row_info[] = null;
 
 	/**
 	 * This is the column number for the column that represents
@@ -190,14 +194,72 @@ public class GridActivity extends BaseDialogActivity
 		CELL_TEXT_COLOR = getResources().getColor(R.color.floral_white);
 
 
-		// Start the AsyncTask.
-		new GridSyncTask().execute();
+		// Start the AsyncTask.  This is complicated, as
+		// I'm using a new system with a static ASyncTask.
+		start_async_task();
 	} // onCreate(.)
+
+
+	/*********************
+	 * Does all the work of starting the GridASyncTask.  This
+	 * will connect to an existing GridASyncTask or start a
+	 * new one if necessary.
+	 */
+	private void start_async_task() {
+		// First, try to grab a reference it from a previous
+		// instance of this Activity.
+		m_task = (GridASyncTask) getLastNonConfigurationInstance();
+
+		if (m_task == null) {
+			// There is no GridASyncTask running, so go ahead
+			// and start it up.
+			start_progress_dialog(R.string.loading_str);
+			m_task = new GridASyncTask(this);
+			m_task.execute();
+		}
+		else {
+			// There is already a GridASyncTask running,
+			// establish a connection to it.
+			m_task.attach(this);
+			catch_up();
+
+			// todo
+			//	update our progress here, including checking
+			//	to see if it's done.
+			if (m_task.isDone() == false) {
+				start_progress_dialog(R.string.loading_str);
+			}
+
+			// todo
+			//	What do we do when the GridASyncTask is done when
+			//	this is called?
+			//
+//			else {
+//
+//			}
+		}
+	} // start_async_task()
+
+	/**************************
+	 * Call this to have the UI catch up to all the data
+	 * that's stored in the GridASyncTask.
+	 *
+	 * preconditions:
+	 * 	m_task is VALID and pointing to a real object (not null)
+	 */
+	private void catch_up() {
+
+		// Note that we're going to LESS THAN EQUAL here!!!
+		for (int i = 0; i <= m_task.m_last_completed_row; i++) {
+			m_task.onProgressUpdate(new Integer[] {i});
+		}
+
+
+	} // catch_up()
 
 
 	//------------------------------
 	@Override
-
 	protected void onResume() {
 		super.onResume();
 
@@ -207,55 +269,80 @@ public class GridActivity extends BaseDialogActivity
 		m_pref_oldest_first =
 				prefs.getBoolean(getString(R.string.prefs_inspector_oldest_first_key),
 								true);
-
-		if ((m_sync_task != null) &&
-			(m_sync_task.getStatus() == Status.RUNNING)) {
-			start_progress_dialog(R.string.loading_str);
-		}
-		else {
-			Log.d(tag, "onResume(): m_sync_task = " + m_sync_task + ", so start_progress_dialog() is not called.");
-		}
 	} // onResume()
 
 
 	//------------------------------
-		//	Called when a called Activity is done, returning
-		//	focus to this Activity.
-		//
-		//	If it's the AddExerciseActivity, we have a chance to
-		//	see if the user added an exercise or just cancelled.
-		//
-		//	If they DID add a new exercise, we need to reload
-		//	the grid.
-		//
-		//	Same for EditExerciseActivity.
-		//
-		//	And for RowEditActivity, too!
-		//
-		//	Oh yeah, this happens just before onResume() is called.
-		//
-		//	input:
-		//		request_code		Not used.
-		//		result_code		Tells if AddExercise was cancelled.
-		//		data				Not used.
-		//
-		@Override
-		protected void onActivityResult(int request_code,
-										int result_code,
-										Intent data) {
-	//		Log.d(tag, "onActivityResult (request_code = " + request_code
-	//		      + ", result_code = " + result_code
-	//		      + ", data = " + data);
+	//	Called when a called Activity is done, returning
+	//	focus to this Activity.
+	//
+	//	If it's the AddExerciseActivity, we have a chance to
+	//	see if the user added an exercise or just cancelled.
+	//
+	//	If they DID add a new exercise, we need to reload
+	//	the grid.
+	//
+	//	Same for EditExerciseActivity.
+	//
+	//	And for RowEditActivity, too!
+	//
+	//	Oh yeah, this happens just before onResume() is called.
+	//
+	//	input:
+	//		request_code		Not used.
+	//		result_code		Tells if AddExercise was cancelled.
+	//		data				Not used.
+	//
+	@Override
+	protected void onActivityResult(int request_code,
+									int result_code,
+									Intent data) {
+//		Log.d(tag, "onActivityResult (request_code = " + request_code
+//		      + ", result_code = " + result_code
+//		      + ", data = " + data);
 
-			// This means that the Database has changed.  Reload
-			// everything.
-			if (result_code == RESULT_OK) {
-				m_left_table.removeAllViews();
-				m_main_table.removeAllViews();
-				new GridSyncTask().execute();
-			}
+		// This means that the Database has changed.  Reload
+		// everything.
+		if (result_code == RESULT_OK) {
+			m_left_table.removeAllViews();
+			m_main_table.removeAllViews();
 
-		} // onActivityResult (request_code, result_code, data)
+			m_task = null;	// Signal to restart.
+			start_async_task();
+		}
+
+	} // onActivityResult (request_code, result_code, data)
+
+
+	/*************************
+	 * Called when an Activity is destroyed during a
+	 * configuration/orientation change.  Whatever is
+	 * returned here can be retrieved by the new replacement
+	 * Activity by calling getlastNonConfigurationInstance().
+	 *
+	 * @see android.app.Activity#onRetainNonConfigurationInstance()
+	 */
+	@Override
+	public Object onRetainNonConfigurationInstance() {
+		m_task.detach();		// Tells task to remove its reference
+							// to this Activity as I'm about to
+							// die.
+
+		return m_task;	// Return the GridSynceTask so the
+						// new Activity can find it (and then
+						// attach it to the GridASyncTask).
+	}
+
+
+	/**************************
+	 * The loading and the GridASyncTask is done.  Turn
+	 * off any dialogs that are still going.
+	 */
+	public void loading_done() {
+		HorizontalScrollView horiz_sv = (HorizontalScrollView) findViewById(R.id.grid_horiz_sv);
+		stop_progress_dialog();
+		horiz_sv.fullScroll(View.FOCUS_RIGHT);
+	}
 
 
 	//------------------------------
@@ -292,6 +379,20 @@ public class GridActivity extends BaseDialogActivity
 		} // else
 
 	} // onClick(v)
+
+
+	/*****************
+	 * Overridden to clean up some memory.
+	 *
+	 * @see android.app.Activity#onBackPressed()
+	 */
+	@Override
+	public void onBackPressed() {
+		if (m_task != null) {
+			m_task.kill();		// Garbage Collect some memory
+		}
+		super.onBackPressed();
+	}
 
 
 	/*****************
@@ -522,7 +623,11 @@ public class GridActivity extends BaseDialogActivity
 	 *
 	 * 		m_row_info[]		Holds the row that we need!
 	 *
-	 * @param row_num		The index into the m_row_info array
+	 * @param row_info		The array of data for this row.  Holds
+	 * 						more info than we need, but is very
+	 * 						convenient.
+	 *
+	 * @param row_num		The index into the row_info array
 	 * 						for this row.  This is also the row
 	 * 						number (start at 0 for top-most row).
 	 *
@@ -534,11 +639,11 @@ public class GridActivity extends BaseDialogActivity
 	 * 						to seperate the entries.
 	 *
 	 */
-	void add_row (int row_num, boolean lighter, boolean lines) {
+	void add_row (GridRow row_info[], int row_num, boolean lighter, boolean lines) {
 		// The Header.  Just one item for this row.
 		TableRow left_row = new TableRow(this);
 		TextView left_cell = new TextView(this);
-		left_cell.setText(m_row_info[row_num].exer_name);
+		left_cell.setText(row_info[row_num].exer_name);
 		left_cell.setGravity(Gravity.RIGHT);
 		left_cell.setPadding(4, 8, 4, 8);
 		left_cell.setTextAppearance(this, R.style.listlike_button);
@@ -554,7 +659,7 @@ public class GridActivity extends BaseDialogActivity
 		TableRow main_row = new TableRow(this);
 
 		// Loop for each item in this row.
-		for (int i = 0; i < m_row_info[row_num].tag_array.length; i++) {
+		for (int i = 0; i < row_info[row_num].tag_array.length; i++) {
 
 			// Do we want to make lines between items?
 			if (lines) {
@@ -569,10 +674,10 @@ public class GridActivity extends BaseDialogActivity
 
 			// Putting in the string.
 			TextView cell = new TextView(this);
-			if (m_row_info[row_num].tag_array[i] != null) {
+			if (row_info[row_num].tag_array[i] != null) {
 				String seperator = getString(R.string.grid_edit_seperator);
 				String null_str = getString(R.string.grid_cell_negative_symbol);
-				cell.setText(m_row_info[row_num].tag_array[i]
+				cell.setText(row_info[row_num].tag_array[i]
 					.construct_set_cell_string(seperator, null_str));
 			}
 			else {
@@ -591,8 +696,8 @@ public class GridActivity extends BaseDialogActivity
 			}
 			cell.setOnClickListener(this);
 			cell.setOnLongClickListener(this);
-			if (m_row_info[row_num].tag_array[i] != null) {
-				cell.setTag(m_row_info[row_num].tag_array[i]);
+			if (row_info[row_num].tag_array[i] != null) {
+				cell.setTag(row_info[row_num].tag_array[i]);
 			}
 			else {
 				cell.setTag(null);
@@ -605,8 +710,8 @@ public class GridActivity extends BaseDialogActivity
 		// Add the row to the layouts
 		m_left_table.addView(left_row, new TableLayout.LayoutParams());
 		m_main_table.addView(main_row, new TableLayout.LayoutParams());
-
 	} // add_row (head_str, row_strs, lines)
+
 
 	/***************
 	 * Creates an unique ID number given a specified row and column.
@@ -623,12 +728,6 @@ public class GridActivity extends BaseDialogActivity
 	int make_id (int row, int column) {
 		if (column > ROW_BASE) {
 			Log.e(tag, "make_id (" + row + ", " + column + ") has too many columns!  -- ABORTING!");
-			Toast.makeText(GridActivity.this, "Too many columns!!!", Toast.LENGTH_LONG).show();
-			try {
-				Thread.sleep(Toast.LENGTH_LONG);
-			}
-			catch (InterruptedException e) {
-			}
 			finish();
 		}
 		return (row * ROW_BASE + column) * 2;
@@ -683,108 +782,6 @@ public class GridActivity extends BaseDialogActivity
 
 
 	/********************
-	 * Finds the significant data from the Set table using the
-	 * supplied id.
-	 *
-	 * @param	db	A database: locked and loaded!
-	 *
-	 * @param	id	The _ID (DatabaseHelper.COL_ID) of the exercise
-	 * 				set to examine.
-	 *
-	 * @param	significant		The number indicating which data
-	 * 							is the most significant for this
-	 * 							exercise.
-	 *
-	 * @param	occurances		The number of times (including this
-	 * 							one) that this exercise was done
-	 * 							on this day.
-	 *
-	 * @returns	The quantity from the database of the significant
-	 * 			item.  It could be an int or a float, depending
-	 * 			on the item.
-	 * 			-1 if an error happened or nothing existed.
-	 */
-	protected IntFloat get_significant_data (SQLiteDatabase db, int id,
-										int significant) {
-		Cursor cursor = null;
-		int col;
-		IntFloat value = new IntFloat(-1);
-
-
-		// Create the correct columns string for our database
-		// query.  For efficiency, we want to tap JUST THE ONE
-		// column that we want: the most significant column.
-		String columns[] = new String[1];
-		switch (significant) {
-			case DatabaseHelper.EXERCISE_COL_DIST_NUM:
-				columns[0] = DatabaseHelper.SET_COL_DIST;
-				value.is_float = true;
-				break;
-			case DatabaseHelper.EXERCISE_COL_LEVEL_NUM:
-				columns[0] = DatabaseHelper.SET_COL_LEVELS;
-				break;
-			case DatabaseHelper.EXERCISE_COL_CALORIE_NUM:
-				columns[0] = DatabaseHelper.SET_COL_CALORIES;
-				break;
-			case DatabaseHelper.EXERCISE_COL_REP_NUM:
-				columns[0] = DatabaseHelper.SET_COL_REPS;
-				break;
-			case DatabaseHelper.EXERCISE_COL_TIME_NUM:
-				columns[0] = DatabaseHelper.SET_COL_TIME;
-				value.is_float = true;
-				break;
-			case DatabaseHelper.EXERCISE_COL_WEIGHT_NUM:
-				columns[0] = DatabaseHelper.SET_COL_WEIGHT;
-				value.is_float = true;
-				break;
-			case DatabaseHelper.EXERCISE_COL_OTHER_NUM:
-				columns[0] = DatabaseHelper.SET_COL_OTHER;
-				value.is_float = true;
-				break;
-			default:
-				Log.e(tag, "Illegal significant value in get_significant_data(): " + significant);
-				return value;
-		}
-
-		// This should get just the specified column of the
-		// row specified by ID.
-		try {
-			cursor = db.query(DatabaseHelper.SET_TABLE_NAME,
-					columns,
-					DatabaseHelper.COL_ID + " = " + id,	// selection
-					null,	// selectionArgs[]
-					null,	// groupBy
-					null,	// having
-					null);	// orderBy
-
-			if (cursor.moveToFirst() == false) {
-				Log.e(tag, "Could not find the significant database value in get_significant_data(): " + significant);
-				cursor.close();
-				return value;
-			}
-			col = cursor.getColumnIndex(columns[0]);
-			if (value.is_float) {
-				value.set(cursor.getFloat(col));
-			}
-			else {
-				value.set(cursor.getInt(col));
-			}
-		}
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-		finally {
-			if (cursor != null) {
-				cursor.close();
-			}
-
-		}
-
-		return value;
-	} //  get_significant_data()
-
-
-	/********************
 	 * Creates a string suitable for displaying in the top
 	 * row of the Grid.
 	 *
@@ -815,26 +812,6 @@ public class GridActivity extends BaseDialogActivity
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	/**
-	 * This is the info that's published from doInBackground()
-	 * to onProgressUpdate().
-	 *
-	 * It contains all the information that add_row needs to add
-	 * a row to the grid.
-	 */
-	class GridRow {
-		/** Name of the exercise. Null if not used. */
-		String exer_name = null;
-		/** database ID of the exercise */
-		int exer_id = -1;
-		/** The number of the significant column for this exericise. */
-		int exer_sig_marker = -1;
-		/** This array that holds the info for all the cells in this row. */
-		GridElement tag_array[] = null;
-	} // class GridRow
-
-
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	//	The Three Types:
 	//		Params		- The info sent to the task when
 	//					executed.  Not used here.
@@ -845,13 +822,43 @@ public class GridActivity extends BaseDialogActivity
 	//
 	//		Result		- The type of the final result.  Also
 	//					not used here.
-	class GridSyncTask extends AsyncTask <Void, Integer, Void> {
+	static class GridASyncTask extends AsyncTask <Void, Integer, Void> {
+
+		/**
+		 * The Activity that is using this ASyncTask.
+		 * This static class may ONLY access the activity
+		 * through this data member.
+		 * <br/>
+		 * NOTE: Make sure this is not NULL before using!!!
+		 */
+		GridActivity2 m_the_grid = null;
 
 		/**
 		 * This is a list of all the days that the user has
 		 * worked out.
 		 */
-		ArrayList <MyCalendar> mm_days_list;
+		ArrayList <MyCalendar> m_days_list;
+
+
+		/**
+		 * This is the main data structure for this Activity.
+		 * Each element of this array holds all the information
+		 * to draw a row.  add_row() will know what to do with it.
+		 *
+		 * Once used to construct the grid, these should be deleted
+		 * to save space.  onPostExecute() would be a good place.
+		 */
+		GridRow m_row_info[] = null;
+
+		/**
+		 * Whenever a row is completed (filled in completely from the
+		 * DB), this number is changed to reflect that completed row.
+		 * If no rows are completed, it's -1.
+		 * 
+		 * NOTE: this uses the same numbering conventsion as
+		 * onProgressUpdate().  Pay attention!
+		 */
+		int m_last_completed_row = -1;
 
 		/**
 		 * This is a lock to be used for the onProgressUpdate()
@@ -859,8 +866,22 @@ public class GridActivity extends BaseDialogActivity
 		 * called multiple times before it exits, so I'm using
 		 * this to avoid that problem.
 		 */
-		private int m_progress_lock = 0;
+		int m_progress_lock = 0;
 
+		/** Will be TRUE while the ASyncTask is loading up data. */
+		boolean m_done = false;
+
+
+		/***************
+		 * Constructor
+		 *
+		 * Needs a reference to the Activity that's creating
+		 * this ASyncTask.  It's how this static class
+		 * communicates with that Activity.
+		 */
+		public GridASyncTask (GridActivity2 activity) {
+			attach (activity);
+		} // constructor
 
 		/***************
 		 * Called BEFORE the doInBackground(), this allows
@@ -871,7 +892,9 @@ public class GridActivity extends BaseDialogActivity
 		@Override
 		protected void onPreExecute() {
 			Log.d(tag, "onPreExecute() starting.");
-			start_progress_dialog(R.string.loading_str);
+			m_done = false;
+			m_last_completed_row = -1;
+//			start_progress_dialog(R.string.loading_str);
 		}
 
 		/***************
@@ -883,25 +906,22 @@ public class GridActivity extends BaseDialogActivity
 		 */
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			int col;	// temp to hold column info.  Should be used briefly.
+			SQLiteDatabase db = null;
+			int col;
 
 			if (WGlobals.g_db_helper == null) {
 				Log.e(tag, "Trying to do something in the background, but g_db_helper is null!!!");
 				return null;
 			}
 
-			if (m_db != null) {
-				Log.e (tag, "Something wrong in doInBackground(), m_db is not null when starting!!");
-				return null;
-			}
-
 			try {
-				m_db = WGlobals.g_db_helper.getReadableDatabase();
+				db = WGlobals.g_db_helper.getReadableDatabase();
 
-				mm_days_list = construct_days_list(m_db);
+				m_days_list = construct_days_list(db);
 
 				// Signal to onProgressUpdate() to make the first row.
 				publishProgress (0);
+				m_last_completed_row = 0;	// Completed the first row.
 
 				//////////////////////////////
 				//	First Row (dates) is done.
@@ -913,7 +933,7 @@ public class GridActivity extends BaseDialogActivity
 				Cursor ex_cursor = null;
 				try {
 					ex_cursor =
-						m_db.query(
+						db.query(
 							DatabaseHelper.EXERCISE_TABLE_NAME,	// table
 							new String[] {DatabaseHelper.COL_ID,
 										DatabaseHelper.EXERCISE_COL_NAME,
@@ -945,10 +965,10 @@ public class GridActivity extends BaseDialogActivity
 
 						// Set up the tag_array.  It's used for making the
 						// row and REQUIRED by add_row().
-						m_row_info[pos].tag_array = construct_tag_array (m_db,
+						m_row_info[pos].tag_array = construct_tag_array (db,
 								m_row_info[pos].exer_name,
 								m_row_info[pos].exer_sig_marker,
-								mm_days_list);
+								m_days_list);
 
 						// HACK!
 						// This is a little odd.  Position 0 is special.
@@ -961,6 +981,7 @@ public class GridActivity extends BaseDialogActivity
 						// normal method, add_rows--which doesn't understand
 						// this special relationship.
 						publishProgress(pos + 1);
+						m_last_completed_row = pos + 1;
 					} // while there's still a row
 				}
 				catch (SQLException e) {
@@ -978,9 +999,9 @@ public class GridActivity extends BaseDialogActivity
 				e.printStackTrace();
 			}
 			finally {
-				if (m_db != null) {
-					m_db.close();
-					m_db = null;
+				if (db != null) {
+					db.close();
+					db = null;
 				}
 			}
 
@@ -999,20 +1020,25 @@ public class GridActivity extends BaseDialogActivity
 		@Override
 		protected void onProgressUpdate(Integer ... row_num) {
 
-			// Check for a lock condition
+			// todo:
+			// Check for a lock condition--probably not
+			// necessary
 			while (m_progress_lock > 0) {
 				Log.e(tag, "onProgressUpdate() trying to run before it's finished! m_progress_lock = " + m_progress_lock);
-				try {
-					Log.e(tag, "   waiting...");
-					wait(50); // Wait 1/20 of a second
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				SystemClock.sleep(25); // Wait 1/40 of a second
 			}
 
 			// Lock this method!
 			m_progress_lock++;
+
+			while (m_the_grid == null) {
+				// todo
+				// 	HACK!!!  This causes progress to be halted
+				//	until the new activity comes back!  Do BEtter!!!
+				//
+				// Wait until we are attached to a grid
+				SystemClock.sleep(50); // Wait 1/20 of a second
+			}
 
 			// If the first element in the array is "", then this
 			// is the initial calling of this method. AND that
@@ -1022,12 +1048,12 @@ public class GridActivity extends BaseDialogActivity
 			if (row_num[0] == 0) {
 				// Construct our array for the first row (which shows only
 				// dates) and display it.
-				String top_row[] = construct_first_row (mm_days_list);
-				add_row_dates (top_row, true);
+				String top_row[] = construct_first_row (m_days_list);
+				m_the_grid.add_row_dates (top_row, true);
 			}
 			else {
 				// This perpetuates the HACK in doInBackground()!
-				add_row (row_num[0] - 1, false, true);
+				m_the_grid.add_row (m_row_info, row_num[0] - 1, false, true);
 			}
 
 			// Unlock this method
@@ -1038,18 +1064,141 @@ public class GridActivity extends BaseDialogActivity
 		/*****************
 		 * Called after doInBackground() has finished.
 		 * Yup, you can do some more UI stuff here.
-		 *
-		 * I think this is an excellent place to dismiss
-		 * the progress dialog.
 		 */
 		@Override
 		protected void onPostExecute(Void result) {
-			stop_progress_dialog();
-			m_row_info = null;		// Don't need anymore.
-			HorizontalScrollView horiz_sv = (HorizontalScrollView) findViewById(R.id.grid_horiz_sv);
-			horiz_sv.fullScroll(View.FOCUS_RIGHT);
-			Log.d(tag, "onPostExecute() finishing");
+			if (m_the_grid != null) {
+				m_the_grid.loading_done();	// Tell the activity to dismiss
+											// the progress dialog.
+			}
+			// Note that we're done.
+			m_done = true;
 		}
+
+
+		/*****************
+		 * Call this to see if the GridASyncTask is complete.
+		 *
+		 * The done state is reset (to false) when onPreExecute()
+		 * is called, and terminated (true) during onPostExecute().
+		 *
+		 * todo
+		 * 		Make sure that when GridActivity is created,
+		 * 		it checks to see if the GridASyncTask is done.
+		 * 		If it isn't, then it needs to start the
+		 * 		loading dialog after attaching.
+		 * 		Then it needs to catch up on the data and
+		 * 		continue receiving the new rows.
+		 *
+		 * 		If IS done, then the GridActivity needs to
+		 * 		catch up on data and complete the display (with
+		 * 		or without the loading--probably doesn't need it).
+		 */
+		public boolean isDone() {
+			return m_done;
+		}
+
+
+		/********************
+		 * Finds the significant data from the Set table using the
+		 * supplied id.
+		 *
+		 * @param	db	A database: locked and loaded!
+		 *
+		 * @param	id	The _ID (DatabaseHelper.COL_ID) of the exercise
+		 * 				set to examine.
+		 *
+		 * @param	significant		The number indicating which data
+		 * 							is the most significant for this
+		 * 							exercise.
+		 *
+		 * @param	occurances		The number of times (including this
+		 * 							one) that this exercise was done
+		 * 							on this day.
+		 *
+		 * @returns	The quantity from the database of the significant
+		 * 			item.  It could be an int or a float, depending
+		 * 			on the item.
+		 * 			-1 if an error happened or nothing existed.
+		 */
+		protected IntFloat get_significant_data (SQLiteDatabase db, int id,
+											int significant) {
+			Cursor cursor = null;
+			int col;
+			IntFloat value = new IntFloat(-1);
+
+
+			// Create the correct columns string for our database
+			// query.  For efficiency, we want to tap JUST THE ONE
+			// column that we want: the most significant column.
+			String columns[] = new String[1];
+			switch (significant) {
+				case DatabaseHelper.EXERCISE_COL_DIST_NUM:
+					columns[0] = DatabaseHelper.SET_COL_DIST;
+					value.is_float = true;
+					break;
+				case DatabaseHelper.EXERCISE_COL_LEVEL_NUM:
+					columns[0] = DatabaseHelper.SET_COL_LEVELS;
+					break;
+				case DatabaseHelper.EXERCISE_COL_CALORIE_NUM:
+					columns[0] = DatabaseHelper.SET_COL_CALORIES;
+					break;
+				case DatabaseHelper.EXERCISE_COL_REP_NUM:
+					columns[0] = DatabaseHelper.SET_COL_REPS;
+					break;
+				case DatabaseHelper.EXERCISE_COL_TIME_NUM:
+					columns[0] = DatabaseHelper.SET_COL_TIME;
+					value.is_float = true;
+					break;
+				case DatabaseHelper.EXERCISE_COL_WEIGHT_NUM:
+					columns[0] = DatabaseHelper.SET_COL_WEIGHT;
+					value.is_float = true;
+					break;
+				case DatabaseHelper.EXERCISE_COL_OTHER_NUM:
+					columns[0] = DatabaseHelper.SET_COL_OTHER;
+					value.is_float = true;
+					break;
+				default:
+					Log.e(tag, "Illegal significant value in get_significant_data(): " + significant);
+					return value;
+			}
+
+			// This should get just the specified column of the
+			// row specified by ID.
+			try {
+				cursor = db.query(DatabaseHelper.SET_TABLE_NAME,
+						columns,
+						DatabaseHelper.COL_ID + " = " + id,	// selection
+						null,	// selectionArgs[]
+						null,	// groupBy
+						null,	// having
+						null);	// orderBy
+
+				if (cursor.moveToFirst() == false) {
+					Log.e(tag, "Could not find the significant database value in get_significant_data(): " + significant);
+					cursor.close();
+					return value;
+				}
+				col = cursor.getColumnIndex(columns[0]);
+				if (value.is_float) {
+					value.set(cursor.getFloat(col));
+				}
+				else {
+					value.set(cursor.getInt(col));
+				}
+			}
+			catch (SQLException e) {
+				e.printStackTrace();
+			}
+			finally {
+				if (cursor != null) {
+					cursor.close();
+				}
+
+			}
+
+			return value;
+		} //  get_significant_data()
 
 
 		/******************
@@ -1124,6 +1273,9 @@ public class GridActivity extends BaseDialogActivity
 		 * because that's what add_row() needs for the first row of
 		 * the grid (which is what we're preparing, duh!).
 		 *
+		 * preconditions:
+		 * 		m_the_grid		Is Valid!!!
+		 *
 		 * @param days_list		MyCalendar arrayList of all the dates
 		 * 						to display.
 		 */
@@ -1131,7 +1283,7 @@ public class GridActivity extends BaseDialogActivity
 			String top_row[] = new String[days_list.size()];
 			for (int i = 0; i < days_list.size(); i++) {
 				MyCalendar tmp_cal = days_list.get(i);
-				top_row[i] = make_grid_date_string (tmp_cal);
+				top_row[i] = m_the_grid.make_grid_date_string (tmp_cal);
 			}
 			return top_row;
 		} // construct_first_row
@@ -1249,6 +1401,41 @@ public class GridActivity extends BaseDialogActivity
 			return tag_array;
 		} // construct_tag_array (...)
 
-	} // class GridSyncTask
+		/***************
+		 * Connects this task to an Activity, allowing
+		 * this static class to communicate with that
+		 * Activity (so it can get the data we're reading
+		 * from the database!).
+		 *
+		 * @param activity	The Activity that wants to
+		 * 					use the data.
+		 */
+		public void attach (GridActivity2 activity) {
+			m_the_grid = activity;
+		}
+
+		/***************
+		 * Removes our connection to whatever Activity
+		 * we're attached to (or does nothing if we're
+		 * not attached to anything).
+		 *
+		 * This is an important call when the Activity
+		 * goes away (like during an orientation change)
+		 * so that we're not using invalid pointers!
+		 */
+		public void detach() {
+			m_the_grid = null;
+		}
+
+		/****************
+		 * Please call this when the connecting Activity
+		 * goes away for good.  This will free up lots of
+		 * resources!
+		 */
+		public void kill() {
+			m_row_info = null;	// GC
+		}
+
+	} // class GridASyncTask
 
 }

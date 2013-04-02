@@ -176,7 +176,7 @@ public class BaseDialogActivity extends Activity {
 		// Set the volume buttons to control the volume of our sounds
 		// (music).
 		m_custom_dialog.setVolumeControlStream(AudioManager.STREAM_MUSIC);
-		
+
 		// Fill in the Views (title & msg).
 		TextView title = (TextView) m_custom_dialog.findViewById(R.id.dialog_help_title_tv);
 		if (title_id == -1)
@@ -219,7 +219,7 @@ public class BaseDialogActivity extends Activity {
 		// Set the volume buttons to control the volume of our sounds
 		// (music).
 		m_custom_dialog.setVolumeControlStream(AudioManager.STREAM_MUSIC);
-		
+
 		// Fill in the Views (title & msg).
 		TextView title_tv = (TextView) m_custom_dialog.findViewById(R.id.dialog_help_title_tv);
 		title_tv.setText(title);
@@ -264,7 +264,7 @@ public class BaseDialogActivity extends Activity {
 		// Set the volume buttons to control the volume of our sounds
 		// (music).
 		m_custom_dialog.setVolumeControlStream(AudioManager.STREAM_MUSIC);
-		
+
 		TextView title_tv = (TextView) m_custom_dialog.findViewById(R.id.dialog_help_title_tv);
 		if (title_id == -1)
 			title_tv.setText(null);
@@ -323,7 +323,7 @@ public class BaseDialogActivity extends Activity {
 		// Set the volume buttons to control the volume of our sounds
 		// (music).
 		m_custom_dialog.setVolumeControlStream(AudioManager.STREAM_MUSIC);
-		
+
 		TextView title_tv = (TextView) m_custom_dialog.findViewById(R.id.dialog_yes_no_title_tv);
 		if (title_id == -1)
 			title_tv.setText("");
@@ -381,7 +381,7 @@ public class BaseDialogActivity extends Activity {
 		// Set the volume buttons to control the volume of our sounds
 		// (music).
 		m_custom_dialog.setVolumeControlStream(AudioManager.STREAM_MUSIC);
-		
+
 		TextView title_tv = (TextView) m_custom_dialog.findViewById(R.id.dialog_yes_no_title_tv);
 		title_tv.setText(title);
 
@@ -442,7 +442,7 @@ public class BaseDialogActivity extends Activity {
 		// Set the volume buttons to control the volume of our sounds
 		// (music).
 		m_custom_dialog.setVolumeControlStream(AudioManager.STREAM_MUSIC);
-		
+
 		TextView title_tv = (TextView) m_custom_dialog.findViewById(R.id.dialog_yes_no_title_tv);
 		if (title_id == -1)
 			title_tv.setText("");
@@ -530,7 +530,7 @@ public class BaseDialogActivity extends Activity {
 		// Set the volume buttons to control the volume of our sounds
 		// (music).
 		m_prog_dialog.setVolumeControlStream(AudioManager.STREAM_MUSIC);
-		
+
 		m_prog_dialog.show();
 	} // start_progress_dialog()
 

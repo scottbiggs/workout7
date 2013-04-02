@@ -1,14 +1,13 @@
 TODO:
 -----------------
+The doc for the grid is incomplete.  It doesn't say what the numbers
+	in each cell mean.
 
 BUG: Crashes when changing the orientation when at the tabs!!!
 BUG: Crashes when changing orientation at the grid!!!
 
 The icons for the tabs need re-doing. Make 'em shorter/smaller
 	so they don't take as much space.
-
-Make sure that the buttons at the bottom in landscape mode
-	aren't too big!  See land/addexercise.xml for an example.
 
 Minor Bug: The Inspector scrolls to the LAST exercise of that
 	day when in Chronological Order.  I think the first day
@@ -34,6 +33,8 @@ Add a special sound for:
 To speed up the Grid, make it just use the data from the
 	onActivityResult() and load JUST THAT EXERCISE.  Be able
 	to leave everything else as it is.
+Another idea, have the Grid only load so many dates (this requires
+	adding buttons and stuff to allow people to see older dates).
 
 To finalize, remove "super winking" from the startup exercise
 	file.  :)
@@ -55,10 +56,6 @@ Issue:  The graph adds up weight on the same day, that's
 	Like for reps, should it add 'em, show an average,
 	or show the max?  Or maybe have the user select, as
 	described above?
-
-BUG: When the GraphActivity removes x-axis tick lines because they
-	are too close together, the date on the last tick line can be
-	wrong.
 
 TEST the nags.
 
@@ -104,13 +101,8 @@ Check out: http://android-developers.blogspot.com/2009/02/faster-screen-orientat
 Be nice if users can add a blank to their rows.  Do this in
 	the order screen.
 
-How about some very nice sound effects for when the person
-	finishes a set and a workout!
-
 Make sure the layouts look good on all the various
 	devices, especially tablets.
-
-Make landscape versions of layouts.
 
 Fix the strings: there are lots of redundant strings for add
 	and edit screens.
@@ -121,6 +113,11 @@ Make sure that all the drawables are in the correct directories.
 ---------------------------------------------------
 Hmmmmmmmmmmmmmmmmmmmmmm
 ---------------------------------------------------
+BUG: When the GraphActivity removes x-axis tick lines because they
+	are too close together, the date on the last tick line can be
+	wrong.
+	- can't seem to repeat
+
 Try some custom Themes to make things look original.
 	http://developer.android.com/guide/topics/ui/themes.html
 
@@ -220,6 +217,17 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+How about some very nice sound effects for when the person
+	finishes a set and a workout!
+	- ok
+
+Make landscape versions of layouts.
+	- done
+
+Make sure that the buttons at the bottom in landscape mode
+	aren't too big!  See land/addexercise.xml for an example.
+	- done
+
 BUG: When there's just one exercise set, the graph does not
 	show the condition nor the comment.
 	- fixed

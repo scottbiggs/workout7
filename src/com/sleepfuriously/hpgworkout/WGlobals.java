@@ -12,7 +12,6 @@ package com.sleepfuriously.hpgworkout;
 import android.app.Activity;
 import android.app.Application;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -36,7 +35,7 @@ public class WGlobals extends Application {
 //		ADDWEIGHTITEMACTIVITY = 4,	// removed
 		BASEDIALOGACTIVITY = 5,
 		EDITEXERCISEACTIVITY = 6,
-		GRIDACTIVITY = 7,
+		GRIDACTIVITY2 = 7,
 		ROWEDITACTIVITY = 8,
 		WELCOMEACTIVITY = 9,
 		ASETACTIVITY = 10,

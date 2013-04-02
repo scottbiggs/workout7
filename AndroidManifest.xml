@@ -42,7 +42,7 @@
 		</activity>
 
 		<!-- Secondary Activities -->
-		<activity android:name=".GridActivity" />
+		<activity android:name=".GridActivity2" />
 		<activity android:name=".AddExerciseActivity"
 			android:windowSoftInputMode="stateHidden"
 			/>

@@ -143,7 +143,7 @@ public class WelcomeActivity extends BaseDialogActivity
 		WGlobals.play_short_click();
 		switch (v.getId()) {
 			case R.id.welcome_start_butt:
-				itt = new Intent (this, GridActivity.class);
+				itt = new Intent (this, GridActivity2.class);
 				startActivity (itt);
 				break;
 
