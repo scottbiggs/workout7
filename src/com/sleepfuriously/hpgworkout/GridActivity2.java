@@ -52,7 +52,6 @@ import android.database.sqlite.SQLiteException;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.AsyncTask.Status;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -63,6 +62,7 @@ import android.view.View.OnLongClickListener;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -123,12 +123,13 @@ public class GridActivity2 extends BaseDialogActivity
 	 */
 	TableLayout m_left_table, m_main_table;
 
+	/** For handling the scroll of the main table */
+	HorizontalScrollView m_main_table_scroller;
+
 
 	//-------------------
 	//	Other Data
 	//-------------------
-
-//	private GridASyncTask m_sync_task;
 
 	/**
 	 * Since GridASyncTask is static, it may persist
@@ -193,6 +194,7 @@ public class GridActivity2 extends BaseDialogActivity
 		HEADER_TEXT_COLOR = getResources().getColor(R.color.hpg_orange_lighter);
 		CELL_TEXT_COLOR = getResources().getColor(R.color.floral_white);
 
+		m_main_table_scroller = (HorizontalScrollView) findViewById(R.id.grid_horiz_sv);
 
 		// Start the AsyncTask.  This is complicated, as
 		// I'm using a new system with a static ASyncTask.
@@ -254,6 +256,13 @@ public class GridActivity2 extends BaseDialogActivity
 			m_task.onProgressUpdate(new Integer[] {i});
 		}
 
+		// Scroll all the way to the right.
+		m_main_table_scroller.post(new Runnable() {
+			@Override
+			public void run() {
+				m_main_table_scroller.fullScroll(View.FOCUS_RIGHT);
+			}
+		});
 
 	} // catch_up()
 
