@@ -3,9 +3,6 @@ TODO:
 The doc for the grid is incomplete.  It doesn't say what the numbers
 	in each cell mean.
 
-BUG: Crashes when changing the orientation when at the tabs!!!
-BUG: Crashes when changing orientation at the grid!!!
-
 The icons for the tabs need re-doing. Make 'em shorter/smaller
 	so they don't take as much space.
 
@@ -217,6 +214,10 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+BUG: Crashes when changing the orientation when at the tabs!!!
+BUG: Crashes when changing orientation at the grid!!!
+	- fixed, yay!
+
 How about some very nice sound effects for when the person
 	finishes a set and a workout!
 	- ok

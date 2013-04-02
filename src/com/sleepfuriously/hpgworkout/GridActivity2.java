@@ -221,7 +221,6 @@ public class GridActivity2 extends BaseDialogActivity
 			// There is already a GridASyncTask running,
 			// establish a connection to it.
 			m_task.attach(this);
-			catch_up();
 
 			// todo
 			//	update our progress here, including checking
@@ -237,6 +236,7 @@ public class GridActivity2 extends BaseDialogActivity
 //			else {
 //
 //			}
+			catch_up();
 		}
 	} // start_async_task()
 
@@ -406,15 +406,15 @@ public class GridActivity2 extends BaseDialogActivity
 	public boolean onLongClick(View v) {
 		Intent itt;	// For possible new Activities.
 
-		WGlobals.play_long_click();
-
 		int id = v.getId();
 
 		if (id == m_add.getId()) {
+			WGlobals.play_long_click();
 			show_help_dialog(R.string.grid_add_title, R.string.grid_add_msg);
 		}
 
 		else if (id == m_order.getId()) {
+			WGlobals.play_long_click();
 			show_help_dialog(R.string.grid_order_title, R.string.grid_order_msg);
 		}
 
@@ -422,6 +422,8 @@ public class GridActivity2 extends BaseDialogActivity
 		else {
 			// If the ID is odd, they clicked the header
 			if (id % 2 == 1) {
+				WGlobals.play_long_click();
+
 				// Go to the tab Activity, but tell it to activate
 				// the EditExercise tab.
 				itt = new Intent (this, ExerciseTabHostActivity.class);
@@ -450,6 +452,8 @@ public class GridActivity2 extends BaseDialogActivity
 				int set_count = ge.size();
 
 				if (set_count == 1) {
+					WGlobals.play_long_click();
+
 					// Go to EditSetActivity
 					itt = new Intent (this, EditSetActivity.class);
 					itt.putExtra(EditSetActivity.ID_KEY, ge.get_first_id());
@@ -854,7 +858,7 @@ public class GridActivity2 extends BaseDialogActivity
 		 * Whenever a row is completed (filled in completely from the
 		 * DB), this number is changed to reflect that completed row.
 		 * If no rows are completed, it's -1.
-		 * 
+		 *
 		 * NOTE: this uses the same numbering conventsion as
 		 * onProgressUpdate().  Pay attention!
 		 */
@@ -1193,6 +1197,7 @@ public class GridActivity2 extends BaseDialogActivity
 			finally {
 				if (cursor != null) {
 					cursor.close();
+					cursor = null;
 				}
 
 			}
@@ -1299,6 +1304,9 @@ public class GridActivity2 extends BaseDialogActivity
 		 * Since this info will be stuffed in the Tag of each
 		 * TextView, the returned array is called tag_array.
 		 *
+		 * todo
+		 * 	This is where the slow-down happens!
+		 *
 		 * @param db			Readable and ready to go.
 		 *
 		 * @param ex_name	The name of the exercise.
@@ -1381,6 +1389,8 @@ public class GridActivity2 extends BaseDialogActivity
 						col = cursor.getColumnIndex(DatabaseHelper.COL_ID);
 						set_id = cursor.getInt(col);
 
+						// todo
+						//	THIS is the slow call!!!!
 						set_sig = get_significant_data(db, set_id, ex_sig);
 					}
 					else {
