@@ -459,10 +459,9 @@
 	<string name="grid_help_title">Help!</string>
 	<string name="grid_help_button">help</string>
 	<string name="grid_help_msg">Yeah, this screen can look
-		very complicated, but it\'s really not. Here you see the main
-		bit that displays all the data for all your workouts.
-		Also here is where you select the specific exercise you
-		want to do next.
+		very complicated, but it\'s really not. What you see here
+		is rather like a spreadsheet for all your exercises and
+		the sets you have done for those exercises.
 		\n\nQuick and dirty:
 		\n-To record a new set for an exercise, just
 		tap on the exercise name.
@@ -473,10 +472,8 @@
 		\n\n\u2013For the *real* beginner:\n
 		Workouts consist of a series
 		of exercises, often done in multiple sets. On this screen,
-		select an exercise to perform from the left-most column.
-		Another screen will pop up
-		where you will enter the details of the set. To perform
-		another set, select this exercise again.
+		each cell represents all the sets of that exercise you have
+		done in one day.
 		\n\nDon\'t see the
 		exercise you want to perform (or you don\'t see any
 		exercises at all)\? press \"add exercise\" to enter a

@@ -42,6 +42,7 @@
 package com.sleepfuriously.hpgworkout;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -224,23 +225,16 @@ public class GridActivity2 extends BaseDialogActivity
 			// establish a connection to it.
 			m_task.attach(this);
 
-			// todo
-			//	update our progress here, including checking
-			//	to see if it's done.
+			// If the ASyncTask is still working, re-start
+			// the progress dialog.
 			if (m_task.isDone() == false) {
 				start_progress_dialog(R.string.loading_str);
 			}
 
-			// todo
-			//	What do we do when the GridASyncTask is done when
-			//	this is called?
-			//
-//			else {
-//
-//			}
 			catch_up();
 		}
 	} // start_async_task()
+
 
 	/**************************
 	 * Call this to have the UI catch up to all the data
@@ -694,6 +688,11 @@ public class GridActivity2 extends BaseDialogActivity
 					.construct_set_cell_string(seperator, null_str));
 			}
 			else {
+				// todo
+				//	Maybe we can optimize this a bit.  Do we even need
+				//	a TextView at all?  Can't we just tell the TextViews
+				//	which column to go in instead of just piling them
+				//	up???
 				cell.setText("");
 			}
 			cell.setPadding(4, 8, 4, 8);
@@ -724,6 +723,113 @@ public class GridActivity2 extends BaseDialogActivity
 		m_left_table.addView(left_row, new TableLayout.LayoutParams());
 		m_main_table.addView(main_row, new TableLayout.LayoutParams());
 	} // add_row (head_str, row_strs, lines)
+
+
+	/*****************
+	 * This is a faster version--I'm experimenting with using NULL
+	 * TextViews.
+	 *
+	 * Adds a given row at a time, starting from top for the
+	 * first call and going down with each successive call.
+	 *
+	 * preconditions:
+	 * 		m_left_table		ready to receive data
+	 *
+	 * 		m_main_table		also ready
+	 *
+	 * 		m_row_info[]		Holds the row that we need!
+	 *
+	 * @param row_info		The array of data for this row.  Holds
+	 * 						more info than we need, but is very
+	 * 						convenient.
+	 *
+	 * @param row_num		The index into the row_info array
+	 * 						for this row.  This is also the row
+	 * 						number (start at 0 for top-most row).
+	 *
+	 * @param	lighter		When true, draw this row in a lighter
+	 * 						color than normal.  This helps the
+	 * 						user distinguish rows more easily.
+	 *
+	 * @param	lines		When true, draw horizontal lines
+	 * 						to seperate the entries.
+	 *
+	 */
+	void add_row_faster (GridRow row_info[], int row_num, boolean lighter, boolean lines) {
+		// The Header.  Just one item for this row.
+		TableRow left_row = new TableRow(this);
+		TextView left_cell = new TextView(this);
+		left_cell.setText(row_info[row_num].exer_name);
+		left_cell.setGravity(Gravity.RIGHT);
+		left_cell.setPadding(4, 8, 4, 8);
+		left_cell.setTextAppearance(this, R.style.listlike_button);
+		left_cell.setTextColor(HEADER_TEXT_COLOR);
+		left_cell.setBackgroundColor(NORMAL_BACKGROUND_COLOR);
+		left_cell.setId(make_header_id(row_num));
+		left_cell.setOnClickListener(this);
+		left_cell.setOnLongClickListener(this);
+		left_row.addView(left_cell);
+
+		// The main table row.  An array of strings
+		// are going into this row.
+		TableRow main_row = new TableRow(this);
+
+		// Loop for each item in this row.
+		for (int i = 0; i < row_info[row_num].tag_array.length; i++) {
+
+			// Do we want to make lines between items?
+			if (lines) {
+				TableRow.LayoutParams lp =
+						new TableRow.LayoutParams (1,
+								TableRow.LayoutParams.FILL_PARENT);
+				View line = new View(this);
+				line.setLayoutParams(lp);
+				line.setBackgroundColor(Color.WHITE);
+				main_row.addView(line);
+			}
+
+			// Putting in the string.
+			TextView cell = new TextView(this);
+			if (row_info[row_num].tag_array[i] != null) {
+				cell.setText(row_info[row_num].tag_array[i]
+					.construct_set_cell_string_faster());
+			}
+			else {
+				// todo
+				//	Maybe we can optimize this a bit.  Do we even need
+				//	a TextView at all?  Can't we just tell the TextViews
+				//	which column to go in instead of just piling them
+				//	up???
+				cell.setText("");
+			}
+			cell.setPadding(4, 8, 4, 8);
+			cell.setId(make_id (row_num, i));
+			cell.setTextAppearance(this, R.style.listlike_button);
+			cell.setGravity(Gravity.CENTER_HORIZONTAL);
+			cell.setTextColor(CELL_TEXT_COLOR);
+			if (i == m_today_column) {
+				cell.setBackgroundColor(TODAY_BACKGROUND_COLOR);
+			}
+			else {
+				cell.setBackgroundColor(NORMAL_BACKGROUND_COLOR);
+			}
+			cell.setOnClickListener(this);
+			cell.setOnLongClickListener(this);
+			if (row_info[row_num].tag_array[i] != null) {
+				cell.setTag(row_info[row_num].tag_array[i]);
+			}
+			else {
+				cell.setTag(null);
+			}
+
+			// Adding the column data to the row
+			main_row.addView(cell);
+		} // for each column
+
+		// Add the row to the layouts
+		m_left_table.addView(left_row, new TableLayout.LayoutParams());
+		m_main_table.addView(main_row, new TableLayout.LayoutParams());
+	} // add_row_faster (head_str, row_strs, lines)
 
 
 	/***************
@@ -837,6 +943,8 @@ public class GridActivity2 extends BaseDialogActivity
 	//					not used here.
 	static class GridASyncTask extends AsyncTask <Void, Integer, Void> {
 
+		private static final String tag = "GridASyncTask";
+
 		/**
 		 * The Activity that is using this ASyncTask.
 		 * This static class may ONLY access the activity
@@ -862,6 +970,13 @@ public class GridActivity2 extends BaseDialogActivity
 		 * to save space.  onPostExecute() would be a good place.
 		 */
 		GridRow m_row_info[] = null;
+
+		/**
+		 * Holds info about the various exercises.  Each entry is hashed
+		 * about the name of the exercise, allowing quick access to the
+		 * exercise data.
+		 */
+		HashMap<String, ExerciseData> m_exercise_data = new HashMap<String, ExerciseData>();
 
 		/**
 		 * Whenever a row is completed (filled in completely from the
@@ -907,6 +1022,7 @@ public class GridActivity2 extends BaseDialogActivity
 			Log.d(tag, "onPreExecute() starting.");
 			m_done = false;
 			m_last_completed_row = -1;
+			m_exercise_data.clear();
 //			start_progress_dialog(R.string.loading_str);
 		}
 
@@ -926,6 +1042,9 @@ public class GridActivity2 extends BaseDialogActivity
 				Log.e(tag, "Trying to do something in the background, but g_db_helper is null!!!");
 				return null;
 			}
+
+			/** for debugging */
+			long time = SystemClock.uptimeMillis();
 
 			try {
 				db = WGlobals.g_db_helper.getReadableDatabase();
@@ -969,18 +1088,30 @@ public class GridActivity2 extends BaseDialogActivity
 						m_row_info[pos] = new GridRow();
 
 						// Grab the info about this exercise from the cursor.
+						ExerciseData ex_data = new ExerciseData();
+
 						col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_NAME);
-						m_row_info[pos].exer_name = ex_cursor.getString(col);
+						ex_data.name = ex_cursor.getString(col);
+						m_row_info[pos].exer_name = ex_data.name;
+
 						col = ex_cursor.getColumnIndex(DatabaseHelper.COL_ID);
-						m_row_info[pos].exer_id = ex_cursor.getInt(col);
+						ex_data._id = ex_cursor.getInt(col);
+						m_row_info[pos].exer_id = ex_data._id;
+
 						col = ex_cursor.getColumnIndex(DatabaseHelper.EXERCISE_COL_SIGNIFICANT);
-						m_row_info[pos].exer_sig_marker = ex_cursor.getInt(col);
+						ex_data.significant = ex_cursor.getInt(col);
+						m_row_info[pos].exer_sig_marker = ex_data.significant;
+
 
 						// Set up the tag_array.  It's used for making the
 						// row and REQUIRED by add_row().
-						m_row_info[pos].tag_array = construct_tag_array (db,
-								m_row_info[pos].exer_name,
-								m_row_info[pos].exer_sig_marker,
+//						m_row_info[pos].tag_array = construct_tag_array (db,
+//								m_row_info[pos].exer_name,
+//								m_row_info[pos].exer_sig_marker,
+//								m_days_list);
+
+						m_row_info[pos].tag_array = construct_tag_array_faster (db,
+								ex_data,
 								m_days_list);
 
 						// HACK!
@@ -1008,7 +1139,6 @@ public class GridActivity2 extends BaseDialogActivity
 
 				}
 			} catch (SQLiteException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			finally {
@@ -1017,6 +1147,8 @@ public class GridActivity2 extends BaseDialogActivity
 					db = null;
 				}
 			}
+
+			Log.d(tag, "time for doInBackground: " + (SystemClock.uptimeMillis() - time));
 
 			return null;
 		} // doInBackground (...)
@@ -1033,7 +1165,6 @@ public class GridActivity2 extends BaseDialogActivity
 		@Override
 		protected void onProgressUpdate(Integer ... row_num) {
 
-			// todo:
 			// Check for a lock condition--probably not
 			// necessary
 			while (m_progress_lock > 0) {
@@ -1051,6 +1182,7 @@ public class GridActivity2 extends BaseDialogActivity
 				//
 				// Wait until we are attached to a grid
 				SystemClock.sleep(50); // Wait 1/20 of a second
+				Log.e(tag, "onProgressUpdate() waiting for m_the_grid to be valid.");
 			}
 
 			// If the first element in the array is "", then this
@@ -1066,7 +1198,8 @@ public class GridActivity2 extends BaseDialogActivity
 			}
 			else {
 				// This perpetuates the HACK in doInBackground()!
-				m_the_grid.add_row (m_row_info, row_num[0] - 1, false, true);
+//				m_the_grid.add_row (m_row_info, row_num[0] - 1, false, true);
+				m_the_grid.add_row_faster (m_row_info, row_num[0] - 1, false, true);
 			}
 
 			// Unlock this method
@@ -1094,18 +1227,6 @@ public class GridActivity2 extends BaseDialogActivity
 		 *
 		 * The done state is reset (to false) when onPreExecute()
 		 * is called, and terminated (true) during onPostExecute().
-		 *
-		 * todo
-		 * 		Make sure that when GridActivity is created,
-		 * 		it checks to see if the GridASyncTask is done.
-		 * 		If it isn't, then it needs to start the
-		 * 		loading dialog after attaching.
-		 * 		Then it needs to catch up on the data and
-		 * 		continue receiving the new rows.
-		 *
-		 * 		If IS done, then the GridActivity needs to
-		 * 		catch up on data and complete the display (with
-		 * 		or without the loading--probably doesn't need it).
 		 */
 		public boolean isDone() {
 			return m_done;
@@ -1400,7 +1521,10 @@ public class GridActivity2 extends BaseDialogActivity
 
 						// todo
 						//	THIS is the slow call!!!!
+						//	Yeah, it's causing the SQLite cache to overflow, sigh.
 						set_sig = get_significant_data(db, set_id, ex_sig);
+						// test - very fast
+//						set_sig.i = 666; set_sig.is_float = false;
 					}
 					else {
 						i++;
@@ -1419,6 +1543,116 @@ public class GridActivity2 extends BaseDialogActivity
 
 			return tag_array;
 		} // construct_tag_array (...)
+
+
+
+		/********************
+		 * The FAST version.  Doesn't bother getting any Significant
+		 * data.
+		 *
+		 * Creates the array that holds important information
+		 * about each workout set for a given exercise.  This
+		 * information is needed when the user clicks on the
+		 * textview that this represents.
+		 *
+		 * Since this info will be stuffed in the Tag of each
+		 * TextView, the returned array is called tag_array.
+		 *
+		 * @param db			Readable and ready to go.
+		 *
+		 * @param ex_data	Data about the exercise.  It only
+		 * 					needs the name, _ID, and significant.
+		 *
+		 * @param days_list	Holds the list of all the days that
+		 * 					the user has worked out.
+		 *
+		 * @return	tag_array, as described above.  It could
+		 * 			contain only empty (null) elements.  But
+		 * 			it WILL contain the right amount of 'em.
+		 */
+		GridElement[] construct_tag_array_faster (
+								SQLiteDatabase db,
+								ExerciseData ex_data,
+								ArrayList<MyCalendar> days_list) {
+			int col;		// used for quick column references
+
+			if (db == null) {
+				Log.e(tag, "Uninitialized database in construct_tag_array()!!!");
+			}
+
+			// Allocate and initialize the tag_array.
+			GridElement tag_array[] = new GridElement[days_list.size()];
+			for (int i = 0; i < tag_array.length; i++) {
+				tag_array[i] = null;
+			}
+
+			// Get all the sets matching this exercise
+			Cursor cursor = null;
+			try {
+				cursor = db.query(
+					DatabaseHelper.SET_TABLE_NAME, // table
+					new String[] {DatabaseHelper.COL_ID,
+								DatabaseHelper.SET_COL_DATEMILLIS}, // columns
+					DatabaseHelper.SET_COL_NAME + " =? ",
+					new String[] {ex_data.name},
+					null,
+					null,
+					DatabaseHelper.SET_COL_DATEMILLIS,	// orderBy
+					null);
+
+				// Construct the tag_array.  First, check to see if
+				// there's anything at all to add to it.
+				if (cursor.moveToFirst() == false) {
+					// No matching exercise sets, so we're done!
+					return tag_array;
+				}
+
+				// Get info from this cursor: What day did this set
+				// happen?  What's the ID for this set?  And what
+				// is the value of the significant part of the set?
+				col = cursor.getColumnIndex(DatabaseHelper.SET_COL_DATEMILLIS);
+				MyCalendar set_date = new MyCalendar (cursor.getLong(col));
+
+				col = cursor.getColumnIndex(DatabaseHelper.COL_ID);
+				int set_id = cursor.getInt(col);
+
+				// Ready to loop.  Not doing anything other than counting
+				// the number of sets per day.
+				int i = 0;
+				do {
+					if (days_list.get(i).is_same_day(set_date)) {
+						if (tag_array[i] == null) {
+							tag_array[i] = new GridElement();
+						}
+						tag_array[i].add(set_id);
+						tag_array[i].set_name(ex_data.name);
+						if (cursor.moveToNext() == false) {
+							break;
+						}
+						col = cursor.getColumnIndex(DatabaseHelper.SET_COL_DATEMILLIS);
+						set_date = new MyCalendar (cursor.getLong(col));
+
+						col = cursor.getColumnIndex(DatabaseHelper.COL_ID);
+						set_id = cursor.getInt(col);
+					}
+					else {
+						i++;
+					}
+				} while (i < days_list.size());
+			}
+			catch (SQLException e) {
+				e.printStackTrace();
+			}
+			finally {
+				if (cursor != null) {
+					cursor.close();
+					cursor = null;
+				}
+			}
+
+			return tag_array;
+		} // construct_tag_array (...)
+
 
 		/***************
 		 * Connects this task to an Activity, allowing

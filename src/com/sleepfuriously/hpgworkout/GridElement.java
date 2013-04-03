@@ -68,6 +68,19 @@ class GridElement {
 		return m_count;
 	}
 
+	/***********************
+	 * Just like regular add, but adds a null
+	 * in the significant list.
+	 *
+	 * @see #add(int, IntFloat)
+	 */
+	int add (int _id) {
+		m_id_list.add(_id);
+		m_sig_list.add(null);
+		m_count++;
+		return m_count;
+	}
+
 
 	/*********************
 	 * Stores the string as the exercise name.  Very useful
@@ -151,8 +164,10 @@ class GridElement {
 		IntFloat max = new IntFloat(-1);
 
 		for (int i = 0; i < m_count; i++) {
-			if (m_sig_list.get(i).greater(max)) {
-				max = m_sig_list.get(i);
+			if (m_sig_list.get(i) != null) {
+				if (m_sig_list.get(i).greater(max)) {
+					max = m_sig_list.get(i);
+				}
 			}
 		}
 		return max;
@@ -192,7 +207,7 @@ class GridElement {
 	 * @return	The resulting String or null if ge == null.
 	 */
 	public String construct_set_cell_string (String seperator,
-	                                         String sig_def_str) {
+											String sig_def_str) {
 		if (m_count < 1) {
 			return null;
 		}
@@ -203,6 +218,28 @@ class GridElement {
 		return "" + m_count + seperator + get_sig_max();
 	} // construct_set_cell_string (seperator)
 
+
+	/***********************
+	 * Faster version: just the number of sets.
+	 *
+	 * Constructs the string to represent a cell for all the
+	 * sets of a specific exercise on a certain day.
+	 *
+	 * If this is empty, then null is returned.
+	 *
+	 * @param 	seperator	The string to seperate the elements
+	 *
+	 * @param	sig_def_str	The string to display if the Signi-
+	 * 						ficant is -1.
+	 *
+	 * @return	The resulting String or null if ge == null.
+	 */
+	public String construct_set_cell_string_faster() {
+		if (m_count < 1) {
+			return null;
+		}
+		return "" + m_count;
+	} // construct_set_cell_string (seperator)
 
 
 } // class GridElement

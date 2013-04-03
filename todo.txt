@@ -1,10 +1,15 @@
 TODO:
 -----------------
+BUG: It seems that the screen-saver won't come on like it should.  Sigh.
+
+Remove the old GridActivity.
+
 The doc for the grid is incomplete.  It doesn't say what the numbers
 	in each cell mean.
 
 The icons for the tabs need re-doing. Make 'em shorter/smaller
-	so they don't take as much space.
+	so they don't take as much space, especially for landscape
+	orientation!
 
 Minor Bug: The Inspector scrolls to the LAST exercise of that
 	day when in Chronological Order.  I think the first day
