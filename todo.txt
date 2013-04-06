@@ -1,21 +1,22 @@
 TODO:
 -----------------
-BUG: It seems that the screen-saver won't come on like it should.  Sigh.
+Remove the extraneous methods in GridActivity (they've been
+	marked as Deprecated).
 
-Remove the old GridActivity.
-
-The doc for the grid is incomplete.  It doesn't say what the numbers
-	in each cell mean.
-
-The icons for the tabs need re-doing. Make 'em shorter/smaller
-	so they don't take as much space, especially for landscape
-	orientation!
-
+BUG: The auto-scrolling in the Inspector seems quite broken. Sigh.
 Minor Bug: The Inspector scrolls to the LAST exercise of that
 	day when in Chronological Order.  I think the first day
 	makes more sense. AND, when doing Most Recent First, it
 	scrolls to the EARLIEST of that day (not the most recent).
 	Looks like I got these two confused with one-another.
+
+BUG: It seems that the screen-saver won't come on like it should.  Sigh.
+
+Remove the old GridActivity.
+
+The icons for the tabs need re-doing. Make 'em shorter/smaller
+	so they don't take as much space, especially for landscape
+	orientation!
 
 Take away the global preferences vars.  Make each class access the
 	shared preferences the right way.  This is messy and very
@@ -32,12 +33,6 @@ Add a special sound for:
 		spinning wheels
 		MySpinner 				- now is a click
 
-To speed up the Grid, make it just use the data from the
-	onActivityResult() and load JUST THAT EXERCISE.  Be able
-	to leave everything else as it is.
-Another idea, have the Grid only load so many dates (this requires
-	adding buttons and stuff to allow people to see older dates).
-
 To finalize, remove "super winking" from the startup exercise
 	file.  :)
 
@@ -46,10 +41,6 @@ Enable data backups.  See http://developer.android.com/guide/topics/data/backup.
 Remember to make Grid and the Inspector only load so many
 	dates.  Need to provide buttons (or swipes) to load
 	the rest in groups.
-
-Minor Bug: I get warnings from SQLite when loading the Grid
-	and there are LOTS of exercises.  Seems it runs out of
-	memory and requests a different way to do some things.
 
 When graphing, have the option of graphing by exercise
 	set or by day (toggle button or menu?).
@@ -219,6 +210,22 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Minor Bug: I get warnings from SQLite when loading the Grid
+	and there are LOTS of exercises.  Seems it runs out of
+	memory and requests a different way to do some things.
+	- Fixed while optimizing the Grid (see just below).
+
+To speed up the Grid, make it just use the data from the
+	onActivityResult() and load JUST THAT EXERCISE.  Be able
+	to leave everything else as it is.
+Another idea, have the Grid only load so many dates (this requires
+	adding buttons and stuff to allow people to see older dates).
+	- done, whew!
+
+The doc for the grid is incomplete.  It doesn't say what the numbers
+	in each cell mean.
+	- fixed
+
 BUG: Crashes when changing the orientation when at the tabs!!!
 BUG: Crashes when changing orientation at the grid!!!
 	- fixed, yay!

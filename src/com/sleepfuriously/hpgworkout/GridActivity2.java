@@ -63,11 +63,9 @@ import android.view.View.OnLongClickListener;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 //==================================================
@@ -104,6 +102,13 @@ public class GridActivity2 extends BaseDialogActivity
 
 	/** Text color in each cell */
 	public int CELL_TEXT_COLOR;
+
+	/** Padding for each cell of the grid. */
+	public static final int
+		GRID_CELL_PADDING_LEFT = 4,
+		GRID_CELL_PADDING_RIGHT = 4,
+		GRID_CELL_PADDING_TOP = 8,
+		GRID_CELL_PADDING_BOTTOM = 8;
 
 	//-------------------
 	//	Widget Data
@@ -358,6 +363,10 @@ public class GridActivity2 extends BaseDialogActivity
 		// it's easy to figure out!
 		if (v.getClass() == TextView.class) {
 			start_exercise_tabs(v);
+
+			// testing...
+//			TableRow.LayoutParams params = (LayoutParams) v.getLayoutParams();
+//			Toast.makeText(this, "column = " + params.column, Toast.LENGTH_SHORT).show();
 		}
 
 		else {
@@ -646,6 +655,7 @@ public class GridActivity2 extends BaseDialogActivity
 	 * 						to seperate the entries.
 	 *
 	 */
+	@Deprecated
 	void add_row (GridRow row_info[], int row_num, boolean lighter, boolean lines) {
 		// The Header.  Just one item for this row.
 		TableRow left_row = new TableRow(this);
@@ -755,6 +765,7 @@ public class GridActivity2 extends BaseDialogActivity
 	 * 						to seperate the entries.
 	 *
 	 */
+	@Deprecated
 	void add_row_faster (GridRow row_info[], int row_num, boolean lighter, boolean lines) {
 		// The Header.  Just one item for this row.
 		TableRow left_row = new TableRow(this);
@@ -774,9 +785,13 @@ public class GridActivity2 extends BaseDialogActivity
 		// are going into this row.
 		TableRow main_row = new TableRow(this);
 
-		// Loop for each item in this row.
-		for (int i = 0; i < row_info[row_num].tag_array.length; i++) {
+		/** The current column number */
+		int column_count = 0;
 
+		// Loop for each item in this row.
+		// Note that index iterates through row_info.
+		for (int index = 0; index < row_info[row_num].tag_array.length; index++) {
+			Log.d(tag, "add_row_faster(), starting for loop. column_count = " + column_count);
 			// Do we want to make lines between items?
 			if (lines) {
 				TableRow.LayoutParams lp =
@@ -786,28 +801,34 @@ public class GridActivity2 extends BaseDialogActivity
 				line.setLayoutParams(lp);
 				line.setBackgroundColor(Color.WHITE);
 				main_row.addView(line);
+
+				// Set the column manually
+				lp.column = column_count;
+				column_count++;
 			}
 
 			// Putting in the string.
+//			if (row_info[row_num].tag_array[i] != null) {
+//				cell.setText(row_info[row_num].tag_array[i]
+//					.construct_set_cell_string_faster());
+//			}
+			if (row_info[row_num].tag_array[index] == null) {
+				// Nothing for this cell to display, so
+				// don't bother making a new TextView!  Just skip
+				// this one and continue.
+				column_count++;
+				Log.d(tag, "skipping a null cell...");
+				continue;
+			}
 			TextView cell = new TextView(this);
-			if (row_info[row_num].tag_array[i] != null) {
-				cell.setText(row_info[row_num].tag_array[i]
-					.construct_set_cell_string_faster());
-			}
-			else {
-				// todo
-				//	Maybe we can optimize this a bit.  Do we even need
-				//	a TextView at all?  Can't we just tell the TextViews
-				//	which column to go in instead of just piling them
-				//	up???
-				cell.setText("");
-			}
+			cell.setText(row_info[row_num].tag_array[index]
+							.construct_set_cell_string_faster());
 			cell.setPadding(4, 8, 4, 8);
-			cell.setId(make_id (row_num, i));
+			cell.setId(make_id (row_num, index));
 			cell.setTextAppearance(this, R.style.listlike_button);
 			cell.setGravity(Gravity.CENTER_HORIZONTAL);
 			cell.setTextColor(CELL_TEXT_COLOR);
-			if (i == m_today_column) {
+			if (index == m_today_column) {
 				cell.setBackgroundColor(TODAY_BACKGROUND_COLOR);
 			}
 			else {
@@ -815,8 +836,8 @@ public class GridActivity2 extends BaseDialogActivity
 			}
 			cell.setOnClickListener(this);
 			cell.setOnLongClickListener(this);
-			if (row_info[row_num].tag_array[i] != null) {
-				cell.setTag(row_info[row_num].tag_array[i]);
+			if (row_info[row_num].tag_array[index] != null) {
+				cell.setTag(row_info[row_num].tag_array[index]);
 			}
 			else {
 				cell.setTag(null);
@@ -824,6 +845,10 @@ public class GridActivity2 extends BaseDialogActivity
 
 			// Adding the column data to the row
 			main_row.addView(cell);
+			TableRow.LayoutParams params =
+				(TableRow.LayoutParams) cell.getLayoutParams();
+			params.column = column_count;
+			column_count++;
 		} // for each column
 
 		// Add the row to the layouts
@@ -831,6 +856,195 @@ public class GridActivity2 extends BaseDialogActivity
 		m_main_table.addView(main_row, new TableLayout.LayoutParams());
 	} // add_row_faster (head_str, row_strs, lines)
 
+
+	/*****************
+	 * This is a faster version--I set the columns for the
+	 * lines directly and don't bother drawing empty TextViews
+	 * (except for the current day column--I need its background).
+	 *
+	 * Adds a given row at a time, starting from top for the
+	 * first call and going down with each successive call.
+	 *
+	 * preconditions:
+	 * 		m_left_table		ready to receive data
+	 *
+	 * 		m_main_table		also ready
+	 *
+	 * 		m_row_info[]		Holds the row that we need!
+	 *
+	 * @param row_info		The array of data for this row.  Holds
+	 * 						more info than we need, but is very
+	 * 						convenient.
+	 *
+	 * @param row_num		The index into the row_info array
+	 * 						for this row.  This is also the row
+	 * 						number (start at 0 for top-most row).
+	 *
+	 * @param	lighter		When true, draw this row in a lighter
+	 * 						color than normal.  This helps the
+	 * 						user distinguish rows more easily.
+	 *
+	 * @param	lines		When true, draw horizontal lines
+	 * 						to seperate the entries.
+	 *
+	 */
+	void add_row_faster2 (GridRow row_info[], int row_num, boolean lighter, boolean lines) {
+		/** for simplification */
+		GridElement [] row_array = row_info[row_num].tag_array;
+
+		// The Header.  Just one item for this row.
+		TableRow left_row = make_row_header (row_info[row_num].exer_name, row_num);
+
+		// The main table row.  An array of strings
+		// are going into this row.
+		TableRow main_row = new TableRow(this);
+
+		/** The actual columns in the table */
+		int column_count = 0;
+		Log.d(tag, "add_row_faster2: tag_array.length = " + row_array.length);
+
+		// Loop through the various days that the
+		// user has exercised (in order, or course).
+		for (int i = 0; i < row_array.length; i++) {
+
+			// Do the lines
+			if (lines) {
+				View line = make_line (false);
+				main_row.addView(line);
+				// Get the params for this View so we can set
+				// its column.
+				TableRow.LayoutParams params = (TableRow.LayoutParams) line.getLayoutParams();
+				params.column = column_count;
+				column_count++;
+			}
+
+			// Do nothing under two conditions:
+			//	1.  No data for this day.
+			//	2.	The day we're looking at is NOT the current day.
+			if ((row_array[i] == null) && (i != m_today_column)) {
+				Log.d(tag, "add_row_faster2: found a null at i = " + i);
+				column_count++;
+				continue;
+			}
+
+			// Preparing the string for this cell.
+			String cell_str = null;
+
+			// This must be checked because there can be nulls if
+			// we're displaying the current day (to make the column
+			// look good).
+			if (row_array[i] != null) {
+				cell_str = "" + row_array[i].m_count;
+			}
+			TextView tv = make_cell_tv (cell_str,
+										row_num,
+										i,
+										row_info[row_num].tag_array[i]);
+			main_row.addView(tv);
+			column_count++;
+		}
+
+		// Add the row to the layouts
+		m_left_table.addView(left_row, new TableLayout.LayoutParams());
+		m_main_table.addView(main_row, new TableLayout.LayoutParams());
+	} // add_row_faster2 (head_str, row_strs, lines)
+
+
+	/***********************
+	 * Helper functions to simplify the logic of add_row().
+	 *
+	 * Creates the header of each row.
+	 *
+	 * @param str	The string to put in this header cell.
+	 *
+	 * @param id		The id to put in for the TextView so
+	 * 				that when it's clicked, you know which
+	 * 				TextView it is (use the row_num).
+	 */
+	private TableRow make_row_header (String str, int id) {
+		TableRow left_row = new TableRow(this);
+		TextView tv = new TextView(this);
+		tv.setText(str);
+		tv.setGravity(Gravity.RIGHT);
+		tv.setPadding(4, 8, 4, 8);
+		tv.setTextAppearance(this, R.style.listlike_button);
+		tv.setTextColor(HEADER_TEXT_COLOR);
+		tv.setBackgroundColor(NORMAL_BACKGROUND_COLOR);
+		tv.setId(make_header_id(id));
+		tv.setOnClickListener(this);
+		tv.setOnLongClickListener(this);
+		left_row.addView(tv);
+		return left_row;
+	}
+
+	/***********************
+	 * Helper functions to simplify the logic of add_row().
+	 *
+	 * Creates a View that looks like a vertical line
+	 * and returns it.
+	 *
+	 * @param top	True iff this is the top line (column
+	 * 				headers - dates).
+	 */
+	private View make_line (boolean top) {
+		View line = new View(this);
+		TableRow.LayoutParams lp = null;
+
+		// Only need to set the params for the top row.  The
+		// lines in successive rows will inherit this width.
+		// And this parameter screws with the column param.
+		// Yeah, it's a hack, sigh.
+		if (top) {
+			lp = new TableRow.LayoutParams (1, TableRow.LayoutParams.FILL_PARENT);
+			line.setLayoutParams(lp);
+		}
+		line.setBackgroundColor(Color.WHITE);
+		return line;
+	}
+
+	/***********************
+	 * Helper functions to simplify the logic of add_row().
+	 *
+	 * Creates a TextView suitable for display as a cell in
+	 * the grid.
+	 *
+	 * @param str		The string to display in this cell.
+	 *
+	 * @param row_num	The index into the row_info array
+	 * 					for this row.  This is also the row
+	 * 					number (start at 0 for top-most row).
+	 * 					Used to make the cell's id.
+	 *
+	 * @param index		The index into the tag_array
+	 * 					where this cell resides (i).  Used
+	 * 					to determine the cell's id.
+	 *
+	 * @param tag		The object to put into the TextView's
+	 * 					tag.  Null is perfectly valid.
+	 */
+	private TextView make_cell_tv (String str,
+								int row_num,
+								int index,
+								Object tag) {
+		TextView cell = new TextView(this);
+		cell.setText(str);
+		cell.setPadding(GRID_CELL_PADDING_LEFT,  GRID_CELL_PADDING_TOP,  GRID_CELL_PADDING_RIGHT,  GRID_CELL_PADDING_BOTTOM);
+		cell.setId(make_id (row_num, index));
+		cell.setTextAppearance(this, R.style.listlike_button);
+		cell.setGravity(Gravity.CENTER_HORIZONTAL);
+		cell.setTextColor(CELL_TEXT_COLOR);
+
+		if (index == m_today_column) {
+			cell.setBackgroundColor(TODAY_BACKGROUND_COLOR);
+		}
+		else {
+			cell.setBackgroundColor(NORMAL_BACKGROUND_COLOR);
+		}
+		cell.setOnClickListener(this);
+		cell.setOnLongClickListener(this);
+		cell.setTag(tag);
+		return cell;
+	}
 
 	/***************
 	 * Creates an unique ID number given a specified row and column.
@@ -1035,6 +1249,7 @@ public class GridActivity2 extends BaseDialogActivity
 		 */
 		@Override
 		protected Void doInBackground(Void... arg0) {
+//			Log.d(tag, "doInBackground() starting.");
 			SQLiteDatabase db = null;
 			int col;
 
@@ -1052,7 +1267,9 @@ public class GridActivity2 extends BaseDialogActivity
 				m_days_list = construct_days_list(db);
 
 				// Signal to onProgressUpdate() to make the first row.
+//				Log.d(tag, "   doInBackground(): calling publishProgress(0)");
 				publishProgress (0);
+//				Log.d(tag, "   doInBackground(): finished calling publishProgress(0)");
 				m_last_completed_row = 0;	// Completed the first row.
 
 				//////////////////////////////
@@ -1124,7 +1341,9 @@ public class GridActivity2 extends BaseDialogActivity
 						// from anything that is not 0 and send it to the
 						// normal method, add_rows--which doesn't understand
 						// this special relationship.
+//						Log.d(tag, "   doInBackground(): calling publishProgress(), pos + 1= " + pos + 1);
 						publishProgress(pos + 1);
+//						Log.d(tag, "   doInBackground(): done calling publishProgress()");
 						m_last_completed_row = pos + 1;
 					} // while there's still a row
 				}
@@ -1174,6 +1393,7 @@ public class GridActivity2 extends BaseDialogActivity
 
 			// Lock this method!
 			m_progress_lock++;
+//			Log.d (tag, "onProgressUpdate() row_num = " + row_num[0]);
 
 			while (m_the_grid == null) {
 				// todo
@@ -1199,7 +1419,7 @@ public class GridActivity2 extends BaseDialogActivity
 			else {
 				// This perpetuates the HACK in doInBackground()!
 //				m_the_grid.add_row (m_row_info, row_num[0] - 1, false, true);
-				m_the_grid.add_row_faster (m_row_info, row_num[0] - 1, false, true);
+				m_the_grid.add_row_faster2 (m_row_info, row_num[0] - 1, false, true);
 			}
 
 			// Unlock this method
@@ -1452,6 +1672,7 @@ public class GridActivity2 extends BaseDialogActivity
 		 * 			contain only empty (null) elements.  But
 		 * 			it WILL contain the right amount of 'em.
 		 */
+		@Deprecated
 		GridElement[] construct_tag_array (
 								SQLiteDatabase db,
 								String ex_name,

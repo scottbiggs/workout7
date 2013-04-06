@@ -459,31 +459,27 @@
 	<string name="grid_help_title">Help!</string>
 	<string name="grid_help_button">help</string>
 	<string name="grid_help_msg">Yeah, this screen can look
-		very complicated, but it\'s really not. What you see here
-		is rather like a spreadsheet for all your exercises and
+		very complicated, but it\'s really not.
+		\n\nWhat you see:
+		\n\u2013This screen is rather like a spreadsheet for all your exercises and
 		the sets you have done for those exercises.
-		\n\nQuick and dirty:
-		\n-To record a new set for an exercise, just
+		\n\u2013Each row is an exercise. The first item in the row (right-most)
+		is the name of the exercise.
+		\n\u2013The columns are dates when you have worked out. The top of the
+		column tells you the day that column represents.
+		\n\u2013Each cell tells you how many sets of an exercise you did on
+		a given date.
+		\n\nWhat do do:
+		\n\u2013To record a new set for an exercise, just
 		tap on the exercise name.
-		\n-To see
+		\n\u2013To see
 		details of an exercise set, tap directly on its number.
-		\n-Pressing and holding
+		\n\u2013Pressing and holding
 		allows you to edit or delete that entry.
-		\n\n\u2013For the *real* beginner:\n
-		Workouts consist of a series
-		of exercises, often done in multiple sets. On this screen,
-		each cell represents all the sets of that exercise you have
-		done in one day.
-		\n\nDon\'t see the
-		exercise you want to perform (or you don\'t see any
-		exercises at all)\? press \"add exercise\" to enter a
-		new exercise. To edit an exercise or remove it
-		completely, press and hold that particular exercise.
-		\n\nTo modify the order that the exercises appear, press
-		the \"order\" button. You will go to a new screen to
-		change the order of the exercises.
-		\n\nWhen you have finally completed your workout, select
-		the \"done\" button.
+		\n\u2013Hit the \'add\' button to make an exercise just the
+		way you want it.
+		\n\u2013The \'change order\' button will let you rearrange
+		the order the exercises are displayed.
 		\n\nWhew, that was good; time for a shower!
 		</string>
 
