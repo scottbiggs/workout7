@@ -1154,8 +1154,8 @@
 	<string name="inspector_title">Set Inspector</string>
 	<string name="inspector_empty">No Sets to Display</string>
 
-	<string name="inspector_oldest_first_msg">chronological order</string>
-	<string name="inspector_newest_first_msg">most recent first</string>
+	<string name="inspector_oldest_first_msg">oldest at top</string>
+	<string name="inspector_newest_first_msg">most recent at top</string>
 
 	<string name="inspector_another_set_button">do another</string>
 	<string name="inspector_another_help_title">Do Another Set</string>
@@ -1219,8 +1219,8 @@
 	<string name="inspector_menu_brief_label">brief</string>
 	<string name="inspector_menu_verbose_label">verbose</string>
 
-	<string name="inspector_menu_old_first_label">oldest first</string>
-	<string name="inspector_menu_newest_first_label">newest first</string>
+	<string name="inspector_menu_old_first_label">put oldest at top</string>
+	<string name="inspector_menu_newest_first_label">put newest at top</string>
 
 
 	<!-- ============         ============ -->

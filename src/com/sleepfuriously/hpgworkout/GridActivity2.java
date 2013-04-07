@@ -305,10 +305,6 @@ public class GridActivity2 extends BaseDialogActivity
 	protected void onActivityResult(int request_code,
 									int result_code,
 									Intent data) {
-//		Log.d(tag, "onActivityResult (request_code = " + request_code
-//		      + ", result_code = " + result_code
-//		      + ", data = " + data);
-
 		// This means that the Database has changed.  Reload
 		// everything.
 		if (result_code == RESULT_OK) {
@@ -535,11 +531,9 @@ public class GridActivity2 extends BaseDialogActivity
 			}
 			if (m_pref_oldest_first) {
 				itt.putExtra(ExerciseTabHostActivity.KEY_SET_ID, ge.get_first_id());
-				Log.d(tag, "Just set the ID to " + ge.get_first_id());
 			}
 			else {
 				itt.putExtra(ExerciseTabHostActivity.KEY_SET_ID, ge.get_last_id());
-				Log.d(tag, "Just set the ID to " + ge.get_last_id());
 			}
 			itt.putExtra(ExerciseTabHostActivity.TAB_START_KEY,
 					ExerciseTabHostActivity.TAB_INSPECTOR);
@@ -791,7 +785,7 @@ public class GridActivity2 extends BaseDialogActivity
 		// Loop for each item in this row.
 		// Note that index iterates through row_info.
 		for (int index = 0; index < row_info[row_num].tag_array.length; index++) {
-			Log.d(tag, "add_row_faster(), starting for loop. column_count = " + column_count);
+//			Log.d(tag, "add_row_faster(), starting for loop. column_count = " + column_count);
 			// Do we want to make lines between items?
 			if (lines) {
 				TableRow.LayoutParams lp =
@@ -817,7 +811,7 @@ public class GridActivity2 extends BaseDialogActivity
 				// don't bother making a new TextView!  Just skip
 				// this one and continue.
 				column_count++;
-				Log.d(tag, "skipping a null cell...");
+//				Log.d(tag, "skipping a null cell...");
 				continue;
 			}
 			TextView cell = new TextView(this);
@@ -901,7 +895,7 @@ public class GridActivity2 extends BaseDialogActivity
 
 		/** The actual columns in the table */
 		int column_count = 0;
-		Log.d(tag, "add_row_faster2: tag_array.length = " + row_array.length);
+//		Log.d(tag, "add_row_faster2: tag_array.length = " + row_array.length);
 
 		// Loop through the various days that the
 		// user has exercised (in order, or course).
@@ -922,7 +916,7 @@ public class GridActivity2 extends BaseDialogActivity
 			//	1.  No data for this day.
 			//	2.	The day we're looking at is NOT the current day.
 			if ((row_array[i] == null) && (i != m_today_column)) {
-				Log.d(tag, "add_row_faster2: found a null at i = " + i);
+//				Log.d(tag, "add_row_faster2: found a null at i = " + i);
 				column_count++;
 				continue;
 			}
@@ -1233,7 +1227,7 @@ public class GridActivity2 extends BaseDialogActivity
 		 */
 		@Override
 		protected void onPreExecute() {
-			Log.d(tag, "onPreExecute() starting.");
+//			Log.d(tag, "onPreExecute() starting.");
 			m_done = false;
 			m_last_completed_row = -1;
 			m_exercise_data.clear();
