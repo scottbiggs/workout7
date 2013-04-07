@@ -4,13 +4,17 @@
 					Beta [0.8 .. 1.0)
 					Release [1.0 ..
 
-		Pro version will be a seperate project, but will have
+	Version Codes are numbered the same as the version name times 1000.
+	So versionName 0.751 will have a versionCode of 751 (starting with
+	version 0.6 or 600).
+
+		Pro and Lite versions will be a seperate project, but will have
 		similar numbering.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.sleepfuriously.hpgworkout"
-	android:versionCode="1"
-	android:versionName="0.5"
+	android:versionCode="600"
+	android:versionName="0.6"
 	android:installLocation="auto"
 	>
 

@@ -163,7 +163,6 @@
 		event, I hope this app is as useful to you as it has been to me
 		and the people at HPG.
 		\n\nHave a good workout!
-		\n\nVersion 0.8 (Alpha)
 		</string>
 
 	<string name="welcome_menu_credits_button">show credits</string>
@@ -174,7 +173,7 @@
 		Gym in Austin, Texas\u2014just look for place with the arm
 		sticking out! Programmed by Scott Biggs.</string>
 	<string name="welcome_menu_exit_button">exit</string>
-	<string name="welcome_version_number">v. 0.5 Alpha Test</string>
+	<string name="welcome_version_number">v. 0.6 Alpha Test</string>
 
 	<!-- ============	 ============ -->
 	<!-- ============ Add ============ -->
