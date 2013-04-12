@@ -165,7 +165,7 @@ public class ExerciseTabHostActivity
 			spec = th.newTabSpec("ASetActivity");// No one knows what this is for
 			spec.setContent(aset_itt);
 			spec.setIndicator(getString(R.string.exer_tabhost_tab_aset),
-					res.getDrawable(R.drawable.wheel));
+					res.getDrawable(R.drawable.wheel_aset));
 			th.addTab(spec);
 		}
 //		Log.v(tag, "\t\tASet complete...");
@@ -181,7 +181,7 @@ public class ExerciseTabHostActivity
 			spec = th.newTabSpec("InspectorActivity2");// No one knows what this is for
 			spec.setContent(inspector_itt);
 			spec.setIndicator(getString(R.string.exer_tabhost_tab_inspector),
-					res.getDrawable(R.drawable.user));
+					res.getDrawable(R.drawable.user_inspector));
 			th.addTab(spec);
 		}
 
@@ -205,7 +205,7 @@ public class ExerciseTabHostActivity
 			spec = th.newTabSpec("GraphActivity");// No one knows what this is for
 			spec.setContent(graph_itt);
 			spec.setIndicator(getString(R.string.exer_tabhost_tab_graph),
-					res.getDrawable(R.drawable.web));
+					res.getDrawable(R.drawable.web_graph));
 			th.addTab(spec);
 		}
 
@@ -217,7 +217,7 @@ public class ExerciseTabHostActivity
 			spec = th.newTabSpec("EditExerciseActivity");// No one knows what this is for
 			spec.setContent(edit_itt);
 			spec.setIndicator(getString(R.string.exer_tabhost_tab_edit_exercise),
-					res.getDrawable(R.drawable.writingpad));
+					res.getDrawable(R.drawable.writingpad_edit_exercise));
 			th.addTab(spec);
 		}
 

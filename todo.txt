@@ -1,5 +1,7 @@
 TODO:
 -----------------
+Preferences: the Fat Wheels Label don't match the text below.
+
 Remove the extraneous methods in GridActivity (they've been
 	marked as Deprecated).
 
