@@ -1,5 +1,15 @@
 TODO:
 -----------------
+Okay, what the hell is the Graph supposed to do when there are
+	different things on the same date?  You did ten reps the first
+	set, twenty the second, and thirty the third.  Should it average,
+	sum, pick the highest, lowest, graph 'em all (which is sort of
+	what it's doing now), --what?
+
+BUG!  Look at the graph for something, make sure that Reps + XXX
+	is ON.  Change the unit of XXX.  Now the Graph can't figure
+	out what to draw now that the unit has changed.
+
 Preferences: the Fat Wheels Label don't match the text below.
 
 Remove the extraneous methods in GridActivity (they've been
@@ -19,6 +29,7 @@ Remove the old GridActivity.
 The icons for the tabs need re-doing. Make 'em shorter/smaller
 	so they don't take as much space, especially for landscape
 	orientation!
+	---Or...use the VerticalTabhost.
 
 Take away the global preferences vars.  Make each class access the
 	shared preferences the right way.  This is messy and very
