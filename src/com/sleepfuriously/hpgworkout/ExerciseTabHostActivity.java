@@ -8,10 +8,12 @@ package com.sleepfuriously.hpgworkout;
 import android.app.Dialog;
 import android.app.TabActivity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
@@ -147,90 +149,12 @@ public class ExerciseTabHostActivity
 		//	Do the Tabs
 		//------------
 
-//		Log.v(tag, "\tbuilding tabs...");
-		Resources res = getResources();	// Used to get Drawables (icons, etc.)
 		TabHost th = getTabHost();	// Gets the TabHost from this Activity
-		TabSpec spec;	// reusable for each tab
+		setup_tabs(th);
 
-		// Create an Intent to launch the first tab. (ASet = 0)
-		// NOTE 1:
-		//		It seems that this Activity's onCreate is called immediately.
-		//		From my tests, the first Activity is always called as
-		//		it is defined.
-		//
-		{
-			Intent aset_itt = new Intent(this, AddSetActivity.class);
-			aset_itt.putExtra(KEY_NAME, m_ex_name);
-			aset_itt.putExtra(KEY_SET_ID, m_id);
-			spec = th.newTabSpec("ASetActivity");// No one knows what this is for
-			spec.setContent(aset_itt);
-			spec.setIndicator(getString(R.string.exer_tabhost_tab_aset),
-					res.getDrawable(R.drawable.wheel_aset));
-			th.addTab(spec);
-		}
-//		Log.v(tag, "\t\tASet complete...");
-
-		// Now the second tab (Inspector = 1)
-		// NOTE:
-		//		Need to create a NEW Intent--can't reuse the other one
-		//		as that'll create a lot of confusion.
-		{
-			Intent inspector_itt = new Intent(this, InspectorActivity2.class);
-			inspector_itt.putExtra(KEY_NAME, m_ex_name);
-			inspector_itt.putExtra(KEY_SET_ID, m_id);
-			spec = th.newTabSpec("InspectorActivity2");// No one knows what this is for
-			spec.setContent(inspector_itt);
-			spec.setIndicator(getString(R.string.exer_tabhost_tab_inspector),
-					res.getDrawable(R.drawable.user_inspector));
-			th.addTab(spec);
-		}
-
-//		// (History = 2)
-//		{
-//			Intent hist_itt = new Intent(this, HistoryActivity.class);
-//			hist_itt.putExtra(KEY_NAME, m_ex_name);
-//			hist_itt.putExtra(KEY_SET_ID, m_id);
-//			spec = th.newTabSpec("HistoryActivity");// No one knows what this is for
-//			spec.setContent(hist_itt);
-//			spec.setIndicator(getString(R.string.exer_tabhost_tab_history),
-//					res.getDrawable(R.drawable.users));
-//			th.addTab(spec);
-//		}
-
-		// (Graph = 2)
-		{
-			Intent graph_itt = new Intent(this, GraphActivity.class);
-			graph_itt.putExtra(KEY_NAME, m_ex_name);
-			graph_itt.putExtra(KEY_SET_ID, m_id);
-			spec = th.newTabSpec("GraphActivity");// No one knows what this is for
-			spec.setContent(graph_itt);
-			spec.setIndicator(getString(R.string.exer_tabhost_tab_graph),
-					res.getDrawable(R.drawable.web_graph));
-			th.addTab(spec);
-		}
-
-		// (EditExercise = 3)
-		{
-			Intent edit_itt = new Intent(this, EditExerciseActivity.class);
-			edit_itt.putExtra(KEY_NAME, m_ex_name);
-			edit_itt.putExtra(KEY_SET_ID, m_id);
-			spec = th.newTabSpec("EditExerciseActivity");// No one knows what this is for
-			spec.setContent(edit_itt);
-			spec.setIndicator(getString(R.string.exer_tabhost_tab_edit_exercise),
-					res.getDrawable(R.drawable.writingpad_edit_exercise));
-			th.addTab(spec);
-		}
-
-//		Log.v(tag, "\t\tAll tabs built.");
-
-		// Finally set the start tab.
+		// Set the start tab.
 		th.setCurrentTab(start);
-
-//		Log.v(tag, "\tCurrent tab set.");
-
 		th.setOnTabChangedListener(this);
-
-
 //		Log.v(tag, "onCreate done.");
 	} // onCreate(.)
 
@@ -244,20 +168,166 @@ public class ExerciseTabHostActivity
 	}
 
 
-	//--------------------------------
-	@Override
-	protected void onPause() {
-		Log.v(tag, "onPause()");
-		super.onPause();
-	}
+	/**************************
+	 * Creates tabs for the normal (portrait) orientation.
+	 * Call this during onCreate().
+	 *
+	 * @param	th		Reference to our TabHost.
+	 */
+	private void setup_tabs (TabHost th) {
+		boolean landscape =
+				getResources().getConfiguration().orientation ==
+						Configuration.ORIENTATION_LANDSCAPE;
+
+		if (landscape) {
+			// Seperates the tabs a bit.
+			th.getTabWidget().setDividerDrawable(R.drawable.tab_divider);
+		}
 
 
-	//--------------------------------
-	@Override
-	protected void onStop() {
-		Log.v(tag, "onStop()");
-		super.onStop();
-	}
+		{
+			// Create an Intent to launch the first tab. (ASet = 0)
+			// NOTE 1:
+			//		It seems that this Activity's onCreate is called immediately.
+			//		From my tests, the first Activity is always called as
+			//		it is defined.
+			//
+			Intent aset_itt = new Intent(this, AddSetActivity.class);
+			aset_itt.putExtra(KEY_NAME, m_ex_name);
+			aset_itt.putExtra(KEY_SET_ID, m_id);
+
+			setup_a_tab (th, "ASetActivity",
+						R.string.exer_tabhost_tab_aset,
+						R.drawable.wheel_aset,
+						aset_itt, landscape);
+		}
+
+		{
+			// Now the second tab (Inspector = 1)
+			// NOTE:
+			//		Need to create a NEW Intent--can't reuse the other one
+			//		as that'll create a lot of confusion.
+			Intent inspector_itt = new Intent(this, InspectorActivity2.class);
+			inspector_itt.putExtra(KEY_NAME, m_ex_name);
+			inspector_itt.putExtra(KEY_SET_ID, m_id);
+			setup_a_tab (th, "InspectorActivity",
+						R.string.exer_tabhost_tab_inspector,
+						R.drawable.user_inspector,
+						inspector_itt, landscape);
+		}
+
+
+		{
+			// (Graph = 2)
+			Intent graph_itt = new Intent(this, GraphActivity.class);
+			graph_itt.putExtra(KEY_NAME, m_ex_name);
+			graph_itt.putExtra(KEY_SET_ID, m_id);
+			setup_a_tab (th, "GraphActivity",
+						R.string.exer_tabhost_tab_graph,
+						R.drawable.web_graph,
+						graph_itt, landscape);
+		}
+
+		{
+			// (EditExercise = 3)
+			Intent edit_itt = new Intent(this, EditExerciseActivity.class);
+			edit_itt.putExtra(KEY_NAME, m_ex_name);
+			edit_itt.putExtra(KEY_SET_ID, m_id);
+			setup_a_tab (th, "EditExerciseActivity",
+						R.string.exer_tabhost_tab_edit_exercise,
+						R.drawable.writingpad_edit_exercise,
+						edit_itt, landscape);
+		}
+
+	} // portrait_tab_setup()
+
+
+	/**************************
+	 * Adds a tab with the given tag and intent to the TabHost.
+	 * Depending on whether we're in landscape mode, this'll
+	 * figure out which tab-type to make (thin or full).
+	 *
+	 * @param th			The TabHost to stuff this tab into.
+	 * @param tab_tag	The tag for this tab (no one seems to know what
+	 * 					this is for.
+	 * @param name_id	The resource id for the display string to use
+	 * 					for this tab.
+	 * @param icon_id	A reference to the resource for this tab's icon.
+	 * 					Ignored if landscape == true.
+	 * @param intent		The intent to start the Activity that will show
+	 * 					this tab's contents.  Eg: new Intent(this, FooActivity.class)
+	 * @param landscape	True if we're in landscape mode.  We'll do a thin
+	 * 					tab with no icon in this case.
+	 */
+	private void setup_a_tab (TabHost th,
+								final String tab_tag,
+								final int name_id,
+								final int icon_id,
+								Intent intent,
+								boolean landscape) {
+		if (landscape) {
+			setup_thin_tab(th, tab_tag, name_id, intent);
+		}
+		else {
+			setup_full_tab(th, tab_tag, name_id, icon_id, intent);
+		}
+	} // setup_a_tab(...)
+
+
+	/**************************
+	 * Adds a tab with the given tag and intent
+	 * to the TabHost.  This makes a REGULAR tab,
+	 * including a label AND icon.
+	 *
+	 * @param th			The TabHost to stuff this tab into.
+	 * @param tab_tag	The tag for this tab (no one seems to know what
+	 * 					this is for.
+	 * @param name_id	The resource id for the display string to use
+	 * 					for this tab.
+	 * @param icon_id	A reference to the resource for this tab's icon.
+	 * @param intent		The intent to start the Activity that will show
+	 * 					this tab's contents.  Eg: new Intent(this, FooActivity.class)
+	 */
+	private void setup_full_tab (TabHost th,
+								final String tab_tag,
+								final int name_id,
+								final int icon_id,
+								Intent intent) {
+		TabSpec spec = th.newTabSpec(tab_tag);
+		spec.setContent(intent);
+		spec.setIndicator(getString(name_id), getResources().getDrawable(icon_id));
+		th.addTab(spec);
+	} // setup_full_tab(...)
+
+	/****************************
+	 * Adds a tab with an Activity for its content, but this
+	 * version shows ONLY the text--no icon!  Nice for landscape
+	 * mode.
+	 *
+	 * @param th			The TabHost to stuff this tab into.
+	 * @param tab_tag	The tag for this tab (no one seems to know what
+	 * 					this is for.
+	 * @param name_id	The resource id for the display string to use
+	 * 					for this tab.
+	 * @param intent		The intent to start the Activity that will show
+	 * 					this tab's contents.  Eg: new Intent(this, FooActivity.class)
+	 */
+	private void setup_thin_tab (TabHost th,
+								final String tab_tag,
+								final int name_id,
+								Intent intent) {
+		View tabview = LayoutInflater.from(th.getContext())
+										.inflate(R.layout.tabs_bg, null);
+		TextView tv = (TextView) tabview.findViewById(R.id.tabsText);
+		tv.setText(getString(name_id));
+
+		// Here it is in a more normal form.
+		TabSpec spec = th.newTabSpec(tab_tag);
+		spec.setIndicator(tabview);
+		spec.setContent(intent);
+
+		th.addTab(spec);
+	} // setup_thin_tab(th, tab_tag, intent
 
 
 	//--------------------------------

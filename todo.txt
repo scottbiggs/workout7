@@ -1,5 +1,7 @@
 TODO:
 -----------------
+Minor: The new custom tabs don't have the gray line beneath them!
+
 Okay, what the hell is the Graph supposed to do when there are
 	different things on the same date?  You did ten reps the first
 	set, twenty the second, and thirty the third.  Should it average,
@@ -25,11 +27,6 @@ Minor Bug: The Inspector scrolls to the LAST exercise of that
 BUG: It seems that the screen-saver won't come on like it should.  Sigh.
 
 Remove the old GridActivity.
-
-The icons for the tabs need re-doing. Make 'em shorter/smaller
-	so they don't take as much space, especially for landscape
-	orientation!
-	---Or...use the VerticalTabhost.
 
 Take away the global preferences vars.  Make each class access the
 	shared preferences the right way.  This is messy and very
@@ -223,6 +220,13 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+The icons for the tabs need re-doing. Make 'em shorter/smaller
+	so they don't take as much space, especially for landscape
+	orientation!
+	---Or...use the VerticalTabhost.
+	- Took a third option: in landscape mode, I have a custom
+	tab that doesn't use an icon.  Saves a lot of space.
+
 Minor Bug: I get warnings from SQLite when loading the Grid
 	and there are LOTS of exercises.  Seems it runs out of
 	memory and requests a different way to do some things.
