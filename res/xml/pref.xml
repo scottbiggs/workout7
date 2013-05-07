@@ -45,8 +45,8 @@
 			android:key="@string/prefs_wheel_width_key"
 			android:dependency="@string/prefs_wheel_key"
 			android:defaultValue="false"
-			android:summaryOff="@string/prefs_wheel_width_skinny"
-			android:summaryOn="@string/prefs_wheel_width_fat"
+			android:summaryOn="@string/prefs_wheel_width_skinny"
+			android:summaryOff="@string/prefs_wheel_width_fat"
 			android:title="@string/prefs_wheel_width_title" />
 
 	</PreferenceCategory>
