@@ -63,13 +63,13 @@ public class GView extends View {
 			PADDING_RIGHT = 26, PADDING_TOP = 46, PADDING_BOTTOM = 54;
 
 	/** Number of pixels between y-axis lines in the graph. */
-	private static final int VERT_LINE_SPACING = 70;
+//	private static final int VERT_LINE_SPACING = 70;
 
 	/** Number of pixesl between x-axis lines in the graph. */
-	private static final int HORIZ_LINE_SPACING = 30;
+//	private static final int HORIZ_LINE_SPACING = 30;
 
 	/** The y value to draw labels along the X-axis. */
-	private static final int X_AXIS_LABEL_Y = 5;
+//	private static final int X_AXIS_LABEL_Y = 5;
 
 	/** Distance between the graph area and the x-axis area */
 	private static final int X_AXIS_GAP = 10;
