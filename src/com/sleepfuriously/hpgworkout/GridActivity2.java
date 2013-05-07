@@ -9,7 +9,7 @@
  * UI Details:
  * -----------
  *
- * - A "working" animation displays when this loads the first
+ * - A "loading" dialog displays when this loads the first
  * 	time.
  *
  * - The left column (which is always visible) is the list of
