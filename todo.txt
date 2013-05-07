@@ -1,7 +1,5 @@
 TODO:
 -----------------
-Minor: The new custom tabs don't have the gray line beneath them!
-
 Okay, what the hell is the Graph supposed to do when there are
 	different things on the same date?  You did ten reps the first
 	set, twenty the second, and thirty the third.  Should it average,
@@ -12,17 +10,15 @@ BUG!  Look at the graph for something, make sure that Reps + XXX
 	is ON.  Change the unit of XXX.  Now the Graph can't figure
 	out what to draw now that the unit has changed.
 
-Remove the extraneous methods in GridActivity (they've been
-	marked as Deprecated).
-
 BUG: The auto-scrolling in the Inspector seems quite broken. Sigh.
 Minor Bug: The Inspector scrolls to the LAST exercise of that
 	day when in Chronological Order.  I think the first day
 	makes more sense. AND, when doing Most Recent First, it
 	scrolls to the EARLIEST of that day (not the most recent).
 	Looks like I got these two confused with one-another.
-
-BUG: It seems that the screen-saver won't come on like it should.  Sigh.
+Bug: After editing an exercise set from the Inspector, it then
+	scrolls to the BOTTOM!  VERY Annoying!  (I'm using Most
+	Recent on Top).
 
 Remove the old GridActivity.
 
@@ -50,8 +46,6 @@ Remember to make Grid and the Inspector only load so many
 	dates.  Need to provide buttons (or swipes) to load
 	the rest in groups.
 
-When graphing, have the option of graphing by exercise
-	set or by day (toggle button or menu?).
 Issue:  The graph adds up weight on the same day, that's
 	good.  But it shouldn't add up everything, should it?
 	Like for reps, should it add 'em, show an average,
@@ -113,10 +107,16 @@ Make sure that all the drawables are in the correct directories.
 ---------------------------------------------------
 Moved to Web
 ---------------------------------------------------
+The graphs can be scrolled off the screen!  Make 'em stop moving
+	at the screen edge.
 
 ---------------------------------------------------
 Hmmmmmmmmmmmmmmmmmmmmmm
 ---------------------------------------------------
+When graphing, have the option of graphing by exercise
+	set or by day (toggle button or menu?).
+	- Too many options, not doing it.
+
 BUG: When the GraphActivity removes x-axis tick lines because they
 	are too close together, the date on the last tick line can be
 	wrong.
@@ -162,6 +162,8 @@ In the graphs, instead of horizontal lines, divide up into
 ---------------------------------------------------
 TABLED (for later versions)
 ---------------------------------------------------
+Minor: The new custom tabs don't have the gray line beneath them!
+
 Make custom DatePicker and TimePicker to match the widgets
 	of this program.  And while we're at it, add sound to
 	these, too.
@@ -221,6 +223,13 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+BUG: It seems that the screen-saver won't come on like it should.  Sigh.
+	- Seems to work fine for me.
+
+Remove the extraneous methods in GridActivity (they've been
+	marked as Deprecated).
+	- done
+
 Preferences: the Fat Wheels Label don't match the text below.
 	- fixed
 
