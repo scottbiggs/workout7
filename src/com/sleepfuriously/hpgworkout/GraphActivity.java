@@ -351,6 +351,9 @@ public class GraphActivity
 				break;
 
 			case MotionEvent.ACTION_MOVE:
+				// todo:
+				//	Only pan if we're not at an end of the screen.
+
 				if (m_touch_mode == DRAG) {
 //					Log.d(tag, "DRAG event.  Pan amount = " + event.getX());
 					// Only interested in left-right pans
