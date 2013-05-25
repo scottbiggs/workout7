@@ -222,6 +222,10 @@ public class WheelFloat implements OnWheelChangedListener {
 				val = min_val();
 		}
 
+		// In case they have extra decimal points, round to
+		// the nearest tenth.
+		val = (Math.round(val * 10f)) / 10f;
+
 		// This is so much easier if we convert to a string
 		// and parse it that way.
 		String str = Float.toString(val), whole_str, frac_str;
