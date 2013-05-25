@@ -204,11 +204,32 @@ public class WheelFloat implements OnWheelChangedListener {
 	/***********************
 	 * Sets the wheels to the given value.  If a TextView
 	 * is attached, it'll be changed, too.
+	 * 
+	 * Rounding is done to the nearest tenth.
 	 *
 	 * @param val	We'll do our best to set the number
 	 * 				to this value.
 	 */
 	public void set_value (float val, boolean anim) {
+		set_value (val, -1, anim);
+	}
+
+	
+	/***********************
+	 * Sets the wheels to the given value.  If a TextView
+	 * is attached, it'll be changed, too.
+	 *
+	 * @param val	We'll do our best to set the number
+	 * 				to this value.
+	 * @param round	The power of ten to round to.  For example,
+	 * 				0 is to round to the 1s unit (1876.582 becomes 1877).
+	 * 				1 rounds to the nearest tens (1876.582 becomes
+	 * 				1880).  And -2 would round to the nearest hundredth
+	 * 				(1876.582 becomes 1876.58).
+	 * 			
+	 * @param anim
+	 */
+	public void set_value (float val, int round, boolean anim) {
 		// Easy case first.
 		if (val == 0f) {
 			reset(anim);
@@ -222,9 +243,9 @@ public class WheelFloat implements OnWheelChangedListener {
 				val = min_val();
 		}
 
-		// In case they have extra decimal points, round to
-		// the nearest tenth.
-		val = (Math.round(val * 10f)) / 10f;
+		// Round the value according to the input.
+		float tens = (float) Math.pow(10d, (double)(-1 * round));
+		val = (Math.round(val * tens)) / tens;
 
 		// This is so much easier if we convert to a string
 		// and parse it that way.
