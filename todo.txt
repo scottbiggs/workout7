@@ -1,5 +1,11 @@
 TODO:
 -----------------
+Bug: Adding multiple sets does not change the graph (it apparantly
+	didn't get its dirty bit set).  NOTE: This only happened when
+	I added a second workout set--couldn't get it to repeat after
+	that.  This indicates that the problem may be in the Graph stuff
+	instead of the AddSet stuff.
+
 Okay, what the hell is the Graph supposed to do when there are
 	different things on the same date?  You did ten reps the first
 	set, twenty the second, and thirty the third.  Should it average,
@@ -19,8 +25,6 @@ Minor Bug: The Inspector scrolls to the LAST exercise of that
 Bug: After editing an exercise set from the Inspector, it then
 	scrolls to the BOTTOM!  VERY Annoying!  (I'm using Most
 	Recent on Top).
-
-Remove the old GridActivity.
 
 Take away the global preferences vars.  Make each class access the
 	shared preferences the right way.  This is messy and very
@@ -223,6 +227,13 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Remove the old GridActivity.
+	- done (a while ago)
+
+How about using MY dialog instead of the built-in numbers
+	for entering numbers from the AddActivity?
+	- done
+
 BUG: It seems that the screen-saver won't come on like it should.  Sigh.
 	- Seems to work fine for me.
 

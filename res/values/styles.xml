@@ -25,10 +25,12 @@
 		<item name="android:gravity">left</item>
 	</style>
 
+
 	<!-- =============================================== -->
 	<!-- Text Styles										-->
 	<!-- =============================================== -->
 
+		<!-- White  -->
 	<style
 		name="white_text_tiny"
 		parent="@android:style/TextAppearance">
@@ -105,6 +107,113 @@
 		<item name="android:textColor">@color/ivory</item>
 		<item name="android:textSize">24sp</item>
 		<item name="android:typeface">serif</item>
+	</style>
+
+
+		<!-- Black  -->
+	<style
+		name="black_text_tiny"
+		parent="@android:style/TextAppearance">
+		<item name="android:textColor">@color/black</item>
+		<item name="android:textSize">12sp</item>
+	</style>
+
+	<style
+		name="black_text_smaller"
+		parent="@android:style/TextAppearance">
+		<item name="android:textColor">@color/black</item>
+		<item name="android:textSize">14sp</item>
+	</style>
+
+	<style
+		name="black_text_small"
+		parent="@android:style/TextAppearance">
+		<item name="android:textColor">@color/black</item>
+		<item name="android:textSize">15sp</item>
+	</style>
+
+	<style
+		name="black_text_smallish"
+		parent="@android:style/TextAppearance">
+		<item name="android:textColor">@color/black</item>
+		<item name="android:textSize">16sp</item>
+	</style>
+
+	<style
+		name="black_text_medium"
+		parent="@android:style/TextAppearance">
+		<item name="android:textColor">@color/black</item>
+		<item name="android:textSize">18sp</item>
+	</style>
+
+	<style
+		name="black_text_large"
+		parent="@android:style/TextAppearance">
+		<item name="android:textColor">@color/black</item>
+		<item name="android:textSize">20sp</item>
+	</style>
+
+	<style
+		name="black_text_extra_large"
+		parent="@android:style/TextAppearance">
+		<item name="android:textColor">@color/black</item>
+		<item name="android:textSize">24sp</item>
+	</style>
+
+	<style
+		name="black_alt_small"
+		parent="@android:style/TextAppearance">
+		<item name="android:textColor">@color/black</item>
+		<item name="android:textSize">15sp</item>
+		<item name="android:typeface">serif</item>
+	</style>
+	<style
+		name="black_alt_medium"
+		parent="@android:style/TextAppearance">
+		<item name="android:textColor">@color/black</item>
+		<item name="android:textSize">18sp</item>
+		<item name="android:typeface">serif</item>
+	</style>
+	<style
+		name="black_alt_large"
+		parent="@android:style/TextAppearance">
+		<item name="android:textColor">@color/black</item>
+		<item name="android:textSize">20sp</item>
+		<item name="android:typeface">serif</item>
+	</style>
+	<style
+		name="black_alt_extra_large"
+		parent="@android:style/TextAppearance">
+		<item name="android:textColor">@color/black</item>
+		<item name="android:textSize">24sp</item>
+		<item name="android:typeface">serif</item>
+	</style>
+
+
+	<!-- =============================================== -->
+	<!-- FauxEditText Style
+			Use this to make a TextView look like an
+			EditText.  Primarily used in the Add Set
+			layouts.										-->
+	<!-- =============================================== -->
+
+	<style name="faux_edittext_aset_wheels">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:background">@android:drawable/edit_text</item>
+		<item name="android:textAppearance">?android:attr/textAppearanceMediumInverse</item>
+		<item name="android:textColor">@android:color/primary_text_light</item>
+		<item name="android:gravity">right|center_vertical</item>
+		<item name="android:ems">4</item>
+	</style>
+
+	<style name="faux_edittext_aset_no_wheels">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:background">@android:drawable/edit_text</item>
+		<item name="android:textAppearance">?android:attr/textAppearanceMediumInverse</item>
+		<item name="android:textColor">@android:color/primary_text_light</item>
+		<item name="android:gravity">left|center_vertical</item>
 	</style>
 
 </resources>

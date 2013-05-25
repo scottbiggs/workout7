@@ -41,12 +41,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
 import android.view.View.OnKeyListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -59,8 +57,7 @@ public class AddSetActivity
 					OnClickListener,
 					OnLongClickListener,
 					TextWatcher,
-					OnKeyListener,
-					OnFocusChangeListener {
+					OnKeyListener {
 
 
 	//------------------------
@@ -80,12 +77,13 @@ public class AddSetActivity
 
 	Button m_done, m_clear;
 
-	EditText m_reps_et, m_weight_et, m_level_et,
-		m_dist_et,
-		m_time_et,
-		m_other_et,
-		m_notes_et, m_calorie_et;
-
+	/** Where the user can manually set numbers. */
+	TextView m_reps_tv, m_weight_tv, m_level_tv,
+		m_dist_tv,
+		m_time_tv,
+		m_other_tv,
+		m_calorie_tv,
+		m_notes_tv;
 
 	RadioButton m_ok_rb, m_plus_rb, m_minus_rb, m_x_rb;
 
@@ -164,45 +162,38 @@ public class AddSetActivity
 	 * the layout that does NOT contain wheels.
 	 */
 	protected void init_widgets_no_wheels() {
-		m_reps_et = (EditText) findViewById(R.id.aset_reps_et);
-		m_reps_et.setOnLongClickListener(this);
-		m_reps_et.setOnKeyListener(this);
-		m_reps_et.addTextChangedListener(this);
+		m_reps_tv = (TextView) findViewById(R.id.aset_reps_result_tv);
+		m_reps_tv.setOnLongClickListener(this);
+		m_reps_tv.setOnClickListener(this);
 
-		m_weight_et = (EditText) findViewById(R.id.aset_weight_et);
-		m_weight_et.setOnLongClickListener(this);
-		m_weight_et.setOnKeyListener(this);
-		m_weight_et.addTextChangedListener(this);
+		m_weight_tv = (TextView) findViewById(R.id.aset_weight_result_tv);
+		m_weight_tv.setOnLongClickListener(this);
+		m_weight_tv.setOnClickListener(this);
 
-		m_level_et = (EditText) findViewById(R.id.aset_level_et);
-		m_level_et.setOnLongClickListener(this);
-		m_level_et.setOnKeyListener(this);
-		m_level_et.addTextChangedListener(this);
+		m_level_tv = (TextView) findViewById(R.id.aset_level_result_tv);
+		m_level_tv.setOnLongClickListener(this);
+		m_level_tv.setOnClickListener(this);
 
-		m_calorie_et = (EditText) findViewById(R.id.aset_calorie_et);
-		m_calorie_et.setOnLongClickListener(this);
-		m_calorie_et.setOnKeyListener(this);
-		m_calorie_et.addTextChangedListener(this);
+		m_calorie_tv = (TextView) findViewById(R.id.aset_calorie_result_tv);
+		m_calorie_tv.setOnLongClickListener(this);
+		m_calorie_tv.setOnClickListener(this);
 
-		m_dist_et = (EditText) findViewById(R.id.aset_dist_et);
-		m_dist_et.setOnLongClickListener(this);
-		m_dist_et.setOnKeyListener(this);
-		m_dist_et.addTextChangedListener(this);
+		m_dist_tv = (TextView) findViewById(R.id.aset_dist_result_tv);
+		m_dist_tv.setOnLongClickListener(this);
+		m_dist_tv.setOnClickListener(this);
 
-		m_time_et = (EditText) findViewById(R.id.aset_time_et);
-		m_time_et.setOnLongClickListener(this);
-		m_time_et.setOnKeyListener(this);
-		m_time_et.addTextChangedListener(this);
+		m_time_tv = (TextView) findViewById(R.id.aset_time_result_tv);
+		m_time_tv.setOnLongClickListener(this);
+		m_time_tv.setOnClickListener(this);
 
-		m_other_et = (EditText) findViewById(R.id.aset_other_et);
-		m_other_et.setOnLongClickListener(this);
-		m_other_et.setOnKeyListener(this);
-		m_other_et.addTextChangedListener(this);
+		m_other_tv = (TextView) findViewById(R.id.aset_other_result_tv);
+		m_other_tv.setOnLongClickListener(this);
+		m_other_tv.setOnClickListener(this);
 
-		m_notes_et = (EditText) findViewById(R.id.aset_notes_et);
-		m_notes_et.setOnLongClickListener(this);
-		m_notes_et.setOnKeyListener(this);
-		m_notes_et.addTextChangedListener(this);
+		m_notes_tv = (TextView) findViewById(R.id.aset_notes_et);
+		m_notes_tv.setOnLongClickListener(this);
+		m_notes_tv.setOnKeyListener(this);
+		m_notes_tv.addTextChangedListener(this);
 
 		m_ok_rb = (RadioButton) findViewById(R.id.aset_cond_ok_rb);
 		m_ok_rb.setOnLongClickListener(this);
@@ -276,52 +267,36 @@ public class AddSetActivity
 	 * the layout that DOES contain wheels.
 	 */
 	protected void init_widgets_with_wheels() {
-		m_reps_et = (EditText) findViewById(R.id.aset_wheel_reps_result_et);
-		m_reps_et.setOnLongClickListener(this);
-		m_reps_et.setOnKeyListener(this);
-		m_reps_et.addTextChangedListener(this);
-		m_reps_et.setOnFocusChangeListener(this);
+		m_reps_tv = (TextView) findViewById(R.id.aset_wheel_reps_result_tv);
+		m_reps_tv.setOnLongClickListener(this);
+		m_reps_tv.setOnClickListener(this);
 
-		m_weight_et = (EditText) findViewById(R.id.aset_wheel_weight_et);
-		m_weight_et.setOnLongClickListener(this);
-		m_weight_et.setOnKeyListener(this);
-		m_weight_et.addTextChangedListener(this);
-		m_weight_et.setOnFocusChangeListener(this);
+		m_weight_tv = (TextView) findViewById(R.id.aset_wheel_weight_result_tv);
+		m_weight_tv.setOnLongClickListener(this);
+		m_weight_tv.setOnClickListener(this);
 
-		m_level_et = (EditText) findViewById(R.id.aset_wheel_level_et);
-		m_level_et.setOnLongClickListener(this);
-		m_level_et.setOnKeyListener(this);
-		m_level_et.addTextChangedListener(this);
-		m_level_et.setOnFocusChangeListener(this);
+		m_level_tv = (TextView) findViewById(R.id.aset_wheel_level_result_tv);
+		m_level_tv.setOnLongClickListener(this);
+		m_level_tv.setOnClickListener(this);
 
-		m_calorie_et = (EditText) findViewById(R.id.aset_wheel_calorie_et);
-		m_calorie_et.setOnLongClickListener(this);
-		m_calorie_et.setOnKeyListener(this);
-		m_calorie_et.addTextChangedListener(this);
-		m_calorie_et.setOnFocusChangeListener(this);
+		m_calorie_tv = (TextView) findViewById(R.id.aset_wheel_calorie_result_tv);
+		m_calorie_tv.setOnLongClickListener(this);
+		m_calorie_tv.setOnClickListener(this);
 
-		m_dist_et = (EditText) findViewById(R.id.aset_wheel_dist_et);
-		m_dist_et.setOnLongClickListener(this);
-		m_dist_et.setOnKeyListener(this);
-		m_dist_et.addTextChangedListener(this);
-		m_dist_et.setOnFocusChangeListener(this);
+		m_dist_tv = (TextView) findViewById(R.id.aset_wheel_dist_result_tv);
+		m_dist_tv.setOnLongClickListener(this);
+		m_dist_tv.setOnClickListener(this);
 
-		m_time_et = (EditText) findViewById(R.id.aset_wheel_time_et);
-		m_time_et.setOnLongClickListener(this);
-		m_time_et.setOnKeyListener(this);
-		m_time_et.addTextChangedListener(this);
-		m_time_et.setOnFocusChangeListener(this);
+		m_time_tv = (TextView) findViewById(R.id.aset_wheel_time_result_tv);
+		m_time_tv.setOnLongClickListener(this);
+		m_time_tv.setOnClickListener(this);
 
-		m_other_et = (EditText) findViewById(R.id.aset_wheel_other_et);
-		m_other_et.setOnLongClickListener(this);
-		m_other_et.setOnKeyListener(this);
-		m_other_et.addTextChangedListener(this);
-		m_other_et.setOnFocusChangeListener(this);
+		m_other_tv = (TextView) findViewById(R.id.aset_wheel_other_result_tv);
+		m_other_tv.setOnLongClickListener(this);
+		m_other_tv.setOnClickListener(this);
 
-		m_notes_et = (EditText) findViewById(R.id.aset_wheel_notes_et);
-		m_notes_et.setOnLongClickListener(this);
-		m_notes_et.setOnKeyListener(this);
-		m_notes_et.addTextChangedListener(this);
+		m_notes_tv = (TextView) findViewById(R.id.aset_wheel_notes_et);
+		m_notes_tv.setOnLongClickListener(this);
 
 		m_ok_rb = (RadioButton) findViewById(R.id.aset_wheel_cond_ok_rb);
 		m_ok_rb.setOnLongClickListener(this);
@@ -450,10 +425,11 @@ public class AddSetActivity
 	// Fires when a view gains or loses focus.  Of course,
 	// you have to set the view to have such a listener!
 	//
-	//	I'm just listening to the EditText, and when it
-	//	loses focus, I'll tell the appropriate Wheel
+	//	I'm just listening to the TextViews that hold
+	//	numbers, and when each loses focus, I'll tell
+	//	the appropriate Wheel to set its number to that
 	//	to set its number to the ET's value.
-	//
+/*	//
 	@Override
 	public void onFocusChange(View v, boolean hasFocus) {
 
@@ -467,36 +443,36 @@ public class AddSetActivity
 			return;
 		}
 
-		if (v == m_reps_et) {
+		if (v == m_reps_tv) {
 			int val = Integer.parseInt(((EditText) v).getText().toString());
 			m_reps_wheels.set_value(val, true);
 		}
-		else if (v == m_level_et) {
+		else if (v == m_level_tv) {
 			int val = Integer.parseInt(((EditText) v).getText().toString());
 			m_level_wheels.set_value(val, true);
 		}
-		else if (v == m_calorie_et) {
+		else if (v == m_calorie_tv) {
 			int val = Integer.parseInt(((EditText) v).getText().toString());
 			m_calorie_wheels.set_value(val, true);
 		}
-		else if (v == m_weight_et) {
+		else if (v == m_weight_tv) {
 			float val = Float.parseFloat(((EditText) v).getText().toString());
 			m_weight_wheels.set_value(val, true);
 		}
-		else if (v == m_dist_et) {
+		else if (v == m_dist_tv) {
 			float val = Float.parseFloat(((EditText) v).getText().toString());
 			m_dist_wheels.set_value(val, true);
 		}
-		else if (v == m_time_et) {
+		else if (v == m_time_tv) {
 			float val = Float.parseFloat(((EditText) v).getText().toString());
 			m_time_wheels.set_value(val, true);
 		}
-		else if (v == m_other_et) {
+		else if (v == m_other_tv) {
 			float val = Float.parseFloat(((EditText) v).getText().toString());
 			m_other_wheels.set_value(val, true);
 		}
 	} // onFocusChange (v, hasFocus)
-
+*/
 
 	//------------------------------
 	//	Allows this Activity to send message to the caller
@@ -529,6 +505,42 @@ public class AddSetActivity
 			clear();
 		}
 
+		else if (v == m_reps_tv) {
+			activate_number_activity (DatabaseHelper.EXERCISE_COL_REP_NUM,
+				getString(R.string.editset_reps_label),
+				m_reps_tv.getText().toString(), false);
+		}
+		else if (v == m_weight_tv) {
+			activate_number_activity (DatabaseHelper.EXERCISE_COL_WEIGHT_NUM,
+				getString(R.string.editset_weight_label, m_ex_data.weight_unit),
+				m_weight_tv.getText().toString(), true);
+		}
+		else if (v == m_calorie_tv) {
+			activate_number_activity (DatabaseHelper.EXERCISE_COL_CALORIE_NUM,
+				getString(R.string.editset_cals_label),
+				m_calorie_tv.getText().toString(), false);
+		}
+		else if (v == m_dist_tv) {
+			activate_number_activity (DatabaseHelper.EXERCISE_COL_DIST_NUM,
+				getString(R.string.editset_dist_label, m_ex_data.dist_unit),
+				m_dist_tv.getText().toString(), true);
+		}
+		else if (v == m_time_tv) {
+			activate_number_activity (DatabaseHelper.EXERCISE_COL_TIME_NUM,
+				getString(R.string.editset_time_label, m_ex_data.time_unit),
+				m_time_tv.getText().toString(), true);
+		}
+		else if (v == m_level_tv) {
+			activate_number_activity (DatabaseHelper.EXERCISE_COL_LEVEL_NUM,
+				getString(R.string.editset_level_label),
+				m_level_tv.getText().toString(), false);
+		}
+		else if (v == m_other_tv) {
+			activate_number_activity (DatabaseHelper.EXERCISE_COL_OTHER_NUM,
+				getString(R.string.editset_other_label, m_ex_data.other_title, m_ex_data.other_unit),
+				m_other_tv.getText().toString(), true);
+		}
+
 	} // onClick (v)
 
 
@@ -537,43 +549,43 @@ public class AddSetActivity
 	public boolean onLongClick(View v) {
 		WGlobals.play_long_click();
 
-		if (v == m_reps_et) {
+		if (v == m_reps_tv) {
 			show_help_dialog (R.string.aset_reps_help_title,
 					R.string.aset_reps_help_msg);
 			return true;
 		}
 
-		else if (v == m_weight_et) {
+		else if (v == m_weight_tv) {
 			show_help_dialog (R.string.aset_weight_help_title,
 					R.string.aset_weight_help_msg);
 			return true;
 		}
 
-		else if (v == m_level_et) {
+		else if (v == m_level_tv) {
 			show_help_dialog (R.string.aset_level_help_title,
 					R.string.aset_level_help_msg);
 			return true;
 		}
 
-		else if (v == m_calorie_et) {
+		else if (v == m_calorie_tv) {
 			show_help_dialog (R.string.aset_calorie_help_title,
 					R.string.aset_calorie_help_msg);
 			return true;
 		}
 
-		else if (v == m_dist_et) {
+		else if (v == m_dist_tv) {
 			show_help_dialog (R.string.aset_distance_help_title,
 					R.string.aset_distance_help_msg);
 			return true;
 		}
 
-		else if (v == m_time_et) {
+		else if (v == m_time_tv) {
 			show_help_dialog (R.string.aset_time_help_title,
 					R.string.aset_time_help_msg);
 			return true;
 		}
 
-		else if (v == m_other_et) {
+		else if (v == m_other_tv) {
 			String[] args = {m_ex_data.other_title, m_ex_data.other_unit};
 			show_help_dialog (R.string.aset_other_help_title, null,
 					R.string.aset_other_help_msg, args);
@@ -589,7 +601,7 @@ public class AddSetActivity
 			return true;
 		}
 
-		else if (v == m_notes_et) {
+		else if (v == m_notes_tv) {
 			show_help_dialog (R.string.aset_notes_help_title,
 					R.string.aset_notes_help_msg);
 			return true;
@@ -612,9 +624,11 @@ public class AddSetActivity
 
 
 	//-----------------------------------
+	//	Needed to see if the notes has changed (and makes our
+	//	widgets dirty).
+	//
 	@Override
 	public boolean onKey(View v, int keyCode, KeyEvent event) {
-//		Log.v (tag, "onKey() was hit!");
 		m_widgets_dirty = true;
 		return false;
 	}
@@ -639,6 +653,159 @@ public class AddSetActivity
 	}
 
 
+	//-------------------------
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == RESULT_CANCELED) {
+			return;
+		}
+
+		if (requestCode == WGlobals.NUMBERACTIVITY) {
+			m_widgets_dirty = true;
+			m_done.setEnabled(true);
+			int ex_num = data.getIntExtra(NumberActivity.ITT_KEY_RETURN_NUM, -1);
+			switch (ex_num) {
+				case DatabaseHelper.EXERCISE_COL_REP_NUM:
+					{
+						String reps = data.getStringExtra(NumberActivity.ITT_KEY_RETURN_VALUE);
+						if (WGlobals.g_wheel) {
+							// Don't have to set the TV directly as it's connected to
+							// the wheel.
+							m_reps_wheels.set_value(Integer.parseInt(reps), true);
+						}
+						else {
+							m_reps_tv.setText(reps);
+						}
+					}
+					break;
+
+				case DatabaseHelper.EXERCISE_COL_WEIGHT_NUM:
+					{
+						String weight = data.getStringExtra(NumberActivity.ITT_KEY_RETURN_VALUE);
+						if (WGlobals.g_wheel) {
+							m_weight_wheels.set_value(Float.parseFloat(weight), true);
+						}
+						else {
+							m_weight_tv.setText(weight);
+						}
+					}
+					break;
+
+				case DatabaseHelper.EXERCISE_COL_LEVEL_NUM:
+					{
+						String level = data.getStringExtra(NumberActivity.ITT_KEY_RETURN_VALUE);
+						if (WGlobals.g_wheel) {
+							m_level_wheels.set_value(Integer.parseInt(level), true);
+						}
+						else {
+							m_level_tv.setText(level);
+						}
+					}
+					break;
+
+				case DatabaseHelper.EXERCISE_COL_CALORIE_NUM:
+					{
+						String cals = data.getStringExtra(NumberActivity.ITT_KEY_RETURN_VALUE);
+						if (WGlobals.g_wheel) {
+							m_calorie_wheels.set_value(Integer.parseInt(cals), true);
+						}
+						else {
+							m_calorie_tv.setText(cals);
+						}
+					}
+					break;
+
+				case DatabaseHelper.EXERCISE_COL_DIST_NUM:
+					{
+						String dist = data.getStringExtra(NumberActivity.ITT_KEY_RETURN_VALUE);
+						if (WGlobals.g_wheel) {
+							m_dist_wheels.set_value(Float.parseFloat(dist), true);
+						}
+						else {
+							m_dist_tv.setText(dist);
+						}
+					}
+					break;
+
+				case DatabaseHelper.EXERCISE_COL_TIME_NUM:
+					{
+						String time = data.getStringExtra(NumberActivity.ITT_KEY_RETURN_VALUE);
+						if (WGlobals.g_wheel) {
+							m_time_wheels.set_value(Float.parseFloat(time), true);
+						}
+						else {
+							m_time_tv.setText(time);
+						}
+					}
+					break;
+
+				case DatabaseHelper.EXERCISE_COL_OTHER_NUM:
+					{
+						String other = data.getStringExtra(NumberActivity.ITT_KEY_RETURN_VALUE);
+						if (WGlobals.g_wheel) {
+							m_other_wheels.set_value(Float.parseFloat(other), true);
+						}
+						else {
+							m_other_tv.setText(other);
+						}
+					}
+					break;
+
+				default:
+					Toast.makeText(this, "Illegal ex_num in onActivityResult()", Toast.LENGTH_LONG).show();
+					break;
+			}
+		} // returned from NumberActivity
+
+
+
+
+	} // onActivityResult (...)
+
+
+	/***********************
+	 * Calls a new Activity (which looks like a Dialog)
+	 * to get a number.
+	 *
+	 * @param ex_num		The exercise number.  Used for
+	 * 					callbacks.
+	 *
+	 * @param title		The title of this Screen. How
+	 * 					about the set aspect that we're
+	 * 					modifying?
+	 *
+	 * @param orig		The original number (in string
+	 * 					form).  Use NULL if n/a.
+	 *
+	 * @param dec_point	Do you need a decimal point?
+	 *
+	 */
+	private void activate_number_activity (int ex_num,
+										String title,
+										String orig,
+										boolean dec_point) {
+
+		// Fill in the data for the new Activity.
+		Intent itt = new Intent(this, NumberActivity.class);
+		itt.putExtra(NumberActivity.ITT_KEY_TITLE, title);
+
+		if (orig != null) {
+			itt.putExtra(NumberActivity.ITT_KEY_OLD_VALUE_BOOL, true);
+			itt.putExtra(NumberActivity.ITT_KEY_OLD_VALUE_STRING, orig);
+		}
+		else {
+			itt.putExtra(NumberActivity.ITT_KEY_OLD_VALUE_BOOL, false);
+		}
+
+		itt.putExtra(NumberActivity.ITT_KEY_DECIMAL_BOOL, dec_point);
+
+		itt.putExtra(NumberActivity.ITT_KEY_RETURN_NUM, ex_num);
+
+		startActivityForResult(itt, WGlobals.NUMBERACTIVITY);
+
+	} // activate_number_activity (title, orig, dec_point)
+
+
 	/********************
 	 * Sets up the NumberWheel widgets, which require a bit
 	 * of code to look and work correctly.
@@ -657,7 +824,7 @@ public class AddSetActivity
 							R.id.aset_wheel_reps_100,
 							R.id.aset_wheel_reps_1000
 							});
-			m_reps_wheels.set_tv(m_reps_et);
+			m_reps_wheels.set_tv(m_reps_tv);
 		}
 
 		if (m_ex_data.blevel) {
@@ -668,7 +835,7 @@ public class AddSetActivity
 							R.id.aset_wheel_level_100,
 							R.id.aset_wheel_level_1000
 							});
-			m_level_wheels.set_tv(m_level_et);
+			m_level_wheels.set_tv(m_level_tv);
 		}
 
 		if (m_ex_data.bcals) {
@@ -679,7 +846,7 @@ public class AddSetActivity
 							R.id.aset_wheel_calorie_100,
 							R.id.aset_wheel_calorie_1000
 							});
-			m_calorie_wheels.set_tv(m_calorie_et);
+			m_calorie_wheels.set_tv(m_calorie_tv);
 		}
 
 		// The floats
@@ -693,7 +860,7 @@ public class AddSetActivity
 							R.id.aset_wheel_weight_1000
 							},
 							1);
-			m_weight_wheels.set_tv(m_weight_et);
+			m_weight_wheels.set_tv(m_weight_tv);
 		}
 
 		if (m_ex_data.bdist) {
@@ -706,7 +873,7 @@ public class AddSetActivity
 							R.id.aset_wheel_dist_1000
 							},
 							1);
-			m_dist_wheels.set_tv(m_dist_et);
+			m_dist_wheels.set_tv(m_dist_tv);
 		}
 
 		if (m_ex_data.btime) {
@@ -719,7 +886,7 @@ public class AddSetActivity
 							R.id.aset_wheel_time_1000
 							},
 							1);
-			m_time_wheels.set_tv(m_time_et);
+			m_time_wheels.set_tv(m_time_tv);
 		}
 
 		if (m_ex_data.bother) {
@@ -732,7 +899,7 @@ public class AddSetActivity
 							R.id.aset_wheel_other_1000
 							},
 							1);
-			m_other_wheels.set_tv(m_other_et);
+			m_other_wheels.set_tv(m_other_tv);
 		}
 	} // init_wheels()
 
@@ -786,15 +953,15 @@ public class AddSetActivity
 			reps_label_tv = (TextView) findViewById(R.id.aset_reps_label_tv);
 
 		if (m_ex_data.breps) {
-			m_reps_et.setEnabled(true);
-			m_reps_et.setFocusable(true);
+			m_reps_tv.setEnabled(true);
+			m_reps_tv.setFocusable(true);
 			if (m_ex_data.significant == DatabaseHelper.EXERCISE_COL_REP_NUM) {
 				reps_label_tv.setTypeface(null, Typeface.BOLD);
 			}
 
 			if (m_last_set != null) {
 				if (m_last_set.reps != -1) {
-					m_reps_et.setText("" + m_last_set.reps);
+					m_reps_tv.setText("" + m_last_set.reps);
 					if (WGlobals.g_wheel)
 						m_reps_wheels.set_value(m_last_set.reps, false);
 				}
@@ -822,14 +989,14 @@ public class AddSetActivity
 			level_label_tv = (TextView) findViewById(R.id.aset_level_label_tv);
 
 		if (m_ex_data.blevel) {
-			m_level_et.setEnabled(true);
-			m_level_et.setFocusable(true);
+			m_level_tv.setEnabled(true);
+			m_level_tv.setFocusable(true);
 			if (m_ex_data.significant == DatabaseHelper.EXERCISE_COL_LEVEL_NUM) {
 				level_label_tv.setTypeface(null, Typeface.BOLD);
 			}
 			if (m_last_set != null) {
 				if (m_last_set.levels != -1) {
-					m_level_et.setText("" + m_last_set.levels);
+					m_level_tv.setText("" + m_last_set.levels);
 					if (WGlobals.g_wheel)
 						m_level_wheels.set_value(m_last_set.levels, false);
 				}
@@ -855,14 +1022,14 @@ public class AddSetActivity
 			calorie_label_tv = (TextView) findViewById(R.id.aset_calorie_label_tv);
 
 		if (m_ex_data.bcals) {
-			m_calorie_et.setEnabled(true);
-			m_calorie_et.setFocusable(true);
+			m_calorie_tv.setEnabled(true);
+			m_calorie_tv.setFocusable(true);
 			if (m_ex_data.significant == DatabaseHelper.EXERCISE_COL_CALORIE_NUM) {
 				calorie_label_tv.setTypeface(null, Typeface.BOLD);
 			}
 			if (m_last_set != null) {
 				if (m_last_set.cals != -1) {
-					m_calorie_et.setText("" + m_last_set.cals);
+					m_calorie_tv.setText("" + m_last_set.cals);
 					if (WGlobals.g_wheel)
 						m_calorie_wheels.set_value(m_last_set.cals, false);
 				}
@@ -898,8 +1065,8 @@ public class AddSetActivity
 		}
 
 		if (m_ex_data.bweight) {
-			m_weight_et.setEnabled(true);
-			m_weight_et.setFocusable(true);
+			m_weight_tv.setEnabled(true);
+			m_weight_tv.setFocusable(true);
 			String weight_unit = getString(R.string.aset_weight_hint,
 					m_ex_data.weight_unit);
 			weight_label_tv.setText(getString(R.string.aset_weight_label,
@@ -912,7 +1079,7 @@ public class AddSetActivity
 			// Not the first time this set has been added.
 			if (m_last_set != null) {
 				if (m_last_set.weight != -1) {
-					m_weight_et.setText("" + m_last_set.weight);
+					m_weight_tv.setText("" + m_last_set.weight);
 					if (WGlobals.g_wheel)
 						m_weight_wheels.set_value(m_last_set.weight, false);
 				}
@@ -938,8 +1105,8 @@ public class AddSetActivity
 			dist_label_tv = (TextView) findViewById(R.id.aset_dist_label_tv);
 
 		if (m_ex_data.bdist) {
-			m_dist_et.setEnabled(true);
-			m_dist_et.setFocusable(true);
+			m_dist_tv.setEnabled(true);
+			m_dist_tv.setFocusable(true);
 //			m_dist_et.setHint(dist_unit);
 			dist_label_tv.setText(getString(R.string.aset_distance_label,
 					m_ex_data.dist_unit));
@@ -948,7 +1115,7 @@ public class AddSetActivity
 			}
 			if (m_last_set != null) {
 				if (m_last_set.dist != -1) {
-					m_dist_et.setText("" + m_last_set.dist);
+					m_dist_tv.setText("" + m_last_set.dist);
 					if (WGlobals.g_wheel)
 						m_dist_wheels.set_value(m_last_set.dist, false);
 				}
@@ -973,8 +1140,8 @@ public class AddSetActivity
 			time_label_tv = (TextView) findViewById(R.id.aset_time_label_tv);
 
 		if (m_ex_data.btime) {
-			m_time_et.setEnabled(true);
-			m_time_et.setFocusable(true);
+			m_time_tv.setEnabled(true);
+			m_time_tv.setFocusable(true);
 //			m_time_et.setHint(time_unit);
 			if (m_ex_data.significant == DatabaseHelper.EXERCISE_COL_TIME_NUM) {
 				time_label_tv.setTypeface(null, Typeface.BOLD);
@@ -983,7 +1150,7 @@ public class AddSetActivity
 					m_ex_data.time_unit));
 			if (m_last_set != null) {
 				if (m_last_set.time != -1) {
-					m_time_et.setText("" + m_last_set.time);
+					m_time_tv.setText("" + m_last_set.time);
 					if (WGlobals.g_wheel)
 						m_time_wheels.set_value(m_last_set.time, false);
 				}
@@ -1008,8 +1175,8 @@ public class AddSetActivity
 			other_label_tv = (TextView) findViewById(R.id.aset_other_label_tv);
 
 		if (m_ex_data.bother) {
-			m_other_et.setEnabled(true);
-			m_other_et.setFocusable(true);
+			m_other_tv.setEnabled(true);
+			m_other_tv.setFocusable(true);
 
 //			m_other_et.setHint(final_other_label);
 			other_label_tv.setText(getString(R.string.aset_other_label_old,
@@ -1020,7 +1187,7 @@ public class AddSetActivity
 
 			if (m_last_set != null) {
 				if (m_last_set.other != -1) {
-					m_other_et.setText("" + m_last_set.other);
+					m_other_tv.setText("" + m_last_set.other);
 					if (WGlobals.g_wheel)
 						m_other_wheels.set_value(m_last_set.other, false);
 				}
@@ -1045,7 +1212,7 @@ public class AddSetActivity
 	protected void setup_notes() {
 		if (m_last_set != null) {
 			if (m_last_set.notes != null) {
-				m_notes_et.setHint(m_last_set.notes);
+				m_notes_tv.setHint(m_last_set.notes);
 //				Log.d(tag, "Just set m_notes_et to: " + note);
 			}
 		}
@@ -1096,19 +1263,19 @@ public class AddSetActivity
 	private int get_num_enabled_forms() {
 		int count = 0;
 
-		if (m_reps_et.isEnabled())
+		if (m_reps_tv.isEnabled())
 			count++;
-		if (m_weight_et.isEnabled())
+		if (m_weight_tv.isEnabled())
 			count++;
-		if (m_level_et.isEnabled())
+		if (m_level_tv.isEnabled())
 			count++;
-		if (m_calorie_et.isEnabled())
+		if (m_calorie_tv.isEnabled())
 			count++;
-		if (m_dist_et.isEnabled())
+		if (m_dist_tv.isEnabled())
 			count++;
-		if (m_time_et.isEnabled())
+		if (m_time_tv.isEnabled())
 			count++;
-		if (m_other_et.isEnabled())
+		if (m_other_tv.isEnabled())
 			count++;
 		return count;
 	} // get_num_enabled_forms()
@@ -1119,24 +1286,24 @@ public class AddSetActivity
 	 * hints to show.
 	 */
 	private void clear() {
-		if (m_reps_et.isEnabled())
-			m_reps_et.setText(null);
-		if (m_weight_et.isEnabled())
-			m_weight_et.setText(null);
-		if (m_level_et.isEnabled())
-			m_level_et.setText(null);
-		if (m_calorie_et.isEnabled())
-			m_calorie_et.setText(null);
-		if (m_dist_et.isEnabled())
-			m_dist_et.setText(null);
-		if (m_time_et.isEnabled())
-			m_time_et.setText(null);
-		if (m_other_et.isEnabled())
-			m_other_et.setText(null);
+		if (m_reps_tv.isEnabled())
+			m_reps_tv.setText(null);
+		if (m_weight_tv.isEnabled())
+			m_weight_tv.setText(null);
+		if (m_level_tv.isEnabled())
+			m_level_tv.setText(null);
+		if (m_calorie_tv.isEnabled())
+			m_calorie_tv.setText(null);
+		if (m_dist_tv.isEnabled())
+			m_dist_tv.setText(null);
+		if (m_time_tv.isEnabled())
+			m_time_tv.setText(null);
+		if (m_other_tv.isEnabled())
+			m_other_tv.setText(null);
 		clear_stress();
 		clear_wheels();
-		m_notes_et.setText(null);
-		m_notes_et.setHint(null);
+		m_notes_tv.setText(null);
+		m_notes_tv.setHint(null);
 	} // clear()
 
 	/*************************
@@ -1301,44 +1468,44 @@ public class AddSetActivity
 			// First, the name of the exercise!
 			values.put(DatabaseHelper.SET_COL_NAME, m_ex_data.name);
 
-			if (m_reps_et.isEnabled()) {
-				str = m_reps_et.getText().toString();
+			if (m_reps_tv.isEnabled()) {
+				str = m_reps_tv.getText().toString();
 				values.put(DatabaseHelper.SET_COL_REPS,
 								my_parse(str, false).i);
 			}
 
-			if (m_weight_et.isEnabled()) {
-				str = m_weight_et.getText().toString();
+			if (m_weight_tv.isEnabled()) {
+				str = m_weight_tv.getText().toString();
 				values.put(DatabaseHelper.SET_COL_WEIGHT,
 								my_parse(str, true).f);
 			}
 
-			if (m_level_et.isEnabled()) {
-				str = m_level_et.getText().toString();
+			if (m_level_tv.isEnabled()) {
+				str = m_level_tv.getText().toString();
 				values.put(DatabaseHelper.SET_COL_LEVELS,
 								my_parse(str, false).i);
 			}
 
-			if (m_calorie_et.isEnabled()) {
-				str = m_calorie_et.getText().toString();
+			if (m_calorie_tv.isEnabled()) {
+				str = m_calorie_tv.getText().toString();
 				values.put(DatabaseHelper.SET_COL_CALORIES,
 								my_parse(str, false).i);
 			}
 
-			if (m_dist_et.isEnabled()) {
-				str = m_dist_et.getText().toString();
+			if (m_dist_tv.isEnabled()) {
+				str = m_dist_tv.getText().toString();
 				values.put(DatabaseHelper.SET_COL_DIST,
 								my_parse(str, true).f);
 			}
 
-			if (m_time_et.isEnabled()) {
-				str = m_time_et.getText().toString();
+			if (m_time_tv.isEnabled()) {
+				str = m_time_tv.getText().toString();
 				values.put(DatabaseHelper.SET_COL_TIME,
 								my_parse(str, true).f);
 			}
 
-			if (m_other_et.isEnabled()) {
-				str = m_other_et.getText().toString();
+			if (m_other_tv.isEnabled()) {
+				str = m_other_tv.getText().toString();
 				values.put(DatabaseHelper.SET_COL_OTHER,
 								my_parse(str, true).f);
 			}
@@ -1361,7 +1528,7 @@ public class AddSetActivity
 			values.put(DatabaseHelper.SET_COL_CONDITION, cond);
 
 			// The notes
-			values.put(DatabaseHelper.SET_COL_NOTES, m_notes_et.getText().toString());
+			values.put(DatabaseHelper.SET_COL_NOTES, m_notes_tv.getText().toString());
 
 			// Don't forget the date/time!
 			Calendar now = Calendar.getInstance();
@@ -1381,24 +1548,19 @@ public class AddSetActivity
 		}
 
 		entered_set_msg (m_ex_data.name);
-//		my_toast(this, R.string.aset_entered_msg, args);
-		// todo
-		//	Maybe turn the EditTexts into hints???  Go to the History tab???
-		//	DEFINITELY a sound should play (if not in silent mode).
 
 		// Indicate that the database has changed and tell the
 		//	other activities to reset.
 		m_db_dirty = true;
 		InspectorActivity2.m_db_dirty = true;
-//		HistoryActivity.m_db_dirty = true;
 		GraphActivity.m_db_dirty = true;
 		ExerciseTabHostActivity.m_dirty = true;
 
 		// After the save, clear the stress and cause the note to
 		// turned into a hint.
 		clear_stress();
-		m_notes_et.setHint(m_notes_et.getText());
-		m_notes_et.setText(null);
+		m_notes_tv.setHint(m_notes_tv.getText());
+		m_notes_tv.setText(null);
 	} // save()
 
 
@@ -1432,7 +1594,7 @@ public class AddSetActivity
 		// filled out.
 		if (!m_widgets_dirty) {
 
-			if (m_last_set != null) {
+			if (m_last_set == null) {
 				// First time doing this set, so there's nothing
 				// in any of the widgets.  Tell 'em about it and
 				// get outahere!
@@ -1441,23 +1603,7 @@ public class AddSetActivity
 				return;
 			}
 
-			if (WGlobals.g_nag) {
-				// Warn them that they haven't made any changes.
-				show_yes_no_dialog(R.string.aset_nag_no_changes_title,
-						R.string.aset_nag_no_changes_msg,
-						new View.OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								WGlobals.play_short_click();
-								save();
-								dismiss_all_dialogs();
-							}
-						});
-			}
-			else {	// Don't nag, just save
-				save();
-			}
-
+			save();
 			return;
 		} // not dirty
 
@@ -1474,8 +1620,8 @@ public class AddSetActivity
 		CharSequence str;
 		ArrayList<String> blank_forms = new ArrayList<String>();
 
-		if (m_reps_et.isEnabled()) {
-			str = m_reps_et.getText();
+		if (m_reps_tv.isEnabled()) {
+			str = m_reps_tv.getText();
 			if ((str == null) || (str.length() == 0)) {
 
 				// If this (reps) is the significant, then we
@@ -1490,8 +1636,8 @@ public class AddSetActivity
 			}
 		}
 
-		if (m_weight_et.isEnabled()) {
-			str = m_weight_et.getText();
+		if (m_weight_tv.isEnabled()) {
+			str = m_weight_tv.getText();
 			if ((str == null) || (str.length() == 0)) {
 				if (test_and_warn_significant(DatabaseHelper.EXERCISE_COL_WEIGHT_NUM))
 					return;
@@ -1499,8 +1645,8 @@ public class AddSetActivity
 			}
 		}
 
-		if (m_level_et.isEnabled()) {
-			str = m_level_et.getText();
+		if (m_level_tv.isEnabled()) {
+			str = m_level_tv.getText();
 			if ((str == null) || (str.length() == 0)) {
 				if (test_and_warn_significant(DatabaseHelper.EXERCISE_COL_LEVEL_NUM))
 					return;
@@ -1508,8 +1654,8 @@ public class AddSetActivity
 			}
 		}
 
-		if (m_calorie_et.isEnabled()) {
-			str = m_calorie_et.getText();
+		if (m_calorie_tv.isEnabled()) {
+			str = m_calorie_tv.getText();
 			if ((str == null) || (str.length() == 0)) {
 				if (test_and_warn_significant(DatabaseHelper.EXERCISE_COL_CALORIE_NUM))
 					return;
@@ -1517,8 +1663,8 @@ public class AddSetActivity
 			}
 		}
 
-		if (m_dist_et.isEnabled()) {
-			str = m_dist_et.getText();
+		if (m_dist_tv.isEnabled()) {
+			str = m_dist_tv.getText();
 			if ((str == null) || (str.length() == 0)) {
 				if (test_and_warn_significant(DatabaseHelper.EXERCISE_COL_DIST_NUM))
 					return;
@@ -1526,8 +1672,8 @@ public class AddSetActivity
 			}
 		}
 
-		if (m_time_et.isEnabled()) {
-			str = m_time_et.getText();
+		if (m_time_tv.isEnabled()) {
+			str = m_time_tv.getText();
 			if ((str == null) || (str.length() == 0)) {
 				if (test_and_warn_significant(DatabaseHelper.EXERCISE_COL_TIME_NUM))
 					return;
@@ -1535,8 +1681,8 @@ public class AddSetActivity
 			}
 		}
 
-		if (m_other_et.isEnabled()) {
-			str = m_other_et.getText();
+		if (m_other_tv.isEnabled()) {
+			str = m_other_tv.getText();
 			if ((str == null) || (str.length() == 0)) {
 				// The other is a little different.  So do it man-
 				// ually here.

@@ -101,17 +101,11 @@
 							android:layout_gravity="bottom|left"
 							android:text="@string/aset_reps_label" />
 
-						<EditText
-							android:id="@+id/aset_wheel_reps_result_et"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:layout_gravity="top|left"
+						<TextView
+							android:id="@+id/aset_wheel_reps_result_tv"
+							style="@style/faux_edittext_aset_wheels"
 							android:layout_marginLeft="16dp"
 							android:enabled="false"
-							android:gravity="right|center_vertical"
-							android:inputType="number"
-							android:ems="4"
-							android:singleLine="true"
 							/>
 
 					</LinearLayout>
@@ -181,18 +175,13 @@
 							android:layout_gravity="bottom|left"
 							android:text="@string/aset_weight_label"
 							/>
-
-						<EditText
-							android:id="@+id/aset_wheel_weight_et"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:layout_gravity="top|left"
+						<TextView
+							android:id="@+id/aset_wheel_weight_result_tv"
+							style="@style/faux_edittext_aset_wheels"
 							android:layout_marginLeft="16dp"
 							android:enabled="false"
-							android:gravity="right|center_vertical"
-							android:inputType="numberDecimal"
-							android:ems="4"
-							android:singleLine="true" />
+							/>
+
 					</LinearLayout>
 
 					<LinearLayout
@@ -271,18 +260,11 @@
 							android:layout_height="wrap_content"
 							android:layout_gravity="bottom|left"
 							android:text="@string/aset_level_label" />
-
-						<EditText
-							android:id="@+id/aset_wheel_level_et"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:layout_gravity="top|left"
+						<TextView
+							android:id="@+id/aset_wheel_level_result_tv"
+							style="@style/faux_edittext_aset_wheels"
 							android:layout_marginLeft="16dp"
 							android:enabled="false"
-							android:gravity="right|center_vertical"
-							android:inputType="number"
-							android:ems="4"
-							android:singleLine="true"
 							/>
 
 					</LinearLayout>
@@ -351,18 +333,11 @@
 							android:layout_height="wrap_content"
 							android:layout_gravity="bottom|left"
 							android:text="@string/aset_calorie_label" />
-
-						<EditText
-							android:id="@+id/aset_wheel_calorie_et"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:layout_gravity="top|left"
+						<TextView
+							android:id="@+id/aset_wheel_calorie_result_tv"
+							style="@style/faux_edittext_aset_wheels"
 							android:layout_marginLeft="16dp"
 							android:enabled="false"
-							android:gravity="right|center_vertical"
-							android:inputType="number"
-							android:ems="4"
-							android:singleLine="true"
 							/>
 
 					</LinearLayout>
@@ -432,18 +407,11 @@
 							android:layout_height="wrap_content"
 							android:layout_gravity="bottom|left"
 							android:text="@string/aset_distance_off_label" />
-
-						<EditText
-							android:id="@+id/aset_wheel_dist_et"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:layout_gravity="top|left"
+						<TextView
+							android:id="@+id/aset_wheel_dist_result_tv"
+							style="@style/faux_edittext_aset_wheels"
 							android:layout_marginLeft="16dp"
 							android:enabled="false"
-							android:gravity="right|center_vertical"
-							android:inputType="number"
-							android:ems="4"
-							android:singleLine="true"
 							/>
 
 					</LinearLayout>
@@ -524,18 +492,11 @@
 							android:layout_height="wrap_content"
 							android:layout_gravity="bottom|left"
 							android:text="@string/aset_time_off_label" />
-
-						<EditText
-							android:id="@+id/aset_wheel_time_et"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:layout_gravity="top|left"
+						<TextView
+							android:id="@+id/aset_wheel_time_result_tv"
+							style="@style/faux_edittext_aset_wheels"
 							android:layout_marginLeft="16dp"
 							android:enabled="false"
-							android:gravity="right|center_vertical"
-							android:inputType="number"
-							android:ems="4"
-							android:singleLine="true"
 							/>
 
 					</LinearLayout>
@@ -617,18 +578,11 @@
 							android:layout_height="wrap_content"
 							android:layout_gravity="bottom|left"
 							android:text="@string/aset_other_off_label" />
-
-						<EditText
-							android:id="@+id/aset_wheel_other_et"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:layout_gravity="top|left"
+						<TextView
+							android:id="@+id/aset_wheel_other_result_tv"
+							style="@style/faux_edittext_aset_wheels"
 							android:layout_marginLeft="16dp"
 							android:enabled="false"
-							android:gravity="right|center_vertical"
-							android:inputType="number"
-							android:ems="4"
-							android:singleLine="true"
 							/>
 
 					</LinearLayout>
@@ -798,7 +752,7 @@
 				style="@style/white_text_medium"
 				/>
 
-			<EditText
+			<TextView
 				android:id="@+id/aset_wheel_notes_et"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
@@ -806,8 +760,9 @@
 				android:layout_marginLeft="8dp"
 				android:layout_marginRight="8dp"
 				android:inputType="textMultiLine"
-				android:maxLines="4" >
-			</EditText>
+				style="@android:style/Widget.EditText"
+				android:maxLines="4" />
+
 		</LinearLayout>
 	</ScrollView>
 
