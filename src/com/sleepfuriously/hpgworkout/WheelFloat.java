@@ -68,6 +68,14 @@ public class WheelFloat implements OnWheelChangedListener {
 	/** The max & mins that this wheel can display */
 	final float m_max_val, m_min_val;
 
+	/**
+	 * Reference to the class to be invoked for a callback.
+	 * Nothing will be done (no callback executed) if this
+	 * is null (ie. nothing registered).
+	 */
+	private OnWheelFloatListener m_wheel_float_changed_listener = null;
+
+
 	//--------------------
 	//	Methods
 	//--------------------
@@ -115,6 +123,18 @@ public class WheelFloat implements OnWheelChangedListener {
 		// Finish by zeroing out the number.
 		reset(false);
 	} // constructor
+
+
+	/********************
+	 * Register a callback to be invoked whenever this WheelFloat
+	 * changes.
+	 *
+	 * @param l		The class instance that will have its
+	 * 				onWheelFloatChanged() method called.
+	 */
+	public void setOnWheelFloatChangedListener (OnWheelFloatListener l) {
+		m_wheel_float_changed_listener = l;
+	}
 
 
 	/********************
@@ -204,7 +224,7 @@ public class WheelFloat implements OnWheelChangedListener {
 	/***********************
 	 * Sets the wheels to the given value.  If a TextView
 	 * is attached, it'll be changed, too.
-	 * 
+	 *
 	 * Rounding is done to the nearest tenth.
 	 *
 	 * @param val	We'll do our best to set the number
@@ -214,7 +234,7 @@ public class WheelFloat implements OnWheelChangedListener {
 		set_value (val, -1, anim);
 	}
 
-	
+
 	/***********************
 	 * Sets the wheels to the given value.  If a TextView
 	 * is attached, it'll be changed, too.
@@ -226,7 +246,7 @@ public class WheelFloat implements OnWheelChangedListener {
 	 * 				1 rounds to the nearest tens (1876.582 becomes
 	 * 				1880).  And -2 would round to the nearest hundredth
 	 * 				(1876.582 becomes 1876.58).
-	 * 			
+	 *
 	 * @param anim
 	 */
 	public void set_value (float val, int round, boolean anim) {
@@ -337,6 +357,12 @@ public class WheelFloat implements OnWheelChangedListener {
 		if (m_result_tv != null) {
 			m_result_tv.setText(Float.toString(value));
 		}
+
+		// Invoke the callback, if it has been registered.
+		if (m_wheel_float_changed_listener != null) {
+			m_wheel_float_changed_listener.onWheelFloatChanged(value);
+		}
+
 	} // onChanged(wheel, old_val, new_val)
 
 

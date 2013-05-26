@@ -57,7 +57,9 @@ public class AddSetActivity
 					OnClickListener,
 					OnLongClickListener,
 					TextWatcher,
-					OnKeyListener {
+					OnKeyListener,
+					OnWheelIntListener,
+					OnWheelFloatListener {
 
 
 	//------------------------
@@ -422,59 +424,6 @@ public class AddSetActivity
 
 
 	//------------------------------
-	// Fires when a view gains or loses focus.  Of course,
-	// you have to set the view to have such a listener!
-	//
-	//	I'm just listening to the TextViews that hold
-	//	numbers, and when each loses focus, I'll tell
-	//	the appropriate Wheel to set its number to that
-	//	to set its number to the ET's value.
-/*	//
-	@Override
-	public void onFocusChange(View v, boolean hasFocus) {
-
-		// ONLY handling EditTexts!!!
-		if (v.getClass() != EditText.class) {
-			return;
-		}
-
-		// Also, we only want where the View LOSES focus.
-		if (hasFocus) {
-			return;
-		}
-
-		if (v == m_reps_tv) {
-			int val = Integer.parseInt(((EditText) v).getText().toString());
-			m_reps_wheels.set_value(val, true);
-		}
-		else if (v == m_level_tv) {
-			int val = Integer.parseInt(((EditText) v).getText().toString());
-			m_level_wheels.set_value(val, true);
-		}
-		else if (v == m_calorie_tv) {
-			int val = Integer.parseInt(((EditText) v).getText().toString());
-			m_calorie_wheels.set_value(val, true);
-		}
-		else if (v == m_weight_tv) {
-			float val = Float.parseFloat(((EditText) v).getText().toString());
-			m_weight_wheels.set_value(val, true);
-		}
-		else if (v == m_dist_tv) {
-			float val = Float.parseFloat(((EditText) v).getText().toString());
-			m_dist_wheels.set_value(val, true);
-		}
-		else if (v == m_time_tv) {
-			float val = Float.parseFloat(((EditText) v).getText().toString());
-			m_time_wheels.set_value(val, true);
-		}
-		else if (v == m_other_tv) {
-			float val = Float.parseFloat(((EditText) v).getText().toString());
-			m_other_wheels.set_value(val, true);
-		}
-	} // onFocusChange (v, hasFocus)
-*/
-
-	//------------------------------
 	//	Allows this Activity to send message to the caller
 	//	when the user hits the back button.
 	//
@@ -621,6 +570,24 @@ public class AddSetActivity
 
 		return false;
 	} // onLongClick (v)
+
+
+	//-----------------------------------
+	//	This is the callback that happens whenever a wheelInt
+	//	has changed.
+	@Override
+	public void onWheelIntChanged(int new_val) {
+		m_widgets_dirty = true;
+	}
+
+
+	//-----------------------------------
+	//	This is the callback that happens whenever a wheelInt
+	//	has changed.
+	@Override
+	public void onWheelFloatChanged(float new_val) {
+		m_widgets_dirty = true;
+	}
 
 
 	//-----------------------------------
@@ -825,6 +792,7 @@ public class AddSetActivity
 							R.id.aset_wheel_reps_1000
 							});
 			m_reps_wheels.set_tv(m_reps_tv);
+			m_reps_wheels.setOnWheelIntChangedListener(this);
 		}
 
 		if (m_ex_data.blevel) {
@@ -836,6 +804,7 @@ public class AddSetActivity
 							R.id.aset_wheel_level_1000
 							});
 			m_level_wheels.set_tv(m_level_tv);
+			m_level_wheels.setOnWheelIntChangedListener(this);
 		}
 
 		if (m_ex_data.bcals) {
@@ -847,6 +816,7 @@ public class AddSetActivity
 							R.id.aset_wheel_calorie_1000
 							});
 			m_calorie_wheels.set_tv(m_calorie_tv);
+			m_calorie_wheels.setOnWheelIntChangedListener(this);
 		}
 
 		// The floats
@@ -861,6 +831,7 @@ public class AddSetActivity
 							},
 							1);
 			m_weight_wheels.set_tv(m_weight_tv);
+			m_weight_wheels.setOnWheelFloatChangedListener(this);
 		}
 
 		if (m_ex_data.bdist) {
@@ -874,6 +845,7 @@ public class AddSetActivity
 							},
 							1);
 			m_dist_wheels.set_tv(m_dist_tv);
+			m_dist_wheels.setOnWheelFloatChangedListener(this);
 		}
 
 		if (m_ex_data.btime) {
@@ -887,6 +859,7 @@ public class AddSetActivity
 							},
 							1);
 			m_time_wheels.set_tv(m_time_tv);
+			m_time_wheels.setOnWheelFloatChangedListener(this);
 		}
 
 		if (m_ex_data.bother) {
@@ -900,6 +873,7 @@ public class AddSetActivity
 							},
 							1);
 			m_other_wheels.set_tv(m_other_tv);
+			m_other_wheels.setOnWheelFloatChangedListener(this);
 		}
 	} // init_wheels()
 

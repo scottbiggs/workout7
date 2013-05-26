@@ -61,6 +61,14 @@ public class WheelInt implements OnWheelChangedListener {
 	/** The max & mins that this wheel can display */
 	final long m_max_val, m_min_val;
 
+	/**
+	 * Reference to the class to be invoked for a callback.
+	 * Nothing will be done (no callback executed) if this
+	 * is null (ie. nothing registered).
+	 */
+	private OnWheelIntListener m_wheel_int_changed_listener = null;
+
+
 	//--------------------
 	//	Methods
 	//--------------------
@@ -102,6 +110,18 @@ public class WheelInt implements OnWheelChangedListener {
 		// Finish by zeroing out the number.
 		reset(false);
 	} // constructor
+
+
+	/********************
+	 * Register a callback to be invoked whenever this WheelInt
+	 * changes.
+	 *
+	 * @param l		The class instance that will have its
+	 * 				onWheelIntChanged() method called.
+	 */
+	public void setOnWheelIntChangedListener (OnWheelIntListener l) {
+		m_wheel_int_changed_listener = l;
+	}
 
 
 	/********************
@@ -258,11 +278,17 @@ public class WheelInt implements OnWheelChangedListener {
 	@Override
 	public void onChanged(WheelView wheel, int oldValue, int newValue) {
 		int val = get_value();
-		Log.d(tag, "onChanged(). get_value() is " + val);
+
+//		Log.d(tag, "onChanged(). get_value() is " + val);
 
 		if (m_result_tv != null) {
 			m_result_tv.setText(Integer.toString(val));
 		}
-	}
+
+		// Invoke the callback, if it has been registered.
+		if (m_wheel_int_changed_listener != null) {
+			m_wheel_int_changed_listener.onWheelIntChanged(val);
+		}
+	} // onChanged (wheel, oldValue, newValue)
 
 }
