@@ -10,12 +10,10 @@
 package com.sleepfuriously.hpgworkout;
 
 import android.app.Activity;
-import android.os.PowerManager;
 import android.util.Log;
 import android.view.animation.AnticipateOvershootInterpolator;
 import android.widget.TextView;
 import kankan.wheel.widget.OnWheelChangedListener;
-import kankan.wheel.widget.OnWheelScrollListener;
 import kankan.wheel.widget.WheelView;
 import kankan.wheel.widget.adapters.NumericWheelAdapter;
 
@@ -58,8 +56,7 @@ public class WheelFloat implements OnWheelChangedListener {
 	 */
 	protected int m_num_dec_places;
 
-	// todo: is this really necessary?
-	/** The Activity that is using this widget */
+	/** The Activity that is using this widget. Necessary. */
 	Activity m_activity;
 
 	/** Optionally displays the results of this widget */
@@ -276,9 +273,6 @@ public class WheelFloat implements OnWheelChangedListener {
 		if (point == -1) {
 			point = str.indexOf(',');
 		}
-
-		// todo: now that we have the decimal point, figure out
-		//	what to do!
 
 		// Split the string into whole and fractional parts.
 		if (point < 0) {

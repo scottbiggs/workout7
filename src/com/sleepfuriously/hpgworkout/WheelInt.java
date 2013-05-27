@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.animation.AnticipateOvershootInterpolator;
 import android.widget.TextView;
 import kankan.wheel.widget.OnWheelChangedListener;
-import kankan.wheel.widget.OnWheelScrollListener;
 import kankan.wheel.widget.WheelView;
 import kankan.wheel.widget.adapters.NumericWheelAdapter;
 
@@ -51,8 +50,7 @@ public class WheelInt implements OnWheelChangedListener {
 	 */
 	protected WheelView[] m_wheels;
 
-	// todo: is this really necessary?
-	/** The Activity that is using this widget */
+	/** The Activity that is using this widget.  Yes, it's necessary! */
 	Activity m_activity;
 
 	/** Optionally displays the results of this widget */
