@@ -103,8 +103,7 @@ public class InspectorActivity2
 	 * the database is changed and the list of exercise sets
 	 * has changed.
 	 *
-	 * When the Inspector has reloaded, m_changed is moved to
-	 * FALSE.
+	 * When the Inspector has reloaded, this is set to false.
 	 */
 	public static boolean m_db_dirty = true;
 
@@ -114,7 +113,7 @@ public class InspectorActivity2
 	 * This flag is used to signal to the Grid whether or not
 	 * it needs to reload when this Activity exits.
 	 */
-	protected boolean m_database_changed = false;
+	public static boolean m_database_changed = false;
 
 	/** A hack to get around scoping rules for scroll_to_child(id). */
 	protected static int s_id;
@@ -193,8 +192,9 @@ public class InspectorActivity2
 	//
 	@Override
 	public void onBackPressed() {
-		if (ExerciseTabHostActivity.m_dirty)
+		if ((ExerciseTabHostActivity.m_dirty) || (m_database_changed)) {
 			tabbed_set_result(RESULT_OK);
+		}
 		else
 			tabbed_set_result(RESULT_CANCELED);
 		finish();
@@ -299,11 +299,6 @@ public class InspectorActivity2
 			return;	// don't do anything
 		}
 
-		// todo:
-		//	When we reload the Activity after modifying something,
-		//	scroll to the thing that was modified, not the whatever
-		//	was scrolled to when onCreate() was initially called.
-
 		// This happens when a set has been edited/deleted.
 		if (requestCode == WGlobals.EDITSETACTIVITY) {
 			if (data == null) {
@@ -314,6 +309,7 @@ public class InspectorActivity2
 				m_set_id = data.getIntExtra(EditSetActivity.ID_KEY, -1);
 			}
 			init_from_db();
+			ExerciseTabHostActivity.m_dirty = true;
 			GraphActivity.m_db_dirty = true;
 			AddSetActivity.m_reset_widgets = true;
 			m_database_changed = true;	// Used to tell the Grid that the DB changed.
@@ -532,6 +528,7 @@ public class InspectorActivity2
 		// Make this respond to long clicks.  Use the set ID.
 		LinearLayout clickable_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_ll);
 		clickable_ll.setOnLongClickListener(this);
+		clickable_ll.setId(layout_values.data._id);		// Needs the ID, too!
 
 		// The id is how we access the layout!  VERY important!
 		set_ll.setId(layout_values.data._id);
@@ -1083,6 +1080,7 @@ public class InspectorActivity2
 			trim_date_labels();
 			scroll_to_child (m_set_id);
 			stop_progress_dialog();
+			m_db_dirty = false;
 		}
 
 	} // class InspectorSyncTask
