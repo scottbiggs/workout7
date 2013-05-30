@@ -24,7 +24,9 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.View.OnLongClickListener;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -40,10 +42,8 @@ public class InspectorActivity2
 	//	Constants
 	//------------------
 
-	private static final String tag = "InspectorActivity";
+	private static final String tag = "InspectorActivity2";
 
-	/** The id for the 'brief' menu selection */
-//	protected static final int MENU_ID_BRIEF = 1;
 	/** Id for the menu item to change the order that sets are listed */
 	protected static final int MENU_ID_ORDER = 2;
 
@@ -77,6 +77,9 @@ public class InspectorActivity2
 	 * during onCreate().  If this is a valid id number, then the
 	 * set with the given id should be scrolled to when this Activity
 	 * pops up the first time.
+	 *
+	 * If the number is invalid (-1), then scroll to the top (or don't
+	 * scroll at all).
 	 */
 	private int m_set_id = -1;
 
@@ -168,8 +171,8 @@ public class InspectorActivity2
 		m_main_ll = (LinearLayout) findViewById(R.id.inspector_all_sets_ll);
 
 		m_db_dirty = true;	// True for first time.
-	} // onCreate (.)
 
+	} // onCreate (.)
 
 
 	//------------------------------
@@ -318,9 +321,15 @@ public class InspectorActivity2
 
 	} // onActivityResult (requestCode, resultCode, data)
 
+
 	/***********************
 	 * Scrolls the Activity (along its ScrollView) so that the child
 	 * in question is at the top of the screen.
+	 *
+	 * preconditions:
+	 * 		The layout is finished and completely set up.  That way,
+	 * 		all the sizes are valid and we can scroll to the correct
+	 * 		location.
 	 *
 	 * side effects:
 	 * 		uses a static variable: s_id to pass data to the Runnable.
@@ -329,7 +338,7 @@ public class InspectorActivity2
 	 * 				-1 means invalid id, so nothing is done.
 	 */
 	protected void scroll_to_child (int id) {
-		Log.v (tag, "entering scroll_to_child (" + id + ")");
+//		Log.v (tag, "entering scroll_to_child (" + id + ")");
 
 		// WARNING!  This is a HACK to get around scoping rules!
 		s_id = id;
@@ -388,13 +397,16 @@ public class InspectorActivity2
 
 					for (int i = 0; i < m_main_ll.getChildCount(); i++) {
 						View child = m_main_ll.getChildAt(i);
+//						Log.d(tag, "Looping: i = " + i + ", id = " + child.getId() + ", height_of_views = " + height_of_views);
 						if (s_id == child.getId()) {
+//							Log.d(tag, "\tbreaking!");
 							break;
 						}
 						height_of_views += child.getHeight();
 					}
 
 					m_sv.scrollTo(0, height_of_views);
+//					Log.d(tag, "portrait scroll to " + height_of_views);
 				}
 			});
 		}
@@ -519,11 +531,10 @@ public class InspectorActivity2
 
 		// Make this respond to long clicks.  Use the set ID.
 		LinearLayout clickable_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_ll);
-//		set_ll.setId(layout_values.data._id);
-//		set_ll.setOnLongClickListener(this);
-		clickable_ll.setId(layout_values.data._id);
 		clickable_ll.setOnLongClickListener(this);
 
+		// The id is how we access the layout!  VERY important!
+		set_ll.setId(layout_values.data._id);
 
 		// Lastly we add this layout to m_main_ll.  But first,
 		// we gotta figure out where to add it.
@@ -1069,10 +1080,6 @@ public class InspectorActivity2
 		//-------------------
 		@Override
 		protected void onPostExecute(Void not_used) {
-			// todo
-			//	Put the date in a TextView.  But only do it if it's a different
-			//	date from the earlier one.  This is a little tricky.
-			//
 			trim_date_labels();
 			scroll_to_child (m_set_id);
 			stop_progress_dialog();
