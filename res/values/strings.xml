@@ -1153,8 +1153,8 @@
 	<string name="inspector_title">Set Inspector</string>
 	<string name="inspector_empty">No Sets to Display</string>
 
-	<string name="inspector_oldest_first_msg">oldest at top</string>
-	<string name="inspector_newest_first_msg">most recent at top</string>
+	<string name="inspector_oldest_first_msg">oldest first</string>
+	<string name="inspector_newest_first_msg">most recent first</string>
 
 	<string name="inspector_another_set_button">do another</string>
 	<string name="inspector_another_help_title">Do Another Set</string>

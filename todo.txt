@@ -1,22 +1,5 @@
 TODO:
 -----------------
-minor bug:  In landscape mode, the Inspector says "Most Recent at top" or
-	"Oldest at top" when there isn't a top anymore!
-
-Minor Bug: When zooming a LOT, garbage appears in the left-side of the date
-	area.  It disappears when zooming back out.  It kind of looks like
-	some dates are wrapping and drawing on top of each other.
-
-Bug: Adding multiple sets does not change the graph (it apparantly
-	didn't get its dirty bit set).  NOTE: This only happened when
-	I added a second workout set--couldn't get it to repeat after
-	that.  This indicates that the problem may be in the Graph stuff
-	instead of the AddSet stuff.
-
-BUG!  Look at the graph for something, make sure that Reps + XXX
-	is ON.  Change the unit of XXX.  Now the Graph can't figure
-	out what to draw now that the unit has changed.
-
 Take away the global preferences vars.  Make each class access the
 	shared preferences the right way.  This is messy and very
 	spaghetti code.  You could do some static methods to make it
@@ -35,17 +18,9 @@ Add a special sound for:
 To finalize, remove "super winking" from the startup exercise
 	file.  :)
 
-Enable data backups.  See http://developer.android.com/guide/topics/data/backup.html
-
 Remember to make Grid and the Inspector only load so many
 	dates.  Need to provide buttons (or swipes) to load
 	the rest in groups.
-
-Issue:  The graph adds up weight on the same day, that's
-	good.  But it shouldn't add up everything, should it?
-	Like for reps, should it add 'em, show an average,
-	or show the max?  Or maybe have the user select, as
-	described above?
 
 TEST the nags.
 
@@ -87,9 +62,6 @@ Need to make a preferences screen.
 Check out: http://android-developers.blogspot.com/2009/02/faster-screen-orientation-change.html
 	This should be applied to the grid screen to make
 	orientation changes much faster.
-
-Be nice if users can add a blank to their rows.  Do this in
-	the order screen.
 
 Make sure the layouts look good on all the various
 	devices, especially tablets.
@@ -164,6 +136,25 @@ In the graphs, instead of horizontal lines, divide up into
 ---------------------------------------------------
 TABLED (for later versions)
 ---------------------------------------------------
+Be nice if users can add a blank to their rows.  Do this in
+	the order screen.
+
+Enable data backups.  See http://developer.android.com/guide/topics/data/backup.html
+
+BUG!  Look at the graph for something, make sure that Reps + XXX
+	is ON.  Change the unit of XXX.  Now the Graph can't figure
+	out what to draw now that the unit has changed.
+
+Bug: Adding multiple sets does not change the graph (it apparantly
+	didn't get its dirty bit set).  NOTE: This only happened when
+	I added a second workout set--couldn't get it to repeat after
+	that.  This indicates that the problem may be in the Graph stuff
+	instead of the AddSet stuff.
+
+Minor Bug: When zooming a LOT, garbage appears in the left-side of the date
+	area.  It disappears when zooming back out.  It kind of looks like
+	some dates are wrapping and drawing on top of each other.
+
 Okay, what the hell is the Graph supposed to do when there are
 	different things on the same date?  You did ten reps the first
 	set, twenty the second, and thirty the third.  Should it average,
@@ -233,6 +224,18 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Issue:  The graph adds up weight on the same day, that's
+	good.  But it shouldn't add up everything, should it?
+	Like for reps, should it add 'em, show an average,
+	or show the max?  Or maybe have the user select, as
+	described above?
+	- not relevant.  The graph shows each SET; it doesn't do anything
+	about days.
+
+minor bug:  In landscape mode, the Inspector says "Most Recent at top" or
+	"Oldest at top" when there isn't a top anymore!
+	- fixed
+
 BUG: The auto-scrolling in the Inspector seems quite broken. Sigh.
 	- fixed
 
