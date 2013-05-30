@@ -1,32 +1,3 @@
-/**
- * This is a replacement for the regular Activity class that
- * all the screens normally inherit from.
- *
- * Why?  What's wrong with the regular Activity?
- *
- * Dialogs.  Regular Activities can't handle dialogs well
- * during an orientation change.  That's all.  And while I'm
- * at it, I'm adding a few other goodies that I find useful
- * in Activities.
- *
- * CAVEATS:
- * 		- IF your inherited Activity needs to use onPause(),
- * 		  you MUST call super.onPause() at some time!!!! This
- * 		  allows the dialogs to be dismissed properly (which
- * 		  is the whole point of this class).
- *
- * Added:
- * 		An m_db variable.  This cleans up automatically
- * 		when the Activity is destroyed.
- *
- * 		NOTE:	YOU MUST instantiate it yourself in the
- * 				onCreate() or onResume() methods.
- *
- * MORE!
- * 		Now this does custom Toasts!  Use it similarly
- * 		to the regular Toast, except that you now don't
- * 		have to call show()!  Weeeeee!
- */
 package com.sleepfuriously.hpgworkout;
 
 import android.app.Activity;
@@ -49,6 +20,35 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * This is a replacement for the regular Activity class that
+ * all the screens normally inherit from.
+ *<p>
+ * Why?  What's wrong with the regular Activity?
+ *<p>
+ * Dialogs.  Regular Activities can't handle dialogs well
+ * during an orientation change.  That's all.  And while I'm
+ * at it, I'm adding a few other goodies that I find useful
+ * in Activities.
+ *<p>
+ * CAVEATS:<p>
+ * 		- IF your inherited Activity needs to use onPause(),
+ * 		  you MUST call super.onPause() at some time!!!! This
+ * 		  allows the dialogs to be dismissed properly (which
+ * 		  is the whole point of this class).
+ *<p>
+ * Added:<p>
+ * 		An m_db variable.  This cleans up automatically
+ * 		when the Activity is destroyed.
+ *<p>
+ * 		NOTE:	YOU MUST instantiate it yourself in the
+ * 				onCreate() or onResume() methods.
+ *<p>
+ * MORE!<p>
+ * 		Now this does custom Toasts!  Use it similarly
+ * 		to the regular Toast, except that you now don't
+ * 		have to call show()!  Weeeeee!
+ */
 public class BaseDialogActivity extends Activity {
 
 	//----------------------
