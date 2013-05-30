@@ -18,10 +18,6 @@ Add a special sound for:
 To finalize, remove "super winking" from the startup exercise
 	file.  :)
 
-Remember to make Grid and the Inspector only load so many
-	dates.  Need to provide buttons (or swipes) to load
-	the rest in groups.
-
 TEST the nags.
 
 Preferences: put the option to Reset things here.  Clear the workout data, or
@@ -136,6 +132,10 @@ In the graphs, instead of horizontal lines, divide up into
 ---------------------------------------------------
 TABLED (for later versions)
 ---------------------------------------------------
+Remember to make Grid and the Inspector only load so many
+	dates.  Need to provide buttons (or swipes) to load
+	the rest in groups.
+
 Be nice if users can add a blank to their rows.  Do this in
 	the order screen.
 

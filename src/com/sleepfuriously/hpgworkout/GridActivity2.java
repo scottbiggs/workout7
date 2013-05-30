@@ -244,8 +244,8 @@ public class GridActivity2 extends BaseDialogActivity
 	/**************************
 	 * Call this to have the UI catch up to all the data
 	 * that's stored in the GridASyncTask.
-	 *
-	 * preconditions:
+	 * <p>
+	 * <b>preconditions</b>:
 	 * 	m_task is VALID and pointing to a real object (not null)
 	 */
 	private void catch_up() {
@@ -928,7 +928,7 @@ public class GridActivity2 extends BaseDialogActivity
 		 * The Activity that is using this ASyncTask.
 		 * This static class may ONLY access the activity
 		 * through this data member.
-		 * <br/>
+		 * <p>
 		 * NOTE: Make sure this is not NULL before using!!!
 		 */
 		GridActivity2 m_the_grid = null;
@@ -994,7 +994,8 @@ public class GridActivity2 extends BaseDialogActivity
 		 * Called BEFORE the doInBackground(), this allows
 		 * something to be done in the UI thread in prepara-
 		 * tion for the long stuff, like starting a progress
-		 * dialog.
+		 * dialog (uh, this call has been moved to the various
+		 * places that initialize the GridASyncTask).
 		 */
 		@Override
 		protected void onPreExecute() {
@@ -1002,7 +1003,6 @@ public class GridActivity2 extends BaseDialogActivity
 			m_done = false;
 			m_last_completed_row = -1;
 			m_exercise_data.clear();
-//			start_progress_dialog(R.string.loading_str);
 		}
 
 		/***************
