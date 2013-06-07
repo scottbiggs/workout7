@@ -1,9 +1,11 @@
 TODO:
 -----------------
-Take away the global preferences vars.  Make each class access the
-	shared preferences the right way.  This is messy and very
-	spaghetti code.  You could do some static methods to make it
-	easier, maybe?
+Hitting the back button when in the middle of adding an exercise doesn't
+	cause any nagging (when turned on).  This is because the handling is
+	done in the AddSetActivity instead of the ExerciseTabHostActivity
+	which actually can catch the back button.  I think.
+	- similar for the other nags.
+	- But it works in EditExerciseActivity!!!
 
 Add a special sound for:
 		long-clicks				- longclick		- done
@@ -27,37 +29,15 @@ Add the ability to clear EVERYTHING.  This is a tabula rasa,
 	all their exercises at once.  Of course, give appropriate
 	warnings.
 
-Need to make a preferences screen.
+Preferences:
 	TODO:
-	* Save the database to SIMM card. (http://stackoverflow.com/questions/1209469/storing-android-application-data-on-sd-card,
-	read the whole article!)
-	- done by the OS
-
-	* Numeric entry style: EditText, Numeric Keypad, Rollers. etc. ??
-	- done
-
 	* Sound
-	* Sound VOLUME
 	* Details of the sound (keypad clicks, warnings, nags, successful
 	completions, etc.).
 	* Should the program nag about cancelling.
 	* Allow user to clear EVERYTHING (tabula rasa).  Warn!
 	* add/modify/change accounts
 	* vibrate
-
-	DONE:
-	* Move the whole program to SIMM
-	- The system or the user has the option now.
-
-	* Should the program nag about unimportant empty portions
-	of workout sets.
-
-	* Keep screen on.
-	- done
-
-Check out: http://android-developers.blogspot.com/2009/02/faster-screen-orientation-change.html
-	This should be applied to the grid screen to make
-	orientation changes much faster.
 
 Make sure the layouts look good on all the various
 	devices, especially tablets.
@@ -132,6 +112,17 @@ In the graphs, instead of horizontal lines, divide up into
 ---------------------------------------------------
 TABLED (for later versions)
 ---------------------------------------------------
+Check out: http://android-developers.blogspot.com/2009/02/faster-screen-orientation-change.html
+	This should be applied to the grid screen to make
+	orientation changes much faster.
+	- already to some of this for when the Grid has an orientation change
+	while loading.
+
+Take away the global preferences vars.  Make each class access the
+	shared preferences the right way.  This is messy and very
+	spaghetti code.  You could do some static methods to make it
+	easier, maybe?
+
 Remember to make Grid and the Inspector only load so many
 	dates.  Need to provide buttons (or swipes) to load
 	the rest in groups.
@@ -224,6 +215,30 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Remove the Volume system requirement.  It scares people.
+	- done
+
+Preferences:
+	* Sound VOLUME
+	- killed (people didn't like the permissions)
+
+	* Save the database to SIMM card. (http://stackoverflow.com/questions/1209469/storing-android-application-data-on-sd-card,
+	read the whole article!)
+	- done by the OS
+
+	* Numeric entry style: EditText, Numeric Keypad, Rollers. etc. ??
+	- done
+
+	* Move the whole program to SIMM
+	- The system or the user has the option now.
+
+	* Should the program nag about unimportant empty portions
+	of workout sets.
+
+	* Keep screen on.
+	- done
+
+
 Issue:  The graph adds up weight on the same day, that's
 	good.  But it shouldn't add up everything, should it?
 	Like for reps, should it add 'em, show an average,
