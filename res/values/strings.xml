@@ -175,6 +175,19 @@
 	<string name="welcome_menu_exit_button">exit</string>
 	<string name="welcome_version_number">v. 0.6 Alpha Test</string>
 
+	<string name="welcome_database_button">manage data</string>
+	<string name="welcome_database_help_title">Manage Data</string>
+	<string name="welcome_database_help_msg">
+		This button takes you to a screen to manage your data where
+		you can add entirely new databases, change the active
+		database, export or import data, and more!
+		\n\nTo actually change the data within the databases, go
+		to the main grid.  Long-tap an exercise to change how it
+		works (or remove it). Select an exercise and then go to
+		the Inspector to modify individual exercise sets.
+		</string>
+
+
 	<!-- ============	 ============ -->
 	<!-- ============ Add ============ -->
 	<!-- ============	 ============ -->
@@ -195,7 +208,7 @@
 		it from other exercises). Like all things here, if you
 		change your mind later, you can easily come back and edit
 		the name.
-		\n\nExercises generally fall into two different types: anaerobic
+		\n\nExercises generally fall into two different types\u003a anaerobic
 		and aerobic. Anaerobic are strength building exercises like
 		bench presses and squats. Aerobic exercises build endurance
 		and cardiovascular health (jogging, jump rope, and swimming
@@ -221,7 +234,7 @@
 		\n\nAnd like always, you can long-touch (touch and hold for
 		two seconds) any widget and get specific help for that
 		item.
-		\n\nNow for an example:\n
+		\n\nNow for an example\u003a\n
 		A good friend is a competitive synchronized swimmer, and her
 		group has some unusual types of exercises for their team.
 		\n\nOne of them is called \'Smiling\', so she enters that
@@ -240,7 +253,7 @@
 		are not in the time list, so she chooses \'custom\' from
 		the drop-down list and types \'beats\' in the editbox.
 		\n\nBut there is one more aspect to the Smiling workout that
-		the program has not provided for: glow. So my friend
+		the program has not provided for\u003a glow. So my friend
 		checks \'other\' and types \'glow\' in the textbox
 		next to it.
 		\n\nThe unit for glowing while smiling is called \'happies\', so
@@ -345,7 +358,7 @@
 		to enter a weight on this exercise.</string>
 	<string name="addexer_weight_unit_title">Unit of Weight</string>
 	<string name="addexer_weight_unit_msg">Type in the measurement
-		unit you\'re working on. Some examples: pounds, kilograms,
+		unit you\'re working on. Some examples\u003a pounds, kilograms,
 		ounces, tons, stones, picograms, etc.</string>
 
 	<string name="addexer_dist_label">distanced</string>
@@ -459,7 +472,7 @@
 	<string name="grid_help_button">help</string>
 	<string name="grid_help_msg">Yeah, this screen can look
 		very complicated, but it\'s really not.
-		\n\nWhat you see:
+		\n\nWhat you see\u003a
 		\n\u2013This screen is rather like a spreadsheet for all your exercises and
 		the sets you have done for those exercises.
 		\n\u2013Each row is an exercise. The first item in the row (right-most)
@@ -468,7 +481,7 @@
 		column tells you the day that column represents.
 		\n\u2013Each cell tells you how many sets of an exercise you did on
 		a given date.
-		\n\nWhat do do:
+		\n\nWhat do do\u003a
 		\n\u2013To record a new set for an exercise, just
 		tap on the exercise name.
 		\n\u2013To see
@@ -519,7 +532,7 @@
 	<!-- The yes/no dialog about editing an exercise -->
 	<string name="grid_edit_dialog_title">Edit an Exercise\?</string>
 	<string name="grid_edit_dialog_msg">Are you sure you want to
-		edit the exercise:
+		edit the exercise\u003a
 	</string>
 
 	<!-- The seperator between the number of sets done in a
@@ -546,8 +559,8 @@
 	<string name="editexer_help_msg">(Hoo boy, get ready for a long one!)
 		\n\nThis screen gives you the
 		ability to modify or delete an exercise. And here begins
-		a very long help message:
-		\n\nWARNING:\n
+		a very long help message\u003a
+		\n\nWARNING\u003a\n
 		\tChanging an exercise may have odd results
 		on workout sets that you have already done with this
 		exercise.
@@ -562,7 +575,7 @@
 		the weirdness if you like.
 		\n\nTo start, the textbox near the top allows you to change the
 		name if you don\'t like it.
-		\n\nExercises generally fall into two different types: anaerobic
+		\n\nExercises generally fall into two different types\u003a anaerobic
 		and aerobic. Anaerobic are strength building exercises like
 		bench presses and squats. Aerobic exercises build endurance
 		and cardiovascular health (jogging, jump rope, and swimming
@@ -588,7 +601,7 @@
 		\n\nAnd like always, you can long-touch (touch and hold for
 		two seconds) any widget and get specific help for that
 		item.
-		\n\nNow for an example:\n
+		\n\nNow for an example\u003a\n
 		My buddy is a tiddly-winks champion and does a very specific
 		exercise to train for this sport called winking.
 		\n\nSo he enters \'winking\' for the name.
@@ -605,7 +618,7 @@
 		\n\nTime is not an issue in this sport, so that also remains
 		unchecked.
 		\n\nBut there is one more aspect to the tiddly-winks workout that
-		the program has not provided for: accuracy. So my friend
+		the program has not provided for\u003a accuracy. So my friend
 		checks \'other\' and types \'accuracy\' in the textbox
 		next to it.
 		\n\nThe unit for accuracy while winking is \'tiddles\', so
@@ -666,7 +679,7 @@
 	<string name="editexer_delete_button">delete exercise</string>
 	<string name="editexer_delete_help_title">Delete Exercise</string>
 	<string name="editexer_delete_help_msg">Yep, this button does
-		exactly what you think it does:
+		exactly what you think it does\u003a
 		\nIt completely removes this particular exercise from the app.
 		\n\nAlso note that any earlier workout sets that you
 		recorded with this exercise will be <b>deleted</b>, too. So
@@ -726,7 +739,7 @@
 	<string name="add_weight_item_et_help_msg">This is a widget to
 		hold text. The text to put in should be some sort of weight
 		measurement&#x2026;. I know, something related to your workout! Yeah,
-		that\'s it: some sort of weight measurement for THIS exercise
+		that\'s it\u003a some sort of weight measurement for THIS exercise
 		that you\'re working on right now!
 		\n\nHere\'s a gold star!</string>
 
@@ -766,10 +779,10 @@
 	<!-- ============ AddTimeItem ============ -->
 	<!-- ============             ============ -->
 	<string name="add_time_item_help_title">Adding a Custom Time Unit</string>
-	<string name="add_time_item_help_msg">Time is always slipping&#x2026; :)
+	<string name="add_time_item_help_msg">Time is always slipping&#x2026; \u003a)
 		and this page allows you to get a litte better grip on it
 		by using whatever time unit you want for this exercise.
-		\n\nBack to the rocket skater: For the sprints, the time units are
+		\n\nBack to the rocket skater\u003a For the sprints, the time units are
 		very tiny. Oh yeah, these things are FAST for short distances.
 		So we like to use microseconds.
 		\n\nBut, uh, &#x2026; I didn\'t put microseconds in my list! No sweat
@@ -838,7 +851,7 @@
 	<string name="row_edit_help_title">Help Edit Rows</string>
 	<string name="row_edit_help_msg">This screen lets you change
 		the order of the exercises.
-		\n\nIt\'s pretty simple: just click the up or down arrows
+		\n\nIt\'s pretty simple\u003a just click the up or down arrows
 		next to the exercise you want to move.  Try it, you\'ll
 		like it!
 		\n\nAnd as usual, you can cancel if you don\'t like your
@@ -994,7 +1007,7 @@
 	<string name="aset_calorie_help_title">Calories</string>
 	<string name="aset_calorie_help_msg">How many calories
 		did you burn this set\?
-		\n\nUseless and confusing information:\n
+		\n\nUseless and confusing information\u003a\n
 		\tIn the science world, a calorie is the amount of
 		heat necessary to raise one gram of water one degree
 		Celcius.
@@ -1002,10 +1015,10 @@
 		massive amount of heat food can produce . So in the
 		world of food and exercise, people have used the
 		same word differently (sometimes called a \'dietary
-		calorie\'): one thousand times more heat! enough
+		calorie\')\u003a one thousand times more heat! enough
 		to raise a kilogram of water one degree Celsius.
 		\n\nImagine if we were using the small scientific
-		calorie: \"Hey, George!  You\'re gonna have to
+		calorie\u003a \"Hey, George!  You\'re gonna have to
 		jog a long time to match the 300,000 calories from that
 		candy bar!\"
 	</string>
@@ -1076,7 +1089,7 @@
 
 	<string name="aset_nag_title">Save With Blank Fields\?</string>
 	<string name="aset_nag_msg_plural">I think you may have forgotten
-		to fill out these fields:\n
+		to fill out these fields\u003a\n
 		%s
 		\n
 		This is not really a
@@ -1177,9 +1190,9 @@
 	</string>
 
 	<string name="inspector_description_plural">Here are the %1$s %2$s sets
-		that you did on %3$s:</string>
+		that you did on %3$s\u003a</string>
 	<string name="inspector_description_singular">Here is the
-		%1$s set you did on %2$s:</string>
+		%1$s set you did on %2$s\u003a</string>
 
 	<string name="inspector_set_title">Set #%d</string>
 
@@ -1279,7 +1292,7 @@
 	<!-- ============                ============ -->
 
 	<string name="enter_a_number_default_title">NO TITLE</string>
-	<string name="enter_a_number_instruction">Type in a new value:</string>
+	<string name="enter_a_number_instruction">Type in a new value\u003a</string>
 	<string name="enter_a_number_old_value">(originally %s)</string>
 
 	<string name="enter_a_number_help_title">Number Help</string>
@@ -1305,9 +1318,9 @@
 	<!-- ============            ============ -->
 	<string name="enter_text_default_title">Change Note</string>
 	<string name="enter_text_msg_empty">Type in a note
-		for this set:</string>
+		for this set\u003a</string>
 	<string name="enter_text_msg_old">Type in the new
-		note.  Here\'s the old one to compare with:
+		note.  Here\'s the old one to compare with\u003a
 		</string>
 
 	<string name="enter_text_help_title">Note Help</string>
@@ -1487,13 +1500,13 @@
 	<string name="graph_selector_title">Graphs!</string>
 	<string name="graph_selector_type_msg">Graph by Exercise Type</string>
 	<string name="graph_selector_group_msg">Graph by Muscle Group</string>
-	<string name="graph_selector_exercise_msg">View a specific exercise:</string>
+	<string name="graph_selector_exercise_msg">View a specific exercise\u003a</string>
 
 	<string name="graph_selector_help_title">Select a Graph</string>
 	<string name="graph_selector_help_msg">
 		Here is a list of all your exercises. Tap on one to see your
 		progress in that exercise.
-		\n\nOther buttons provide other options:
+		\n\nOther buttons provide other options\u003a
 		\n\t\'Upper\' - show the combined work on all upper body
 		exericses.
 		\n\t\'Lower\' - show the combined work on all the exercises
@@ -1531,7 +1544,7 @@
 
 	<string name="graph_no_sets_msg">No data for this exercise.</string>
 	<string name="graph_illegal_sets_msg">Error trying to graph!</string>
-	<string name="graph_all_same_value_msg">All sets are the same value: %s</string>
+	<string name="graph_all_same_value_msg">All sets are the same value\u003a %s</string>
 	<string name="graph_all_invalid_msg">All values are invalid, so there\'s
 		nothing to graph. Sorry. Try filling some of the missing values.
 	</string>
@@ -1539,7 +1552,7 @@
 	<string name="graph_one_set_msg">
 		There\'s just one set for the %s exercise, so there is
 		nothing to graph.
-		\n\nBut here is the data for it:
+		\n\nBut here is the data for it\u003a
 	</string>
 	<string name="graph_null">null</string>
 
@@ -1591,7 +1604,7 @@
 		\n\nTurn this on, and a graph will show the total weight you
 		moved for each set. Yeah, reps * weight = total.
 		\n\nBut you gotta tell the program what to multiply the reps
-		by. Select this and a list will pop up: pick what you want to
+		by. Select this and a list will pop up\u003a pick what you want to
 		graph (which will probably be weight, but who knows? I\'ll
 		leave it up to you).
 		\n\nNow you can walk over to that muscle-head and brag that you
@@ -1614,7 +1627,7 @@
 	<!-- ============          ============ -->
 
 	<string name="history_title">History of %s</string>
-	<string name="history_msg">A few of the more recent sets:</string>
+	<string name="history_msg">A few of the more recent sets\u003a</string>
 	<string name="history_empty_msg">You have not done
 		any sets of this exercise yet.</string>
 
@@ -1669,5 +1682,47 @@
 	<string name="aspect_time">timed</string>
 	<string name="aspect_other">other</string>
 -->
+
+
+	<!-- ============                 ============ -->
+	<!-- ============ Manage Database ============ -->
+	<!-- ============              	  ============ -->
+
+	<string name="manage_db_title">Data Management</string>
+	<string name="manage_db_help_title">Manage Your Data</string>
+	<string name="manage_db_help_msg">
+		Want control of your data? That\'s what this is for!
+		\n\nMost of the time it\'s just you and your workout.
+		But sometimes you might want to share your phone with
+		a friend, keep track of another person, or experiment
+		around. That\'s what this section is for.
+		\n\nSo this app organizes your workout groups by person\u003a each
+		person has one group of workout data. Pretty simple, right?
+		\n\nOn this screen is a list of all the people\'s workout that this
+		phone knows. To change the person,
+		scroll through the list and tap to make that person
+		active.
+		\n\nYou can create a new person by filling out a name and
+		hitting the add button.
+		\n\nLong-tap (press and hold for one second) a person to
+		edit that particular group of workouts.
+		\n\nAnd finally you can import data by clicking the \'import\'
+		button (exporting is done by long-tapping, hint hint).
+	</string>
+
+	<string name="manage_db_current_label">current\u003a</string>
+
+	<string name="manage_db_list_instructions">
+		Tap to select or long-press for more options.
+	</string>
+
+	<string name="manage_db_add_butt">add</string>
+	<string name="manage_db_add_butt_help_title">Add Data Group</string>
+	<string name="manage_db_add_butt_help_msg">
+		Enter the name of a new data group (usually the name of the)
+		person doing the exercise) and then tap the add button. That\'s
+		all there is to it!
+	</string>
+
 
 </resources>

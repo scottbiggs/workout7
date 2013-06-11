@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	This is the portrait version of the the manage_database.xml.
+	This allows the user to work with databases.
+
+	It's not used with the free version.
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent" >
+
+	<TextView
+		android:id="@+id/manage_db_title_tv"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentTop="true"
+		android:layout_marginBottom="3dp"
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="3dp"
+		android:layout_marginTop="5dp"
+		style="@style/white_text_large"
+		android:text="@string/manage_db_title" />
+
+	<ImageView
+		android:id="@+id/manage_db_logo"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:layout_alignParentTop="true"
+		android:layout_marginRight="8dp"
+		android:layout_marginTop="6dp"
+		android:src="@drawable/hpglogo_small" />
+
+	<TextView
+	    android:id="@+id/manage_db_current_label_tv"
+	    style="@style/white_text_medium"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignLeft="@+id/manage_db_title_tv"
+	    android:layout_below="@+id/manage_db_logo"
+	    android:layout_marginLeft="20dp"
+	    android:text="@string/manage_db_current_label" />
+
+	<TextView
+	    android:id="@+id/manage_db_current_tv"
+	    style="@style/white_text_medium"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignBaseline="@+id/manage_db_current_label_tv"
+	    android:layout_alignBottom="@+id/manage_db_current_label_tv"
+	    android:layout_marginLeft="5dp"
+	    android:layout_toRightOf="@+id/manage_db_current_label_tv"
+	    android:lines="1"
+	    android:text="Medium Text"
+	    android:textColor="@color/hpg_orange_desaturated3"
+	    android:textStyle="bold" />
+
+	<Button
+	    android:id="@+id/manage_db_import_butt"
+	    style="@style/white_text_small"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentBottom="true"
+	    android:layout_centerHorizontal="true"
+	    android:layout_marginBottom="8dp"
+	    android:layout_marginLeft="40dp"
+	    android:layout_marginRight="40dp"
+	    android:layout_marginTop="10dp"
+	    android:background="@drawable/button_shiny_black"
+	    android:text="foo" />
+
+	<EditText
+	    android:id="@+id/manage_db_add_et"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_above="@id/manage_db_import_butt"
+	    android:layout_alignParentLeft="true"
+	    android:layout_marginLeft="12dp"
+	    android:maxLines="1"
+	    android:minEms="8" />
+
+	<Button
+	    android:id="@+id/manage_db_add_butt"
+	    style="@style/white_text_small"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_above="@id/manage_db_import_butt"
+	    android:layout_alignBaseline="@id/manage_db_add_et"
+	    android:layout_marginLeft="8dp"
+	    android:layout_toRightOf="@id/manage_db_add_et"
+	    android:background="@drawable/button_shiny_black"
+	    android:paddingLeft="15dp"
+	    android:paddingRight="15dp"
+	    android:text="@string/manage_db_add_butt" />
+
+	<LinearLayout
+	    android:id="@+id/manage_db_list_ll"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_above="@id/manage_db_add_et"
+	    android:layout_below="@id/manage_db_current_tv"
+	    android:layout_marginBottom="5dp"
+	    android:layout_marginLeft="8dp"
+	    android:layout_marginRight="8dp"
+	    android:layout_marginTop="5dp"
+	    android:background="@drawable/rounded_edges_dark"
+	    android:orientation="vertical"
+	    android:padding="5dp" >
+
+		<TextView
+			style="@style/white_text_smaller"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/manage_db_list_instructions" />
+
+		<ListView
+			android:id="@+id/manage_db_list_lv"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			/>
+	</LinearLayout>
+
+
+</RelativeLayout>

@@ -17,7 +17,7 @@
 		>
 
 		<TextView
-			android:id="@+id/graph_options_title_tv"
+			android:id="@+id/manage_db_title_tv"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_alignParentLeft="true"
@@ -32,7 +32,7 @@
 			/>
 
 		<ImageView
-			android:id="@+id/graph_options_logo"
+			android:id="@+id/manage_db_logo"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_alignParentRight="true"
@@ -45,7 +45,7 @@
 			style="@style/white_text_medium"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_below="@id/graph_options_title_tv"
+			android:layout_below="@id/manage_db_title_tv"
 			android:layout_marginLeft="30dp"
 			android:layout_marginTop="3dp"
 			android:text="@string/name" />

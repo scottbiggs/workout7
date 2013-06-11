@@ -50,7 +50,8 @@ public class WGlobals extends Application {
 		HISTORYACTIVITY = 19,	// todo: deprecated
 		TESTACTIVITY = 20,		// todo:		Just for debugging!!
 		EXERCISETABHOSTACTIVITY = 21,
-		GRAPHOPTIONSACTIVITY = 22;	// added as they're made
+		GRAPHOPTIONSACTIVITY = 22,
+		MANAGEDATABASEACTIVITY = 23;	// added as they're made
 
 
 	//---------------------------

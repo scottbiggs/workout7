@@ -46,7 +46,7 @@ public class WelcomeActivity extends BaseDialogActivity
 
 	Button	m_start_butt,
 			m_settings_butt,
-			m_export_butt,
+			m_database_butt,
 			m_graphs_butt,
 			m_exit_butt,
 			m_help_butt;
@@ -85,6 +85,10 @@ public class WelcomeActivity extends BaseDialogActivity
 		m_settings_butt = (Button) findViewById(R.id.welcome_settings_butt);
 		m_settings_butt.setOnClickListener(this);
 		m_settings_butt.setOnLongClickListener(this);
+
+		m_database_butt = (Button) findViewById(R.id.welcome_database_butt);
+		m_database_butt.setOnClickListener(this);
+		m_database_butt.setOnLongClickListener(this);
 
 		m_graphs_butt = (Button) findViewById(R.id.welcome_graph_butt);
 		m_graphs_butt.setOnClickListener(this);
@@ -152,8 +156,10 @@ public class WelcomeActivity extends BaseDialogActivity
 				startActivityForResult(itt, WGlobals.PREFSACTIVITY);
 				break;
 
-//			case R.id.welcome_export_butt:
-//				break;
+			case R.id.welcome_database_butt:
+				itt = new Intent (this, PrefsActivity.class);
+				startActivityForResult(itt, WGlobals.MANAGEDATABASEACTIVITY);
+				break;
 
 			case R.id.welcome_graph_butt:
 				itt = new Intent (this, GraphSelectorActivity.class);

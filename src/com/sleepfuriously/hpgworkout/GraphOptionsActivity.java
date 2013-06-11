@@ -208,7 +208,7 @@ public class GraphOptionsActivity
 		setContentView(R.layout.graph_options);
 
 		m_cancel = (Button) findViewById(R.id.graph_options_cancel_butt);
-		m_help = (ImageView) findViewById(R.id.graph_options_logo);
+		m_help = (ImageView) findViewById(R.id.manage_db_logo);
 		m_done = (Button) findViewById(R.id.graph_options_ok_butt);
 
 		m_cancel.setOnClickListener(this);
