@@ -26,10 +26,10 @@
 		android:id="@+id/manage_db_logo"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_alignParentRight="true"
 		android:layout_alignParentTop="true"
-		android:layout_marginRight="8dp"
+		android:layout_marginLeft="30dp"
 		android:layout_marginTop="6dp"
+		android:layout_toRightOf="@id/manage_db_title_tv"
 		android:src="@drawable/hpglogo_small" />
 
 	<TextView
@@ -47,59 +47,62 @@
 		style="@style/white_text_medium"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_alignBaseline="@+id/manage_db_current_label_tv"
-		android:layout_alignBottom="@+id/manage_db_current_label_tv"
-		android:layout_marginLeft="5dp"
-		android:layout_toRightOf="@+id/manage_db_current_label_tv"
+		android:layout_alignLeft="@+id/manage_db_current_label_tv"
+		android:layout_below="@id/manage_db_current_label_tv"
 		android:lines="1"
 		android:text="Medium Text"
 		android:textColor="@color/hpg_orange_desaturated3"
 		android:textStyle="bold" />
+
+	<LinearLayout
+		android:id="@+id/manage_db_add_ll"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/manage_db_current_tv"
+		android:layout_marginTop="25dp"
+		android:orientation="horizontal" >
+
+		<EditText
+			android:id="@+id/manage_db_add_et"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="12dp"
+			android:maxLines="1"
+			android:minEms="5" />
+
+		<Button
+			android:id="@+id/manage_db_add_butt"
+			style="@style/white_text_small"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="8dp"
+			android:background="@drawable/button_shiny_black"
+			android:paddingLeft="15dp"
+			android:paddingRight="15dp"
+			android:text="@string/manage_db_add_butt" />
+	</LinearLayout>
 
 	<Button
 		android:id="@+id/manage_db_import_butt"
 		style="@style/white_text_small"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_alignParentBottom="true"
-		android:layout_centerHorizontal="true"
-		android:layout_marginBottom="8dp"
+		android:layout_alignLeft="@id/manage_db_title_tv"
+		android:layout_alignRight="@id/manage_db_logo"
+		android:layout_below="@id/manage_db_add_ll"
 		android:layout_marginLeft="40dp"
 		android:layout_marginRight="40dp"
-		android:layout_marginTop="10dp"
+		android:layout_marginTop="35dp"
 		android:background="@drawable/button_shiny_black"
 		android:text="@string/manage_db_import_butt" />
 
-	<EditText
-		android:id="@+id/manage_db_add_et"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_above="@id/manage_db_import_butt"
-		android:layout_alignParentLeft="true"
-		android:layout_marginLeft="12dp"
-		android:maxLines="1"
-		android:minEms="8" />
-
-	<Button
-		android:id="@+id/manage_db_add_butt"
-		style="@style/white_text_small"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_above="@id/manage_db_import_butt"
-		android:layout_alignBaseline="@id/manage_db_add_et"
-		android:layout_marginLeft="8dp"
-		android:layout_toRightOf="@id/manage_db_add_et"
-		android:background="@drawable/button_shiny_black"
-		android:paddingLeft="15dp"
-		android:paddingRight="15dp"
-		android:text="@string/manage_db_add_butt" />
-
 	<LinearLayout
 		android:id="@+id/manage_db_list_ll"
-		android:layout_width="fill_parent"
+		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_above="@id/manage_db_add_et"
-		android:layout_below="@id/manage_db_current_tv"
+		android:layout_toRightOf="@id/manage_db_logo"
+		android:layout_alignParentTop="true"
+		android:layout_alignParentBottom="true"
 		android:layout_marginBottom="5dp"
 		android:layout_marginLeft="8dp"
 		android:layout_marginRight="8dp"
@@ -112,20 +115,13 @@
 			style="@style/white_text_smaller"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:background="@drawable/rounded_edges_medium"
-			android:paddingBottom="2dp"
-			android:paddingLeft="4dp"
-			android:paddingRight="4dp"
-			android:paddingTop="2dp"
 			android:text="@string/manage_db_list_instructions" />
 
 		<ListView
 			android:id="@+id/manage_db_list_lv"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:cacheColorHint="#00000000"
-			android:choiceMode="singleChoice" />
-
+			/>
 	</LinearLayout>
 
 

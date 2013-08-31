@@ -173,11 +173,11 @@
 		Gym in Austin, Texas\u2014just look for place with the arm
 		sticking out! Programmed by Scott Biggs.</string>
 	<string name="welcome_menu_exit_button">exit</string>
-	<string name="welcome_version_number">v. 0.6 Alpha Test</string>
+	<string name="welcome_version_number">v. 0.7 Alpha Test</string>
 
-	<string name="welcome_database_button">manage data</string>
-	<string name="welcome_database_help_title">Manage Data</string>
-	<string name="welcome_database_help_msg">
+	<string name="welcome_manage_db_button">manage data</string>
+	<string name="welcome_manage_db_help_title">Manage Data</string>
+	<string name="welcome_manage_db_help_msg">
 		This button takes you to a screen to manage your data where
 		you can add entirely new databases, change the active
 		database, export or import data, and more!
@@ -186,6 +186,8 @@
 		works (or remove it). Select an exercise and then go to
 		the Inspector to modify individual exercise sets.
 		</string>
+
+	<string name="welcome_user_name">Hello, %s!</string>
 
 
 	<!-- ============	 ============ -->
@@ -1722,6 +1724,16 @@
 		Enter the name of a new data group (usually the name of the)
 		person doing the exercise) and then tap the add button. That\'s
 		all there is to it!
+	</string>
+
+	<string name="manage_db_import_butt">import</string>
+	<string name="manage_db_import_butt_help_title">Import Data</string>
+	<string name="manage_db_import_butt_help_msg">
+		This button allows you to import a data set.
+		\n\nData needs to be in a public directory on your device or
+		accessible as a URL (an internet link). Furthermore, the data
+		needs to be in a tab-delineated format, which is pretty standard
+		for most simple spreadsheets.
 	</string>
 
 

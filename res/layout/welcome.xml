@@ -41,6 +41,14 @@
 			style="@style/white_text_large"
 			android:typeface="sans" />
 
+		<TextView
+			android:id="@+id/welcome_user_name_tv"
+			style="@style/white_text_smaller"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="25dp"
+			android:text="Hello, default user!" />
+
 	</LinearLayout>
 
 	<ImageView
@@ -98,10 +106,24 @@
 		android:textSize="@dimen/font_size_button_default" />
 
 	<Button
-		android:id="@+id/welcome_settings_butt"
+		android:id="@+id/welcome_manage_db_butt"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:layout_below="@id/welcome_graph_butt"
+		android:layout_marginBottom="3dp"
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp"
+		android:layout_marginTop="3dp"
+		android:background="@drawable/button_shiny_black"
+		android:text="@string/welcome_manage_db_button"
+		android:textColor="@color/ivory"
+		android:textSize="@dimen/font_size_button_default" />
+
+	<Button
+		android:id="@+id/welcome_settings_butt"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/welcome_manage_db_butt"
 		android:layout_marginBottom="3dp"
 		android:layout_marginLeft="10dp"
 		android:layout_marginRight="10dp"
@@ -111,8 +133,6 @@
 		android:textColor="@color/ivory"
 		android:textSize="@dimen/font_size_button_default" />
 
-
-
 	<Button
 		android:id="@+id/welcome_exit_butt"
 		android:layout_width="wrap_content"
@@ -120,13 +140,13 @@
 		android:layout_below="@id/welcome_settings_butt"
 		android:layout_centerHorizontal="true"
 		android:layout_marginBottom="3dp"
-		android:layout_marginTop="3dp"
-		android:gravity="center"
+		android:layout_marginTop="15dp"
 		android:background="@drawable/button_shiny_black"
-		android:textColor="@color/ivory"
+		android:gravity="center"
 		android:paddingLeft="10dp"
 		android:paddingRight="10dp"
 		android:text="@string/welcome_exit_button"
+		android:textColor="@color/ivory"
 		android:textSize="@dimen/font_size_button_default" />
 
 	<Button

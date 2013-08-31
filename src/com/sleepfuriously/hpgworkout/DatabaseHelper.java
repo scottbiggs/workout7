@@ -12,13 +12,6 @@
  * Also, you can use Firefox's SQLite Manager to look at and alter
  * the database--works pretty well (but you have to load it every time).
  *
- *
- *	WARNING!
- * There's a peculiarity right now that means it should
- * only handle ONE instance at a time!  I've put in tests
- * to make sure that only one instance happens, but it
- * can still happen.
- *
  */
 package com.sleepfuriously.hpgworkout;
 
@@ -39,19 +32,23 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.util.Log;
-import android.widget.Toast;
 
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+ * Most of the methods and data are static--designed to help
+ * access the database information.
+ *
+ * Composes of two parts:
+ *
+ *	I.	Pertaining to the Exercise Table
+ *
+ *	II.	Pertaining to the Set Table
+ */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
 	//-----------------------
 	//	Class Constants
 	//-----------------------
-
-	/** The file name of the database */
-	private static final String
-			DB_NAME = "hpg.sqlite";
 
 	/**
 	 * The name of the table that lists
@@ -109,7 +106,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	/**
 	 * These are the column numbers in the database for
 	 * the various column names.
-	 *
+	 *<p>
 	 * 	NOTE!
 	 * These numbers are also used to determine which column
 	 * is the most significant!
@@ -259,6 +256,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	// Nice to have around.
 	private Context m_context = null;
 
+	/** The name of the database file that defines this instance. */
+	private String m_filename;
+
 
 	//-----------------------
 	//	Methods
@@ -291,12 +291,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 						CursorFactory factory,
 						int version) {
 		super (context,
-			name != null ? name : DB_NAME,
+			name != null ? name : DatabaseFilesHelper.DB_DEFAULT_FILENAME,
 			factory,
 			version != 0 ? version : DATABASE_VERSION);
 
-		Log.i(tag, "Called the full Constructor!!!  (should be the only time)");
+		Log.i(tag, "Called the full database Constructor!!!");
 		m_context = context;
+		m_filename = name != null ? name : DatabaseFilesHelper.DB_DEFAULT_FILENAME;
 	} // constructor
 
 
@@ -308,11 +309,45 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	//					just use 'this'.
 	//
 	public DatabaseHelper (Context context) {
-		super (context, DB_NAME, null, DATABASE_VERSION);
+		super (context,
+			DatabaseFilesHelper.DB_DEFAULT_FILENAME,
+			null,
+			DATABASE_VERSION);
 
-		Log.i(tag, "Called the minimal Constructor!!!  (should be the only time)");
+		Log.i(tag, "Called the minimal database Constructor!!!");
 		m_context = context;
+		m_filename = DatabaseFilesHelper.DB_DEFAULT_FILENAME;
 	}
+
+	//-----------------------
+	//	Simpler constructor
+	//
+	//		context		The context of the application.
+	//					If you're calling from an Activity,
+	//					just use 'this'.
+	//
+	//		name			The name of the database file to use.
+	//
+	public DatabaseHelper (Context context, String name) {
+		super (context,
+			name,
+			null,
+			DATABASE_VERSION);
+
+		Log.i(tag, "Called the 2nd minimal Constructor!!!");
+		m_context = context;
+		m_filename = name;
+	}
+
+
+	/***********************
+	 * Returns the name of the file that this instance is
+	 * using for its database.
+	 */
+	public String get_database_filename() {
+		return m_filename;
+	}
+
 
 
 	//--------------------------------------
@@ -528,7 +563,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 	//--------------------------------------
-	//	Exercise Table Methods
+	//	I. Exercise Table Methods
 	//--------------------------------------
 
 	/*********************
@@ -765,7 +800,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			else {
 				Log.e(tag, "Hey, could not figure out the significant exercise in parse_init_exercise with the string '" + sig_str + "'.");
 			}
-			Log.d(tag, "parse_init_exercise_values(), sig_str = " + sig_str + ", sig = " + sig);
+//			Log.d(tag, "parse_init_exercise_values(), sig_str = " + sig_str + ", sig = " + sig);
 			values.put(EXERCISE_COL_SIGNIFICANT, sig);
 		}
 
@@ -1148,9 +1183,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * exercise.  Really!  That way, you don't have to worry about
 	 * that damn cursor hanging around.
 	 *
-	 * todo
-	 * 		Test this method!  Yeah, it's untested!
-	 *
 	 * @param db			DB ready to read.
 	 * @param name		The name of the exercise.
 	 * @return			- A class instance holding all the info about
@@ -1350,7 +1382,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 	//--------------------------------------
-	//	Set Table Methods
+	//	II. Set Table Methods
 	//--------------------------------------
 
 	/********************
@@ -1560,6 +1592,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		data.notes = cursor.getString(col);
 
 		return data;
-	} // getExerciseData (cursor)
+	}  // getSetData(cursor)
+
 
 }

@@ -17,6 +17,7 @@
 package com.sleepfuriously.hpgworkout;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -25,6 +26,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -44,21 +46,15 @@ public class WelcomeActivity extends BaseDialogActivity
 	//	Widgets
 	//------------------
 
-	Button	m_start_butt,
-			m_settings_butt,
-			m_database_butt,
-			m_graphs_butt,
-			m_exit_butt,
-			m_help_butt;
-
-	ImageView m_help_logo_butt;
-
 
 	//------------------
 	//	Class Data
 	//------------------
 
 
+	//-----------------------
+	//	UI Callback Methods
+	//-----------------------
 
 	//------------------------------
 	@Override
@@ -71,43 +67,35 @@ public class WelcomeActivity extends BaseDialogActivity
 		PreferenceManager.setDefaultValues(this,
 										R.xml.pref,
 										false);	// Prevents overriding user's saved preferences.
-
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.welcome);
 
+		// Setup the buttons
+		Button start_butt = (Button) findViewById(R.id.welcome_start_butt);
+		start_butt.setOnClickListener(this);
+		start_butt.setOnLongClickListener(this);
 
+		Button settings_butt = (Button) findViewById(R.id.welcome_settings_butt);
+		settings_butt.setOnClickListener(this);
+		settings_butt.setOnLongClickListener(this);
 
+		Button database_butt = (Button) findViewById(R.id.welcome_manage_db_butt);
+		database_butt.setOnClickListener(this);
+		database_butt.setOnLongClickListener(this);
 
-		m_start_butt = (Button) findViewById(R.id.welcome_start_butt);
-		m_start_butt.setOnClickListener(this);
-		m_start_butt.setOnLongClickListener(this);
+		Button graphs_butt = (Button) findViewById(R.id.welcome_graph_butt);
+		graphs_butt.setOnClickListener(this);
+		graphs_butt.setOnLongClickListener(this);
 
-		m_settings_butt = (Button) findViewById(R.id.welcome_settings_butt);
-		m_settings_butt.setOnClickListener(this);
-		m_settings_butt.setOnLongClickListener(this);
+		Button exit_butt = (Button) findViewById(R.id.welcome_exit_butt);
+		exit_butt.setOnClickListener(this);
+		exit_butt.setOnLongClickListener(this);
 
-		m_database_butt = (Button) findViewById(R.id.welcome_database_butt);
-		m_database_butt.setOnClickListener(this);
-		m_database_butt.setOnLongClickListener(this);
+		Button help_butt = (Button) findViewById(R.id.welcome_help_butt);
+		help_butt.setOnClickListener(this);
 
-		m_graphs_butt = (Button) findViewById(R.id.welcome_graph_butt);
-		m_graphs_butt.setOnClickListener(this);
-		m_graphs_butt.setOnLongClickListener(this);
-
-		m_exit_butt = (Button) findViewById(R.id.welcome_exit_butt);
-		m_exit_butt.setOnClickListener(this);
-		m_exit_butt.setOnLongClickListener(this);
-
-		m_help_butt = (Button) findViewById(R.id.welcome_help_butt);
-		m_help_butt.setOnClickListener(this);
-
-		m_help_logo_butt = (ImageView) findViewById(R.id.welcome_logo_id);
-		m_help_logo_butt.setOnClickListener(this);
-
-//		m_export_butt = (Button) findViewById(R.id.welcome_export_butt);
-//		m_export_butt.setOnClickListener(this);
-//		m_export_butt.setOnLongClickListener(this);
-//		m_export_butt.setEnabled(false);
+		ImageView help_logo_butt = (ImageView) findViewById(R.id.welcome_logo_id);
+		help_logo_butt.setOnClickListener(this);
 
 		// Start the sound system.
 		SoundManager.getInstance();
@@ -116,10 +104,59 @@ public class WelcomeActivity extends BaseDialogActivity
 		SoundManager.addSound(WGlobals.SOUND_LONG_CLICK, R.raw.longclick);
 		SoundManager.addSound(WGlobals.SOUND_COMPLETE, R.raw.wineclink);
 
-		// Get the DatabaseHelper going.  Since this is the
-		// first Activity, this should take care of the life
-		// cycle ot g_db_helper.
-		WGlobals.g_db_helper = new DatabaseHelper(this);
+
+		// Figure out which database we're using (it's saved in
+		// the preferences).  This'll tell us which to load up
+		// and which database file to fire up.
+		TextView user_name_tv = (TextView) findViewById(R.id.welcome_user_name_tv);
+
+//		SharedPreferences prefs =
+//				PreferenceManager.getDefaultSharedPreferences(this);
+//		String db_name = prefs.getString(DatabaseHelper.PREFS_CURRENT_NAME_KEY,
+//										"");
+
+
+		// Since this is the first Activity, go ahead and initialize
+		// the database.  Once done, it'll also tell us the name of
+		// the active database.
+		DatabaseFilesHelper.init(this);
+		user_name_tv.setText(DatabaseFilesHelper.get_active_username(this));
+
+//		// Is there a database at all?  If not (which'll happen the first time
+//		// this program is run), then the db_name is the empty string, with a
+//		// length of 0.
+//		if (db_name.length() == 0) {
+//			// Create a new database file.
+//			Log.i(tag, "No currently selected database. So we're starting from scratch!");
+//			if (WGlobals.g_db_helper != null) {
+//				Log.e(tag, "About to instantiate WGlobals.g_db_helper, but it's not null!!!");
+//				WGlobals.g_db_helper = null;
+//			}
+//			WGlobals.g_db_helper = new DatabaseHelper(this, DatabaseHelper.DB_DEFAULT_NAME);
+//
+//			//	Set this name in our prefs!
+//			prefs.edit().putString(DatabaseHelper.PREFS_CURRENT_NAME_KEY,
+//								DatabaseHelper.DB_DEFAULT_NAME)
+//							.commit();
+//		}
+//
+//		else {
+//			// There IS a current database.  Set it up and go.
+//
+//			user_name_tv.setText(db_name);
+//
+//			// Get the DatabaseHelper going.  Since this is the
+//			// first Activity, this should take care of the life
+//			// cycle of g_db_helper.
+//			//
+//			//	NOTE:  It's also modified in ManageDatabaseActvity.java.
+//			//
+//			if (WGlobals.g_db_helper != null) {
+//				Log.e(tag, "About to instantiate WGlobals.g_db_helper, but it's not null!!!");
+//				WGlobals.g_db_helper = null;
+//			}
+//			WGlobals.g_db_helper = new DatabaseHelper(this, db_name + DatabaseHelper.DB_FILENAME_SUFFIX);
+//		}
 
 	} // onCreate()
 
@@ -131,10 +168,12 @@ public class WelcomeActivity extends BaseDialogActivity
 	protected void onDestroy() {
 		SoundManager.cleanup();
 
-		if (WGlobals.g_db_helper != null) {
-			WGlobals.g_db_helper.close();
-			WGlobals.g_db_helper = null;
-		}
+		DatabaseFilesHelper.cleanup(this);
+
+//		if (WGlobals.g_db_helper != null) {
+//			WGlobals.g_db_helper.close();
+//			WGlobals.g_db_helper = null;
+//		}
 		super.onDestroy();
 	} // onDestroy()
 
@@ -156,8 +195,8 @@ public class WelcomeActivity extends BaseDialogActivity
 				startActivityForResult(itt, WGlobals.PREFSACTIVITY);
 				break;
 
-			case R.id.welcome_database_butt:
-				itt = new Intent (this, PrefsActivity.class);
+			case R.id.welcome_manage_db_butt:
+				itt = new Intent (this, ManageDatabaseActivity.class);
 				startActivityForResult(itt, WGlobals.MANAGEDATABASEACTIVITY);
 				break;
 
@@ -197,12 +236,12 @@ public class WelcomeActivity extends BaseDialogActivity
 				show_help_dialog(R.string.welcome_settings_help_title, R.string.welcome_settings_help_msg);
 				return true;
 
-//			case R.id.welcome_export_butt:
-//				show_help_dialog(R.string.welcome_export_help_title, R.string.welcome_export_help_msg);
-//				return true;
-
 			case R.id.welcome_graph_butt:
 				show_help_dialog(R.string.welcome_graphs_help_title, R.string.welcome_graphs_help_msg);
+				return true;
+
+			case R.id.welcome_manage_db_butt:
+				show_help_dialog(R.string.welcome_manage_db_help_title, R.string.welcome_manage_db_help_msg);
 				return true;
 
 			case R.id.welcome_exit_butt:

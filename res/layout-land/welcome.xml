@@ -47,13 +47,14 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentRight="true"
+		android:layout_alignParentTop="true"
 		android:layout_margin="8dp"
 		android:padding="10dp"
 		android:src="@drawable/hpglogo"
 		tools:ignore="ContentDescription" />
 
 	<LinearLayout
-		android:id="@+id/linearLayout1"
+		android:id="@+id/welcome_button_ll"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:layout_below="@id/welcome_title_ll"
@@ -85,6 +86,19 @@
 			android:textSize="@dimen/font_size_button_default" />
 
 		<Button
+			android:id="@+id/welcome_manage_db_butt"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="3dp"
+			android:layout_marginLeft="10dp"
+			android:layout_marginTop="3dp"
+			android:background="@drawable/button_shiny_black"
+			android:text="@string/welcome_manage_db_button"
+			android:textColor="@color/ivory"
+			android:textSize="@dimen/font_size_button_default" />
+
+
+		<Button
 			android:id="@+id/welcome_settings_butt"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
@@ -96,21 +110,18 @@
 			android:textColor="@color/ivory"
 			android:textSize="@dimen/font_size_button_default" />
 
-		<Button
-			android:id="@+id/welcome_exit_butt"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center_horizontal"
-			android:layout_marginBottom="3dp"
-			android:layout_marginTop="3dp"
-			android:background="@drawable/button_shiny_black"
-			android:gravity="center"
-			android:paddingLeft="10dp"
-			android:paddingRight="10dp"
-			android:text="@string/welcome_exit_button"
-			android:textColor="@color/ivory"
-			android:textSize="@dimen/font_size_button_default" />
 	</LinearLayout>
+
+	<TextView
+	    android:id="@+id/welcome_user_name_tv"
+	    style="@style/white_text_smaller"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_above="@id/welcome_button_ll"
+	    android:layout_alignRight="@id/welcome_button_ll"
+	    android:layout_marginBottom="5dp"
+	    android:layout_marginRight="18dp"
+	    android:text="Hello, default user!" />
 
 	<Button
 		android:id="@+id/welcome_help_butt"
@@ -129,15 +140,34 @@
 		android:textStyle="bold"
 		android:typeface="serif" />
 
+	<Button
+		android:id="@+id/welcome_exit_butt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_above="@id/welcome_help_butt"
+		android:layout_alignLeft="@id/welcome_logo_id"
+		android:layout_alignRight="@id/welcome_help_butt"
+		android:layout_gravity="center_horizontal"
+		android:layout_marginBottom="30dp"
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp"
+		android:background="@drawable/button_shiny_black"
+		android:gravity="center"
+		android:paddingLeft="10dp"
+		android:paddingRight="10dp"
+		android:text="@string/welcome_exit_button"
+		android:textColor="@color/ivory"
+		android:textSize="@dimen/font_size_button_default" />
+
 	<TextView
-	    android:id="@+id/welcome_version_tv"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_alignBaseline="@id/welcome_help_butt"
-	    android:layout_marginRight="25dp"
-	    android:layout_toLeftOf="@+id/welcome_help_butt"
-	    android:text="@string/welcome_version_number"
-	    android:textAppearance="?android:attr/textAppearanceSmall"
-	    android:textColor="@color/red" />
+		android:id="@+id/welcome_version_tv"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignBaseline="@id/welcome_help_butt"
+		android:layout_marginRight="25dp"
+		android:layout_toLeftOf="@+id/welcome_help_butt"
+		android:text="@string/welcome_version_number"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:textColor="@color/red" />
 
 </RelativeLayout>
