@@ -9,7 +9,6 @@ import android.app.Dialog;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -143,7 +142,9 @@ public class ExerciseTabHostActivity
 
 		// Name this exercise.
 		TextView tv = (TextView) findViewById(R.id.exercise_tabhost_name_tv);
-		tv.setText(m_ex_name);
+		String user = DatabaseFilesHelper.get_active_username(this);
+		String possessive = getString(R.string.possessive_suffix);
+		tv.setText(user + possessive + " " + m_ex_name);
 
 		//------------
 		//	Do the Tabs
@@ -410,7 +411,7 @@ public class ExerciseTabHostActivity
 	@Override
 	public void onTabChanged(String tabId) {
 		WGlobals.play_short_click();
-		int tab = getTabHost().getCurrentTab();
+//		int tab = getTabHost().getCurrentTab();
 //		Log.v(tag, "onTabChanged().  current tab = " + tab);
 //		Log.v(tag, "onTabChanged().  tabId = " + tabId);
 	} // onTabChanged(tabId)

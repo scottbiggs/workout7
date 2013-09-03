@@ -194,7 +194,14 @@ public class GraphActivity
 			str = getString(R.string.graph_title_msg, m_ex_name);
 			title.setText(str);
 			logo.setOnClickListener(this);
+
+			String user = DatabaseFilesHelper.get_active_username(this);
+			String possessive = getString(R.string.possessive_suffix);
+			title.setText(user + possessive + " " + m_ex_name);
 		}
+
+		
+
 
 		// Continued in onResume()
 

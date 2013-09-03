@@ -17,7 +17,6 @@
 package com.sleepfuriously.hpgworkout;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -104,59 +103,11 @@ public class WelcomeActivity extends BaseDialogActivity
 		SoundManager.addSound(WGlobals.SOUND_LONG_CLICK, R.raw.longclick);
 		SoundManager.addSound(WGlobals.SOUND_COMPLETE, R.raw.wineclink);
 
-
-		// Figure out which database we're using (it's saved in
-		// the preferences).  This'll tell us which to load up
-		// and which database file to fire up.
-		TextView user_name_tv = (TextView) findViewById(R.id.welcome_user_name_tv);
-
-//		SharedPreferences prefs =
-//				PreferenceManager.getDefaultSharedPreferences(this);
-//		String db_name = prefs.getString(DatabaseHelper.PREFS_CURRENT_NAME_KEY,
-//										"");
-
-
-		// Since this is the first Activity, go ahead and initialize
-		// the database.  Once done, it'll also tell us the name of
-		// the active database.
+		// Need to get the database going.  This MUST happend before
+		// the next statement as it uses the database (probably).
 		DatabaseFilesHelper.init(this);
-		user_name_tv.setText(DatabaseFilesHelper.get_active_username(this));
 
-//		// Is there a database at all?  If not (which'll happen the first time
-//		// this program is run), then the db_name is the empty string, with a
-//		// length of 0.
-//		if (db_name.length() == 0) {
-//			// Create a new database file.
-//			Log.i(tag, "No currently selected database. So we're starting from scratch!");
-//			if (WGlobals.g_db_helper != null) {
-//				Log.e(tag, "About to instantiate WGlobals.g_db_helper, but it's not null!!!");
-//				WGlobals.g_db_helper = null;
-//			}
-//			WGlobals.g_db_helper = new DatabaseHelper(this, DatabaseHelper.DB_DEFAULT_NAME);
-//
-//			//	Set this name in our prefs!
-//			prefs.edit().putString(DatabaseHelper.PREFS_CURRENT_NAME_KEY,
-//								DatabaseHelper.DB_DEFAULT_NAME)
-//							.commit();
-//		}
-//
-//		else {
-//			// There IS a current database.  Set it up and go.
-//
-//			user_name_tv.setText(db_name);
-//
-//			// Get the DatabaseHelper going.  Since this is the
-//			// first Activity, this should take care of the life
-//			// cycle of g_db_helper.
-//			//
-//			//	NOTE:  It's also modified in ManageDatabaseActvity.java.
-//			//
-//			if (WGlobals.g_db_helper != null) {
-//				Log.e(tag, "About to instantiate WGlobals.g_db_helper, but it's not null!!!");
-//				WGlobals.g_db_helper = null;
-//			}
-//			WGlobals.g_db_helper = new DatabaseHelper(this, db_name + DatabaseHelper.DB_FILENAME_SUFFIX);
-//		}
+		set_current_db_user();
 
 	} // onCreate()
 
@@ -167,13 +118,8 @@ public class WelcomeActivity extends BaseDialogActivity
 	@Override
 	protected void onDestroy() {
 		SoundManager.cleanup();
-
 		DatabaseFilesHelper.cleanup(this);
 
-//		if (WGlobals.g_db_helper != null) {
-//			WGlobals.g_db_helper.close();
-//			WGlobals.g_db_helper = null;
-//		}
 		super.onDestroy();
 	} // onDestroy()
 
@@ -263,9 +209,29 @@ public class WelcomeActivity extends BaseDialogActivity
 				WGlobals.act_on_prefs (this);
 				break;
 
+			case WGlobals.MANAGEDATABASEACTIVITY:
+				set_current_db_user();
+				break;
+
 		} // switch (requestCode)
 
 	} // onActivityResult (requestCode, resultCode, data)
 
+
+	/****************************
+	 * Grabs the current database username and fills the appropriate
+	 * UI widgets.
+	 */
+	private void set_current_db_user() {
+		// Figure out which database we're using (it's saved in
+		// the preferences).  This'll tell us which to load up
+		// and which database file to fire up.
+		TextView user_name_tv = (TextView) findViewById(R.id.welcome_user_name_tv);
+
+		// Since this is the first Activity, go ahead and initialize
+		// the database.  Once done, it'll also tell us the name of
+		// the active database.
+		user_name_tv.setText(DatabaseFilesHelper.get_active_username(this));
+	}
 
 }

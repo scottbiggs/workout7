@@ -62,6 +62,7 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -89,10 +90,12 @@ public class DatabaseFilesHelper {
 	protected static final String
 			DB_DEFAULT_USERNAME = "default user";
 
+	/** Displayed if a user name can't be found for a db file */
+	private static final String NO_USER_NAME_MSG = "no name";
+
 	/** The name of default database file */
 	public static final String DB_DEFAULT_FILENAME =
 			DB_FILENAME_PREFIX + "00000" + DB_FILENAME_SUFFIX;
-
 
 	/**
 	 * The key to accessing a preference String that tells the
@@ -105,9 +108,10 @@ public class DatabaseFilesHelper {
 	/**
 	 * The key to accessing how many databases have been created so
 	 * far.  This counter is used to construct unique names
-	 * for the database files.  Of course, the value is an int.
+	 * for the database files.  Of course, the value is an int and
+	 * represents the total number of databases every constructed.
 	 */
-//	protected static final String DB_FILENAME_COUNTER = "db_filename_counter";
+	private static final String DB_FILENAME_COUNTER = "db_filename_counter";
 
 
 
@@ -156,15 +160,26 @@ public class DatabaseFilesHelper {
 				return;	// can't continue
 			}
 
-			// Start up the database and exit.
+			// Start up the database and exit.  It's important that
+			// an actual database is CREATED either through
+			// getReadableDatabase() or getWriteableDAtabase().  This is
+			// what actually causes onCreate() of DatabaseHelper to be
+			// called (which is what we really want--to make the files).
 			WGlobals.g_db_helper = new DatabaseHelper(ctx, active_db_file);
+			SQLiteDatabase db = WGlobals.g_db_helper.getReadableDatabase();
+			db.close();
+			db = null;		// Just to make sure.
+
 			return;
 		}
 
-		// todo Create the database with the default filename for the
+		// Create the database with the default filename for the
 		// very first time.
 		String filename = get_next_file_name(ctx);
 		WGlobals.g_db_helper = new DatabaseHelper(ctx, filename);
+		SQLiteDatabase db = WGlobals.g_db_helper.getReadableDatabase();
+		db.close();
+		db = null;		// Just to make sure.
 
 		// Make the relation between the new db filename and
 		// the default username.
@@ -198,8 +213,8 @@ public class DatabaseFilesHelper {
 	 * 					Activity, which has a Context built-in.
 	 *
 	 * @return	A list of all the user names.  If a user name did
-	 * 			not exist for a corresponding file, then an empty
-	 * 			string is placed in that location.
+	 * 			not exist for a corresponding file, then NO_USER_NAME_MSG
+	 * 			is placed in that location.
 	 */
 	public static ArrayList<String> get_all_user_names (Context ctx) {
 		ArrayList<String> user_names = new ArrayList<String>();
@@ -207,7 +222,19 @@ public class DatabaseFilesHelper {
 		SharedPreferences prefs =
 				PreferenceManager.getDefaultSharedPreferences(ctx);
 		for (String file_name : file_names) {
-			user_names.add(prefs.getString(file_name, ""));
+			// Strip the path from the file name.
+			String stripped;
+			int path_ends_at = file_name.lastIndexOf('/');
+			if (path_ends_at == -1) {
+				// No path, so use the file name itself.
+				stripped = file_name;
+			}
+			else {
+				// Strip the path off
+				stripped = file_name.substring(path_ends_at + 1);
+			}
+
+			user_names.add(prefs.getString(stripped, NO_USER_NAME_MSG));
 		}
 		return user_names;
 	}
@@ -232,7 +259,9 @@ public class DatabaseFilesHelper {
 
 
 	/****************************
-	 * Finds the user name for the currently active database.
+	 * Finds the user name for the currently active database.  Works
+	 * by getting the active filename from the prefs, and then using
+	 * the prefs again to get the corresponding username.
 	 *
 	 * @param	ctx
 	 *
@@ -269,12 +298,15 @@ public class DatabaseFilesHelper {
 		// Check for the easy case.
 		String active_username = get_active_username(ctx);
 		if ((active_username != null) && (username.equals(active_username))) {
+			// Already active!
+			Log.d(tag, "activate(): tried to activate the currently active user.");
 			return true;
 		}
 
 		// Make sure that this username is actually valid.
 		String filename = get_file_name(username, ctx);
 		if (filename == null) {
+			Log.e (tag, "Problem getting the filename for user '" + username + "' in activate()!");
 			return false;
 		}
 
@@ -282,11 +314,14 @@ public class DatabaseFilesHelper {
 		// the new filename.
 		close_active_db();
 		WGlobals.g_db_helper = new DatabaseHelper(ctx, filename);
+		SQLiteDatabase db = WGlobals.g_db_helper.getReadableDatabase();
+		db.close();
+		db = null;		// Just to make sure.
 
 		// Finally, note the change.
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
 		prefs.edit().putString(PREFS_CURRENT_DB_FILE_NAME_KEY, filename).commit();
-
+		Log.d(tag, "activate(): just set the prefs_current_db_file_name to " + filename);
 		return true;
 	} // activate (username, ctx)
 
@@ -310,6 +345,7 @@ public class DatabaseFilesHelper {
 
 		// This should create the file with all the defaults.
 		DatabaseHelper temp_db_helper = new DatabaseHelper(ctx, filename);
+		temp_db_helper.getReadableDatabase();
 		temp_db_helper.close();
 		temp_db_helper = null;
 
@@ -321,12 +357,11 @@ public class DatabaseFilesHelper {
 
 		// And indicate that we've increased our database file count.
 		increment_filename_counter(ctx);
+
 		return get_num(ctx);
 	} // add (username, ctx)
 
 
-	// Returns number of DBs after the delete.  -1 if we tried
-	// to remove the last one (which was NOT done).
 	/****************************
 	 * Completely deletes a database, use cautiously!
 	 * If this is the active database, the next one in the list
@@ -452,10 +487,6 @@ public class DatabaseFilesHelper {
 	//	Preferences
 	//--------------------------------------
 
-	/** int - The number of filenames that have been created */
-	private static final String DB_FILENAME_COUNTER = "db_filename_counter";
-
-
 	/************************
 	 * Returns the number of database files that have been
 	 * created.
@@ -484,26 +515,13 @@ public class DatabaseFilesHelper {
 	//--------------------------------------
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 	/****************************
 	 * Finds all the databases in our database directory.  Please
 	 * note that for this program's sanity, a database is simply
 	 * a file with the .sqlite suffix (defined in DB_FILENAME_SUFFIX).
 	 *
-	 * Possible Bug:
-	 * 	May not work if the default database doesn't exist.
+	 * todo:
+	 * 	Bug!! May not work if the default database doesn't exist.
 	 *
 	 * @param	ctx		The Context.  Needed to figure out where this
 	 * 					method is being called.  Just supply the
@@ -537,8 +555,8 @@ public class DatabaseFilesHelper {
 				// Make sure that it has the appropriate suffix
 				String file_name = a_file.toString();
 				if (file_name.endsWith(DB_FILENAME_SUFFIX)) {
-					file_list.add(a_file.toString());
-//					Log.d(tag, "File: " + a_file.toString());
+//					file_list.add(a_file.toString());
+					file_list.add(strip_path(a_file.toString()));
 				}
 			}
 		}
@@ -586,6 +604,23 @@ public class DatabaseFilesHelper {
 	}
 
 
+	/****************************
+	 * Returns a copy of the given string with the path removed
+	 * (just the filename).  If there is no path, then orig is
+	 * returned.
+	 * <p>
+	 * A path is defined as ending with a forward slash '/'.
+	 *
+	 * @param orig	The name of a file plus its path.
+	 */
+	private static String strip_path (String orig) {
+		int path_terminator = orig.lastIndexOf('/');
+		if (path_terminator == -1) {
+			return orig;
+		}
+
+		return orig.substring(path_terminator + 1);
+	} // strip_path (orig)
 
 
 	/****************************
@@ -628,72 +663,6 @@ public class DatabaseFilesHelper {
 		//
 
 
-
-	/****************************
-	 * Makes the given user name the current database.
-	 *
-	 * @param user_name		The user name that identifies
-	 * 						the database to make current.
-	 *
-	 * @param ctx
-	 *
-	 * @return	true iff success
-	 */
-//	public static boolean make_current (String user_name, Context ctx) {
-//		// get the filename
-//		String new_db_file = get_file_name(user_name, ctx);
-//		if (new_db_file == null) {
-//			return false;	// Can't find the file.
-//		}
-//
-//		// Close the current database.
-//		close_current_db();
-//
-//		// Open the global database with the new file name.
-//		WGlobals.g_db_helper = new DatabaseHelper(ctx, new_db_file);
-//
-//		SharedPreferences prefs =
-//				PreferenceManager.getDefaultSharedPreferences(ctx);
-//		prefs.edit().putString(PREFS_CURRENT_DB_FILE_NAME_KEY,
-//							new_db_file).commit();
-//
-//		return true;
-//	}
-
-
-	/****************************
-	 * The database that is marked as current will be activated
-	 * if it isn't already.  If no database is selected as
-	 * current, then nothing is done.
-	 * <p>
-	 * <b>Assumption</b>: that if a database is open, it is assumed
-	 * to be current.  In other words, we never activate a database
-	 * that isn't current.
-	 *
-	 * @return  true - The current database is now active.<br>
-	 * 			false - There is no current database, so nothing
-	 * 				was done.
-	 */
-//	public static boolean activate_current (String user_name, Context ctx) {
-//		if (WGlobals.g_db_helper != null) {
-//			return true;		// already active
-//		}
-//
-//		// Get the name of the current database file from our
-//		// SharedPrefs
-//		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
-//		String filename = prefs.getString(PREFS_CURRENT_DB_FILE_NAME_KEY, null);
-//		if (filename == null) {
-//			// No current has been set.  Probably because this is
-//			// the first time the program has been run or the
-//			// current was deleted.
-//			return false;
-//		}
-//
-//		return activate_filename (filename, ctx);
-//
-//	}
-
 	/****************************
 	 * Given the FILEname of a database, this causes that file to
 	 * be active.  If another file was active, then it is closed
@@ -714,31 +683,11 @@ public class DatabaseFilesHelper {
 		if (WGlobals.g_db_helper == null) {
 			return false;
 		}
+		SQLiteDatabase db = WGlobals.g_db_helper.getReadableDatabase();
+		db.close();
+		db = null;		// Just to make sure.
 		return true;
 	}
-
-
-	/****************************
-	 * Opens the current database and makes it active.  If the
-	 * current database is already open, then there's nothing to
-	 * do.  If this is the first time this program has run, this
-	 * will create, initialize, and activate the default database.
-	 * @param ctx
-	 * @return
-	 */
-//	public static boolean open_current_db (Context ctx) {
-//		// First, check to see if it's already open!
-//		if (WGlobals.g_db_helper != null) {
-//			return true;
-//		}
-//
-//		// Get the current filename.
-//		String filename = get_current_file_name(ctx);
-//		WGlobals.g_db_helper = new DatabaseHelper(ctx, new_db_file);
-//
-//	}
-
-
 
 
 	/****************************
@@ -768,32 +717,6 @@ public class DatabaseFilesHelper {
 
 
 	/****************************
-	 * Checks to see if the string is already used for a database
-	 * user name.
-	 *
-	 * @param name		The name to check.
-	 *
-	 * @param	ctx		The Context.  Needed to figure out where this
-	 * 					method is being called.  Just supply the
-	 * 					Activity, which has a Context built-in.
-	 *
-	 * @return	True if this name already exists, false otherwise.
-	 */
-//	public static boolean does_user_name_exist (String name,
-//												Context ctx) {
-//		ArrayList<String> user_names = get_all_user_names(ctx);
-//		for (String user_name : user_names) {
-//			if (name.equals(user_name)) {
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
-
-
-
-
-	/****************************
 	 * Closes the currently open database.  This is necessary before
 	 * deleting it or opening a new database as the current.
 	 */
@@ -806,36 +729,6 @@ public class DatabaseFilesHelper {
 		WGlobals.g_db_helper.close();
 		WGlobals.g_db_helper = null;
 	}
-
-
-
-
-	/****************************
-	 * Changes the user name of the current database.
-	 *
-	 * @param new_name  The new user name to apply to the current
-	 * 					database.
-	 *
-	 * @param ctx
-	 * @return  true if all went well.  False for an error.
-	 */
-//	public static boolean change_current_user_name (String new_name,
-//													Context ctx) {
-//		String filename = get_current_file_name(ctx);
-//		if (filename == null) {
-//			return false;
-//		}
-//
-//		close_current_db();
-//
-//		SharedPreferences prefs =
-//				PreferenceManager.getDefaultSharedPreferences(ctx);
-//		prefs.edit().putString(filename, new_name).commit();
-//
-//		// Now re-open our database.
-//		return open (filename, ctx);
-//	}
-
 
 
 

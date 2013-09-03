@@ -75,6 +75,12 @@ public class GraphSelectorActivity
 		m_lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		m_lv.setOnItemClickListener(this);
 
+		TextView title_tv = (TextView) findViewById(R.id.graph_selector_title_tv);
+		String user = DatabaseFilesHelper.get_active_username(this);
+		String possessive = getString(R.string.possessive_suffix);
+		String title = getString(R.string.graph_selector_title);
+		title_tv.setText(user + possessive + " " + title);
+
 	} // onCreate (.)
 
 

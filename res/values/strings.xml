@@ -34,6 +34,8 @@
 	<string name="null_string">null</string>	<!-- should never be printed -->
 	<string name="hpg_logo_desc">Logo for the Hyde Park Gym</string>
 
+	<string name="possessive_suffix">\'s</string>
+
 
 	<!-- WARNING:
 		This string must match EXACTLY with the item in the
@@ -467,7 +469,7 @@
 	<!-- ============	  ============ -->
 
 	<!-- First the menu -->
-	<string name="grid_title">Your Exercises</string>
+	<string name="grid_title">%s\'s Exercises</string>
 	<string name="grid_select_title">select an exercise</string>
 
 	<string name="grid_help_title">Help!</string>
@@ -1700,7 +1702,7 @@
 		around. That\'s what this section is for.
 		\n\nSo this app organizes your workout groups by person\u003a each
 		person has one group of workout data. Pretty simple, right?
-		\n\nOn this screen is a list of all the people\'s workout that this
+		\n\nOn this screen is a list of all the people\'s workouts that this
 		phone knows. To change the person,
 		scroll through the list and tap to make that person
 		active.
@@ -1734,6 +1736,12 @@
 		accessible as a URL (an internet link). Furthermore, the data
 		needs to be in a tab-delineated format, which is pretty standard
 		for most simple spreadsheets.
+	</string>
+
+	<string name="manage_db_username_used_dialog_title">Used: %s</string>
+	<string name="manage_db_username_used_dialog_msg">
+		The username you typed in (%s) is already used. Try a different
+		name.
 	</string>
 
 

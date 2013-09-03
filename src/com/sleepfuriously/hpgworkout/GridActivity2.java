@@ -202,6 +202,11 @@ public class GridActivity2 extends BaseDialogActivity
 
 		m_main_table_scroller = (HorizontalScrollView) findViewById(R.id.grid_horiz_sv);
 
+		TextView title_tv = (TextView) findViewById(R.id.grid_title);
+		String current_user = DatabaseFilesHelper.get_active_username(this);
+		String title =  getString(R.string.grid_title, current_user);
+		title_tv.setText(title);
+		
 		// Start the AsyncTask.  This is complicated, as
 		// I'm using a new system with a static ASyncTask.
 		start_async_task();
