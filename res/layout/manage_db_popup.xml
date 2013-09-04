@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	This is my custom dialog for a popup-like menu.  This "menu"
+	appears after the user long-clicks on one of the databases
+	in the ListView of databases in the ManageDatabaseActivity.
+
+	NOTE:
+	Getting text to scroll and still be above buttons (at the
+	bottom of a changeable-width screen) is very tricky.  It's
+	necessary to set the ScrollView's height to 0dp and give
+	it a weight of 1.  The buttons at the bottom must have
+	a weight of 1 as well.  Seems to work.
+	ref:
+	http://stackoverflow.com/questions/5447554/scrolling-text-above-buttons-buttons-fixed-at-bottom
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:layout_margin="10dp"
+	android:background="@color/hpg_blue_darkest"
+	android:orientation="vertical"
+	android:padding="0dp"
+	tools:ignore="ContentDescription" >
+
+	<!-- Title Area -->
+
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal" >
+
+		<TextView
+			android:id="@+id/manage_db_popup_title_tv"
+			style="@style/white_text_large"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_vertical"
+			android:layout_marginBottom="3dp"
+			android:layout_marginLeft="16dp"
+			android:layout_marginRight="8dp"
+			android:layout_marginTop="10dp"
+			android:layout_weight="1"
+			android:text="foo" />
+
+		<ImageView
+			android:id="@+id/manage_db_popup_logo"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_vertical"
+			android:layout_marginLeft="18dp"
+			android:layout_marginRight="8dp"
+			android:layout_marginTop="6dp"
+			android:layout_weight="3"
+			android:src="@drawable/hpglogo_small" />
+	</LinearLayout>
+
+	<!-- Divider -->
+
+	<ImageView
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:id="@+id/manage_db_popup_title_divider"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:paddingBottom="2dp"
+		android:paddingLeft="5dp"
+		android:paddingRight="5dp"
+		android:paddingTop="10dp"
+		android:scaleType="fitXY"
+		android:src="@android:drawable/divider_horizontal_dark" />
+
+	<!-- Scrollview -->
+
+	<TextView
+		android:id="@+id/manage_db_popup_msg_tv"
+		style="@style/white_text_medium"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="16dp"
+		android:layout_marginLeft="16dp"
+		android:layout_marginRight="16dp"
+		android:layout_marginTop="10dp"
+		android:text="@string/manage_db_popup_msg" />
+
+	<ScrollView
+		android:id="@+id/manage_db_popup_scrollview"
+		android:layout_width="fill_parent"
+		android:layout_height="0dp"
+		android:layout_marginBottom="8dp"
+		android:layout_marginTop="5dp"
+		android:layout_weight="1" >
+
+		<LinearLayout
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical" >
+
+			<RelativeLayout
+				android:id="@+id/mange_db_popup_rename_rl"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_margin="5dp"
+				android:background="@drawable/rounded_edges_dark"
+				android:padding="5dp" >
+
+				<Button
+					android:id="@+id/manage_db_popup_rename_butt"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_below="@+id/manage_db_popup_rename_et"
+					android:layout_centerHorizontal="true"
+					android:layout_marginLeft="30dp"
+					android:layout_marginRight="30dp"
+					android:background="@drawable/button_shiny_black"
+					android:minWidth="50dp"
+					android:text="@string/manage_db_popup_rename_button"
+					android:textColor="@color/ivory"
+					android:textSize="@dimen/font_size_button_default" />
+
+				<com.sleepfuriously.hpgworkout.OneLineEditText
+					android:id="@+id/manage_db_popup_rename_et"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentRight="true"
+					android:layout_alignParentTop="true"
+					android:ems="10"
+					android:lines="1"
+					android:minEms="6" >
+
+					<requestFocus />
+				</com.sleepfuriously.hpgworkout.OneLineEditText>
+
+				<TextView
+					android:id="@+id/manage_db_popup_rename_label_tv"
+					style="@style/white_text_small"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignTop="@id/manage_db_popup_rename_et"
+					android:layout_marginRight="5dp"
+					android:layout_toLeftOf="@id/manage_db_popup_rename_et"
+					android:gravity="right"
+					android:text="@string/manage_db_popup_rename_label" />
+
+			</RelativeLayout>
+
+			<RelativeLayout
+				android:id="@+id/mange_db_popup_delete_rl"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_margin="5dp"
+				android:background="@drawable/rounded_edges_dark"
+				android:padding="5dp" >
+
+				<TextView
+					android:id="@+id/manage_db_popup_delete_label_tv"
+					style="@style/white_text_small"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentLeft="true"
+					android:layout_alignParentTop="true"
+					android:text="@string/manage_db_popup_delete_label_tv" />
+
+
+				<Button
+					android:id="@+id/manage_db_popup_delete_butt"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="5dp"
+					android:layout_marginLeft="30dp"
+					android:layout_marginRight="30dp"
+					android:layout_marginTop="5dp"
+					android:layout_below="@id/manage_db_popup_delete_label_tv"
+					android:layout_centerHorizontal="true"
+					android:background="@drawable/button_shiny_black"
+					android:text="@string/manage_db_popup_delete_butt"
+					android:textColor="@color/ivory"
+					android:textSize="@dimen/font_size_button_default" />
+
+			</RelativeLayout>
+
+			<!-- This is the export button.  It's GONE now, but
+				will be here for when I'm ready to implement it.
+			-->
+			<RelativeLayout
+				android:id="@+id/mange_db_popup_export_rl"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_margin="5dp"
+				android:visibility="gone"
+				android:background="@drawable/rounded_edges_dark"
+				android:padding="5dp" >
+
+				<Button
+					android:id="@+id/manage_db_popup_export_butt"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:background="@drawable/button_shiny_black"
+					android:text="Button"
+					android:textColor="@color/ivory"
+					android:textSize="@dimen/font_size_button_default" />
+			</RelativeLayout>
+
+		</LinearLayout>
+	</ScrollView>
+
+		<Button
+			android:id="@+id/manage_db_popup_cancel_butt"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="8dp"
+			android:layout_marginLeft="60dp"
+			android:layout_marginRight="60dp"
+			android:layout_marginTop="8dp"
+			android:layout_weight="1"
+			android:background="@drawable/button_shiny_black"
+			android:gravity="center_horizontal"
+			android:text="@string/cancel"
+			android:textColor="@color/ivory"
+			android:textSize="@dimen/font_size_button_default" />
+
+</LinearLayout>

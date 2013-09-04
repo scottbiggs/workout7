@@ -1,10 +1,10 @@
 package com.sleepfuriously.hpgworkout;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,10 +13,10 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -90,6 +90,13 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 	private String m_current_db;
 
 	/**
+	 * This is the string that was last selected to go to the
+	 * ManageDatabasePopupActivity.  This will be the username
+	 * for the database in question.
+	 */
+	private String m_last_popup_db = null;
+
+	/**
 	 * The index to m_listview that tells us which is the currently
 	 * active database.
 	 */
@@ -129,7 +136,6 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 		// Get the name of the current database
 		m_current_db = DatabaseFilesHelper.get_active_username(this);
 
-		// todo
 		create_listview();
 
 	} // onCreate(.)
@@ -152,7 +158,7 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 	//-------------------
 	@Override
 	public void onClick(View v) {
-		Log.d(tag, "click");
+		WGlobals.play_short_click();
 
 		// Clicked the add button
 		//	Game plan:
@@ -182,15 +188,19 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 	@Override
 	public void onItemClick(AdapterView<?> parent, View v,
 							int pos, long id) {
+		WGlobals.play_short_click();
 		Log.d(tag, "clicked item " + pos);
 
 		// Get the username that was clicked.
 		String username = m_user_names.get(pos);
-		Log.d(tag, "Selected user: " + username);
+//		Log.d(tag, "Selected user: " + username);
 		m_current_db_tv.setText(username);
 
 		// Set the current db to this username.
 		DatabaseFilesHelper.activate(username, this);
+		
+		// And don't forget to set our local data member, too.
+		m_current_db = username;
 
 	} // onItemClick (parent, v, pos, id)
 
@@ -201,16 +211,86 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 	@Override
 	public boolean onItemLongClick(AdapterView<?> parent, View v,
 								int pos, long id) {
-
+		WGlobals.play_long_click();
 		Log.d(tag, "long-clicked item " + pos);
+
+		// Get the username that was clicked.
+		m_last_popup_db = m_user_names.get(pos);
+		Log.d(tag, "Selected user: " + m_last_popup_db);
+
+		// Start the new Activity
+		Intent itt = new Intent (this, ManageDatabasePopupActivity.class);
+		itt.putExtra(ManageDatabasePopupActivity.DB_USERNAME_KEY, m_last_popup_db);
+		startActivityForResult(itt, WGlobals.MANAGEDATABASEPOPUPACTIVITY);
 
 		return true;	// true = long click consumed here, false NOT consumed
 	}
 
 
 	//-------------------
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//		super.onActivityResult(requestCode, resultCode, data);	// Typically not used.
+
+		switch (requestCode) {
+			case WGlobals.MANAGEDATABASEPOPUPACTIVITY:
+				if (resultCode == RESULT_CANCELED) {
+					return;	// Don't do anything on Cancel or Back button
+				}
+
+				int operation = data.getIntExtra(ManageDatabasePopupActivity.OPERATION_CODE_KEY,
+												ManageDatabasePopupActivity.OPERATION_CODE_NOT_USED);
+
+				switch (operation) {
+					// -- DELETE --
+					case ManageDatabasePopupActivity.OPERATION_CODE_DELETE:
+//						String username = data.getStringExtra(ManageDatabasePopupActivity.OPERATION_DELETE_NAME_KEY);
+//						if (username == null) {
+//							Log.e(tag, "Can't find the username when trying to delete in onActivityResult()!");
+//							return;
+//						}
+						delete(m_last_popup_db);
+						break;
+
+
+					// -- RENAME --
+					case ManageDatabasePopupActivity.OPERATION_CODE_RENAME:
+						Log.v(tag, "onActivityResult(): rename code detected.");
+						String new_name = data.getStringExtra(ManageDatabasePopupActivity.OPERATION_NEW_NAME_KEY);
+						if (new_name == null) {
+							Log.e(tag, "Can't find the new username when trying to rename in onActivityResult()!");
+							return;
+						}
+						rename (m_last_popup_db, new_name);
+						break;
+
+
+					// -- EXPORT --
+					case ManageDatabasePopupActivity.OPERATION_CODE_EXPORT:
+						Log.v(tag, "onActivityResult(): export code detected.");
+						export(m_last_popup_db);
+						break;
+
+					default:
+						Log.e(tag, "Unknown operation returned in onActivityResult()!");
+						break;
+				} // switch (operation)
+				break;
+
+			default:
+				Log.e(tag, "Unrecognized requestCode in onActivityResult()!");
+				return;
+
+		} // switch (requestCode)
+
+	} // onActivityResult (requestCode, resultCode, data)
+
+
+
+	//-------------------
 	//	Major Methods
 	//-------------------
+
 
 	/************************
 	 * Called when the user taps on the add button.
@@ -241,13 +321,8 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 		// Create the new database.
 		int count = DatabaseFilesHelper.add(new_db_name, this);
 
-		// All clear.  Do our bookkeeping and add it.
-		m_current_db_index = m_name_list.size();
-//		m_name_list.add(new_db_name);
-
-		// todo
-		//	Add in alphabetical order
 		m_user_names.add(new_db_name);
+		alphabetize(m_user_names);
 
 		int pos = m_user_names.indexOf(new_db_name);
 		if (pos == -1) {
@@ -258,7 +333,6 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 		m_lv.setSelection(pos);
 
 		m_current_db_tv.setText(new_db_name);
-		Log.d(tag, "adding an item to this position: " + m_current_db_index);
 //		m_lv.setItemChecked(m_current_db_index, true);
 //		m_lv.setSelection(m_current_db_index);	// scrolls up to reveal if necessary
 
@@ -266,34 +340,54 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 		m_add_et.setText("");	// clear the edittext
 	} // add()
 
-	/*************************
-	 * Called when the user indicates they want to delete
-	 * a database.  Handles making sure that the user really
-	 * wants to delete this database as well as the nitty-gritty
-	 * of of getting rid of it and setting the new current DB.
-	 *
-	 * @param db_file_name		The name of the full database
-	 * 							filename that the user wants
-	 * 							to remove.
-	 */
-	private void delete (String db_file_name) {
-		// todo
-	} // delete (db_file_name)
 
-	/*************************
-	 * Called when the user indicates that they want
-	 * to export a DB.  This goes from there.
+	/************************
 	 *
-	 * Gather info on WHERE to export this, what format to
-	 * export it, the actual connections, handling errors,
-	 * and then informing the user that the export is
-	 * complete.
-	 *
-	 * @param db_file_name		The DB to export.
+	 * @param username
 	 */
-	private void export (String db_file_name) {
+	private void delete (String username) {
+		// update the UI
+		m_user_names.remove(m_last_popup_db);
+		alphabetize(m_user_names);
+
+		set_current_in_lv();
+
+//		m_lv.invalidate();
+//		((BaseAdapter) (m_lv.getAdapter())).notifyDataSetChanged();
+
+		// update the DB
+		DatabaseFilesHelper.remove(m_last_popup_db, this);
+		m_last_popup_db = null;
+	} // delete (usernae)
+
+
+	/************************
+	 *
+	 * @param orig_username
+	 * @param new_username
+	 */
+	private void rename (String orig_username, String new_username) {
+		DatabaseFilesHelper.rename(orig_username, new_username, this);
+		m_user_names.remove(orig_username);
+		m_user_names.add(new_username);
+		if (m_current_db.equals(orig_username)) {
+			m_current_db = new_username;
+			m_current_db_tv.setText(new_username);
+		}
+		alphabetize(m_user_names);
+
+		//	make sure the current is highlighted
+		set_current_in_lv();
+
+	} // rename (orig, new)
+
+	/************************
+	 *
+	 * @param username
+	 */
+	private void export (String username) {
 		// todo
-	} // export (db_file_name)
+	}
 
 
 	//-------------------
@@ -304,6 +398,8 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 		m_lv = (ListView) findViewById(R.id.manage_db_list_lv);
 
 		m_user_names = DatabaseFilesHelper.get_all_user_names(this);
+
+		alphabetize (m_user_names);
 
 		// The adapter for the listview.  And set it to use str_list.
 		ArrayAdapter<String> adapter =
@@ -323,22 +419,47 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 			Log.e (tag, "Can't get the current database username in create_listview()!");
 			return;
 		}
-		m_current_db_index = adapter.getPosition(current_db);
-		if (m_current_db_index == -1) {	// getPosition() returns -1 when not found
-			Log.e(tag, "Problem getting the position of the current database!");
-			m_current_db_index = 0;
-		}
 
 		// Tell the user what the current DB is.
 		m_current_db_tv = (TextView) findViewById(R.id.manage_db_current_tv);
 		m_current_db_tv.setOnLongClickListener(this);
 		m_current_db_tv.setText(m_current_db);
 
-		Log.d(tag, "m_current_db_index is " + m_current_db_index);
-		m_lv.setItemChecked(m_current_db_index, true);	// turn on this radio button
-		m_lv.setSelection(m_current_db_index);	// scrolls up to reveal if necessary
+		// And finally display which is current in our ListView.
+		set_current_in_lv();
 
 	} // create_listview()
 
 
+	/***************************
+	 * Turns the radio button and highlights the current database in
+	 * our ListView.
+	 *
+	 * preconditions:
+	 * 		m_current_db		Should be properly set.
+	 */
+	private void set_current_in_lv () {
+		ArrayAdapter<String> adapter = (ArrayAdapter<String>) m_lv.getAdapter();
+		int current_db_index = adapter.getPosition(m_current_db);
+		if (current_db_index == -1) {	// getPosition() returns -1 when not found
+			Log.e(tag, "Problem getting the position of the current database!  m_currend_db = " + m_current_db);
+			current_db_index = 0;
+		}
+
+		m_lv.setItemChecked(current_db_index, true);	// turn on this radio button
+		m_lv.setSelection(current_db_index);	// scrolls up to reveal if necessary
+	}
+
+	/***************************
+	 * Given an ArrayList of Strings, this creates a new list that's
+	 * in alphabetical order.
+	 *
+	 * For expediency, this is a crappy bubble sort.  O(n^2).
+	 *
+	 * @param unsorted	Original list of Strings.  Probably unsorted.
+	 *
+	 */
+	private void alphabetize (ArrayList<String> a_list) {
+		Collections.sort(a_list, String.CASE_INSENSITIVE_ORDER);
+	} // alphabetize(unsorted)
 }

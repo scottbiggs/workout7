@@ -1744,5 +1744,64 @@
 		name.
 	</string>
 
+	<string name="manage_db_popup_title">%s</string>
+	<string name="manage_db_popup_msg">Choose from the following
+		options\u003a</string>
+
+	<string name="manage_db_popup_help_title">Manage Data Choices</string>
+	<string name="manage_db_popup_help_msg">
+		Here you have options of what to do with a whole database.
+		\n\nYou may rename it, delete it, or try to export it somewhere.
+		If I think of something else you can do with it, I\'ll add that
+		option, too.
+	</string>
+
+	<string name="manage_db_popup_delete_yes_no_title">Delete %s!</string>
+	<string name="manage_db_popup_delete_yes_no_msg">
+		Hey!  Pay ATTENTION!
+		\n\nYou are about to delete an entire database!
+		\n\nAre you SURE you want to get rid of it for all time?
+	</string>
+
+	<string name="manage_db_popup_delete_butt">delete</string>
+	<string name="manage_db_popup_delete_label_tv">Completely remove this database.</string>
+	<string name="manage_db_popup_delete_help_title">Delete</string>
+	<string name="manage_db_popup_delete_help_msg">
+		Yes, this does exactly what you think it does. It permanently
+		removes the selected database. And yes, there is no going back.
+		\n\nSo be careful!
+	</string>
+
+	<string name="manage_db_popup_rename_label">Rename \'%s\' to\u003a</string>
+	<string name="manage_db_popup_rename_button">rename</string>
+
+	<string name="manage_db_popup_rename_help_title">Rename</string>
+	<string name="manage_db_popup_rename_help_msg">
+		Did you just get married and want to change your name? Or maybe
+		you just don\'t like your name? Regardless of the reason, this
+		is how you rename your database.
+		\n\nSimply type the new name here and press the \'change\'
+		button. That\'s all there is to it.
+	</string>
+	<string name="manage_db_popup_rename_no_name_error">
+		I can\'t rename this data without a new name! Try typing something, ok?
+	</string>
+
+
+	<string name="manage_db_popup_cancel_help_title">Cancel</string>
+	<string name="manage_db_popup_cancel_help_msg">
+		Yes, this button sends you back to the previous screen without
+		doing anything. Why do I even bother? \'Cause I\'m an anal nut.
+	</string>
+
+	<string name="manage_db_popup_delete_sure_title">Delete %s!</string>
+	<string name="manage_db_popup_delete_sure_msg">
+		Think about this carefully.
+		\n\nYou are about to completely and permanently delete all the data
+		that this device has ever collected for this entire set of data.
+		\n\nAll the workout sets, all the exercises will go poof as soon as you
+		click \'yes\'.
+		\n\nAre you REALLY SURE you want to delete %s entirely?
+	</string>
 
 </resources>

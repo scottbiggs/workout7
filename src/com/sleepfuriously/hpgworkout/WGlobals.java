@@ -51,7 +51,8 @@ public class WGlobals extends Application {
 		TESTACTIVITY = 20,		// todo:		Just for debugging!!
 		EXERCISETABHOSTACTIVITY = 21,
 		GRAPHOPTIONSACTIVITY = 22,
-		MANAGEDATABASEACTIVITY = 23;	// added as they're made
+		MANAGEDATABASEACTIVITY = 23,
+		MANAGEDATABASEPOPUPACTIVITY = 24;	// added as they're made
 
 
 	//---------------------------

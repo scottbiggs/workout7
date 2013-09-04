@@ -100,6 +100,9 @@
 			android:theme="@android:style/Theme.Dialog"
 			/>
 
+		<activity android:name=".ManageDatabasePopupActivity"
+			android:theme="@android:style/Theme.Dialog"
+			/>
 	</application>
 
 </manifest>
