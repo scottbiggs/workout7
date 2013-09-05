@@ -365,7 +365,8 @@ public class DatabaseFilesHelper {
 	/****************************
 	 * Completely deletes a database, use cautiously!
 	 * If this is the active database, the next one in the list
-	 * will be activated.
+	 * will be activated.  If this is the last one, then the
+	 * first is activated.
 	 * <p>
 	 * <b>NOTE</b>:	You may NOT remove the last database.  There
 	 * 				must be at least one!
@@ -396,7 +397,7 @@ public class DatabaseFilesHelper {
 
 		// If this is the active database, close it.
 		boolean is_active = false;
-		if (username.equals(get_active_file_name(ctx))) {
+		if (username.equals(get_active_username(ctx))) {
 			is_active = true;
 			close_active_db();
 		}
@@ -417,7 +418,9 @@ public class DatabaseFilesHelper {
 			// Need to activate another database.  How about
 			// the first one I find?
 			ArrayList<String> filenames = get_all_filenames(ctx);
-			activate_filename(filenames.get(0), ctx);
+			String new_filename = filenames.get(0);
+			String new_username = get_user_name(new_filename, ctx);
+			activate(new_username, ctx);
 		}
 
 		return get_num(ctx);
@@ -482,7 +485,6 @@ public class DatabaseFilesHelper {
 
 
 
-
 	//--------------------------------------
 	//	Preferences
 	//--------------------------------------
@@ -520,9 +522,6 @@ public class DatabaseFilesHelper {
 	 * note that for this program's sanity, a database is simply
 	 * a file with the .sqlite suffix (defined in DB_FILENAME_SUFFIX).
 	 *
-	 * todo:
-	 * 	Bug!! May not work if the default database doesn't exist.
-	 *
 	 * @param	ctx		The Context.  Needed to figure out where this
 	 * 					method is being called.  Just supply the
 	 * 					Activity, which has a Context built-in.
@@ -539,7 +538,6 @@ public class DatabaseFilesHelper {
 
 		// Strip the name off to get the actual path.
 		String actual_path = orig_path.substring(0, orig_path.length() - DB_DEFAULT_FILENAME.length());
-//		Log.d(tag, "The actual path is: " + actual_path);
 
 		// Now get a list of all the files in this directory.  This'll
 		// be all the databases we have.
@@ -555,7 +553,6 @@ public class DatabaseFilesHelper {
 				// Make sure that it has the appropriate suffix
 				String file_name = a_file.toString();
 				if (file_name.endsWith(DB_FILENAME_SUFFIX)) {
-//					file_list.add(a_file.toString());
 					file_list.add(strip_path(a_file.toString()));
 				}
 			}
@@ -640,54 +637,6 @@ public class DatabaseFilesHelper {
 		return filename;
 	}
 
-
-	/****************************
-	 * Checks to see if the current database is active or not.
-	 *
-	 * @param ctx
-	 * @return	true - yes, it's active and running.<br>
-	 * 			false - nope, there is no database running.
-	 * 			Furthermore, there may not even BE a current
-	 * 			database at all (first time running the program
-	 * 			or the current has been deleted).
-	 */
-//	public static boolean is_current_db_active (Context ctx) {
-//		if (WGlobals.g_db_helper == null) {
-//			return false;
-//		}
-//		return true;
-//	}
-
-		//---------------
-		// Actors
-		//
-
-
-	/****************************
-	 * Given the FILEname of a database, this causes that file to
-	 * be active.  If another file was active, then it is closed
-	 * before making this one active.  Does NOTHING else.
-	 *
-	 * NOTE: You MUST make sure that this is the current db!
-	 *
-	 * @param filename	The name of the database file to activate.
-	 *
-	 * @param ctx
-	 * @return	true - successfully activated.<br>
-	 * 			false - problems activating (finding the file probably).
-	 */
-	private static boolean activate_filename (String filename, Context ctx) {
-		close_active_db();
-
-		WGlobals.g_db_helper = new DatabaseHelper(ctx, filename);
-		if (WGlobals.g_db_helper == null) {
-			return false;
-		}
-		SQLiteDatabase db = WGlobals.g_db_helper.getReadableDatabase();
-		db.close();
-		db = null;		// Just to make sure.
-		return true;
-	}
 
 
 	/****************************

@@ -1,5 +1,14 @@
 TODO:
 -----------------
+BUG: Try clearing an entry to AddSetActivity (from the popup calculator).
+	Then add that value.  BANG!
+
+!!!! Make a way to convert the old database to a new one !!!!
+
+Add a way to clear all the workout data of a database.  This'd just be another
+	button in the ManageDatabaseActivityPopup and some more stuff in the two
+	related classes.
+
 Hitting the back button when in the middle of adding an exercise doesn't
 	cause any nagging (when turned on).  This is because the handling is
 	done in the AddSetActivity instead of the ExerciseTabHostActivity
@@ -24,11 +33,6 @@ TEST the nags.
 
 Preferences: put the option to Reset things here.  Clear the workout data, or
 	clear the exercises.
-Add the ability to clear EVERYTHING.  This is a tabula rasa,
-	so that the person can clear their entire history AND
-	all their exercises at once.  Of course, give appropriate
-	warnings.
-
 Preferences:
 	TODO:
 	* Sound
@@ -187,8 +191,6 @@ Bug (minor): When graphing, we get a warning about the x-axis
 	- doesn't seem to be causing any problems. And it might be
 	part of the design, too.
 
-Support multiple users/accounts.
-
 Need to redo the Exercise Order!  Something like "Out of Milk"?
 Make it possible for the user to drag and rearrange
 	the rows.
@@ -201,9 +203,6 @@ Instead of a History tab (which is now removed), have a
 Combine the History and Inspector Activities.
 	- Wait for a later version.
 
-Need to redo the Welcome screen.
-	- looks ok to me.
-
 Make a way to increase/decrease the font.
 
 When long-clicking a single exercise set on the Grid,
@@ -215,6 +214,19 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Need to redo the Welcome screen.
+	- looks ok to me.
+
+Support multiple users/accounts.
+	- YAY!
+
+Add the ability to clear EVERYTHING.  This is a tabula rasa,
+	so that the person can clear their entire history AND
+	all their exercises at once.  Of course, give appropriate
+	warnings.
+	- Kind of done.  Entire databases may be removed now, but the
+	last can't be taken away.
+
 Remove the Volume system requirement.  It scares people.
 	- done
 

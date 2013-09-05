@@ -127,7 +127,6 @@ public class ManageDatabasePopupActivity extends BaseDialogActivity
 					WGlobals.play_short_click();
 					Intent itt = new Intent();
 					itt.putExtra(OPERATION_CODE_KEY, OPERATION_CODE_DELETE);
-//					itt.putExtra(OPERATION_DELETE_NAME_KEY, m_db_username);
 					setResult(RESULT_OK, itt);
 					dismiss_all_dialogs();	// Tells the yes/no dialog to go away
 					finish();

@@ -1744,6 +1744,12 @@
 		name.
 	</string>
 
+	<string name="manage_db_delete_last_db_title">No, not that one!</string>
+	<string name="manage_db_delete_last_db_msg">
+		For your sake and the sanity of this program, please do not delete the
+		last set of data!
+	</string>
+
 	<string name="manage_db_popup_title">%s</string>
 	<string name="manage_db_popup_msg">Choose from the following
 		options\u003a</string>

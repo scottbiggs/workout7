@@ -13,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -41,22 +40,6 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 	//-------------------
 
 	private static final String tag = "ManageDatabaseActivity";
-
-	/**
-	 * This is the key that access the list of the databases that the
-	 * user has for this app.  Like everything in the SharedPrefs,
-	 * we need a key to access the real data.
-	 * <p>
-	 * Note: The list is actually a serialized list. Use
-	 * MySerializedList to access it easily.
-	 */
-//	public static final String PREFS_NAME_KEY = "ManageDatabaseActivity_db_names";
-
-	/**
-	 * This is the char that seperates all the items in the serialized
-	 * list.  The user may NOT enter this character (for obvious reasons)!
-	 */
-//	public static final int SERIALIZED_LIST_DELIMITER = '\f';	// form-feed
 
 
 	//-------------------
@@ -96,15 +79,6 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 	 */
 	private String m_last_popup_db = null;
 
-	/**
-	 * The index to m_listview that tells us which is the currently
-	 * active database.
-	 */
-	private int m_current_db_index = -1;
-
-	/** A list (used by the ArrayAdapter) for all the database names */
-	private ArrayList<String> m_name_list;
-
 	/** Holds the list used by the ListView for all the user names */
 	private ArrayList<String> m_user_names;
 
@@ -128,10 +102,6 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 
 		m_help = (ImageView) findViewById(R.id.manage_db_logo);
 		m_help.setOnClickListener(this);
-
-		// Grab all the names of databases that this program has
-		// already created.
-		m_name_list = DatabaseFilesHelper.get_all_user_names(this);
 
 		// Get the name of the current database
 		m_current_db = DatabaseFilesHelper.get_active_username(this);
@@ -193,12 +163,11 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 
 		// Get the username that was clicked.
 		String username = m_user_names.get(pos);
-//		Log.d(tag, "Selected user: " + username);
 		m_current_db_tv.setText(username);
 
 		// Set the current db to this username.
 		DatabaseFilesHelper.activate(username, this);
-		
+
 		// And don't forget to set our local data member, too.
 		m_current_db = username;
 
@@ -244,11 +213,6 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 				switch (operation) {
 					// -- DELETE --
 					case ManageDatabasePopupActivity.OPERATION_CODE_DELETE:
-//						String username = data.getStringExtra(ManageDatabasePopupActivity.OPERATION_DELETE_NAME_KEY);
-//						if (username == null) {
-//							Log.e(tag, "Can't find the username when trying to delete in onActivityResult()!");
-//							return;
-//						}
 						delete(m_last_popup_db);
 						break;
 
@@ -319,7 +283,7 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 		}
 
 		// Create the new database.
-		int count = DatabaseFilesHelper.add(new_db_name, this);
+		DatabaseFilesHelper.add(new_db_name, this);
 
 		m_user_names.add(new_db_name);
 		alphabetize(m_user_names);
@@ -333,9 +297,6 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 		m_lv.setSelection(pos);
 
 		m_current_db_tv.setText(new_db_name);
-//		m_lv.setItemChecked(m_current_db_index, true);
-//		m_lv.setSelection(m_current_db_index);	// scrolls up to reveal if necessary
-
 
 		m_add_et.setText("");	// clear the edittext
 	} // add()
@@ -346,17 +307,25 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 	 * @param username
 	 */
 	private void delete (String username) {
+		if (DatabaseFilesHelper.get_num(this) == 1) {
+			// Can't delete the last database
+			show_help_dialog(R.string.manage_db_delete_last_db_title, R.string.manage_db_delete_last_db_msg);
+			return;
+		}
+
 		// update the UI
 		m_user_names.remove(m_last_popup_db);
 		alphabetize(m_user_names);
 
-		set_current_in_lv();
-
-//		m_lv.invalidate();
-//		((BaseAdapter) (m_lv.getAdapter())).notifyDataSetChanged();
 
 		// update the DB
 		DatabaseFilesHelper.remove(m_last_popup_db, this);
+
+		// In case we deleted the current, get the new current from our
+		// helper.
+		m_current_db = DatabaseFilesHelper.get_active_username(this);
+
+		set_current_in_lv();
 		m_last_popup_db = null;
 	} // delete (usernae)
 
@@ -381,6 +350,7 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 
 	} // rename (orig, new)
 
+
 	/************************
 	 *
 	 * @param username
@@ -404,8 +374,6 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 		// The adapter for the listview.  And set it to use str_list.
 		ArrayAdapter<String> adapter =
 				new ArrayAdapter<String>(this,
-//						R.layout.graph_selector_row,
-//						android.R.layout.simple_list_item_1,
 						android.R.layout.simple_list_item_single_choice,
 						m_user_names);
 		m_lv.setAdapter(adapter);
@@ -434,15 +402,15 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 	/***************************
 	 * Turns the radio button and highlights the current database in
 	 * our ListView.
-	 *
-	 * preconditions:
+	 *<p>
+	 * <b>preconditions</b>:
 	 * 		m_current_db		Should be properly set.
 	 */
 	private void set_current_in_lv () {
 		ArrayAdapter<String> adapter = (ArrayAdapter<String>) m_lv.getAdapter();
 		int current_db_index = adapter.getPosition(m_current_db);
 		if (current_db_index == -1) {	// getPosition() returns -1 when not found
-			Log.e(tag, "Problem getting the position of the current database!  m_currend_db = " + m_current_db);
+			Log.e(tag, "Problem getting the position of the current database!  m_current_db = " + m_current_db);
 			current_db_index = 0;
 		}
 
