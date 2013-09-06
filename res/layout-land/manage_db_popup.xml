@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
+	Landscape version.
+
 	This is my custom dialog for a popup-like menu.  This "menu"
 	appears after the user long-clicks on one of the databases
 	in the ListView of databases in the ManageDatabaseActivity.
