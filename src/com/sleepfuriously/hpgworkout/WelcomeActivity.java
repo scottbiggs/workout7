@@ -232,6 +232,10 @@ public class WelcomeActivity extends BaseDialogActivity
 		// the database.  Once done, it'll also tell us the name of
 		// the active database.
 		user_name_tv.setText(DatabaseFilesHelper.get_active_username(this));
+		
+		String db_filename = WGlobals.g_db_helper.get_database_filename();
+		String db_username = DatabaseFilesHelper.get_user_name(db_filename, this);
+		Log.d(tag, "set_current_db_user(): g_db_helper usename = " + db_username);
 	}
 
 }

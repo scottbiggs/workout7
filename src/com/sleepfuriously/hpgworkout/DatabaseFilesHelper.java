@@ -326,9 +326,33 @@ public class DatabaseFilesHelper {
 	} // activate (username, ctx)
 
 
-	// Returns number of DBs after the add.  -1 on error.
 	/****************************
-	 * Adds another database to this program.
+	 * Call this to add a new database.  This is the higher-level
+	 * method that does the various testing and makes sure that
+	 * the global database is correctly set to this new db.
+	 *
+	 * @param new_username	The username for this database.  Please
+	 * 						make sure before-hand that this name
+	 * 						is unique (for your own sanity).  Try
+	 * 						is_name_used() to do so.
+	 * @param ctx
+	 *
+	 * @return	The number of databases on this computer
+	 * 			after this new one has been added.
+	 */
+	public static int add (String new_username, Context ctx) {
+		int count = make_new_db(new_username, ctx);
+
+		// Now inform everything that there's a new active
+		// database.
+		activate(new_username, ctx);
+
+		return count;
+	}
+
+
+	/****************************
+	 * Simply creates another database to this program.  Does no checking.
 	 *
 	 * @param username	The username for this database.  Please
 	 * 					make sure before-hand that this name
@@ -340,7 +364,7 @@ public class DatabaseFilesHelper {
 	 * @return	The number of databases on this computer
 	 * 			after this new one has been added.
 	 */
-	public static int add (String username, Context ctx) {
+	private static int make_new_db (String username, Context ctx) {
 		String filename = get_next_file_name(ctx);
 
 		// This should create the file with all the defaults.
@@ -570,8 +594,11 @@ public class DatabaseFilesHelper {
 	 * @param ctx
 	 *
 	 * @return	The corresponding user name.  NULL if not found.
+	 *
+	 * todo
+	 * 	This is made public for debug purposes only!
 	 */
-	private static String get_user_name(String file_name, Context ctx) {
+	public static String get_user_name(String file_name, Context ctx) {
 		SharedPreferences prefs =
 				PreferenceManager.getDefaultSharedPreferences(ctx);
 		String user_name = prefs.getString(file_name, null);
@@ -629,14 +656,14 @@ public class DatabaseFilesHelper {
 	 * @return  A String for the file name of the current database.
 	 * 			Null if no database is currently active.
 	 */
-	private static String get_active_file_name (Context ctx) {
-		if (WGlobals.g_db_helper == null) {
-			return null;
-		}
-
-		String filename = WGlobals.g_db_helper.get_database_filename();
-		return filename;
-	}
+//	private static String get_active_file_name (Context ctx) {
+//		if (WGlobals.g_db_helper == null) {
+//			return null;
+//		}
+//
+//		String filename = WGlobals.g_db_helper.get_database_filename();
+//		return filename;
+//	}
 
 
 
@@ -696,14 +723,15 @@ public class DatabaseFilesHelper {
 			close_active_db();
 		}
 
-		DatabaseHelper temp_db = new DatabaseHelper(ctx, username);
+		String filename = get_file_name(username, ctx);
+		DatabaseHelper temp_db = new DatabaseHelper(ctx, filename);
 		temp_db.remove_all_set_data();
 		temp_db.close();
 		temp_db = null;
 
 		if (is_active) {
 			// Reactivate the database
-			activate(username, ctx);
+			WGlobals.g_db_helper = new DatabaseHelper(ctx, filename);
 		}
 	} // clear_set_data (username, ctx)
 

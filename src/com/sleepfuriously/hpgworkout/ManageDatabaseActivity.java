@@ -276,6 +276,7 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 		// Create the new database.
 		DatabaseFilesHelper.add(new_db_name, this);
 
+		// Finally, update the UI
 		m_user_names.add(new_db_name);
 		alphabetize(m_user_names);
 
@@ -286,9 +287,7 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 		}
 		m_lv.setItemChecked(pos, true);
 		m_lv.setSelection(pos);
-
 		m_current_db_tv.setText(new_db_name);
-
 		m_add_et.setText("");	// clear the edittext
 	} // add()
 
