@@ -70,7 +70,7 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 	 * The name of the database file that the user is currently using
 	 * or has selected.
 	 */
-	private String m_current_db;
+//	private String m_current_db;
 
 	/**
 	 * This is the string that was last selected to go to the
@@ -104,7 +104,7 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 		m_help.setOnClickListener(this);
 
 		// Get the name of the current database
-		m_current_db = DatabaseFilesHelper.get_active_username(this);
+//		m_current_db = DatabaseFilesHelper.get_active_username(this);
 
 		create_listview();
 
@@ -169,7 +169,7 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 		DatabaseFilesHelper.activate(username, this);
 
 		// And don't forget to set our local data member, too.
-		m_current_db = username;
+//		m_current_db = username;
 
 	} // onItemClick (parent, v, pos, id)
 
@@ -216,6 +216,9 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 						delete(m_last_popup_db);
 						break;
 
+					case ManageDatabasePopupActivity.OPERATION_CODE_CLEAR_SET_DATA:
+						DatabaseFilesHelper.clear_set_data(m_last_popup_db, this);
+						break;
 
 					// -- RENAME --
 					case ManageDatabasePopupActivity.OPERATION_CODE_RENAME:
@@ -315,7 +318,7 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 
 		// update the UI
 		m_user_names.remove(m_last_popup_db);
-		alphabetize(m_user_names);
+		alphabetize(m_user_names);		// todo: Is this even necessary?
 
 
 		// update the DB
@@ -323,30 +326,46 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 
 		// In case we deleted the current, get the new current from our
 		// helper.
-		m_current_db = DatabaseFilesHelper.get_active_username(this);
+//		m_current_db = DatabaseFilesHelper.get_active_username(this);
 
-		set_current_in_lv();
+		String active_username = DatabaseFilesHelper.get_active_username(this);
+		set_current_in_lv(active_username);
+		m_current_db_tv.setText(active_username);
 		m_last_popup_db = null;
-	} // delete (usernae)
+	} // delete (username)
+
 
 
 	/************************
+	 * Renames a database.  Pops out a Log.e if there's an error, so make
+	 * sure that orig_username is actually a username!
 	 *
 	 * @param orig_username
 	 * @param new_username
 	 */
 	private void rename (String orig_username, String new_username) {
-		DatabaseFilesHelper.rename(orig_username, new_username, this);
+		String active_username = DatabaseFilesHelper.get_active_username(this);
+
+		if (DatabaseFilesHelper.rename(orig_username, new_username, this) == false) {
+			Log.e(tag, "Problem renaming!");
+			return;
+		}
 		m_user_names.remove(orig_username);
 		m_user_names.add(new_username);
-		if (m_current_db.equals(orig_username)) {
-			m_current_db = new_username;
-			m_current_db_tv.setText(new_username);
-		}
-		alphabetize(m_user_names);
 
-		//	make sure the current is highlighted
-		set_current_in_lv();
+		if (active_username.equals(orig_username)) {
+			// We're modifying the active database username.  So
+			// update the corresponding TextView.
+			active_username = new_username;
+			m_current_db_tv.setText(new_username);
+
+			alphabetize(m_user_names);
+			set_current_in_lv (new_username);
+		}
+		else {
+			alphabetize(m_user_names);
+		}
+
 
 	} // rename (orig, new)
 
@@ -382,8 +401,8 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 		m_lv.setOnItemLongClickListener(this);
 
 		// Find and highlight the active database.
-		String current_db = DatabaseFilesHelper.get_active_username(this);
-		if (current_db == null) {
+		String current_username = DatabaseFilesHelper.get_active_username(this);
+		if (current_username == null) {
 			Log.e (tag, "Can't get the current database username in create_listview()!");
 			return;
 		}
@@ -391,10 +410,10 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 		// Tell the user what the current DB is.
 		m_current_db_tv = (TextView) findViewById(R.id.manage_db_current_tv);
 		m_current_db_tv.setOnLongClickListener(this);
-		m_current_db_tv.setText(m_current_db);
+		m_current_db_tv.setText(current_username);
 
 		// And finally display which is current in our ListView.
-		set_current_in_lv();
+		set_current_in_lv (current_username);
 
 	} // create_listview()
 
@@ -406,11 +425,11 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 	 * <b>preconditions</b>:
 	 * 		m_current_db		Should be properly set.
 	 */
-	private void set_current_in_lv () {
+	private void set_current_in_lv (String new_current_username) {
 		ArrayAdapter<String> adapter = (ArrayAdapter<String>) m_lv.getAdapter();
-		int current_db_index = adapter.getPosition(m_current_db);
+		int current_db_index = adapter.getPosition(new_current_username);
 		if (current_db_index == -1) {	// getPosition() returns -1 when not found
-			Log.e(tag, "Problem getting the position of the current database!  m_current_db = " + m_current_db);
+			Log.e(tag, "Problem getting the position of the current database!");
 			current_db_index = 0;
 		}
 

@@ -144,6 +144,40 @@
 			</RelativeLayout>
 
 			<RelativeLayout
+				android:id="@+id/manage_db_popup_clear_set_data_rl"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_margin="5dp"
+				android:background="@drawable/rounded_edges_dark"
+				android:padding="5dp" >
+
+				<TextView
+					android:id="@+id/manage_db_popup_clear_set_data_label_tv"
+					style="@style/white_text_small"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentLeft="true"
+					android:layout_alignParentTop="true"
+					android:text="@string/manage_db_popup_clear_set_data_label" />
+
+				<Button
+					android:id="@+id/manage_db_popup_clear_set_data_butt"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="5dp"
+					android:layout_marginLeft="30dp"
+					android:layout_marginRight="30dp"
+					android:layout_marginTop="5dp"
+					android:layout_below="@id/manage_db_popup_clear_set_data_label_tv"
+					android:layout_centerHorizontal="true"
+					android:background="@drawable/button_shiny_black"
+					android:text="@string/manage_db_popup_clear_set_data_butt"
+					android:textColor="@color/ivory"
+					android:textSize="@dimen/font_size_button_default" />
+
+			</RelativeLayout>
+
+			<RelativeLayout
 				android:id="@+id/mange_db_popup_delete_rl"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -177,6 +211,7 @@
 					android:textSize="@dimen/font_size_button_default" />
 
 			</RelativeLayout>
+
 
 			<!-- This is the export button.  It's GONE now, but
 				will be here for when I'm ready to implement it.

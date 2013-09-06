@@ -58,7 +58,8 @@ public class ManageDatabasePopupActivity extends BaseDialogActivity
 			OPERATION_CODE_NOT_USED = 0,
 			OPERATION_CODE_RENAME = 1,
 			OPERATION_CODE_DELETE = 2,
-			OPERATION_CODE_EXPORT = 3;
+			OPERATION_CODE_EXPORT = 3,
+			OPERATION_CODE_CLEAR_SET_DATA = 4;
 
 	/** The username for the database that this is acting on */
 	private String m_db_username;
@@ -67,7 +68,7 @@ public class ManageDatabasePopupActivity extends BaseDialogActivity
 
 	private TextView m_rename_tv;
 
-	private Button m_delete_butt, m_rename_butt, m_cancel_butt;
+	private Button m_delete_butt, m_rename_butt, m_cancel_butt, m_clear_set_data_butt;
 
 	private ImageView m_help_iv;
 
@@ -111,6 +112,10 @@ public class ManageDatabasePopupActivity extends BaseDialogActivity
 		m_cancel_butt.setOnClickListener(this);
 		m_cancel_butt.setOnLongClickListener(this);
 
+		m_clear_set_data_butt = (Button) findViewById(R.id.manage_db_popup_clear_set_data_butt);
+		m_clear_set_data_butt.setOnClickListener(this);
+		m_clear_set_data_butt.setOnLongClickListener(this);
+
 	} // onCreate(.)
 
 
@@ -134,6 +139,23 @@ public class ManageDatabasePopupActivity extends BaseDialogActivity
 			});
 		} // delete
 
+		else if (v == m_clear_set_data_butt) {
+			show_yes_no_dialog(R.string.manage_db_popup_clear_set_data_yesno_title, new String[] {m_db_username},
+								R.string.manage_db_popup_clear_set_data_yesno_msg, new String[] {m_db_username},
+								new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						WGlobals.play_short_click();
+						Intent itt = new Intent();
+						itt.putExtra(OPERATION_CODE_KEY, OPERATION_CODE_CLEAR_SET_DATA);
+						setResult(RESULT_OK, itt);
+						dismiss_all_dialogs();	// Tells the yes/no dialog to go away
+						finish();
+					}
+				});
+
+		} // clear set data
+
 		else if (v == m_rename_butt) {
 			String new_name = m_rename_et.getText().toString();
 			if (new_name.length() == 0) {
@@ -156,6 +178,7 @@ public class ManageDatabasePopupActivity extends BaseDialogActivity
 			finish();
 		}
 
+
 		else {
 			Log.e (tag, "Unrecognized View in onClick()!");
 		}
@@ -169,6 +192,11 @@ public class ManageDatabasePopupActivity extends BaseDialogActivity
 
 		if (v == m_delete_butt) {
 			show_help_dialog(R.string.manage_db_popup_delete_help_title, R.string.manage_db_popup_delete_help_msg);
+			return true;
+		}
+
+		else if (v == m_clear_set_data_butt) {
+			show_help_dialog(R.string.manage_db_popup_clear_set_data_help_title, R.string.manage_db_popup_clear_set_data_help_msg);
 			return true;
 		}
 

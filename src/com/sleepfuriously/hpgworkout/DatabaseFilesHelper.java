@@ -397,7 +397,8 @@ public class DatabaseFilesHelper {
 
 		// If this is the active database, close it.
 		boolean is_active = false;
-		if (username.equals(get_active_username(ctx))) {
+		String active_username = get_active_username(ctx);
+		if (username.equals(active_username)) {
 			is_active = true;
 			close_active_db();
 		}
@@ -679,6 +680,32 @@ public class DatabaseFilesHelper {
 		WGlobals.g_db_helper = null;
 	}
 
+
+	/****************************
+	 * Removes all the exercise set data from the specified
+	 * database.
+	 *
+	 * @param username	The username of the database to clear.
+	 *
+	 * @param ctx
+	 */
+	public static void clear_set_data (String username, Context ctx) {
+		boolean is_active = false;
+		if (username.equals(get_active_username(ctx))) {
+			is_active = true;
+			close_active_db();
+		}
+
+		DatabaseHelper temp_db = new DatabaseHelper(ctx, username);
+		temp_db.remove_all_set_data();
+		temp_db.close();
+		temp_db = null;
+
+		if (is_active) {
+			// Reactivate the database
+			activate(username, ctx);
+		}
+	} // clear_set_data (username, ctx)
 
 
 }

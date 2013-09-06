@@ -1,5 +1,11 @@
 TODO:
 -----------------
+BUG: If you delete an inactive database, it changes the active database to the
+	first one instead of leaving the already active one active.
+
+BUG: If you add a database and then just go back, the activite database change isn't
+	registered as active in the WelcomeActivity (or any other subsequent Activities).
+
 BUG: Try clearing an entry to AddSetActivity (from the popup calculator).
 	Then add that value.  BANG!
 

@@ -1810,4 +1810,23 @@
 		\n\nAre you REALLY SURE you want to delete %s entirely?
 	</string>
 
+	<string name="manage_db_popup_clear_set_data_label">Clear all your workout data.</string>
+	<string name="manage_db_popup_clear_set_data_butt">clear workout data.</string>
+
+	<string name="manage_db_popup_clear_set_data_help_title">Clear Workout Data</string>
+	<string name="manage_db_popup_clear_set_data_help_msg">
+		This is ther tabula rasa (clean slate) for all your exercise data. That means the information
+		of all those workout sets will be erased for good.
+		\n\nThe exercises you created will still be there (whew, at least you don\'t have to
+		do that again!).
+	</string>
+	<string name="manage_db_popup_clear_set_data_yesno_title">Clear %s\'s Workout Data?</string>
+	<string name="manage_db_popup_clear_set_data_yesno_msg">
+		You are going to delete all the information you entered about your exercise sets (the
+		weights, the reps, when you did them, how hard, graphs, etc.).
+		That info will go poof into the wind. Yep, it won\'t come back.
+		\n\nSo you\'ve been warned. Do you still want to permanently remove all trace of those
+		exercises you sweated hard for?
+	</string>
+
 </resources>

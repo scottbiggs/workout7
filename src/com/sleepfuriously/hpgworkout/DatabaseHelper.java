@@ -231,6 +231,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		+ SET_COL_NOTES + SPACE + TEXT + ");";
 
 	/**
+	 * This is the SQL string to remove the Set Table.
+	 */
+	private static final String SET_TABLE_DELETE_STRING =
+		"DROP TABLE IF EXISTS " + SET_TABLE_NAME;
+
+
+	/**
 	 * These numbers are used to tell which condition
 	 * the exercise set is.
 	 */
@@ -1594,5 +1601,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return data;
 	}  // getSetData(cursor)
 
+
+	/****************************
+	 * Yeah, just what you think it does.  The entire set table is
+	 * completely deleted.  It'll be just like starting over (except
+	 * that the exercises will still be there).
+	 */
+	public void remove_all_set_data() {
+		SQLiteDatabase db = null;
+
+		try {
+			db = getWritableDatabase();
+
+			// Just remove the set table, re-create, and re-initialize.
+			db.execSQL(SET_TABLE_DELETE_STRING);
+			db.execSQL(SET_TABLE_CREATE_STRING);
+			init_sets(db);
+
+		} catch (SQLiteException e) {
+			Log.e(tag, "Problem in remove_all_set_data(); can't open database for writing!");
+			e.printStackTrace();
+		} finally {
+			if (db != null) {
+				db.close();
+				db = null;
+			}
+		}
+
+	} // remove_all_set_data()
 
 }
