@@ -50,7 +50,7 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 	private TextView m_current_db_tv;
 
 	/** This button is hit when the user adds a new database. */
-	private Button m_add_butt;
+	private Button m_add_butt, m_done_butt;
 
 	/** Holds the name of a new database file */
 	private EditText m_add_et;
@@ -97,6 +97,10 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 		m_help = (ImageView) findViewById(R.id.manage_db_logo);
 		m_help.setOnClickListener(this);
 
+		m_done_butt = (Button) findViewById(R.id.manage_db_done_butt);
+		m_done_butt.setOnClickListener(this);
+		m_done_butt.setOnLongClickListener(this);
+
 		create_listview();
 
 	} // onCreate(.)
@@ -109,6 +113,12 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 			show_help_dialog(R.string.manage_db_add_butt_help_title,
 							R.string.manage_db_add_butt_help_msg);
 			return true;
+		}
+
+		else if (v == m_done_butt) {
+			show_help_dialog(R.string.manage_db_done_butt_help_title,
+								R.string.manage_db_done_butt_help_msg);
+				return true;
 		}
 
 
@@ -137,6 +147,15 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 		else if (v == m_help) {
 			show_help_dialog(R.string.manage_db_help_title,
 							R.string.manage_db_help_msg);
+		}
+
+		else if (v == m_done_butt) {
+			setResult(RESULT_OK);
+			finish();
+		}
+
+		else {
+			Log.e(tag, "Unrecognized View in onClick()!");
 		}
 
 

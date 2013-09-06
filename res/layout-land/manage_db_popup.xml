@@ -39,7 +39,7 @@
 			android:layout_marginBottom="3dp"
 			android:layout_marginLeft="16dp"
 			android:layout_marginRight="8dp"
-			android:layout_marginTop="10dp"
+			android:layout_marginTop="5dp"
 			android:layout_weight="1"
 			android:text="foo" />
 
@@ -50,9 +50,10 @@
 			android:layout_gravity="center_vertical"
 			android:layout_marginLeft="18dp"
 			android:layout_marginRight="8dp"
-			android:layout_marginTop="6dp"
+			android:layout_marginTop="3dp"
 			android:layout_weight="3"
 			android:src="@drawable/hpglogo_small" />
+
 	</LinearLayout>
 
 	<!-- Divider -->
@@ -76,18 +77,15 @@
 		style="@style/white_text_medium"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:layout_marginBottom="16dp"
 		android:layout_marginLeft="16dp"
 		android:layout_marginRight="16dp"
-		android:layout_marginTop="10dp"
+		android:layout_marginTop="6dp"
 		android:text="@string/manage_db_popup_msg" />
 
 	<ScrollView
 		android:id="@+id/manage_db_popup_scrollview"
 		android:layout_width="fill_parent"
 		android:layout_height="0dp"
-		android:layout_marginBottom="8dp"
-		android:layout_marginTop="5dp"
 		android:layout_weight="1" >
 
 		<LinearLayout
@@ -99,18 +97,30 @@
 				android:id="@+id/mange_db_popup_rename_rl"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_margin="5dp"
+				android:layout_marginBottom="3dp"
+				android:layout_marginLeft="8dp"
+				android:layout_marginRight="8dp"
+				android:layout_marginTop="3dp"
 				android:background="@drawable/rounded_edges_dark"
-				android:padding="5dp" >
+				android:padding="3dp" >
+
+				<Button
+					android:id="@+id/manage_db_popup_rename_ghost"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_centerInParent="true"
+					android:visibility="invisible"
+					android:width="100dp" />
 
 				<Button
 					android:id="@+id/manage_db_popup_rename_butt"
-					android:layout_width="match_parent"
+					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_below="@+id/manage_db_popup_rename_et"
-					android:layout_centerHorizontal="true"
-					android:layout_marginLeft="30dp"
-					android:layout_marginRight="30dp"
+					android:layout_alignParentRight="true"
+					android:layout_centerVertical="true"
+					android:layout_marginLeft="20dp"
+					android:layout_marginRight="20dp"
+					android:layout_toRightOf="@id/manage_db_popup_rename_ghost"
 					android:background="@drawable/button_shiny_black"
 					android:minWidth="50dp"
 					android:text="@string/manage_db_popup_rename_button"
@@ -121,12 +131,11 @@
 					android:id="@+id/manage_db_popup_rename_et"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_alignParentRight="true"
-					android:layout_alignParentTop="true"
+					android:layout_alignRight="@id/manage_db_popup_rename_ghost"
+					android:layout_centerVertical="true"
 					android:ems="10"
 					android:lines="1"
 					android:minEms="6" >
-
 					<requestFocus />
 				</com.sleepfuriously.hpgworkout.OneLineEditText>
 
@@ -147,33 +156,44 @@
 				android:id="@+id/manage_db_popup_clear_set_data_rl"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_margin="5dp"
+				android:layout_marginBottom="3dp"
+				android:layout_marginLeft="8dp"
+				android:layout_marginRight="8dp"
+				android:layout_marginTop="3dp"
 				android:background="@drawable/rounded_edges_dark"
-				android:padding="5dp" >
+				android:padding="3dp" >
+
+				<Button
+					android:id="@+id/manage_db_popup_clear_set_data_ghost"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_centerInParent="true"
+					android:visibility="invisible"
+					android:width="100dp" />
+
+				<Button
+					android:id="@+id/manage_db_popup_clear_set_data_butt"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_alignParentRight="true"
+					android:layout_centerVertical="true"
+					android:layout_marginLeft="20dp"
+					android:layout_marginRight="20dp"
+					android:layout_toRightOf="@id/manage_db_popup_clear_set_data_ghost"
+					android:background="@drawable/button_shiny_black"
+					android:text="@string/manage_db_popup_clear_set_data_butt"
+					android:textColor="@color/ivory"
+					android:textSize="@dimen/font_size_button_default" />
 
 				<TextView
 					android:id="@+id/manage_db_popup_clear_set_data_label_tv"
 					style="@style/white_text_small"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_alignParentLeft="true"
-					android:layout_alignParentTop="true"
+					android:layout_alignRight="@id/manage_db_popup_clear_set_data_ghost"
+					android:layout_centerVertical="true"
+					android:layout_marginTop="6dp"
 					android:text="@string/manage_db_popup_clear_set_data_label" />
-
-				<Button
-					android:id="@+id/manage_db_popup_clear_set_data_butt"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginBottom="5dp"
-					android:layout_marginLeft="30dp"
-					android:layout_marginRight="30dp"
-					android:layout_marginTop="5dp"
-					android:layout_below="@id/manage_db_popup_clear_set_data_label_tv"
-					android:layout_centerHorizontal="true"
-					android:background="@drawable/button_shiny_black"
-					android:text="@string/manage_db_popup_clear_set_data_butt"
-					android:textColor="@color/ivory"
-					android:textSize="@dimen/font_size_button_default" />
 
 			</RelativeLayout>
 
@@ -181,58 +201,45 @@
 				android:id="@+id/mange_db_popup_delete_rl"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_margin="5dp"
+				android:layout_marginBottom="3dp"
+				android:layout_marginLeft="8dp"
+				android:layout_marginRight="8dp"
+				android:layout_marginTop="3dp"
 				android:background="@drawable/rounded_edges_dark"
 				android:padding="5dp" >
+
+				<Button
+					android:id="@+id/manage_db_popup_delete_ghost"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_centerInParent="true"
+					android:visibility="invisible"
+					android:width="100dp" />
+
+				<Button
+					android:id="@+id/manage_db_popup_delete_butt"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="5dp"
+					android:layout_marginLeft="20dp"
+					android:layout_marginRight="20dp"
+					android:layout_alignParentRight="true"
+					android:layout_centerVertical="true"
+					android:layout_toRightOf="@id/manage_db_popup_delete_ghost"
+					android:background="@drawable/button_shiny_black"
+					android:text="@string/manage_db_popup_delete_butt"
+					android:textColor="@color/ivory"
+					android:textSize="@dimen/font_size_button_default" />
 
 				<TextView
 					android:id="@+id/manage_db_popup_delete_label_tv"
 					style="@style/white_text_small"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_alignParentLeft="true"
-					android:layout_alignParentTop="true"
+					android:layout_centerVertical="true"
+					android:layout_alignRight="@id/manage_db_popup_delete_ghost"
 					android:text="@string/manage_db_popup_delete_label_tv" />
 
-
-				<Button
-					android:id="@+id/manage_db_popup_delete_butt"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginBottom="5dp"
-					android:layout_marginLeft="30dp"
-					android:layout_marginRight="30dp"
-					android:layout_marginTop="5dp"
-					android:layout_below="@id/manage_db_popup_delete_label_tv"
-					android:layout_centerHorizontal="true"
-					android:background="@drawable/button_shiny_black"
-					android:text="@string/manage_db_popup_delete_butt"
-					android:textColor="@color/ivory"
-					android:textSize="@dimen/font_size_button_default" />
-
-			</RelativeLayout>
-
-
-			<!-- This is the export button.  It's GONE now, but
-				will be here for when I'm ready to implement it.
-			-->
-			<RelativeLayout
-				android:id="@+id/mange_db_popup_export_rl"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_margin="5dp"
-				android:visibility="gone"
-				android:background="@drawable/rounded_edges_dark"
-				android:padding="5dp" >
-
-				<Button
-					android:id="@+id/manage_db_popup_export_butt"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:background="@drawable/button_shiny_black"
-					android:text="Button"
-					android:textColor="@color/ivory"
-					android:textSize="@dimen/font_size_button_default" />
 			</RelativeLayout>
 
 		</LinearLayout>

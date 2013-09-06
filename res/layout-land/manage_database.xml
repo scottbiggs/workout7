@@ -83,7 +83,7 @@
 	</LinearLayout>
 
 	<Button
-		android:id="@+id/manage_db_import_butt"
+		android:id="@+id/manage_db_done_butt"
 		style="@style/white_text_small"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
 		android:layout_marginRight="40dp"
 		android:layout_marginTop="35dp"
 		android:background="@drawable/button_shiny_black"
-		android:text="@string/manage_db_import_butt" />
+		android:text="@string/manage_db_done_butt" />
 
 	<LinearLayout
 		android:id="@+id/manage_db_list_ll"
@@ -121,6 +121,8 @@
 			android:id="@+id/manage_db_list_lv"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
+			android:choiceMode="singleChoice"
+			android:cacheColorHint="#00000000"
 			/>
 	</LinearLayout>
 

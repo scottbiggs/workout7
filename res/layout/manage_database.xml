@@ -57,7 +57,7 @@
 		android:textStyle="bold" />
 
 	<Button
-		android:id="@+id/manage_db_import_butt"
+		android:id="@+id/manage_db_done_butt"
 		style="@style/white_text_small"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -68,13 +68,13 @@
 		android:layout_marginRight="40dp"
 		android:layout_marginTop="10dp"
 		android:background="@drawable/button_shiny_black"
-		android:text="@string/manage_db_import_butt" />
+		android:text="@string/manage_db_done_butt" />
 
 	<EditText
 		android:id="@+id/manage_db_add_et"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_above="@id/manage_db_import_butt"
+		android:layout_above="@id/manage_db_done_butt"
 		android:layout_alignParentLeft="true"
 		android:layout_marginLeft="12dp"
 		android:maxLines="1"
@@ -85,7 +85,7 @@
 		style="@style/white_text_small"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_above="@id/manage_db_import_butt"
+		android:layout_above="@id/manage_db_done_butt"
 		android:layout_alignBaseline="@id/manage_db_add_et"
 		android:layout_marginLeft="8dp"
 		android:layout_toRightOf="@id/manage_db_add_et"
@@ -123,8 +123,9 @@
 			android:id="@+id/manage_db_list_lv"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
+			android:choiceMode="singleChoice"
 			android:cacheColorHint="#00000000"
-			android:choiceMode="singleChoice" />
+			/>
 
 	</LinearLayout>
 

@@ -1750,6 +1750,16 @@
 		last set of data!
 	</string>
 
+	<string name="manage_db_done_butt">done</string>
+	<string name="manage_db_done_butt_help_title">Done</string>
+	<string name="manage_db_done_butt_help_msg">
+		When you\'re done, you\'re done!
+		\n\nTap here when you have exhausted your admiration of the
+		beauty of this screen and want to admire the beauty of the
+		main screen.
+	</string>
+
+
 	<string name="manage_db_popup_title">%s</string>
 	<string name="manage_db_popup_msg">Choose from the following
 		options\u003a</string>
@@ -1811,7 +1821,7 @@
 	</string>
 
 	<string name="manage_db_popup_clear_set_data_label">Clear all your workout data.</string>
-	<string name="manage_db_popup_clear_set_data_butt">clear workout data.</string>
+	<string name="manage_db_popup_clear_set_data_butt">clear</string>
 
 	<string name="manage_db_popup_clear_set_data_help_title">Clear Workout Data</string>
 	<string name="manage_db_popup_clear_set_data_help_msg">
@@ -1828,5 +1838,6 @@
 		\n\nSo you\'ve been warned. Do you still want to permanently remove all trace of those
 		exercises you sweated hard for?
 	</string>
+
 
 </resources>
