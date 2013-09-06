@@ -67,12 +67,6 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 	//-------------------
 
 	/**
-	 * The name of the database file that the user is currently using
-	 * or has selected.
-	 */
-//	private String m_current_db;
-
-	/**
 	 * This is the string that was last selected to go to the
 	 * ManageDatabasePopupActivity.  This will be the username
 	 * for the database in question.
@@ -102,9 +96,6 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 
 		m_help = (ImageView) findViewById(R.id.manage_db_logo);
 		m_help.setOnClickListener(this);
-
-		// Get the name of the current database
-//		m_current_db = DatabaseFilesHelper.get_active_username(this);
 
 		create_listview();
 
@@ -167,9 +158,6 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 
 		// Set the current db to this username.
 		DatabaseFilesHelper.activate(username, this);
-
-		// And don't forget to set our local data member, too.
-//		m_current_db = username;
 
 	} // onItemClick (parent, v, pos, id)
 
@@ -316,24 +304,20 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 			return;
 		}
 
-		// update the UI
+		// update the UI. No need to alphabetize as the order doesn't
+		// change when deleting.
 		m_user_names.remove(m_last_popup_db);
-		alphabetize(m_user_names);		// todo: Is this even necessary?
 
 
 		// update the DB
 		DatabaseFilesHelper.remove(m_last_popup_db, this);
 
-		// In case we deleted the current, get the new current from our
-		// helper.
-//		m_current_db = DatabaseFilesHelper.get_active_username(this);
 
 		String active_username = DatabaseFilesHelper.get_active_username(this);
 		set_current_in_lv(active_username);
 		m_current_db_tv.setText(active_username);
 		m_last_popup_db = null;
 	} // delete (username)
-
 
 
 	/************************
@@ -437,6 +421,7 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 		m_lv.setSelection(current_db_index);	// scrolls up to reveal if necessary
 	}
 
+
 	/***************************
 	 * Given an ArrayList of Strings, this creates a new list that's
 	 * in alphabetical order.
@@ -449,4 +434,5 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 	private void alphabetize (ArrayList<String> a_list) {
 		Collections.sort(a_list, String.CASE_INSENSITIVE_ORDER);
 	} // alphabetize(unsorted)
+
 }
