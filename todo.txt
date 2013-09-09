@@ -1,19 +1,13 @@
 TODO:
 -----------------
-BUG: If you delete an inactive database, it changes the active database to the
-	first one instead of leaving the already active one active.
-
-BUG: If you add a database and then just go back, the activite database change isn't
-	registered as active in the WelcomeActivity (or any other subsequent Activities).
+Mild Bug: When converting from the old database system to the new one, we
+	leave a dangling reference in our new preference file:
+	<string name="db00001.sqlite">default user</string>
+	It doesn't refer to a file and makes our counter 1 higher than necessary.
+	Not a big deal, but I'm anal.
 
 BUG: Try clearing an entry to AddSetActivity (from the popup calculator).
 	Then add that value.  BANG!
-
-!!!! Make a way to convert the old database to a new one !!!!
-
-Add a way to clear all the workout data of a database.  This'd just be another
-	button in the ManageDatabaseActivityPopup and some more stuff in the two
-	related classes.
 
 Hitting the back button when in the middle of adding an exercise doesn't
 	cause any nagging (when turned on).  This is because the handling is
@@ -220,6 +214,22 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+!!!! Make a way to convert the old database to a new one !!!!
+	- done
+
+Add a way to clear all the workout data of a database.  This'd just be another
+	button in the ManageDatabaseActivityPopup and some more stuff in the two
+	related classes.
+	- done
+
+BUG: If you add a database and then just go back, the activite database change isn't
+	registered as active in the WelcomeActivity (or any other subsequent Activities).
+	- fixed
+
+BUG: If you delete an inactive database, it changes the active database to the
+	first one instead of leaving the already active one active.
+	- fixed
+
 Need to redo the Welcome screen.
 	- looks ok to me.
 

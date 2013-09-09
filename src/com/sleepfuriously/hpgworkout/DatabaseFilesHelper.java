@@ -104,6 +104,11 @@ public class DatabaseFilesHelper {
 	public static final String PREFS_CURRENT_DB_FILE_NAME_KEY =
 									"prefs_current_db_name";
 
+	/**
+	 * The name of the db file for older versions.
+	 */
+	private static final String OLD_DB_FILENAME = "hpg.sqlite";
+
 
 	/**
 	 * The key to accessing how many databases have been created so
@@ -130,6 +135,7 @@ public class DatabaseFilesHelper {
 	 *
 	 */
 	public static void init (Context ctx) {
+
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
 
 		// While the caller sees a simple init, this is actually
@@ -146,7 +152,47 @@ public class DatabaseFilesHelper {
 		// No database will exist yet, and the SharedPreferences
 		// will not be setup either.
 		ArrayList<String> filenames = get_all_filenames(ctx);
+
+
 		if ((filenames != null) && (filenames.size() != 0)) {
+
+			// Check to see if they have a database of the old name.
+			// If so, convert it to the new format.
+			if (filenames.size() == 1) {
+				String filename = filenames.get(0);
+				if (filename.equals(OLD_DB_FILENAME)) {
+
+					// Rename that file.  Start by finding the path to
+					// the databases.  Taken from http://tutorials.jenkov.com/java-io/file.html#rename
+					// among other places.
+					File db_path = ctx.getDatabasePath(DB_DEFAULT_FILENAME);
+					String orig_path = db_path.toString();
+					String actual_path = orig_path.substring(0, orig_path.length() - DB_DEFAULT_FILENAME.length());
+
+					File old_db_file = new File (actual_path, OLD_DB_FILENAME);
+					if (old_db_file.isFile() == false) {
+						Log.e (tag, "Problem verifying that the old database file actually IS a file! Aborting!");
+						return;
+					}
+					if (old_db_file.renameTo(new File (actual_path + DB_DEFAULT_FILENAME)) == false) {
+						Log.e(tag, "Problem trying to rename the old database file!  Aborting!");
+						return;
+					}
+
+					// Indicate this database in our prefs.
+					prefs.edit().putString(DB_DEFAULT_FILENAME, DB_DEFAULT_USERNAME)
+							.commit();
+					prefs.edit().putString(PREFS_CURRENT_DB_FILE_NAME_KEY, DB_DEFAULT_FILENAME)
+							.commit();
+
+					// Indicate the changes.
+					increment_filename_counter(ctx);
+
+					// finally, reload the filenames
+					filenames = get_all_filenames(ctx);
+				}
+			} // testing for existence of old database
+
 
 			// There is a database file, so start it up.
 			if (WGlobals.g_db_helper != null) {
