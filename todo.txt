@@ -1,8 +1,5 @@
 TODO:
 -----------------
-Have the database Activity popup when the user touches the name of the
-	current user instead of that confusing button: manage database.
-
 When graphing, have the option of graphing by exercise
 	set or by day (toggle button or menu?).
 
@@ -222,6 +219,10 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Have the database Activity popup when the user touches the name of the
+	current user instead of that confusing button: manage database.
+	- done
+
 The graphs can be scrolled off the screen!  Make 'em stop moving
 	at the screen edge.
 	- fixed
