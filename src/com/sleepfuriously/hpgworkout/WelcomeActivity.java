@@ -142,6 +142,7 @@ public class WelcomeActivity extends BaseDialogActivity
 				break;
 
 			case R.id.welcome_manage_db_butt:
+			case R.id.welcome_user_name_tv:
 				itt = new Intent (this, ManageDatabaseActivity.class);
 				startActivityForResult(itt, WGlobals.MANAGEDATABASEACTIVITY);
 				break;
@@ -160,7 +161,7 @@ public class WelcomeActivity extends BaseDialogActivity
 				show_help_dialog(R.string.welcome_help_help_title,
 						R.string.welcome_help_help_msg);
 				break;
-
+				
 			default:
 				Log.e(tag, "Illegal value in onClick()!");
 				break;
@@ -187,6 +188,7 @@ public class WelcomeActivity extends BaseDialogActivity
 				return true;
 
 			case R.id.welcome_manage_db_butt:
+			case R.id.welcome_user_name_tv:
 				show_help_dialog(R.string.welcome_manage_db_help_title, R.string.welcome_manage_db_help_msg);
 				return true;
 
@@ -227,15 +229,17 @@ public class WelcomeActivity extends BaseDialogActivity
 		// the preferences).  This'll tell us which to load up
 		// and which database file to fire up.
 		TextView user_name_tv = (TextView) findViewById(R.id.welcome_user_name_tv);
+		user_name_tv.setOnClickListener(this);
+		user_name_tv.setOnLongClickListener(this);
 
 		// Since this is the first Activity, go ahead and initialize
 		// the database.  Once done, it'll also tell us the name of
 		// the active database.
 		user_name_tv.setText(DatabaseFilesHelper.get_active_username(this));
-		
+
 		String db_filename = WGlobals.g_db_helper.get_database_filename();
 		String db_username = DatabaseFilesHelper.get_user_name(db_filename, this);
-		Log.d(tag, "set_current_db_user(): g_db_helper usename = " + db_username);
+		Log.v(tag, "set_current_db_user(): g_db_helper usename = " + db_username);
 	}
 
 }

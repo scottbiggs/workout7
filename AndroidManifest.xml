@@ -65,7 +65,9 @@
 			android:windowSoftInputMode="stateHidden"
 			/>
 
-		<activity android:name=".ManageDatabaseActivity"/>
+		<activity android:name=".ManageDatabaseActivity"
+			android:windowSoftInputMode="stateHidden"
+			/>
 
 		<!-- These Activities look like Dialogs -->
 		<activity android:name=".NumberActivity"

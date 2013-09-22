@@ -43,11 +43,17 @@
 
 		<TextView
 			android:id="@+id/welcome_user_name_tv"
-			style="@style/white_text_smaller"
+			style="@style/white_alt_medium"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="25dp"
-			android:text="Hello, default user!" />
+			android:text="Hello, default user!"
+			android:shadowColor="@color/hpg_orange"
+			android:shadowDx="3"
+			android:shadowDy="3"
+			android:shadowRadius="5"
+			android:textStyle="normal|italic"
+			/>
 
 	</LinearLayout>
 
