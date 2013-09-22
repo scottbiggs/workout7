@@ -62,15 +62,6 @@ public class GView extends View {
 	private static final int PADDING_LEFT = 26,
 			PADDING_RIGHT = 26, PADDING_TOP = 46, PADDING_BOTTOM = 54;
 
-	/** Number of pixels between y-axis lines in the graph. */
-//	private static final int VERT_LINE_SPACING = 70;
-
-	/** Number of pixesl between x-axis lines in the graph. */
-//	private static final int HORIZ_LINE_SPACING = 30;
-
-	/** The y value to draw labels along the X-axis. */
-//	private static final int X_AXIS_LABEL_Y = 5;
-
 	/** Distance between the graph area and the x-axis area */
 	private static final int X_AXIS_GAP = 10;
 
@@ -101,7 +92,6 @@ public class GView extends View {
 	 * to draw for our graph.  It'll be created externally,
 	 * but this class will have to fill in the draw area.
 	 */
-//	public GraphXAxis m_graph_x_axis = null;
 	public GraphXAxis2 m_graph_x_axis = null;
 
 	/** Used during onDraw(). */
@@ -139,7 +129,6 @@ public class GView extends View {
 	 *  Describes the area that the GraphLine classes
 	 *  draw in (in my coord system).
 	 */
-//	private Rect m_graphline_rect = new Rect();
 	private RectF m_graphline_rect = new RectF();
 
 	/**
@@ -225,9 +214,6 @@ public class GView extends View {
 		// update their drawing coordinates.
 		update_changeable_rects();
 
-//		Log.v(tag, "onSizeChanged(): usable width = " + m_usable_width +
-//				", usable height = " + m_usable_height);
-
 	} // onSizeChanged(w, h, oldw, oldh)
 
 
@@ -239,45 +225,6 @@ public class GView extends View {
 			Log.v(tag, "onDraw: EXITING because we're loading");
 			return;
 		}
-
-
-		//	testing!
-		// This successfully draws a box at the outermost
-		// pixle of the widget.
-//		Log.d(tag, "onDraw(), m_clip_rect = " + m_canvas_padded_rect);
-//		float old_stroke_width = m_paint.getStrokeWidth();
-//		m_paint.setStrokeWidth(1);
-//		int old_color = m_paint.getColor();
-
-		// Full canvas = red
-//		m_paint.setColor(Color.RED);
-//		Log.d (tag, "red box (m_canvas_rect) = " + m_canvas_rect);
-//		draw_box(canvas, m_canvas_rect, m_paint);
-
-		// padded rectangle = yellow
-//		m_paint.setColor(Color.YELLOW);
-//		Log.d (tag, "yellow box (m_canvas_padded_rect) = " + m_canvas_padded_rect);
-//		draw_box(canvas, m_canvas_padded_rect, m_paint);
-
-		// Graph rectangle = cyan
-//		m_paint.setColor(Color.CYAN);
-//		Log.d (tag, "cyan box (m_graphline_rect) = " + m_graphline_rect);
-//		draw_box(canvas, m_graphline_rect, m_paint);
-
-		// x-axis = green
-//		m_paint.setColor(Color.GREEN);
-//		Log.d (tag, "green box (m_x_axis) = " + m_x_axis_rect);
-//		draw_box(canvas, m_x_axis_rect, m_paint);
-
-		// Not supposed to be valid.
-//		m_paint.setColor(Color.MAGENTA);
-//		Log.d (tag, "magenta box (m_y_axis_rect) = " + m_y_axis_rect);
-//		draw_box(canvas, m_y_axis_rect, m_paint);
-
-//		m_paint.setStrokeWidth(old_stroke_width);
-//		m_paint.setColor(old_color);
-		//
-		// end test
 
 		// Check to see if there's anything to draw.
 		if (has_data() == false) {
@@ -303,10 +250,8 @@ public class GView extends View {
 
 		//	Draw the x-axii here
 		if (m_graph_x_axis != null) {
-//			if (m_graph_x_axis.is_draw_area_set() == false) {
 			if (m_graph_x_axis.get_view_rect() == null) {
 				Log.w(tag, "onDraw(): m_graph_x_axis.view_rect is null! Setting the draw area to continue, sigh.");
-//				m_graph_x_axis.set_draw_area(m_x_axis_rect);
 				m_graph_x_axis.set_view_rect(m_x_axis_rect);
 			}
 			m_paint.setColor(getResources().getColor(color.ghost_white));
@@ -330,21 +275,17 @@ public class GView extends View {
 			}
 		}
 
-
 		// Draw all the lines!
 		m_paint.setAntiAlias(true);
 		m_paint.setStrokeWidth(LINE_STROKE_WIDTH);
 		for (GraphCollection graph : m_graphlist) {
-//			if (graph.m_line_graph.is_draw_area_set() == false) {
 			if (graph.m_line_graph.get_view_rect() == null) {
 				Log.e(tag, "onDraw(): a GraphLine draw area is not set! Setting the draw area to continue, sigh.");
-//				graph.m_line_graph.set_draw_area(m_graphline_rect);	// Could slow down the drawing quite a bit
 				graph.m_line_graph.set_view_rect(m_graphline_rect);
 			}
 			m_paint.setColor(graph.m_color);
 			graph.m_line_graph.draw(canvas, m_paint);
 		}
-
 
 	} // onDraw(canvas)
 
@@ -440,16 +381,13 @@ public class GView extends View {
 		// Loop through all the graphs (include the y-axis, too!)
 		for (int i = 0; i < m_graphlist.size(); i++) {
 			// The GraphLine instance
-//			m_graphlist.get(i).m_line_graph.set_draw_area(m_graphline_rect);
 			m_graphlist.get(i).m_line_graph.set_view_rect(m_graphline_rect);
-//			m_graphlist.get(i).m_line_graph.map_points();
 
 			// The GrapyYAxis instance
 			m_graphlist.get(i).m_y_axis_graph.m_draw_area = find_y_axis_area(i);
 		}
 
 		// Rests just below m_graphline_rect
-//		m_x_axis_rect.set(m_graphline_rect);
 		m_x_axis_rect.set((int)m_graphline_rect.left, (int)m_graphline_rect.top, (int)m_graphline_rect.right, (int)m_graphline_rect.bottom);
 		m_x_axis_rect.bottom = 0;
 		m_x_axis_rect.top = (int) m_graphline_rect.bottom;
@@ -457,9 +395,7 @@ public class GView extends View {
 
 		// Set the x-axis
 		if (m_graph_x_axis != null) {
-//			m_graph_x_axis.set_draw_area(m_x_axis_rect);
 			m_graph_x_axis.set_view_rect(m_x_axis_rect);
-//			m_graph_x_axis.map_points();
 		}
 
 	} // update_changeable_rects()
@@ -618,11 +554,11 @@ public class GView extends View {
 
 	} // scale (amount)
 
+
 	/**********************
 	 * Resets the scaling to the default.
 	 *
-	 * todo
-	 * 		implement this
+	 * NOT IMPLEMENTED!
 	 */
 	public void scale_reset() {
 		Log.e(tag, "scale_reset() is not implemented yet.");
@@ -632,9 +568,15 @@ public class GView extends View {
 	} // scale_reset()
 
 
+
+
 	/**********************
 	 * Pans the graph left or right by the specified number
-	 * of pixels.
+	 * of pixels.  If the number would pan the graph too much,
+	 * then this is ignored.
+	 *
+	 * todo
+	 * 	Maybe this should pan the max amount if the number is too much?
 	 * <p>
 	 * <b>NOTE</b>:	This is a RELATIVE pan!  That means that
 	 * 0 will do nothing.  Call pan_reset() to set to original
@@ -643,18 +585,61 @@ public class GView extends View {
 	 * pan right (as if you're dragging right), and use negative
 	 * numbers to pan left.
 	 *
-	 * @param x		The pan amount in pixels. Positive numbers
-	 * 				scroll in the positive X direction or right (as
-	 * 				if you're dragging right). Negatives go left.
+	 * @param pan_amount		The pan amount in pixels. Positive numbers
+	 * 						pan left (dragging left). Negatives go right.
+	 *
+	 * @return	True if the pan succeeded.  False if it failed (because
+	 * 			the pan would move the graph out of its draw area).
 	 */
-	public void pan (float x) {
-		double scale_ratio = 0d, world_amount = 0d;
+	public boolean pan (float pan_amount) {
+		Log.d(tag, "pan_amount = " + pan_amount);
+
+		/** The fraction of the two windows to pan */
+		double scale_fraction = 0d;
+		/** The amount to pan the world window */
+		double world_amount = 0d;
 
 		for (GraphCollection graph : m_graphlist) {
+			// Get the world and view windows.
 			RectD world_window = graph.m_line_graph.get_world_rect();
-			RectF screen_window = graph.m_line_graph.get_view_rect();
-			scale_ratio = x / ((double)screen_window.width());
-			world_amount = scale_ratio * world_window.width();
+			RectF view_window = graph.m_line_graph.get_view_rect();
+
+			// Testing to see if this pan is within limits.  If it isn't,
+			// simply exit.  (todo: change to make it fit later)
+
+			// Get the first and last world points
+			PointD first_world_pt = graph.m_line_graph.get_world_pt_at(0);
+			int num = graph.m_line_graph.get_num_world_pts();
+			PointD last_world_pt = graph.m_line_graph.get_world_pt_at(num - 1);
+
+			// Convert the world points to view points.
+			PointD first_view_pt = graph.m_line_graph.calc_one_view_pt(first_world_pt);
+			PointD last_view_pt = graph.m_line_graph.calc_one_view_pt(last_world_pt);
+
+			// Now test
+			if (first_view_pt.x - pan_amount > view_window.left) {
+				Log.d(tag, "panning too far to the right!.");
+				return false;
+			}
+			if (last_view_pt.x - pan_amount < view_window.right) {
+				Log.d(tag, "panning too far to the left!.");
+				return false;
+			}
+
+
+			// What fraction of the view window are we panning?
+			scale_fraction = ((double) pan_amount) / ((double) view_window.width());
+
+			// Apply this same ratio to the world window to get the
+			// amount in world units.  Here's the simple formula:
+			//
+			//	pixels finger moved	  world units moved
+			//	-------------------	= -----------------
+			//	   view window		    world window
+			//
+			world_amount = scale_fraction * world_window.width();
+
+			// Apply the changes (finally!).
 			world_window.left += world_amount;
 			world_window.right += world_amount;
 			graph.m_line_graph.set_world_rect(world_window);
@@ -667,7 +652,10 @@ public class GView extends View {
 		x_left += world_amount;
 		x_right += world_amount;
 		m_graph_x_axis.set_date_window(x_left, x_right);
-	} // scroll (x)
+
+		return true;
+	} // pan (pan_amount)
+
 
 	/**********************
 	 * Resets the scroll to the default (which should be centered).
@@ -676,4 +664,5 @@ public class GView extends View {
 		Log.e(tag, "pan_reset() is not implemented yet.");
 		// todo
 	} // scroll_reset()
+
 }

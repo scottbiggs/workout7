@@ -82,8 +82,6 @@ public class GraphActivity
 	 */
 	private String m_ex_name;
 
-	/** Needed for the ASyncTask to properly access this context */
-//	private static Context m_context;
 
 	//--------
 	//	The following items hold all the info associated
@@ -199,9 +197,6 @@ public class GraphActivity
 			String possessive = getString(R.string.possessive_suffix);
 			title.setText(user + possessive + " " + m_ex_name);
 		}
-
-		
-
 
 		// Continued in onResume()
 
@@ -358,15 +353,19 @@ public class GraphActivity
 				break;
 
 			case MotionEvent.ACTION_MOVE:
-				// todo:
-				//	Only pan if we're not at an end of the screen.
-
 				if (m_touch_mode == DRAG) {
 //					Log.d(tag, "DRAG event.  Pan amount = " + event.getX());
+
 					// Only interested in left-right pans
-					m_view.pan((float) (m_last_touch_pos.x - event.getX()));
-					m_view.invalidate();
-					m_last_touch_pos.set(event.getX(), event.getY());
+					float dx = event.getX();
+					float dy = event.getY();
+
+					//	Pan, but only set the data if the pan was
+					// successful.
+					if (m_view.pan((float) (m_last_touch_pos.x - dx))) {
+						m_view.invalidate();
+						m_last_touch_pos.set(dx, dy);
+					}
 				}
 
 				else if (m_touch_mode == ZOOM) {
@@ -499,9 +498,6 @@ public class GraphActivity
 	 */
 	private void construct_legend() {
 		String str = null;
-//		int len, start, end;
-//		SpannableString spannable;
-
 		TextView tv = (TextView) findViewById(R.id.graph_description_tv);
 
 		// This time, let's try a SpannableStringBuilder
@@ -789,7 +785,6 @@ public class GraphActivity
 	 *  			created for it.
 	 */
 	protected void construct_x_axis() {
-//		m_view.m_graph_x_axis = new GraphXAxis();
 		m_view.m_graph_x_axis = new GraphXAxis2();
 		long left = Long.MAX_VALUE, right = -Long.MAX_VALUE;
 
@@ -806,7 +801,6 @@ public class GraphActivity
 
 		// Do we need to check to see if left = right?
 		// Nope, it should be taken care of via construct_one_set().
-//		m_view.m_graph_x_axis.set_bounds(left, right);
 		m_view.m_graph_x_axis.set_date_window(left, right);
 
 	} // construct_x_axis()
@@ -1254,7 +1248,6 @@ public class GraphActivity
 		Log.e(tag, "Illegal value in get_nice_string_from_aspect_num (" + num + ")!");
 		return null;
 	} // get_nice_string_from_aspect_num (num);
-
 
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

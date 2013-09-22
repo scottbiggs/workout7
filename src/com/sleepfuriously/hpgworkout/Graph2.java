@@ -198,15 +198,15 @@ public class Graph2 {
 	 * @param index		The index (starts at 0) of the point
 	 * 					in question.
 	 *
-	 * @return	The PointD at the given index.  Returns null
-	 * 			if the index is out of range or the point
+	 * @return	A copy of the PointD at the given index.  Returns
+	 * 			null if the index is out of range or the point
 	 * 			happens to be null.
 	 */
 	public PointD get_world_pt_at (int index) {
 		if ((index < 0) || index >= m_world_pts.size()) {
 			return null;
 		}
-		return m_world_pts.get(index);
+		return new PointD (m_world_pts.get(index));
 	}
 
 
@@ -229,7 +229,7 @@ public class Graph2 {
 
 	/****************************
 	 * Curious about the world rect?  You should be; it's very
-	 * useful.  Here's how to get a copy.
+	 * useful.  Here's how to get a COPY.
 	 */
 	public RectD get_world_rect() {
 		return new RectD(m_world_rect);
@@ -373,6 +373,32 @@ public class Graph2 {
 	} // draw_line (canvas, paint)
 
 
+	/**************************
+	 * Calculates what the screen point would be for a given world
+	 * point using all the current values.
+	 *
+	 * This could be useful to test how a pan or a zoom would change
+	 * the graph (hint, hint).
+	 *
+	 * @param world_pt		The world coordinate to input.
+	 *
+	 * @return	A screen coordinate (converted and everything to
+	 * 			my systems).  AKA a View Point.
+	 */
+	public PointD calc_one_view_pt (PointD world_pt) {
+		PointD view_pt = new PointD();
+
+		// Useful to precalculate these numbers.
+		double xratio = m_view_rect.width() / m_world_rect.width();
+		double yratio = -m_view_rect.height() / m_world_rect.height();
+
+		// Set the x value.
+		view_pt.x = (world_pt.x - m_world_rect.left)
+						* xratio + m_view_rect.left;
+		view_pt.y = (world_pt.y - m_world_rect.bottom)
+						* yratio + m_view_rect.bottom;
+		return view_pt;
+	} // calc_one_view_pt (world_pt)
 
 
 	/**************************
@@ -397,7 +423,7 @@ public class Graph2 {
 
 		// Useful to precalculate these numbers.
 		double xratio = m_view_rect.width() / m_world_rect.width();
-		double yratio = -m_view_rect.height() / m_world_rect.height();
+		double yratio = -m_view_rect.height() / m_world_rect.height();	// The negative is because MY coord system goes UP!
 
 		// Go through world points, converting each to a
 		// view point.
@@ -423,6 +449,5 @@ public class Graph2 {
 		m_dirty = false;
 
 	} // calc_view_pts()
-
 
 }

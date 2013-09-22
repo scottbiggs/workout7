@@ -1,5 +1,14 @@
 TODO:
 -----------------
+Have the database Activity popup when the user touches the name of the
+	current user instead of that confusing button: manage database.
+
+When graphing, have the option of graphing by exercise
+	set or by day (toggle button or menu?).
+
+Bug: I think I caused a crash by rotating.  Again.  I think it was while
+	in one of the tabbed Activities.
+
 Mild Bug: When converting from the old database system to the new one, we
 	leave a dangling reference in our new preference file:
 	<string name="db00001.sqlite">default user</string>
@@ -54,8 +63,7 @@ Make sure that all the drawables are in the correct directories.
 ---------------------------------------------------
 Moved to Web
 ---------------------------------------------------
-The graphs can be scrolled off the screen!  Make 'em stop moving
-	at the screen edge.
+
 
 ---------------------------------------------------
 Hmmmmmmmmmmmmmmmmmmmmmm
@@ -66,10 +74,6 @@ Minor Bug: The Inspector scrolls to the LAST exercise of that
 	scrolls to the EARLIEST of that day (not the most recent).
 	Looks like I got these two confused with one-another.
 	- needs repeating
-
-When graphing, have the option of graphing by exercise
-	set or by day (toggle button or menu?).
-	- Too many options, not doing it.
 
 BUG: When the GraphActivity removes x-axis tick lines because they
 	are too close together, the date on the last tick line can be
@@ -116,6 +120,10 @@ In the graphs, instead of horizontal lines, divide up into
 ---------------------------------------------------
 TABLED (for later versions)
 ---------------------------------------------------
+Have a way to add notes to a day or an exercise.  These are notes that
+	are not germain to a particular workout set, such as a daily goal
+	or description of how to do a specific exercise.
+
 Check out: http://android-developers.blogspot.com/2009/02/faster-screen-orientation-change.html
 	This should be applied to the grid screen to make
 	orientation changes much faster.
@@ -214,6 +222,10 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+The graphs can be scrolled off the screen!  Make 'em stop moving
+	at the screen edge.
+	- fixed
+
 !!!! Make a way to convert the old database to a new one !!!!
 	- done
 
