@@ -42,18 +42,21 @@
 			android:typeface="sans" />
 
 		<TextView
-			android:id="@+id/welcome_user_name_tv"
-			style="@style/white_alt_medium"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginLeft="25dp"
-			android:text="Hello, default user!"
-			android:shadowColor="@color/hpg_orange"
-			android:shadowDx="3"
-			android:shadowDy="3"
-			android:shadowRadius="5"
-			android:textStyle="normal|italic"
-			/>
+		    android:id="@+id/welcome_user_name_tv"
+		    style="@style/white_alt_medium"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:layout_marginLeft="30dp"
+		    android:layout_marginTop="6dp"
+		    android:background="@drawable/rounded_edges_black_small"
+		    android:gravity="center"
+		    android:padding="3dp"
+		    android:shadowColor="@color/hpg_orange"
+		    android:shadowDx="3"
+		    android:shadowDy="3"
+		    android:shadowRadius="5"
+		    android:text="Hello, default user!"
+		    android:textStyle="normal|italic" />
 
 	</LinearLayout>
 

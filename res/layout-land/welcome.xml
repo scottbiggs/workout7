@@ -121,13 +121,18 @@
 		android:layout_alignRight="@id/welcome_button_ll"
 		android:layout_marginBottom="5dp"
 		android:layout_marginRight="18dp"
-		android:text="Hello, default user!"
+		android:background="@drawable/rounded_edges_black_small"
+		android:gravity="center"
+		android:paddingBottom="3dp"
+		android:paddingLeft="6dp"
+		android:paddingRight="6dp"
+		android:paddingTop="3dp"
 		android:shadowColor="@color/hpg_orange"
 		android:shadowDx="3"
 		android:shadowDy="3"
 		android:shadowRadius="5"
-		android:textStyle="normal|italic"
-		/>
+		android:text="Hello, default user!"
+		android:textStyle="normal|italic" />
 
 	<Button
 		android:id="@+id/welcome_help_butt"

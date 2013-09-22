@@ -180,10 +180,10 @@
 	<string name="welcome_manage_db_button">manage data</string>
 	<string name="welcome_manage_db_help_title">Manage Data</string>
 	<string name="welcome_manage_db_help_msg">
-		This button takes you to a screen to manage your data where
-		you can add entirely new databases, change the active
-		database, export or import data, and more!
-		\n\nTo actually change the data within the databases, go
+		This takes you to a screen to manage your data where
+		you can add more users to the app, change the active
+		user, clear the user\'s data, export or import data, and more!
+		\n\nTo actually change the details of the user\'s data, go
 		to the main grid.  Long-tap an exercise to change how it
 		works (or remove it). Select an exercise and then go to
 		the Inspector to modify individual exercise sets.
