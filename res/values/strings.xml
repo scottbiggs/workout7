@@ -1692,26 +1692,25 @@
 	<!-- ============ Manage Database ============ -->
 	<!-- ============              	  ============ -->
 
-	<string name="manage_db_title">Data Management</string>
-	<string name="manage_db_help_title">Manage Your Data</string>
+	<string name="manage_db_title">Manage Users</string>
+	<string name="manage_db_help_title">Manage the Users</string>
 	<string name="manage_db_help_msg">
-		Want control of your data? That\'s what this is for!
+		Want control of all that workout data for more than one person?
+		That\'s what this is for!
 		\n\nMost of the time it\'s just you and your workout.
 		But sometimes you might want to share your phone with
 		a friend, keep track of another person, or experiment
 		around. That\'s what this section is for.
 		\n\nSo this app organizes your workout groups by person\u003a each
-		person has one group of workout data. Pretty simple, right?
+		person (aka \'User\')has one group of workout data. Pretty simple, right?
 		\n\nOn this screen is a list of all the people\'s workouts that this
-		phone knows. To change the person,
+		phone knows. To change who is the currently active user,
 		scroll through the list and tap to make that person
 		active.
-		\n\nYou can create a new person by filling out a name and
+		\n\nYou can create a new user by filling out a name and
 		hitting the add button.
-		\n\nLong-tap (press and hold for one second) a person to
+		\n\nLong-tap (press and hold for one second) a user to
 		edit that particular group of workouts.
-		\n\nAnd finally you can import data by clicking the \'import\'
-		button (exporting is done by long-tapping, hint hint).
 	</string>
 
 	<string name="manage_db_current_label">current\u003a</string>
@@ -1723,7 +1722,7 @@
 	<string name="manage_db_add_butt">add</string>
 	<string name="manage_db_add_butt_help_title">Add Data Group</string>
 	<string name="manage_db_add_butt_help_msg">
-		Enter the name of a new data group (usually the name of the)
+		Enter the name of a new user (usually the name of the)
 		person doing the exercise) and then tap the add button. That\'s
 		all there is to it!
 	</string>
@@ -1740,7 +1739,7 @@
 
 	<string name="manage_db_username_used_dialog_title">Used: %s</string>
 	<string name="manage_db_username_used_dialog_msg">
-		The username you typed in (%s) is already used. Try a different
+		The username you typed in (%s) is already taken. Try a different
 		name.
 	</string>
 
@@ -1756,7 +1755,7 @@
 		When you\'re done, you\'re done!
 		\n\nTap here when you have exhausted your admiration of the
 		beauty of this screen and want to admire the beauty of the
-		main screen.
+		welcome screen.
 	</string>
 
 
@@ -1764,10 +1763,11 @@
 	<string name="manage_db_popup_msg">Choose from the following
 		options\u003a</string>
 
-	<string name="manage_db_popup_help_title">Manage Data Choices</string>
+	<string name="manage_db_popup_help_title">Manage User Choices</string>
 	<string name="manage_db_popup_help_msg">
-		Here you have options of what to do with a whole database.
-		\n\nYou may rename it, delete it, or try to export it somewhere.
+		Here you have options of what to do with a user\'s set of data.
+		\n\nYou may give the user a new name (rename), delete that user,
+		or clear all of that user\'s exercise data.
 		If I think of something else you can do with it, I\'ll add that
 		option, too.
 	</string>
@@ -1775,16 +1775,16 @@
 	<string name="manage_db_popup_delete_yes_no_title">Delete %s!</string>
 	<string name="manage_db_popup_delete_yes_no_msg">
 		Hey!  Pay ATTENTION!
-		\n\nYou are about to delete an entire database!
-		\n\nAre you SURE you want to get rid of it for all time?
+		\n\nYou are about to delete an entire user!
+		\n\nAre you SURE you want to get rid of this person\'s data for all time?
 	</string>
 
 	<string name="manage_db_popup_delete_butt">delete</string>
-	<string name="manage_db_popup_delete_label_tv">Completely remove this database.</string>
+	<string name="manage_db_popup_delete_label_tv">Completely remove this user.</string>
 	<string name="manage_db_popup_delete_help_title">Delete</string>
 	<string name="manage_db_popup_delete_help_msg">
 		Yes, this does exactly what you think it does. It permanently
-		removes the selected database. And yes, there is no going back.
+		removes the selected user. And yes, there is no going back.
 		\n\nSo be careful!
 	</string>
 
@@ -1795,7 +1795,7 @@
 	<string name="manage_db_popup_rename_help_msg">
 		Did you just get married and want to change your name? Or maybe
 		you just don\'t like your name? Regardless of the reason, this
-		is how you rename your database.
+		is how you rename your data.
 		\n\nSimply type the new name here and press the \'change\'
 		button. That\'s all there is to it.
 	</string>
@@ -1807,14 +1807,15 @@
 	<string name="manage_db_popup_cancel_help_title">Cancel</string>
 	<string name="manage_db_popup_cancel_help_msg">
 		Yes, this button sends you back to the previous screen without
-		doing anything. Why do I even bother? \'Cause I\'m an anal nut.
+		doing anything. Why do I even bother explaining something so obvious?
+		\'Cause I\'m an anal nut.
 	</string>
 
 	<string name="manage_db_popup_delete_sure_title">Delete %s!</string>
 	<string name="manage_db_popup_delete_sure_msg">
 		Think about this carefully.
 		\n\nYou are about to completely and permanently delete all the data
-		that this device has ever collected for this entire set of data.
+		that this device has ever collected for this entire user.
 		\n\nAll the workout sets, all the exercises will go poof as soon as you
 		click \'yes\'.
 		\n\nAre you REALLY SURE you want to delete %s entirely?
@@ -1825,10 +1826,12 @@
 
 	<string name="manage_db_popup_clear_set_data_help_title">Clear Workout Data</string>
 	<string name="manage_db_popup_clear_set_data_help_msg">
-		This is ther tabula rasa (clean slate) for all your exercise data. That means the information
-		of all those workout sets will be erased for good.
+		This is the tabula rasa (clean slate) for all your exercise data. That means the information
+		of all those workout sets for this user will be erased for good.
 		\n\nThe exercises you created will still be there (whew, at least you don\'t have to
 		do that again!).
+		\n\nIf you want to remove those, you\'ll have to delete the exercises
+		one-by-one by long-touching them at the main grid.
 	</string>
 	<string name="manage_db_popup_clear_set_data_yesno_title">Clear %s\'s Workout Data?</string>
 	<string name="manage_db_popup_clear_set_data_yesno_msg">
