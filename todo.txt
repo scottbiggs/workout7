@@ -1,5 +1,8 @@
 TODO:
 -----------------
+Graphs: go ahead and make the pan go to the maximum when a pan is too far
+	instead of aborting the pan event.
+
 When graphing, have the option of graphing by exercise
 	set or by day (toggle button or menu?).
 

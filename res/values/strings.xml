@@ -177,12 +177,12 @@
 	<string name="welcome_menu_exit_button">exit</string>
 	<string name="welcome_version_number">v. 0.7 Alpha Test</string>
 
-	<string name="welcome_manage_db_button">manage data</string>
-	<string name="welcome_manage_db_help_title">Manage Data</string>
+	<string name="welcome_manage_db_button">manage users</string>
+	<string name="welcome_manage_db_help_title">Manage Users</string>
 	<string name="welcome_manage_db_help_msg">
-		This takes you to a screen to manage your data where
-		you can add more users to the app, change the active
-		user, clear the user\'s data, export or import data, and more!
+		This takes you to a screen to manage your all the different users.
+		You can add more users to the app, change the active
+		user, clear the user\'s data, and more!
 		\n\nTo actually change the details of the user\'s data, go
 		to the main grid.  Long-tap an exercise to change how it
 		works (or remove it). Select an exercise and then go to
@@ -1696,21 +1696,22 @@
 	<string name="manage_db_help_title">Manage the Users</string>
 	<string name="manage_db_help_msg">
 		Want control of all that workout data for more than one person?
-		That\'s what this is for!
+		That\'s what this screen is for!
 		\n\nMost of the time it\'s just you and your workout.
 		But sometimes you might want to share your phone with
 		a friend, keep track of another person, or experiment
 		around. That\'s what this section is for.
 		\n\nSo this app organizes your workout groups by person\u003a each
-		person (aka \'User\')has one group of workout data. Pretty simple, right?
-		\n\nOn this screen is a list of all the people\'s workouts that this
-		phone knows. To change who is the currently active user,
+		person (aka \'user\')has one group of workout data. The users are listed
+		on this screen.
+		\n\nTo change who is the currently active user,
 		scroll through the list and tap to make that person
 		active.
 		\n\nYou can create a new user by filling out a name and
 		hitting the add button.
 		\n\nLong-tap (press and hold for one second) a user to
-		edit that particular group of workouts.
+		edit that user\'s workout data. You\'ll be able to delete,
+		rename, or clear that user\'s data on that screen.
 	</string>
 
 	<string name="manage_db_current_label">current\u003a</string>
