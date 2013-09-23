@@ -9,9 +9,6 @@ When graphing, have the option of graphing by exercise
 Bug: I think I caused a crash by rotating.  Again.  I think it was while
 	in one of the tabbed Activities.
 
-BUG: Try clearing an entry to AddSetActivity (from the popup calculator).
-	Then add that value.  BANG!
-
 Hitting the back button when in the middle of adding an exercise doesn't
 	cause any nagging (when turned on).  This is because the handling is
 	done in the AddSetActivity instead of the ExerciseTabHostActivity
@@ -222,6 +219,10 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+BUG: Try clearing an entry to AddSetActivity (from the popup calculator).
+	Then add that value.  BANG!
+	- fixed
+
 Have the database Activity popup when the user touches the name of the
 	current user instead of that confusing button: manage database.
 	- done

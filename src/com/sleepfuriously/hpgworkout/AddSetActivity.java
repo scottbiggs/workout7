@@ -635,6 +635,7 @@ public class AddSetActivity
 				case DatabaseHelper.EXERCISE_COL_REP_NUM:
 					{
 						String reps = data.getStringExtra(NumberActivity.ITT_KEY_RETURN_VALUE);
+						reps = test_for_empty_string (reps);
 						if (WGlobals.g_wheel) {
 							// Don't have to set the TV directly as it's connected to
 							// the wheel.
@@ -649,6 +650,7 @@ public class AddSetActivity
 				case DatabaseHelper.EXERCISE_COL_WEIGHT_NUM:
 					{
 						String weight = data.getStringExtra(NumberActivity.ITT_KEY_RETURN_VALUE);
+						weight = test_for_empty_string (weight);
 						if (WGlobals.g_wheel) {
 							m_weight_wheels.set_value(Float.parseFloat(weight), true);
 						}
@@ -661,6 +663,7 @@ public class AddSetActivity
 				case DatabaseHelper.EXERCISE_COL_LEVEL_NUM:
 					{
 						String level = data.getStringExtra(NumberActivity.ITT_KEY_RETURN_VALUE);
+						level = test_for_empty_string (level);
 						if (WGlobals.g_wheel) {
 							m_level_wheels.set_value(Integer.parseInt(level), true);
 						}
@@ -685,6 +688,7 @@ public class AddSetActivity
 				case DatabaseHelper.EXERCISE_COL_DIST_NUM:
 					{
 						String dist = data.getStringExtra(NumberActivity.ITT_KEY_RETURN_VALUE);
+						dist = test_for_empty_string (dist);
 						if (WGlobals.g_wheel) {
 							m_dist_wheels.set_value(Float.parseFloat(dist), true);
 						}
@@ -697,6 +701,7 @@ public class AddSetActivity
 				case DatabaseHelper.EXERCISE_COL_TIME_NUM:
 					{
 						String time = data.getStringExtra(NumberActivity.ITT_KEY_RETURN_VALUE);
+						time = test_for_empty_string (time);
 						if (WGlobals.g_wheel) {
 							m_time_wheels.set_value(Float.parseFloat(time), true);
 						}
@@ -709,6 +714,7 @@ public class AddSetActivity
 				case DatabaseHelper.EXERCISE_COL_OTHER_NUM:
 					{
 						String other = data.getStringExtra(NumberActivity.ITT_KEY_RETURN_VALUE);
+						other = test_for_empty_string (other);
 						if (WGlobals.g_wheel) {
 							m_other_wheels.set_value(Float.parseFloat(other), true);
 						}
@@ -876,6 +882,25 @@ public class AddSetActivity
 			m_other_wheels.setOnWheelFloatChangedListener(this);
 		}
 	} // init_wheels()
+
+
+	/********************
+	 * This helper method takes a string (that SHOULD be a number)
+	 * and fixes it.  If the string is null or zero length, then
+	 * a zero is returned.  In all other cases the original string
+	 * is returned.
+	 *
+	 * @param str	The string to examine.
+	 *
+	 * @return	If str is null or has a length of 0, then "0" is
+	 * 			returned.  Otherwise str is returned.
+	 */
+	private String test_for_empty_string (String str) {
+		if ((str == null) || (str.length() == 0)) {
+			return "0";
+		}
+		return str;
+	}
 
 
 	/********************

@@ -22,6 +22,9 @@
  * check the data Intent.  It'll hold the value if the
  * returnCode is RESULT_OK.  Otherwise, there may not
  * even be any value (the user aborted, hit "back", etc.).
+ *
+ * NOTE that the value returned may actually be "".  This happens
+ * when the user clears and then hits done.
  */
 package com.sleepfuriously.hpgworkout;
 
