@@ -603,7 +603,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				if ((event == XmlPullParser.START_TAG) &&
 					(parser.getName().equals("record"))) {
 
-					values = parse_init_exercise_values(parser, counter);
+					values = parse_init_exercise_values(parser, counter++);
 					db.insert(EXERCISE_TABLE_NAME, null, values);
 				}
 				event = parser.next();
@@ -774,9 +774,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		}
 
 		{
-//			String lorder_str = parser.getAttributeValue(null, EXERCISE_COL_LORDER);
-//			int lorder = Integer.parseInt(lorder_str);
 			values.put(EXERCISE_COL_LORDER, count);
+//			Log.d(tag, "parse_init_exercise_values() doing the LORDER. count = " + count);
 		}
 
 		{
