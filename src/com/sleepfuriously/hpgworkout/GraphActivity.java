@@ -9,11 +9,13 @@ import java.util.ArrayList;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.FloatMath;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -94,6 +96,10 @@ public class GraphActivity
 	/** Holds all the set data from our database to be processed later. */
 	protected ArrayList<SetData> m_set_data;
 
+	/** Are we drawing regular graphs (false) or daily graphs (true)? */
+	private boolean m_daily = false;
+
+
 	/**
 	 * This tells the Activity when it needs to load data.  It
 	 * is set to true by OTHER Activities (ASet, EditSet) when
@@ -156,6 +162,10 @@ public class GraphActivity
 
 		m_options_butt = (Button) findViewById(R.id.graph_options_butt);
 		m_options_butt.setOnClickListener(this);
+
+		// Check whether we're doing a regular or daily graph.
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		m_daily = prefs.getBoolean(getString(R.string.prefs_graphs_daily_toggle_key), false);
 
 		// Init buttons and the main graph View
 		m_view = (GView) findViewById(R.id.graph_view);
@@ -362,10 +372,9 @@ public class GraphActivity
 
 					//	Pan, but only set the data if the pan was
 					// successful.
-					if (m_view.pan((float) (m_last_touch_pos.x - dx))) {
-						m_view.invalidate();
-						m_last_touch_pos.set(dx, dy);
-					}
+					m_view.pan((float) (m_last_touch_pos.x - dx));
+					m_view.invalidate();	
+					m_last_touch_pos.set(dx, dy);
 				}
 
 				else if (m_touch_mode == ZOOM) {
@@ -476,10 +485,18 @@ public class GraphActivity
 
 			m_exercise_data.g_with_reps = data.getIntExtra(GraphOptionsActivity.ITT_KEY_WITH_REPS, -1);
 
+			// Check our preferences to see if the type of graph has
+			// changed.
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+			m_daily = prefs.getBoolean(getString(R.string.prefs_graphs_daily_toggle_key), false);
+
 			// Check for error condition of NOTHING being
 			// graphed.  If so, err report and set to the
 			// significant.
-			test_and_fix_graph_settings();
+			if (test_and_fix_graph_settings() == false) {
+				Log.e(tag, "test_and_fix_graph_settings() returned false! Aborting!");
+				return;
+			}
 
 			// Change the database
 			save_data();

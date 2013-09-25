@@ -574,9 +574,6 @@ public class GView extends View {
 	 * Pans the graph left or right by the specified number
 	 * of pixels.  If the number would pan the graph too much,
 	 * then this is ignored.
-	 *
-	 * todo
-	 * 	Maybe this should pan the max amount if the number is too much?
 	 * <p>
 	 * <b>NOTE</b>:	This is a RELATIVE pan!  That means that
 	 * 0 will do nothing.  Call pan_reset() to set to original
@@ -588,10 +585,11 @@ public class GView extends View {
 	 * @param pan_amount		The pan amount in pixels. Positive numbers
 	 * 						pan left (dragging left). Negatives go right.
 	 *
-	 * @return	True if the pan succeeded.  False if it failed (because
-	 * 			the pan would move the graph out of its draw area).
+	 * @return  The amount that was actually panned.	  This may be different
+	 * 			from the requested amount if pan_amount is greater than
+	 * 			the remaining room to pan.
 	 */
-	public boolean pan (float pan_amount) {
+	public float pan (float pan_amount) {
 		Log.d(tag, "pan_amount = " + pan_amount);
 
 		/** The fraction of the two windows to pan */
@@ -616,14 +614,15 @@ public class GView extends View {
 			PointD first_view_pt = graph.m_line_graph.calc_one_view_pt(first_world_pt);
 			PointD last_view_pt = graph.m_line_graph.calc_one_view_pt(last_world_pt);
 
-			// Now test
+			// Now test.  If we're moving beyond the limit, make the
+			// limit our move.
 			if (first_view_pt.x - pan_amount > view_window.left) {
 				Log.d(tag, "panning too far to the right!.");
-				return false;
+				pan_amount = ((float)first_view_pt.x) - view_window.left;
 			}
 			if (last_view_pt.x - pan_amount < view_window.right) {
 				Log.d(tag, "panning too far to the left!.");
-				return false;
+				pan_amount = ((float) last_view_pt.x) - view_window.right;
 			}
 
 
@@ -653,7 +652,7 @@ public class GView extends View {
 		x_right += world_amount;
 		m_graph_x_axis.set_date_window(x_left, x_right);
 
-		return true;
+		return pan_amount;
 	} // pan (pan_amount)
 
 
