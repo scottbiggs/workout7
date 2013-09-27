@@ -838,6 +838,60 @@ public class GraphActivity
 
 
 	/************************
+	 * Some of the Views in this Activity need turned on for
+	 * when just one set is displayed.  Use this to turn them on
+	 * or off as needed.
+	 * 
+	 * @param visible	true: turn the Views to VISIBLE.
+	 * 					false: make the Views GONE.
+	 */
+	private void set_one_set_views_visible (boolean visible) {
+		// First, turn off the GView and turn on the TextView.
+		if (visible) {
+			// Make the hidden Views visible for the One Set display.
+			m_view.setVisibility(View.GONE);
+	
+			ScrollView sv = (ScrollView) findViewById(R.id.graph_gview_sv);
+			sv.setVisibility(View.VISIBLE);
+	
+			LinearLayout ll = (LinearLayout) findViewById(R.id.graph_gview_sub_ll);
+			ll.setVisibility(View.VISIBLE);
+			
+			TextView tv = (TextView) findViewById(R.id.graph_gview_tv);
+			tv.setVisibility(View.VISIBLE);
+	
+			// While we're at it, set the legend to invisible.
+			TextView legend = (TextView) findViewById(R.id.graph_description_tv);
+			legend.setVisibility(View.INVISIBLE);
+
+//			// And you know what? the options doesn't make sense either.
+//			m_options_butt.setVisibility(View.GONE);
+		}
+		else {
+			// Make the hidden Views visible for the One Set display.
+			m_view.setVisibility(View.VISIBLE);
+	
+			ScrollView sv = (ScrollView) findViewById(R.id.graph_gview_sv);
+			sv.setVisibility(View.GONE);
+	
+			LinearLayout ll = (LinearLayout) findViewById(R.id.graph_gview_sub_ll);
+			ll.setVisibility(View.GONE);
+			
+			TextView tv = (TextView) findViewById(R.id.graph_gview_tv);
+			tv.setVisibility(View.GONE);
+	
+			// While we're at it, set the legend to invisible.
+			TextView legend = (TextView) findViewById(R.id.graph_description_tv);
+			legend.setVisibility(View.VISIBLE);
+
+//			// And you know what? the options doesn't make sense either.
+//			m_options_butt.setVisibility(View.GONE);
+		}
+
+	} // set_one_set_views_visible (visible)
+
+	
+	/************************
 	 * This is called when it's discovered that there's only
 	 * one set to display.  This removes the GView and replaces
 	 * it with a nice TextView that will display all our info.
@@ -846,25 +900,8 @@ public class GraphActivity
 	 * 	<i>m_set_data</i> is properly set with only ONE set.
 	 */
 	protected void construct_one_set() {
-		// First, turn off the GView and turn on the TextView.
-		m_view.setVisibility(View.GONE);
-
-		ScrollView sv = (ScrollView) findViewById(R.id.graph_gview_sv);
-		sv.setVisibility(View.VISIBLE);
-
-		LinearLayout ll = (LinearLayout) findViewById(R.id.graph_gview_sub_ll);
-		ll.setVisibility(View.VISIBLE);
 		
-		TextView tv = (TextView) findViewById(R.id.graph_gview_tv);
-		tv.setVisibility(View.VISIBLE);
-
-		// While we're at it, set the legend to invisible.
-		TextView legend = (TextView) findViewById(R.id.graph_description_tv);
-		legend.setVisibility(View.INVISIBLE);
-
-		// And you know what? the options doesn't make sense either.
-		m_options_butt.setVisibility(View.GONE);
-
+		set_one_set_views_visible (true);
 		
 		// Fill in the text.
 		String str;
@@ -915,6 +952,7 @@ public class GraphActivity
 			str += "\n\n\t" + notes;
 		}
 
+		TextView tv = (TextView) findViewById(R.id.graph_gview_tv);
 		tv.setText(str);
 	} // construct_one_set()
 
@@ -1537,6 +1575,7 @@ public class GraphActivity
 				return;
 			}
 
+			set_one_set_views_visible (false);
 
 			construct_legend();
 

@@ -1,12 +1,5 @@
 TODO:
 -----------------
-For the graphs, we need to be able to change the options ALWAYs, even
-if there's just one aspect and even if there's just one set.
-
-Graphing: when there's just one "set" in daily mode, this message can
-be misleading.  There are quite possibly many sets, not just one.  The
-message needs to be changed when m_daily == true.
-
 When first starting, the grid looks funny.  This probably is because the
 database isn't properly setup.
 
@@ -228,6 +221,15 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Graphing: when there's just one "set" in daily mode, this message can
+be misleading.  There are quite possibly many sets, not just one.  The
+message needs to be changed when m_daily == true.
+	- done
+
+For the graphs, we need to be able to change the options ALWAYs, even
+if there's just one aspect and even if there's just one set.
+	- done
+
 Bug: Now the one-set display is completely fucked up.
 	- fixed
 
