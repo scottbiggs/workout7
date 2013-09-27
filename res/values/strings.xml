@@ -13,6 +13,7 @@
 				less than		==>	\u003c		(unicode)
 				greater than		==>	\u003e		(unicode)
 				ampersand &		==> \u0026		(unicode)
+				check (heavy)	==> \u2714		(unicode)
 	-->
 
 	<!-- General strings -->
@@ -1384,6 +1385,7 @@
 	<string name="prefs_category_inspector">WORKOUT HISTORY</string>
 	<string name="prefs_category_wheels">WHEELS</string>
 	<string name="prefs_category_sound">SOUND</string>
+	<string name="prefs_category_graphs">GRAPHS</string>
 
 	<string name="prefs_nag_key">nag</string>
 	<string name="prefs_nag_title">Nag</string>
@@ -1436,6 +1438,17 @@
 		Your most recent workout set will be at the top.
 	</string>
 
+	<string name="prefs_graphs_daily_toggle_key">pref_daily_toggle_key</string>
+	<string name="prefs_graphs_daily_toggle_on_summary">
+		Simplify workout graphs into daily clumps.
+	</string>
+	<string name="prefs_graphs_daily_toggle_off_summary">
+		Graph each and every workout set (default).
+	</string>
+	<string name="prefs_graphs_daily_toggle_title">
+		Display Mode
+	</string>
+
 	<string name="prefs_wheel_key">wheel_on</string>
 	<string name="prefs_wheel_title">Enable Number Wheels</string>
 	<string name="prefs_wheel_on_msg">
@@ -1446,33 +1459,6 @@
 		I find those number wheels annoying, so they are
 		now gone. Good riddance!
 	</string>
-<!--
-	<string name="prefs_wheel_left_key">wheel_left</string>
-	<string name="prefs_wheel_left_title">Number of Wheels</string>
-	<string name="prefs_wheel_left_msg">
-		How many wheels do you want to display your numbers?
-	</string>
-	<string name="prefs_wheel_left_dialog_title">
-		How many wheels per number?
-	</string>
-	<string name="prefs_wheel_left_dialog_msg">
-		Enter the number of wheels to the left of the decimal
-		point. Valid numbers are between 1 and 6 (4 is default).
-	</string>
-
-	<string name="prefs_wheel_right_key">wheel_right</string>
-	<string name="prefs_wheel_right_title">Number of Decimal Point Wheels</string>
-	<string name="prefs_wheel_right_msg">
-		How many decimal places do you want wheels to represent?
-	</string>
-	<string name="prefs_wheel_right_dialog_title">
-		How many decimal places?
-	</string>
-	<string name="prefs_wheel_right_dialog_msg">
-		Enter the number of wheels to the right of the decimal
-		point. Valid numbers are between 0 and 3 (1 is default).
-	</string>
--->
 	<string name="prefs_wheel_width_key">wheel_width</string>
 	<string name="prefs_wheel_width_title">Enable Fat Wheels</string>
 	<string name="prefs_wheel_width_fat">
@@ -1570,6 +1556,8 @@
 		This button takes you to a dialog where you can customize
 		how your graphs are displayed for this exercise. Pretty cool,
 		right?
+		\n\nMake sure to long-touch the various items to get detailed
+		explanations of what each does.
 	</string>
 
 	<string name="graph_options_help_title">Graph Options</string>
@@ -1624,6 +1612,51 @@
 		SOMETHING for the grapher to display.
 		\n\nHow else can I show off all that beautiful code?
 	</string>
+
+	<string name="graph_options_daily_toggle_on_butt">daily</string>
+	<string name="graph_options_daily_toggle_off_butt">every set</string>
+
+	<string name="graph_options_daily_mode_on_msg">mode: Daily</string>
+	<string name="graph_options_daily_mode_off_msg">mode: Every Set</string>
+
+	<string name="graph_options_daily_toggle_help_title">Display Mode</string>
+	<string name="graph_options_daily_toggle_help_msg">
+		These two buttons give you two options for how to display your
+		workout data.
+		\n\n\'each set\' (default) graphs a point for every single exercise
+		set you enter. If you do your exercise sets very closely (like most people)
+		you may see them clump together so closely that you must zoom in a LOT to
+		notice any difference.
+		\n\n\'daily\' Shows all the results of one day added up. This is kind of
+		complicated. Here goes:
+		\n\nAll the repetions for a day are added together. So if you did one set
+		of ten, another set of five, and a third set of just one, you will see
+		16 graphed for that day.
+		\n\nThe other aspects are similar to reps, but take repetitions into
+		account.
+		\n\nSo for that same exercise sets, if you did fifty pounds
+		for the first set, eighty pounds for the second set, and one hundred pounds
+		for the third set, you moved a grand total for \'weight\' of 1000 pounds (10 x 50 +
+		5 x 80 + 1 x 100 = 1000, \u2714 ).
+		\n\n	If reps is not present for a
+		particular exercise (like for jogging, which just includes time and distance), then no multiplication is done; the sets are simply
+		added up for the day. So if you jogged for 2 miles in the morning, 1 mile during lunch,
+		and burned off some steam after work by jogging 4 miles (whew!), then the
+		daily \'distance\' would be 7 miles. Makes sense if you think about it.
+		\n\nAs if that wasn\'t complicated enough, \'levels\' don\'t make sense
+		to accumulate. So they are actually averaged for the day (yeah, a WEIGHTED average
+		if reps are present). This means that if you ran on an eliptical trainer
+		at level eight for a while and then ran again at level ten, your daily \'level\'
+		would be averaged to a 9. Makes sense, too, but you have to think harder about
+		it.
+		\n\nAnd finally, the aspect of a workout exercise initially called \'other\'. Since
+		this is quite customizable by the user (that\'s the main point of it), the program
+		has no way to know how to summarize a day of these sets. So my best guess is to
+		simply display the highest value for the day.
+		\n\nSorry about the long help page, but there\'s a lot to explain here.
+	</string>
+
+	<string name="graph_options_daily_toggle_title">Display Mode</string>
 
 
 	<!-- ============          ============ -->

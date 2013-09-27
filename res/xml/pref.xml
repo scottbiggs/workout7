@@ -52,6 +52,7 @@
 	</PreferenceCategory>
 
 
+	<!-- Inspector -->
 	<PreferenceCategory
 		android:title="@string/prefs_category_inspector"
 		>
@@ -70,6 +71,18 @@
 			android:summaryOff="@string/prefs_inspector_oldest_first_off_msg"
 			android:title="@string/prefs_inspector_oldest_first_title" />
 
+	</PreferenceCategory>
+
+	<!-- Graphs -->
+	<PreferenceCategory
+		android:title="@string/prefs_category_graphs"
+		>
+		<com.sleepfuriously.hpgworkout.LongCheckboxPreference
+			android:key="@string/prefs_graphs_daily_toggle_key"
+			android:defaultValue="false"
+			android:summaryOn="@string/prefs_graphs_daily_toggle_on_summary"
+			android:summaryOff="@string/prefs_graphs_daily_toggle_off_summary"
+			android:title="@string/prefs_graphs_daily_toggle_title" />
 	</PreferenceCategory>
 
 

@@ -1,10 +1,19 @@
 TODO:
 -----------------
-Graphs: go ahead and make the pan go to the maximum when a pan is too far
-	instead of aborting the pan event.
+For the graphs, we need to be able to change the options ALWAYs, even
+if there's just one aspect and even if there's just one set.
 
-When graphing, have the option of graphing by exercise
-	set or by day (toggle button or menu?).
+Graphing: when there's just one "set" in daily mode, this message can
+be misleading.  There are quite possibly many sets, not just one.  The
+message needs to be changed when m_daily == true.
+
+When first starting, the grid looks funny.  This probably is because the
+database isn't properly setup.
+
+For the Inspector, make 'most recent first' the default.
+
+In GraphOptions, if there's just one aspect, have it list none (so it's
+	just used to toggle the daily mode).
 
 Bug: I think I caused a crash by rotating.  Again.  I think it was while
 	in one of the tabbed Activities.
@@ -219,6 +228,25 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+When graphing, have the option of graphing by exercise
+	set or by day (toggle button or menu?).  Do it from the GraphOptions
+	screen.
+	- done
+
+Graphs: go ahead and make the pan go to the maximum when a pan is too far
+	instead of aborting the pan event.
+	- done
+
+For the graphs, we need something to tell the user what mode we're in.
+	- done
+
+The "just one set" activity isn't centered.  It's off to the left.
+	- fixed
+
+Bug: Changing anything in the GraphOptions screen causes that exercise
+	to jump to the end of the list!
+	- fixed
+
 BUG: Try clearing an entry to AddSetActivity (from the popup calculator).
 	Then add that value.  BANG!
 	- fixed

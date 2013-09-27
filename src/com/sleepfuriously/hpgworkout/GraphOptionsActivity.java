@@ -37,8 +37,10 @@ package com.sleepfuriously.hpgworkout;
 import java.util.ArrayList;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -47,6 +49,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 public class GraphOptionsActivity
@@ -150,6 +153,9 @@ public class GraphOptionsActivity
 	/** The basic buttons */
 	Button m_cancel, m_done;
 
+	/** The radio buttons that toggle daily mode */
+	RadioButton m_daily_on, m_daily_off;
+
 	ImageView m_help;
 
 
@@ -207,6 +213,18 @@ public class GraphOptionsActivity
 //		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.graph_options);
 
+		// The radio buttons.  Off is the default.
+		m_daily_off = (RadioButton) findViewById(R.id.graph_options_daily_off_butt);
+		m_daily_off.setOnClickListener(this);
+		m_daily_off.setOnLongClickListener(this);
+		m_daily_on = (RadioButton) findViewById(R.id.graph_options_daily_on_butt);
+		m_daily_on.setOnClickListener(this);
+		m_daily_on.setOnLongClickListener(this);
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		boolean daily = prefs.getBoolean(getString(R.string.prefs_graphs_daily_toggle_key), false);
+		m_daily_on.setChecked(daily);
+		m_daily_off.setChecked(!daily);
+
 		m_cancel = (Button) findViewById(R.id.graph_options_cancel_butt);
 		m_help = (ImageView) findViewById(R.id.manage_db_logo);
 		m_done = (Button) findViewById(R.id.graph_options_ok_butt);
@@ -214,6 +232,7 @@ public class GraphOptionsActivity
 		m_cancel.setOnClickListener(this);
 		m_help.setOnClickListener(this);
 		m_done.setOnClickListener(this);
+
 
 		m_reps_cb = (CheckBox) findViewById(R.id.graph_options_reps_check);
 		m_reps_cb.setOnClickListener(this);
@@ -304,6 +323,12 @@ public class GraphOptionsActivity
 				return;
 			}
 
+			// Set the preferences
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+			prefs.edit().putBoolean(getString(R.string.prefs_graphs_daily_toggle_key),
+									m_daily_on.isChecked())
+							.commit();
+
 			// Fill in the Intent and return the caller.
 			Intent itt = new Intent();
 
@@ -326,6 +351,23 @@ public class GraphOptionsActivity
 			setResult(RESULT_OK, itt);
 			finish();
 		} // done
+
+		else if (v == m_daily_off) {
+			// Clicked on regular mode
+			m_daily_off.setChecked(true);
+			m_daily_on.setChecked(false);
+			m_dirty = true;
+			m_done.setEnabled(true);
+		}
+
+		else if (v == m_daily_on) {
+			// Clicked on daily mode
+			m_daily_off.setChecked(false);
+			m_daily_on.setChecked(true);
+			m_dirty = true;
+			m_dirty = true;
+			m_done.setEnabled(true);
+		}
 
 		else if (v == m_help) {
 			String[] args = {m_exercise_name};
@@ -365,8 +407,14 @@ public class GraphOptionsActivity
 		// some help!
 		if (v.getClass() == CheckBox.class) {
 			show_help_dialog(R.string.graph_options_checkbox_help_title,
-								R.string.graph_options_checkbox_help_msg);
+							R.string.graph_options_checkbox_help_msg);
 				return true;
+		}
+
+		if (v.getClass() == RadioButton.class) {
+			show_help_dialog(R.string.graph_options_daily_toggle_help_title,
+							R.string.graph_options_daily_toggle_help_msg);
+			return true;
 		}
 
 		return false;

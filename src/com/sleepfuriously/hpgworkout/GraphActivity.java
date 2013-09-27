@@ -27,7 +27,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class GraphActivity
 					extends
@@ -73,6 +72,12 @@ public class GraphActivity
 
 	/** The button to take the user to an options dialog */
 	Button m_options_butt;
+
+	/**
+	 * Tells us if we're in regular or daily mode. Also serves as a
+	 * button to the options screen.
+	 */
+	TextView m_daily_mode_tv;
 
 
 	//-------------------------
@@ -222,6 +227,14 @@ public class GraphActivity
 		if (m_db_dirty) {
 			Log.v(tag, "Redrawing the graph!");
 			setup_data();
+
+			m_daily_mode_tv = (TextView) findViewById(R.id.graph_daily_toggle_mode_tv);
+			m_daily_mode_tv.setOnClickListener(this);
+			if (m_daily)
+				m_daily_mode_tv.setText(R.string.graph_options_daily_mode_on_msg);
+			else
+				m_daily_mode_tv.setText(R.string.graph_options_daily_mode_off_msg);
+
 			m_db_dirty = false;
 		}
 
@@ -240,7 +253,7 @@ public class GraphActivity
 			show_help_dialog(R.string.graph_help_title, R.string.graph_help_msg);
 		}
 
-		else if (v == m_options_butt) {
+		else if ((v == m_options_butt) || (v == m_daily_mode_tv)) {
 			itt = new Intent(this, GraphOptionsActivity.class);
 
 			// fill in the Intent
@@ -373,7 +386,7 @@ public class GraphActivity
 					//	Pan, but only set the data if the pan was
 					// successful.
 					m_view.pan((float) (m_last_touch_pos.x - dx));
-					m_view.invalidate();	
+					m_view.invalidate();
 					m_last_touch_pos.set(dx, dy);
 				}
 
@@ -1327,12 +1340,126 @@ public class GraphActivity
 
 					// MAIN LOOP:
 					// Load up the exercise sets one by one into our list.
-					while (set_cursor.moveToNext()) {
-						SetData new_set_data = DatabaseHelper.getSetData(set_cursor);
-						m_set_data.add(new_set_data);
-						// todo
-						//	Here is where we would publish our progress.
-					}
+					// There are two kinds of looping depending on whether
+					// we're doing a daily or regular graph.
+					if (m_daily) {
+						// Graph workouts in Daily mode.
+						MyCalendar last_day = new MyCalendar(0);
+						SetData last_set_data = null;
+
+						int day_count = 0;
+
+						while (set_cursor.moveToNext()) {
+							SetData new_set_data = DatabaseHelper.getSetData(set_cursor);
+							MyCalendar cal = new MyCalendar(new_set_data.millis);
+							if (cal.is_same_day(last_day)) {
+								// This set falls on the same day as the last one.
+								// Add the new data to the previous data of the
+								// same day.
+								day_count++;
+
+								if (m_exercise_data.breps) {
+									// There's a reps, so this makes things a
+									// little more complicated.
+									last_set_data.reps += new_set_data.reps;
+									if (m_exercise_data.bcals)
+										last_set_data.cals += new_set_data.cals * new_set_data.reps;
+									if (m_exercise_data.bdist)
+										last_set_data.dist += new_set_data.dist * new_set_data.reps;
+									if (m_exercise_data.blevel) {
+										// Note: levels are averaged using day_count, which weights it.
+										// todo: test this!!!
+										last_set_data.levels =
+											((last_set_data.levels * day_count) +
+													new_set_data.levels ) /
+											(day_count + 1);
+									}
+									if (m_exercise_data.bother) {
+										// Other just keeps the highest number of the day.
+										if (new_set_data.other > last_set_data.other)
+											last_set_data.other = new_set_data.other;
+									}
+									if (m_exercise_data.btime)
+										last_set_data.time += new_set_data.time * new_set_data.reps;
+									if (m_exercise_data.bweight)
+										last_set_data.weight += new_set_data.weight * new_set_data.reps;
+								}
+
+								else {
+									// No reps, just simple addition
+									if (m_exercise_data.bcals)
+										last_set_data.cals += new_set_data.cals;
+									if (m_exercise_data.bdist)
+										last_set_data.dist += new_set_data.dist;
+									if (m_exercise_data.blevel) {
+										// Note: levels are averaged using day_count.
+										last_set_data.levels =
+											((last_set_data.levels * day_count) +
+													new_set_data.levels ) /
+											(day_count + 1);
+									}
+									if (m_exercise_data.bother)
+										// Other just keeps the highest number of the day.
+										if (new_set_data.other > last_set_data.other)
+											last_set_data.other = new_set_data.other;
+									if (m_exercise_data.btime)
+										last_set_data.time += new_set_data.time;
+									if (m_exercise_data.bweight)
+										last_set_data.weight += new_set_data.weight;
+								} // no reps
+
+							} // same day
+
+							else {
+								// This is a new day.  Add the last one (as long
+								// it's not null to our m_set_data.
+								if (last_set_data == null) {
+									// Preparing the very first set.
+									last_set_data = new SetData (new_set_data);
+								}
+								else {
+									// Add our old set and get ready for a new day.
+									m_set_data.add(last_set_data);
+									last_set_data = new SetData (new_set_data);
+								}
+								last_day.set_millis(last_set_data.millis);
+								day_count = 0;
+
+								if (m_exercise_data.breps) {
+									// if there are reps, then we need to multiply
+									// our aspects (but not Level and Other).
+									if (m_exercise_data.bcals)
+										last_set_data.cals *= last_set_data.reps;
+									if (m_exercise_data.bdist)
+										last_set_data.dist *= last_set_data.reps;
+									if (m_exercise_data.btime)
+										last_set_data.time *= last_set_data.reps;
+									if (m_exercise_data.bweight)
+										last_set_data.weight *= last_set_data.reps;
+								}
+
+							} // new day
+
+							if (set_cursor.isLast()) {
+								// Add the last day.
+								m_set_data.add(last_set_data);
+							}
+
+						} // loop through all sets
+
+					} // daily mode
+
+
+					else {
+						// Graph EVERY workout set.
+						while (set_cursor.moveToNext()) {
+							SetData new_set_data = DatabaseHelper.getSetData(set_cursor);
+							m_set_data.add(new_set_data);
+							// todo
+							//	Here is where we would publish our progress.
+						}
+					} // regular mode
+
 
 				} // try reading the SET table
 
@@ -1399,6 +1526,7 @@ public class GraphActivity
 				return;
 			}
 
+
 			construct_legend();
 
 			m_view.clear();
@@ -1413,11 +1541,14 @@ public class GraphActivity
 				m_exercise_data.set_aspect_by_num(graph_aspect_num, true);
 			}
 
-			// If there is only one aspect possible, disable the
-			// options button as it no longer makes sense.
-			if (ExerciseData.count_valid_aspects(m_exercise_data) == 1) {
-				m_options_butt.setVisibility(View.GONE);
-			}
+// NOTE: this was commented out as there now IS an option to choose when
+// there's just one aspect: Daily
+//
+//			// If there is only one aspect possible, disable the
+//			// options button as it no longer makes sense.
+//			if (ExerciseData.count_valid_aspects(m_exercise_data) == 1) {
+//				m_options_butt.setVisibility(View.GONE);
+//			}
 
 			// The main constructors...
 			construct_collections_for_aspects();

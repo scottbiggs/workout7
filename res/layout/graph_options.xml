@@ -8,7 +8,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
-	android:background="@color/gray_darkest"
+	android:background="@color/black"
 	android:orientation="vertical" >
 
 	<RelativeLayout
@@ -116,12 +116,88 @@
 			android:layout_marginRight="12dp"
 			android:layout_marginTop="8dp"
 			>
+
 			<LinearLayout
 				android:id="@+id/graph_options_check_ll"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
-				android:orientation="vertical"
-				android:background="@drawable/rounded_edges_dark" >
+				android:background="@drawable/rounded_edges_dark"
+				android:orientation="vertical" >
+
+				<!-- This ll is just to provide a nice look. -->
+
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="4dp"
+					android:layout_marginLeft="6dp"
+					android:layout_marginRight="6dp"
+					android:layout_marginTop="4dp"
+					android:background="@drawable/rounded_edges_black" >
+
+					<!-- This layout is to have a title for the toggle buttons -->
+					<RelativeLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_margin="2dp"
+						android:background="@drawable/rounded_edges_medium_dark" >
+
+						<TextView
+							android:id="@+id/graph_options_daily_toggle_title"
+							style="@style/white_text_medium"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_alignParentLeft="true"
+							android:layout_alignParentTop="true"
+							android:layout_marginLeft="30dp"
+							android:layout_marginTop="4dp"
+							android:text="@string/graph_options_daily_toggle_title" />
+
+						<LinearLayout
+							android:id="@+id/graph_options_daily_toggle_ll"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:layout_below="@id/graph_options_daily_toggle_title"
+							>
+
+							<RadioButton
+								android:id="@+id/graph_options_daily_off_butt"
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								android:layout_marginBottom="3dp"
+								android:layout_marginLeft="8dp"
+								android:layout_marginTop="3dp"
+								android:layout_weight="1"
+								style="@style/white_text_small"
+								android:text="@string/graph_options_daily_toggle_off_butt" />
+
+							<View
+							    android:id="@+id/graph_options_reps_line"
+							    android:layout_width="1dp"
+							    android:layout_height="fill_parent"
+							    android:layout_marginBottom="5dp"
+							    android:layout_marginLeft="8dp"
+							    android:layout_marginRight="8dp"
+							    android:layout_marginTop="5dp"
+							    android:background="@color/hpg_orange_desaturated1" />
+
+							<RadioButton
+								android:id="@+id/graph_options_daily_on_butt"
+								style="@style/white_text_small"
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								android:layout_marginBottom="3dp"
+								android:layout_marginRight="8dp"
+								android:layout_marginTop="3dp"
+								android:layout_weight="1"
+								android:text="@string/graph_options_daily_toggle_on_butt" />
+
+						</LinearLayout>
+
+					</RelativeLayout>
+
+				</LinearLayout>
+
 
 				<CheckBox
 					android:id="@+id/graph_options_reps_check"
@@ -274,21 +350,21 @@
 						android:textColor="@color/color_with_reps" />
 
 					<com.sleepfuriously.hpgworkout.MySpinner
-					    android:id="@+id/graph_options_with_msp"
-					    style="@style/white_text_small"
-					    android:layout_width="wrap_content"
-					    android:layout_height="wrap_content"
-					    android:layout_gravity="center_vertical"
-					    android:layout_marginBottom="6dp"
-					    android:layout_marginLeft="6dp"
-					    android:layout_marginTop="6dp"
-					    android:background="@drawable/button_shiny_black"
-					    android:drawablePadding="8dp"
-					    android:drawableRight="@android:drawable/arrow_down_float"
-					    android:gravity="center"
-					    android:hint="@string/select"
-					    android:paddingLeft="15dp"
-					    android:paddingRight="10dp" />
+						android:id="@+id/graph_options_with_msp"
+						style="@style/white_text_small"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_gravity="center_vertical"
+						android:layout_marginBottom="6dp"
+						android:layout_marginLeft="6dp"
+						android:layout_marginTop="6dp"
+						android:background="@drawable/button_shiny_black"
+						android:drawablePadding="8dp"
+						android:drawableRight="@android:drawable/arrow_down_float"
+						android:gravity="center"
+						android:hint="@string/select"
+						android:paddingLeft="15dp"
+						android:paddingRight="10dp" />
 
 				</LinearLayout>
 
