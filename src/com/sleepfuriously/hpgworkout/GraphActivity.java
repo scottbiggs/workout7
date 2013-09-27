@@ -25,6 +25,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -851,6 +852,9 @@ public class GraphActivity
 		ScrollView sv = (ScrollView) findViewById(R.id.graph_gview_sv);
 		sv.setVisibility(View.VISIBLE);
 
+		LinearLayout ll = (LinearLayout) findViewById(R.id.graph_gview_sub_ll);
+		ll.setVisibility(View.VISIBLE);
+		
 		TextView tv = (TextView) findViewById(R.id.graph_gview_tv);
 		tv.setVisibility(View.VISIBLE);
 
@@ -861,8 +865,15 @@ public class GraphActivity
 		// And you know what? the options doesn't make sense either.
 		m_options_butt.setVisibility(View.GONE);
 
+		
 		// Fill in the text.
-		String str = getString(R.string.graph_one_set_msg, m_exercise_data.name);
+		String str;
+		if (m_daily) {
+			str = getString(R.string.graph_one_set_daily_msg, m_exercise_data.name);
+		}
+		else {
+			str = getString(R.string.graph_one_set_msg, m_exercise_data.name);
+		}
 
 		// Append to the string, depending on the current aspects.
 		if (m_exercise_data.breps)

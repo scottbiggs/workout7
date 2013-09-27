@@ -96,13 +96,14 @@
 		android:layout_below="@id/graph_description_tv"
 		android:layout_above="@id/graph_options_butt"
 		>
+
 		<com.sleepfuriously.hpgworkout.GView
-			android:id="@+id/graph_view"
-			android:layout_width="fill_parent"
-			android:layout_height="120dp"
-			android:layout_margin="8dp"
-			android:background="@drawable/rounded_edges_dark_blue"
-			android:padding="25dp"/>
+		    android:id="@+id/graph_view"
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent"
+		    android:layout_margin="8dp"
+		    android:background="@drawable/rounded_edges_dark_blue"
+		    android:padding="25dp" />
 
 		<ScrollView
 			android:id="@+id/graph_gview_sv"
@@ -113,9 +114,11 @@
 			>
 
 			<LinearLayout
+				android:id="@+id/graph_gview_sub_ll"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
 				android:orientation="vertical"
+				android:visibility="gone"
 				>
 				<TextView
 					android:id="@+id/graph_gview_tv"
@@ -127,8 +130,8 @@
 					android:visibility="gone" />
 
 			</LinearLayout>
-
 		</ScrollView>
+
 	</LinearLayout>
 
 </RelativeLayout>

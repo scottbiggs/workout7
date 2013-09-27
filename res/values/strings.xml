@@ -1544,6 +1544,11 @@
 		nothing to graph.
 		\n\nBut here is the data for it\u003a
 	</string>
+	<string name="graph_one_set_daily_msg">
+		You have only recorded one day for the %s exercise, so there
+		is nothing to graph.
+		\n\nBut here is the data for it (in daily mode)\u003a
+	</string>
 	<string name="graph_null">null</string>
 
 	<!-- ======= Graph Options ======= -->
@@ -1614,16 +1619,16 @@
 	</string>
 
 	<string name="graph_options_daily_toggle_on_butt">daily</string>
-	<string name="graph_options_daily_toggle_off_butt">every set</string>
+	<string name="graph_options_daily_toggle_off_butt">all sets</string>
 
 	<string name="graph_options_daily_mode_on_msg">mode: Daily</string>
-	<string name="graph_options_daily_mode_off_msg">mode: Every Set</string>
+	<string name="graph_options_daily_mode_off_msg">mode: All Sets</string>
 
 	<string name="graph_options_daily_toggle_help_title">Display Mode</string>
 	<string name="graph_options_daily_toggle_help_msg">
 		These two buttons give you two options for how to display your
 		workout data.
-		\n\n\'each set\' (default) graphs a point for every single exercise
+		\n\n\'all sets\' (default) graphs a point for every single exercise
 		set you enter. If you do your exercise sets very closely (like most people)
 		you may see them clump together so closely that you must zoom in a LOT to
 		notice any difference.

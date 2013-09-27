@@ -228,6 +228,9 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Bug: Now the one-set display is completely fucked up.
+	- fixed
+
 When graphing, have the option of graphing by exercise
 	set or by day (toggle button or menu?).  Do it from the GraphOptions
 	screen.
