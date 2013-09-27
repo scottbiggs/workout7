@@ -334,9 +334,9 @@ public class ExerciseTabHostActivity
 	//--------------------------------
 	@Override
 	public void onClick(View v) {
-		WGlobals.play_short_click();
 
 		if (v == m_help) {
+			WGlobals.play_help_click();
 			int title = -1, msg = -1;
 
 			// Which tab is showing?

@@ -150,9 +150,9 @@ public class StressActivity
 	//----------------------------
 	@Override
 	public void onClick(View v) {
-		WGlobals.play_short_click();
 
 		if (v == m_ok_table) {
+			WGlobals.play_short_click();
 			// Only do something if this is a new button.
 			if (m_stress_num != DatabaseHelper.SET_COND_OK) {
 				m_stress_num = DatabaseHelper.SET_COND_OK;
@@ -163,6 +163,7 @@ public class StressActivity
 		}
 
 		if (v == m_too_easy_table) {
+			WGlobals.play_short_click();
 			if (m_stress_num != DatabaseHelper.SET_COND_PLUS) {
 				m_stress_num = DatabaseHelper.SET_COND_PLUS;
 				set_radio_buttons(m_stress_num);
@@ -172,6 +173,7 @@ public class StressActivity
 		}
 
 		if (v == m_too_hard_table) {
+			WGlobals.play_short_click();
 			// Only do something if this is a new button.
 			if (m_stress_num != DatabaseHelper.SET_COND_MINUS) {
 				m_stress_num = DatabaseHelper.SET_COND_MINUS;
@@ -181,6 +183,7 @@ public class StressActivity
 			}
 		}
 		if (v == m_injury_table) {
+			WGlobals.play_short_click();
 			// Only do something if this is a new button.
 			if (m_stress_num != DatabaseHelper.SET_COND_INJURY) {
 				m_stress_num = DatabaseHelper.SET_COND_INJURY;
@@ -191,6 +194,7 @@ public class StressActivity
 		}
 
 		else if (v == m_done) {
+			WGlobals.play_short_click();
 			if (!m_dirty) {	// didn't do anything
 				setResult(RESULT_CANCELED);
 				finish();
@@ -203,11 +207,13 @@ public class StressActivity
 		} // done
 
 		else if (v == m_help) {
+			WGlobals.play_help_click();
 			show_help_dialog(R.string.enter_stress_help_title,
 					R.string.enter_stress_help_msg);
 		}
 
 		else if (v == m_cancel) {
+			WGlobals.play_short_click();
 			setResult(RESULT_CANCELED);
 			finish();
 		}

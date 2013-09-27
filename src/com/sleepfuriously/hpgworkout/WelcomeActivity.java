@@ -102,6 +102,7 @@ public class WelcomeActivity extends BaseDialogActivity
 		SoundManager.addSound(WGlobals.SOUND_CLICK, R.raw.button_click);
 		SoundManager.addSound(WGlobals.SOUND_LONG_CLICK, R.raw.longclick);
 		SoundManager.addSound(WGlobals.SOUND_COMPLETE, R.raw.wineclink);
+		SoundManager.addSound(WGlobals.SOUND_HELP, R.raw.help_ding);
 
 		// Need to get the database going.  This MUST happend before
 		// the next statement as it uses the database (probably).
@@ -129,39 +130,44 @@ public class WelcomeActivity extends BaseDialogActivity
 	public void onClick(View v) {
 		Intent itt;
 
-		WGlobals.play_short_click();
 		switch (v.getId()) {
 			case R.id.welcome_start_butt:
+				WGlobals.play_short_click();
 				itt = new Intent (this, GridActivity2.class);
 				startActivity (itt);
 				break;
 
 			case R.id.welcome_settings_butt:
+				WGlobals.play_short_click();
 				itt = new Intent (this, PrefsActivity.class);
 				startActivityForResult(itt, WGlobals.PREFSACTIVITY);
 				break;
 
 			case R.id.welcome_manage_db_butt:
 			case R.id.welcome_user_name_tv:
+				WGlobals.play_short_click();
 				itt = new Intent (this, ManageDatabaseActivity.class);
 				startActivityForResult(itt, WGlobals.MANAGEDATABASEACTIVITY);
 				break;
 
 			case R.id.welcome_graph_butt:
+				WGlobals.play_short_click();
 				itt = new Intent (this, GraphSelectorActivity.class);
 				startActivity(itt);
 				break;
 
 			case R.id.welcome_exit_butt:
+				WGlobals.play_short_click();
 				finish();
 				break;
 
 			case R.id.welcome_help_butt:
 			case R.id.welcome_logo_id:
+				WGlobals.play_help_click();
 				show_help_dialog(R.string.welcome_help_help_title,
 						R.string.welcome_help_help_msg);
 				break;
-				
+
 			default:
 				Log.e(tag, "Illegal value in onClick()!");
 				break;

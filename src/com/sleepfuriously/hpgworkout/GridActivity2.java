@@ -206,7 +206,7 @@ public class GridActivity2 extends BaseDialogActivity
 		String current_user = DatabaseFilesHelper.get_active_username(this);
 		String title =  getString(R.string.grid_title, current_user);
 		title_tv.setText(title);
-		
+
 		// Start the AsyncTask.  This is complicated, as
 		// I'm using a new system with a static ASyncTask.
 		start_async_task();
@@ -371,20 +371,21 @@ public class GridActivity2 extends BaseDialogActivity
 		}
 
 		else {
-			WGlobals.play_short_click();
-
 			switch (v.getId()) {
 				case R.id.grid_add_exercise_button:
+					WGlobals.play_short_click();
 					itt = new Intent(this, AddExerciseActivity.class);
 					startActivityForResult(itt, WGlobals.ADDEXERCISEACTIVITY);
 					break;
 
 				case R.id.grid_order_button:
+					WGlobals.play_short_click();
 					itt = new Intent (this, RowEditActivity.class);
 					startActivityForResult(itt, WGlobals.ROWEDITACTIVITY);
 					break;
 
 				case R.id.grid_logo:
+					WGlobals.play_help_click();
 					show_help_dialog (R.string.grid_help_title,
 									R.string.grid_help_msg);
 					break;
@@ -525,7 +526,7 @@ public class GridActivity2 extends BaseDialogActivity
 			// They clicked in the grid.  Add the id.
 			GridElement ge = (GridElement) v.getTag();
 			if (ge == null) {
-				return;		// clicked in empty space?
+				return;		// clicked in empty space? Then they get no sound!
 			}
 
 			WGlobals.play_short_click();

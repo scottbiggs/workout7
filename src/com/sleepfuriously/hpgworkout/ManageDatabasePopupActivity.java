@@ -121,9 +121,9 @@ public class ManageDatabasePopupActivity extends BaseDialogActivity
 
 	@Override
 	public void onClick(View v) {
-		WGlobals.play_short_click();
 
 		if (v == m_delete_butt) {
+			WGlobals.play_short_click();
 			show_yes_no_dialog(R.string.manage_db_popup_delete_sure_title, new String[] {m_db_username},
 							R.string.manage_db_popup_delete_sure_msg, new String[] {m_db_username},
 							new OnClickListener() {
@@ -140,6 +140,7 @@ public class ManageDatabasePopupActivity extends BaseDialogActivity
 		} // delete
 
 		else if (v == m_clear_set_data_butt) {
+			WGlobals.play_short_click();
 			show_yes_no_dialog(R.string.manage_db_popup_clear_set_data_yesno_title, new String[] {m_db_username},
 								R.string.manage_db_popup_clear_set_data_yesno_msg, new String[] {m_db_username},
 								new OnClickListener() {
@@ -157,6 +158,7 @@ public class ManageDatabasePopupActivity extends BaseDialogActivity
 		} // clear set data
 
 		else if (v == m_rename_butt) {
+			WGlobals.play_short_click();
 			String new_name = m_rename_et.getText().toString();
 			if (new_name.length() == 0) {
 				my_toast(this, R.string.manage_db_popup_rename_no_name_error);
@@ -170,10 +172,12 @@ public class ManageDatabasePopupActivity extends BaseDialogActivity
 		}
 
 		else if (v == m_help_iv) {
+			WGlobals.play_help_click();
 			show_help_dialog(R.string.manage_db_popup_help_title, R.string.manage_db_popup_help_msg);
 		}
 
 		else if (v == m_cancel_butt) {
+			WGlobals.play_short_click();
 			setResult(RESULT_CANCELED);
 			finish();
 		}

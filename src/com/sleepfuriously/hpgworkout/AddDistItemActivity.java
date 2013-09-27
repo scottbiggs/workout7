@@ -52,9 +52,9 @@ public class AddDistItemActivity extends BaseDialogActivity
 	//---------------------------------
 	@Override
 	public void onClick(View v) {
-		WGlobals.play_short_click();
 
 		if (v == m_ok) {		// Clicked the ok button. Save and exit.
+			WGlobals.play_short_click();
 			Intent itt = getIntent();
 			itt.putExtra(MySpinner.INTENT_KEY, m_dist_et.getText());
 			setResult(RESULT_OK, itt);
@@ -62,10 +62,12 @@ public class AddDistItemActivity extends BaseDialogActivity
 		}
 
 		else if (v == m_clear) {
+			WGlobals.play_short_click();
 			clear();
 		}
 
 		else if (v == m_help) {
+			WGlobals.play_help_click();
 			show_help_dialog(R.string.add_dist_item_help_title,
 							R.string.add_dist_item_help_msg);
 		}

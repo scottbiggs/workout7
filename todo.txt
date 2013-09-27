@@ -1,12 +1,12 @@
 TODO:
 -----------------
+In GraphOptions, if there's just one aspect, have it list none (so it's
+	just used to toggle the daily mode).
+
 When first starting, the grid looks funny.  This probably is because the
 database isn't properly setup.
 
 For the Inspector, make 'most recent first' the default.
-
-In GraphOptions, if there's just one aspect, have it list none (so it's
-	just used to toggle the daily mode).
 
 Bug: I think I caused a crash by rotating.  Again.  I think it was while
 	in one of the tabbed Activities.

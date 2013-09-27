@@ -129,7 +129,6 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 	//-------------------
 	@Override
 	public void onClick(View v) {
-		WGlobals.play_short_click();
 
 		// Clicked the add button
 		//	Game plan:
@@ -141,15 +140,18 @@ public class ManageDatabaseActivity extends BaseDialogActivity
 		//		database first!
 		//
 		if (v == m_add_butt) {
+			WGlobals.play_short_click();
 			add();
 		}
 
 		else if (v == m_help) {
+			WGlobals.play_help_click();
 			show_help_dialog(R.string.manage_db_help_title,
 							R.string.manage_db_help_msg);
 		}
 
 		else if (v == m_done_butt) {
+			WGlobals.play_short_click();
 			setResult(RESULT_OK);
 			finish();
 		}

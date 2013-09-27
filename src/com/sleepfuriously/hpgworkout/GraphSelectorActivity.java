@@ -87,8 +87,8 @@ public class GraphSelectorActivity
 	//----------------------------
 	@Override
 	public void onClick(View v) {
-		WGlobals.play_short_click();
 		if (v == m_help) {
+			WGlobals.play_help_click();
 			show_help_dialog(R.string.graph_selector_help_title,
 					R.string.graph_selector_help_msg);
 		}

@@ -156,9 +156,9 @@ public class TextActivity
 	//----------------------------
 	@Override
 	public void onClick(View v) {
-		WGlobals.play_short_click();
 
 		if (v == m_done) {
+			WGlobals.play_short_click();
 			Intent itt = new Intent();
 			itt.putExtra(ITT_KEY_RETURN_STRING, m_note.getText().toString());
 			setResult(RESULT_OK, itt);
@@ -166,11 +166,13 @@ public class TextActivity
 		}
 
 		else if (v == m_help) {
+			WGlobals.play_help_click();
 			show_help_dialog(R.string.enter_text_help_title,
 					R.string.enter_text_help_msg);
 		}
 
 		else if (v == m_cancel) {
+			WGlobals.play_short_click();
 			setResult(RESULT_CANCELED);
 			finish();
 		}

@@ -226,10 +226,10 @@ public class RowEditActivity
 	//-----------------------------
 	@Override
 	public void onClick(View v) {
-		WGlobals.play_short_click();
 
 		switch (v.getId()) {
 			case R.id.row_edit_ok_butt:
+				WGlobals.play_short_click();
 				if (m_dirty) {
 					save();
 					setResult(RESULT_OK);
@@ -238,11 +238,13 @@ public class RowEditActivity
 				break;
 
 			case R.id.row_edit_logo_id:
+				WGlobals.play_help_click();
 				show_help_dialog(R.string.row_edit_help_title,
 						R.string.row_edit_help_msg);
 				break;
 
 			case R.id.row_edit_cancel_butt:
+				WGlobals.play_short_click();
 				if (m_dirty && WGlobals.g_nag) {
 					show_yes_no_dialog(R.string.row_edit_cancel_warning_title, null,
 							R.string.editexer_cancel_warning_msg, null,

@@ -221,10 +221,9 @@ public class NumberActivity
 	public void onClick(View v) {
 		int id = v.getId();
 
-		WGlobals.play_short_click();
-
 		switch (id) {
 			case R.id.enter_a_number_ok_butt:
+				WGlobals.play_short_click();
 				if (m_dirty) {
 					CharSequence str = m_number_tv.getText();
 					if (str.equals(".")) {
@@ -243,11 +242,13 @@ public class NumberActivity
 				break;
 
 			case R.id.enter_a_number_logo:
+				WGlobals.play_help_click();
 				show_help_dialog(R.string.enter_a_number_help_title,
 						R.string.enter_a_number_help_msg);
 				break;
 
 			case R.id.enter_a_number_cancel_butt:
+				WGlobals.play_short_click();
 				if (m_dirty && WGlobals.g_nag) {
 					show_yes_no_dialog(R.string.enter_a_number_cancel_warn_title,
 						R.string.enter_a_number_cancel_warn_msg,
@@ -269,50 +270,62 @@ public class NumberActivity
 				break;
 
 			case R.id.enter_a_number_button0:
+				WGlobals.play_short_click();
 				add_digit('0');
 				break;
 
 			case R.id.enter_a_number_button1:
+				WGlobals.play_short_click();
 				add_digit('1');
 				break;
 
 			case R.id.enter_a_number_button2:
+				WGlobals.play_short_click();
 				add_digit('2');
 				break;
 
 			case R.id.enter_a_number_button3:
+				WGlobals.play_short_click();
 				add_digit('3');
 				break;
 
 			case R.id.enter_a_number_button4:
+				WGlobals.play_short_click();
 				add_digit('4');
 				break;
 
 			case R.id.enter_a_number_button5:
+				WGlobals.play_short_click();
 				add_digit('5');
 				break;
 
 			case R.id.enter_a_number_button6:
+				WGlobals.play_short_click();
 				add_digit('6');
 				break;
 
 			case R.id.enter_a_number_button7:
+				WGlobals.play_short_click();
 				add_digit('7');
 				break;
 
 			case R.id.enter_a_number_button8:
+				WGlobals.play_short_click();
 				add_digit('8');
 				break;
 
 			case R.id.enter_a_number_button9:
+				WGlobals.play_short_click();
 				add_digit('9');
 				break;
 
 			case R.id.enter_a_number_button_dot:
+				WGlobals.play_short_click();
 				add_digit('.');
 				break;
 
 			case R.id.enter_a_number_button_clear:
+				WGlobals.play_short_click();
 				m_number_tv.setText("");
 				m_dirty = true;
 				m_done.setEnabled(true);

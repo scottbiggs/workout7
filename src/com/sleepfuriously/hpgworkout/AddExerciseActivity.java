@@ -638,10 +638,10 @@ public class AddExerciseActivity
 	 */
 	@Override
 	public void onClick(View v) {
-		WGlobals.play_short_click();
 
 		// Is it a radio button?
 		if (v.getClass() == RadioButton.class) {
+			WGlobals.play_short_click();
 			m_dirty = true;
 			m_ok.setEnabled(true);
 			if (v == m_exer_rep_rb)
@@ -668,6 +668,7 @@ public class AddExerciseActivity
 
 		// Is it a check button?
 		else if (v.getClass() == CheckBox.class) {
+			WGlobals.play_short_click();
 			m_dirty = true;
 			m_ok.setEnabled(true);
 			if (v == m_exer_rep_cb)
@@ -695,6 +696,7 @@ public class AddExerciseActivity
 
 		// The main buttons at the bottom.
 		if (v == m_ok) {
+			WGlobals.play_short_click();
 			if (check_good_exercise(true) == false) {
 				return;
 			}
@@ -704,6 +706,7 @@ public class AddExerciseActivity
 		}
 
 		else if (v == m_cancel) {	// Lose all the data.
+			WGlobals.play_short_click();
 			if (m_dirty) {
 				show_yes_no_dialog(R.string.addexer_cancel_warning_title, null,
 						R.string.addexer_cancel_warning_msg, null,
@@ -724,9 +727,11 @@ public class AddExerciseActivity
 			}
 		} // if cancel
 
-		else if (v == m_help_logo_butt)
+		else if (v == m_help_logo_butt) {
+			WGlobals.play_help_click();
 			show_help_dialog(R.string.addexer_help_title,
 						R.string.addexer_help_msg);
+		}
 
 	} // onClick (v)
 

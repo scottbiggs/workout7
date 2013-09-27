@@ -247,14 +247,14 @@ public class GraphActivity
 	public void onClick(View v) {
 		Intent itt;
 
-		WGlobals.play_short_click();
-
 		// Did they hit the help button?
 		if (v.getId() == R.id.graph_logo) {
+			WGlobals.play_help_click();
 			show_help_dialog(R.string.graph_help_title, R.string.graph_help_msg);
 		}
 
 		else if ((v == m_options_butt) || (v == m_daily_mode_tv)) {
+			WGlobals.play_short_click();
 			itt = new Intent(this, GraphOptionsActivity.class);
 
 			// fill in the Intent
@@ -287,6 +287,7 @@ public class GraphActivity
 
 			startActivityForResult(itt, WGlobals.GRAPHOPTIONSACTIVITY);
 		}
+
 	} // onClick(v)
 
 
@@ -841,7 +842,7 @@ public class GraphActivity
 	 * Some of the Views in this Activity need turned on for
 	 * when just one set is displayed.  Use this to turn them on
 	 * or off as needed.
-	 * 
+	 *
 	 * @param visible	true: turn the Views to VISIBLE.
 	 * 					false: make the Views GONE.
 	 */
@@ -850,16 +851,16 @@ public class GraphActivity
 		if (visible) {
 			// Make the hidden Views visible for the One Set display.
 			m_view.setVisibility(View.GONE);
-	
+
 			ScrollView sv = (ScrollView) findViewById(R.id.graph_gview_sv);
 			sv.setVisibility(View.VISIBLE);
-	
+
 			LinearLayout ll = (LinearLayout) findViewById(R.id.graph_gview_sub_ll);
 			ll.setVisibility(View.VISIBLE);
-			
+
 			TextView tv = (TextView) findViewById(R.id.graph_gview_tv);
 			tv.setVisibility(View.VISIBLE);
-	
+
 			// While we're at it, set the legend to invisible.
 			TextView legend = (TextView) findViewById(R.id.graph_description_tv);
 			legend.setVisibility(View.INVISIBLE);
@@ -870,16 +871,16 @@ public class GraphActivity
 		else {
 			// Make the hidden Views visible for the One Set display.
 			m_view.setVisibility(View.VISIBLE);
-	
+
 			ScrollView sv = (ScrollView) findViewById(R.id.graph_gview_sv);
 			sv.setVisibility(View.GONE);
-	
+
 			LinearLayout ll = (LinearLayout) findViewById(R.id.graph_gview_sub_ll);
 			ll.setVisibility(View.GONE);
-			
+
 			TextView tv = (TextView) findViewById(R.id.graph_gview_tv);
 			tv.setVisibility(View.GONE);
-	
+
 			// While we're at it, set the legend to invisible.
 			TextView legend = (TextView) findViewById(R.id.graph_description_tv);
 			legend.setVisibility(View.VISIBLE);
@@ -890,7 +891,7 @@ public class GraphActivity
 
 	} // set_one_set_views_visible (visible)
 
-	
+
 	/************************
 	 * This is called when it's discovered that there's only
 	 * one set to display.  This removes the GView and replaces
@@ -900,9 +901,9 @@ public class GraphActivity
 	 * 	<i>m_set_data</i> is properly set with only ONE set.
 	 */
 	protected void construct_one_set() {
-		
+
 		set_one_set_views_visible (true);
-		
+
 		// Fill in the text.
 		String str;
 		if (m_daily) {

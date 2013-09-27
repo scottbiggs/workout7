@@ -23,7 +23,7 @@ public class SoundManager {
 	 * The maximum number of sounds this class can handle.  If
 	 * you don't like it, just change this number.
 	 */
-	public static final int MAX_SOUNDS = 4;
+	public static final int MAX_SOUNDS = 5;
 
 	/** To make sure that there's just one instance of this class */
 	private static SoundManager _instance = null;

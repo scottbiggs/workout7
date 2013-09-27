@@ -329,16 +329,16 @@ public class EditSetActivity
 	//-------------------------
 	@Override
 	public void onClick(View v) {
-		WGlobals.play_short_click();
 
 		switch (v.getId()) {
 			case R.id.editset_date_label_tv:
 			case R.id.editset_date_data_tv:
+				WGlobals.play_short_click();
 				DatePickerDialog date_dialog =
 						new DatePickerDialog(this, this,
-											 m_set_date.get_year(),
-											 m_set_date.get_month(),
-											 m_set_date.get_day());
+											m_set_date.get_year(),
+											m_set_date.get_month(),
+											m_set_date.get_day());
 				// Have the volume work correctly.
 				date_dialog.setVolumeControlStream(AudioManager.STREAM_MUSIC);
 				date_dialog.show();
@@ -346,17 +346,19 @@ public class EditSetActivity
 
 			case R.id.editset_calendar_time_label_tv:
 			case R.id.editset_calendar_time_data_tv:
+				WGlobals.play_short_click();
 				TimePickerDialog time_dialog =
 						new TimePickerDialog(this, this,
-											 m_set_date.get_hour(),
-											 m_set_date.get_minutes(),
-											 true);
+											m_set_date.get_hour(),
+											m_set_date.get_minutes(),
+											true);
 				time_dialog.setVolumeControlStream(AudioManager.STREAM_MUSIC);
 				time_dialog.show();
 				break;
 
 			case R.id.editset_reps_label_tv:
 			case R.id.editset_reps_data_tv:
+				WGlobals.play_short_click();
 				activate_number_activity (DatabaseHelper.EXERCISE_COL_REP_NUM,
 										getString(R.string.editset_reps_label),
 										m_reps_data_tv.getText().toString(), false);
@@ -364,6 +366,7 @@ public class EditSetActivity
 
 			case R.id.editset_weight_label_tv:
 			case R.id.editset_weight_data_tv:
+				WGlobals.play_short_click();
 				activate_number_activity (DatabaseHelper.EXERCISE_COL_WEIGHT_NUM,
 										m_weight_label_tv.getText().toString(),
 										m_weight_data_tv.getText().toString(), true);
@@ -371,6 +374,7 @@ public class EditSetActivity
 
 			case R.id.editset_level_label_tv:
 			case R.id.editset_level_data_tv:
+				WGlobals.play_short_click();
 				activate_number_activity (DatabaseHelper.EXERCISE_COL_LEVEL_NUM,
 										getString(R.string.editset_level_label),
 										m_level_data_tv.getText().toString(), false);
@@ -378,6 +382,7 @@ public class EditSetActivity
 
 			case R.id.editset_cals_label_tv:
 			case R.id.editset_cals_data_tv:
+				WGlobals.play_short_click();
 				activate_number_activity (DatabaseHelper.EXERCISE_COL_CALORIE_NUM,
 										getString(R.string.editset_cals_label),
 										m_cals_data_tv.getText().toString(), false);
@@ -385,6 +390,7 @@ public class EditSetActivity
 
 			case R.id.editset_dist_label_tv:
 			case R.id.editset_dist_data_tv:
+				WGlobals.play_short_click();
 				activate_number_activity (DatabaseHelper.EXERCISE_COL_DIST_NUM,
 										m_dist_label_tv.getText().toString(),
 										m_dist_data_tv.getText().toString(), true);
@@ -392,6 +398,7 @@ public class EditSetActivity
 
 			case R.id.editset_time_label_tv:
 			case R.id.editset_time_data_tv:
+				WGlobals.play_short_click();
 				activate_number_activity (DatabaseHelper.EXERCISE_COL_TIME_NUM,
 										m_time_label_tv.getText().toString(),
 										m_time_data_tv.getText().toString(), true);
@@ -399,6 +406,7 @@ public class EditSetActivity
 
 			case R.id.editset_other_label_tv:
 			case R.id.editset_other_data_tv:
+				WGlobals.play_short_click();
 				activate_number_activity (DatabaseHelper.EXERCISE_COL_OTHER_NUM,
 										m_other_label_tv.getText().toString(),
 										m_other_data_tv.getText().toString(), true);
@@ -406,15 +414,18 @@ public class EditSetActivity
 
 			case R.id.editset_stress_label_tv:
 			case R.id.editset_stress_data_iv:
+				WGlobals.play_short_click();
 				activate_stress_activity();
 				break;
 
 			case R.id.editset_notes_label_tv:
 			case R.id.editset_notes_data_tv:
+				WGlobals.play_short_click();
 				activate_text_activity();
 				break;
 
 			case R.id.editset_delete_butt:
+				WGlobals.play_short_click();
 				String msg_args[] = {
 									m_exer_data.name,
 									m_exer_data.name,
@@ -439,11 +450,13 @@ public class EditSetActivity
 				break;
 
 			case R.id.editset_logo:		// HELP button
+				WGlobals.play_help_click();
 				show_help_dialog(R.string.editset_help_title,
 									R.string.editset_help_msg);
 				break;
 
 			case R.id.editset_ok_butt:
+				WGlobals.play_short_click();
 				if (!m_dirty) {
 					setResult(RESULT_CANCELED);
 					finish();
@@ -454,6 +467,7 @@ public class EditSetActivity
 				break;
 
 			case R.id.editset_cancel_butt:
+				WGlobals.play_short_click();
 				if (m_dirty && WGlobals.g_nag) {
 					show_yes_no_dialog(R.string.editset_cancel_warning_title, null,
 							R.string.editset_cancel_warning_msg, null,

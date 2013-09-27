@@ -116,7 +116,8 @@ public class WGlobals extends Application {
 	public static final int
 		SOUND_CLICK = 1,
 		SOUND_LONG_CLICK = 2,
-		SOUND_COMPLETE = 3;
+		SOUND_COMPLETE = 3,
+		SOUND_HELP = 4;
 
 
 	//----------------------------------
@@ -327,6 +328,19 @@ public class WGlobals extends Application {
 		}
 	} // button_click()
 
+	
+	/******************
+	 * Plays a sound for when the user selects a help.
+	 * But only if the user's preferences
+	 * have sound turned on.
+	 */
+	public static void play_help_click() {
+		if (g_sound) {
+			SoundManager.playSound(SOUND_HELP);
+		}
+	} // button_click()
+
+	
 	/******************
 	 * Plays a nice sound when the user does something good.
 	 * But only if the user's preferences

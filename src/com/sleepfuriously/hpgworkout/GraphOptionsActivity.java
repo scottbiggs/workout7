@@ -305,9 +305,9 @@ public class GraphOptionsActivity
 	 */
 	@Override
 	public void onClick(View v) {
-		WGlobals.play_short_click();
 
 		if (v == m_done) {
+			WGlobals.play_short_click();
 			if (!m_dirty) {	// didn't do anything (this shouldn't be possible!)
 				Log.e(tag, "Clicked 'done' without anything being dirty!  How'd they do that?");
 				setResult(RESULT_CANCELED);
@@ -353,6 +353,7 @@ public class GraphOptionsActivity
 		} // done
 
 		else if (v == m_daily_off) {
+			WGlobals.play_short_click();
 			// Clicked on regular mode
 			m_daily_off.setChecked(true);
 			m_daily_on.setChecked(false);
@@ -361,6 +362,7 @@ public class GraphOptionsActivity
 		}
 
 		else if (v == m_daily_on) {
+			WGlobals.play_short_click();
 			// Clicked on daily mode
 			m_daily_off.setChecked(false);
 			m_daily_on.setChecked(true);
@@ -370,12 +372,14 @@ public class GraphOptionsActivity
 		}
 
 		else if (v == m_help) {
+			WGlobals.play_help_click();
 			String[] args = {m_exercise_name};
 			show_help_dialog(R.string.graph_options_help_title, null,
 							R.string.graph_options_help_msg, args);
 		}
 
 		else if (v == m_cancel) {
+			WGlobals.play_short_click();
 			setResult(RESULT_CANCELED);
 			finish();
 		}
@@ -383,6 +387,7 @@ public class GraphOptionsActivity
 		else {
 			// If we got down to here, then they clicked on
 			// checkbox
+			WGlobals.play_short_click();
 			m_dirty = true;
 			m_done.setEnabled(true);
 		}
