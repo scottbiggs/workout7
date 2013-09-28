@@ -23,7 +23,7 @@ public class SoundManager {
 	 * The maximum number of sounds this class can handle.  If
 	 * you don't like it, just change this number.
 	 */
-	public static final int MAX_SOUNDS = 5;
+//	public static final int MAX_SOUNDS = WGlobals.NUM_SOUNDS;
 
 	/** To make sure that there's just one instance of this class */
 	private static SoundManager _instance = null;
@@ -81,7 +81,7 @@ public class SoundManager {
 	 */
 	public static void initSounds(Context context) {
 		mContext = context;
-		mSoundPool = new SoundPool (MAX_SOUNDS,
+		mSoundPool = new SoundPool (WGlobals.NUM_SOUNDS,
 									AudioManager.STREAM_MUSIC,
 									0);
 		mSoundPoolMap = new HashMap<Integer, Integer>();

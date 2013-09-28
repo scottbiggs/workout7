@@ -103,6 +103,7 @@ public class WelcomeActivity extends BaseDialogActivity
 		SoundManager.addSound(WGlobals.SOUND_LONG_CLICK, R.raw.longclick);
 		SoundManager.addSound(WGlobals.SOUND_COMPLETE, R.raw.wineclink);
 		SoundManager.addSound(WGlobals.SOUND_HELP, R.raw.help_ding);
+		SoundManager.addSound(WGlobals.SOUND_WHEEL, R.raw.wheel2);
 
 		// Need to get the database going.  This MUST happend before
 		// the next statement as it uses the database (probably).

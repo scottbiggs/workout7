@@ -346,6 +346,8 @@ public class WheelFloat implements OnWheelChangedListener {
 	 */
 	@Override
 	public void onChanged(WheelView wheel, int old_val, int new_val) {
+		WGlobals.play_wheel_sound();
+
 		float value = get_value();
 		Log.d(tag, "onChanged(), value is " + value);
 		if (m_result_tv != null) {

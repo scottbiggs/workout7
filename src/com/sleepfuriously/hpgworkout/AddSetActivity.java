@@ -139,6 +139,8 @@ public class AddSetActivity
 //		Log.v(tag, "entering onCreate()");
 		super.onCreate(savedInstanceState);
 
+		WGlobals.g_sound = false;	// To prevent wheels from making noise during creation
+
 		m_reset_widgets = true;	// Fill the forms the first time this
 								// activity is called.
 	} // onCreate (.)
@@ -367,6 +369,13 @@ public class AddSetActivity
 	} // init_widgets_with_wheels()
 
 
+	@Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        WGlobals.g_sound = true;		// Turn sound back on.
+    }
+	
+	
 	//------------------------------
 	//	Initialize the menu.
 	//

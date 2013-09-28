@@ -1,8 +1,5 @@
 TODO:
 -----------------
-In GraphOptions, if there's just one aspect, have it list none (so it's
-	just used to toggle the daily mode).
-
 When first starting, the grid looks funny.  This probably is because the
 database isn't properly setup.
 
@@ -23,7 +20,7 @@ Add a special sound for:
 		completing a set			- wineclink		- done
 		deleting a set
 		deleting an exercise
-		help
+		help						- help_ding		- done
 		adding a new exercise
 		spinning wheels
 		MySpinner 				- now is a click
@@ -113,6 +110,10 @@ In the graphs, instead of horizontal lines, divide up into
 ---------------------------------------------------
 TABLED (for later versions)
 ---------------------------------------------------
+In GraphOptions, if there's just one aspect, have it list none (so it's
+	just used to toggle the daily mode).
+	- nah, not worth it.
+
 Mild Bug: When converting from the old database system to the new one, we
 	leave a dangling reference in our new preference file:
 	<string name="db00001.sqlite">default user</string>

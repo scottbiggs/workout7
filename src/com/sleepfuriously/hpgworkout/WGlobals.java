@@ -117,7 +117,9 @@ public class WGlobals extends Application {
 		SOUND_CLICK = 1,
 		SOUND_LONG_CLICK = 2,
 		SOUND_COMPLETE = 3,
-		SOUND_HELP = 4;
+		SOUND_HELP = 4,
+		SOUND_WHEEL = 5,
+		NUM_SOUNDS = 6;		// This needs to be the number of sounds here!!!!
 
 
 	//----------------------------------
@@ -328,7 +330,7 @@ public class WGlobals extends Application {
 		}
 	} // button_click()
 
-	
+
 	/******************
 	 * Plays a sound for when the user selects a help.
 	 * But only if the user's preferences
@@ -340,7 +342,17 @@ public class WGlobals extends Application {
 		}
 	} // button_click()
 
-	
+
+	/******************
+	 * Plays a sound for when a Wheel moves a tick.
+	 */
+	public static void play_wheel_sound() {
+		if (g_sound) {
+			SoundManager.playSound(SOUND_WHEEL);
+		}
+	} // button_click()
+
+
 	/******************
 	 * Plays a nice sound when the user does something good.
 	 * But only if the user's preferences

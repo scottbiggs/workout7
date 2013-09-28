@@ -275,6 +275,8 @@ public class WheelInt implements OnWheelChangedListener {
 	//--------------------------------
 	@Override
 	public void onChanged(WheelView wheel, int oldValue, int newValue) {
+		WGlobals.play_wheel_sound();
+
 		int val = get_value();
 
 //		Log.d(tag, "onChanged(). get_value() is " + val);
