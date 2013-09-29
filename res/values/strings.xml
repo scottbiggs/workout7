@@ -1139,25 +1139,26 @@
 		indication of how stressful this particular workout
 		set is to accomplish.
 
-		\n\nThe default is \'ok\'. This indicates that this
-		set was a good difficulty level. Most of the time
-		the sets will be this level (I hope!), so this is
+		\n\nThe green check, \u2714, indicates that this
+		set was nice and hard, but not too hard. Hopefully, most of your
+		workouts will be just right, so this is
 		the default.
 
-		\n\nThe plus sign, \'+\', indicates that this set
+		\n\nThe blue feather button means that this set
 		was too easy, and you are ready to increase the
 		difficulty for your next set.
 
-		\n\nWhat\'s the opposite of plus\? minus of course!
-		The \'-\' sign indicates that this set was too hard.
-			You could not finish the set. Seriously consider
-			making your next set easier.
+		\n\nThe opposite of too easy is too hard (duh!).
+		I drew some wobbly arms and legs to represent
+		a workout set that was too hard, preventing you from
+		finishing the set. Seriously consider
+		making your next set easier.
 
-			\n\nThe \'X\' is bad, very bad. Sometimes we are
-			too zealous with our workouts and get hurt. Mark these with the
-			big nasty \'X\'. You may want to make a note about
-			how and why this happened so you don\'t repeat this
-			problem again.
+		\n\nRed lines mean bad, very bad. Sometimes we are
+		too zealous with our workouts and get hurt. You may
+		also want to make a note about
+		how and why this happened so you don\'t repeat this
+		problem again.
 	</string>
 
 	<string name="aset_menu_wide_wheels_turn_on_msg">Enable Fat Wheels</string>

@@ -1,7 +1,5 @@
 TODO:
 -----------------
-Help file for the Condition is OLD.
-
 Test all the help files.
 
 When first starting, the grid looks funny.  This probably is because the
@@ -224,6 +222,9 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Help file for the Condition is OLD.
+	- fixed
+
 Bug: Graph Activity crashes in landscape mode.
 	- fixed.  I had forgotten to make changes in the landscape
 	mode version of the xml file.
