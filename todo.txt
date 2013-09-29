@@ -3,8 +3,6 @@ TODO:
 When first starting, the grid looks funny.  This probably is because the
 database isn't properly setup.
 
-For the Inspector, make 'most recent first' the default.
-
 Bug: I think I caused a crash by rotating.  Again.  I think it was while
 	in one of the tabbed Activities.
 
@@ -22,16 +20,16 @@ Add a special sound for:
 		deleting an exercise
 		help						- help_ding		- done
 		adding a new exercise
-		spinning wheels
+		spinning wheels			- wheel2			- done
 		MySpinner 				- now is a click
+
+AddSet activity loads SOOOOO slowly!  Fix it!
 
 To finalize, remove "super winking" from the startup exercise
 	file.  :)
 
 TEST the nags.
 
-Preferences: put the option to Reset things here.  Clear the workout data, or
-	clear the exercises.
 Preferences:
 	TODO:
 	* Sound
@@ -222,6 +220,13 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+For the Inspector, make 'most recent first' the default.
+	- done
+
+Preferences: put the option to Reset things here.  Clear the workout data, or
+	clear the exercises.
+	- done, but in the manage database section
+
 Graphing: when there's just one "set" in daily mode, this message can
 be misleading.  There are quite possibly many sets, not just one.  The
 message needs to be changed when m_daily == true.

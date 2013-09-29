@@ -281,7 +281,7 @@ public class GridActivity2 extends BaseDialogActivity
 				PreferenceManager.getDefaultSharedPreferences(this);
 		m_pref_oldest_first =
 				prefs.getBoolean(getString(R.string.prefs_inspector_oldest_first_key),
-								true);
+								false);
 	} // onResume()
 
 

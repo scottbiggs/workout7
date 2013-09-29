@@ -1432,10 +1432,10 @@
 	<string name="prefs_inspector_oldest_first_key">oldest</string>
 	<string name="prefs_inspector_oldest_first_title">Chronological Order</string>
 	<string name="prefs_inspector_oldest_first_on_msg">
-		The oldest workout set will be displayed first (default).
+		The oldest (first) workout set will be displayed at the top.
 	</string>
 	<string name="prefs_inspector_oldest_first_off_msg">
-		Your most recent workout set will be at the top.
+		Your most recent workout set will be at the top (default).
 	</string>
 
 	<string name="prefs_graphs_daily_toggle_key">pref_daily_toggle_key</string>

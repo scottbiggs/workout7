@@ -66,7 +66,7 @@
 -->
 		<com.sleepfuriously.hpgworkout.LongCheckboxPreference
 			android:key="@string/prefs_inspector_oldest_first_key"
-			android:defaultValue="true"
+			android:defaultValue="false"
 			android:summaryOn="@string/prefs_inspector_oldest_first_on_msg"
 			android:summaryOff="@string/prefs_inspector_oldest_first_off_msg"
 			android:title="@string/prefs_inspector_oldest_first_title" />

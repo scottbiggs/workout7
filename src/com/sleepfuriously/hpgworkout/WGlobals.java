@@ -213,7 +213,7 @@ public class WGlobals extends Application {
 		g_nag = prefs.getBoolean(activity.getString(R.string.prefs_nag_key),
 				true);
 		g_hist_chron = prefs.getBoolean(activity.getString(R.string.prefs_inspector_oldest_first_key),
-				true);
+				false);
 
 		g_wheel = prefs.getBoolean(activity.getString(R.string.prefs_wheel_key),
 				true);

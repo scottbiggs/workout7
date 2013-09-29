@@ -150,7 +150,7 @@ public class InspectorActivity2
 		SharedPreferences prefs =
 			PreferenceManager.getDefaultSharedPreferences(this);
 		m_prefs_oldest_order = prefs.getBoolean(getString(R.string.prefs_inspector_oldest_first_key),
-												true);
+												false);
 		set_order_msg();
 
 		// Get our Intent and fill in the info that was passed
@@ -420,13 +420,11 @@ public class InspectorActivity2
 	 * stuff can take a while.
 	 */
 	void init_from_db() {
-
 		// Set the order description.
 		m_desc_tv = (TextView) findViewById(R.id.inspector_description_tv);
 		m_desc_tv.setText(m_prefs_oldest_order ?
 							R.string.inspector_oldest_first_msg :
 							R.string.inspector_newest_first_msg);
-
 
 		// Start the AsyncTask.  It'll handle the rest.
 		new InspectorSyncTask().execute();
