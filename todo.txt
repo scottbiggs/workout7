@@ -1,10 +1,14 @@
 TODO:
 -----------------
-When first starting, the grid looks funny.  This probably is because the
-database isn't properly setup.
+Help file for the Condition is OLD.
 
-Bug: I think I caused a crash by rotating.  Again.  I think it was while
-	in one of the tabbed Activities.
+Test all the help files.
+
+When first starting, the grid looks funny.  This probably is because the
+database isn't properly setup.  Hard to reproduce...
+
+Bug: I think I caused a crash by rotating.  Again.  In the AddSetActivity.
+	Rotating from landscape to portrait causes a crash.  Also in Inspector.
 
 Hitting the back button when in the middle of adding an exercise doesn't
 	cause any nagging (when turned on).  This is because the handling is
@@ -220,6 +224,10 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Bug: Graph Activity crashes in landscape mode.
+	- fixed.  I had forgotten to make changes in the landscape
+	mode version of the xml file.
+
 For the Inspector, make 'most recent first' the default.
 	- done
 

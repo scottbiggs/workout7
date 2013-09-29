@@ -1418,7 +1418,6 @@ public class GraphActivity
 										last_set_data.dist += new_set_data.dist * new_set_data.reps;
 									if (m_exercise_data.blevel) {
 										// Note: levels are averaged using day_count, which weights it.
-										// todo: test this!!!
 										last_set_data.levels =
 											((last_set_data.levels * day_count) +
 													new_set_data.levels ) /

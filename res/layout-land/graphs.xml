@@ -6,66 +6,81 @@
 	>
 
 	<RelativeLayout
-	    android:id="@+id/graph_title_rl"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_alignParentTop="true"
-	    android:layout_marginLeft="8dp"
-	    android:layout_marginRight="8dp"
-	    android:layout_marginTop="2dp" >
+		android:id="@+id/graph_title_rl"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentTop="true"
+		android:layout_marginLeft="8dp"
+		android:layout_marginRight="8dp"
+		android:layout_marginTop="2dp" >
 
 	<ImageView
-	    android:id="@+id/graph_logo"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_alignParentRight="true"
-	    android:layout_marginRight="12dp"
-	    android:layout_marginTop="3dp"
-	    android:src="@drawable/hpglogo_small" />
+		android:id="@+id/graph_logo"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:layout_marginRight="12dp"
+		android:layout_marginTop="3dp"
+		android:src="@drawable/hpglogo_small" />
 
 	<TextView
-	    android:id="@+id/graph_title_tv"
-	    style="@style/white_text_medium"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_alignParentLeft="true"
-	    android:layout_alignParentTop="true"
-	    android:layout_gravity="center_vertical"
-	    android:layout_marginBottom="3dp"
-	    android:layout_marginLeft="5dp"
-	    android:layout_toLeftOf="@id/graph_logo"
-	    android:text="@string/graph_title_msg"
-	    android:textColor="@color/off_white" />
+		android:id="@+id/graph_title_tv"
+		style="@style/white_text_medium"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentTop="true"
+		android:layout_gravity="center_vertical"
+		android:layout_marginBottom="3dp"
+		android:layout_marginLeft="5dp"
+		android:layout_toLeftOf="@id/graph_logo"
+		android:text="@string/graph_title_msg"
+		android:textColor="@color/off_white" />
 
 	</RelativeLayout>
 
 	<TextView
-	    android:id="@+id/graph_description_tv"
-	    style="@style/white_text_small"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_below="@id/graph_title_rl"
-	    android:layout_marginBottom="2dp"
-	    android:layout_marginLeft="32dp"
-	    android:layout_marginRight="12dp"
-	    android:layout_marginTop="3dp"
-	    android:text="@string/loading_str"
-	    android:textColor="@color/off_white" />
+		android:id="@+id/graph_daily_toggle_mode_tv"
+		style="@style/white_text_smallish"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignRight="@+id/graph_title_rl"
+		android:layout_below="@+id/graph_title_rl"
+		android:layout_marginRight="65dp"
+		android:background="@drawable/rounded_edges_dark"
+		android:paddingBottom="2dp"
+		android:paddingLeft="5dp"
+		android:paddingRight="5dp"
+		android:paddingTop="2dp"
+		android:text="Display Mode" />
+
+	<TextView
+		android:id="@+id/graph_description_tv"
+		style="@style/white_text_small"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/graph_title_rl"
+		android:layout_marginBottom="2dp"
+		android:layout_marginLeft="32dp"
+		android:layout_marginRight="12dp"
+		android:layout_marginTop="3dp"
+		android:text="@string/loading_str"
+		android:textColor="@color/off_white" />
 
 	<Button
-	    android:id="@+id/graph_options_butt"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_alignParentBottom="true"
-	    android:layout_centerHorizontal="true"
-	    android:layout_marginBottom="3dp"
-	    android:layout_marginTop="2dp"
-	    android:background="@drawable/button_shiny_black"
-	    android:paddingLeft="18dp"
-	    android:paddingRight="18dp"
-	    android:text="@string/graph_options_butt"
-	    android:textColor="@color/ivory"
-	    android:textSize="@dimen/font_size_default" />
+		android:id="@+id/graph_options_butt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_centerHorizontal="true"
+		android:layout_marginBottom="3dp"
+		android:layout_marginTop="2dp"
+		android:background="@drawable/button_shiny_black"
+		android:paddingLeft="18dp"
+		android:paddingRight="18dp"
+		android:text="@string/graph_options_butt"
+		android:textColor="@color/ivory"
+		android:textSize="@dimen/font_size_default" />
 
 	<!--
 		This LinearLayout holds our GView and a TextView.
@@ -73,26 +88,27 @@
 		set to display.  In that case, the GView is made
 		GONE and the tv is turned on.
 	-->
+
 	<LinearLayout
 		android:id="@+id/graph_gview_ll"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
-		android:orientation="vertical"
-		android:layout_below="@id/graph_description_tv"
 		android:layout_above="@id/graph_options_butt"
-		>
+		android:layout_below="@id/graph_description_tv"
+		android:layout_marginTop="2dp"
+		android:orientation="vertical" >
 
 		<com.sleepfuriously.hpgworkout.GView
-		    android:id="@+id/graph_view"
-		    android:layout_width="fill_parent"
-		    android:layout_height="fill_parent"
-		    android:layout_marginLeft="8dp"
-		    android:layout_marginRight="8dp"
-		    android:background="@drawable/rounded_edges_dark_blue"
-		    android:paddingBottom="5dp"
-		    android:paddingLeft="15dp"
-		    android:paddingRight="15dp"
-		    android:paddingTop="5dp" />
+			android:id="@+id/graph_view"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:layout_marginLeft="8dp"
+			android:layout_marginRight="8dp"
+			android:background="@drawable/rounded_edges_dark_blue"
+			android:paddingBottom="5dp"
+			android:paddingLeft="15dp"
+			android:paddingRight="15dp"
+			android:paddingTop="5dp" />
 
 		<ScrollView
 			android:id="@+id/graph_gview_sv"
@@ -100,17 +116,26 @@
 			android:layout_height="wrap_content"
 			android:visibility="gone"
 			>
-			<TextView
-				android:id="@+id/graph_gview_tv"
+			<LinearLayout
+				android:id="@+id/graph_gview_sub_ll"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
-				style="@style/white_text_medium"
-				android:background="@drawable/rounded_edges_dark_blue"
-				android:layout_margin="12dp"
-				android:padding="8dp"
+				android:orientation="vertical"
 				android:visibility="gone"
-				/>
+				>
+				<TextView
+					android:id="@+id/graph_gview_tv"
+					style="@style/white_text_medium"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:background="@drawable/rounded_edges_dark_blue"
+					android:layout_margin="12dp"
+					android:padding="8dp"
+					android:visibility="gone" />
+
+			</LinearLayout>
 		</ScrollView>
+
 	</LinearLayout>
 
 </RelativeLayout>
