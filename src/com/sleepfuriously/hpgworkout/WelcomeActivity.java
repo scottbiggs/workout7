@@ -78,10 +78,6 @@ public class WelcomeActivity extends BaseDialogActivity
 		settings_butt.setOnClickListener(this);
 		settings_butt.setOnLongClickListener(this);
 
-		Button database_butt = (Button) findViewById(R.id.welcome_manage_db_butt);
-		database_butt.setOnClickListener(this);
-		database_butt.setOnLongClickListener(this);
-
 		Button graphs_butt = (Button) findViewById(R.id.welcome_graph_butt);
 		graphs_butt.setOnClickListener(this);
 		graphs_butt.setOnLongClickListener(this);
@@ -102,7 +98,7 @@ public class WelcomeActivity extends BaseDialogActivity
 		SoundManager.addSound(WGlobals.SOUND_CLICK, R.raw.button_click);
 		SoundManager.addSound(WGlobals.SOUND_LONG_CLICK, R.raw.longclick);
 		SoundManager.addSound(WGlobals.SOUND_COMPLETE, R.raw.wineclink);
-		SoundManager.addSound(WGlobals.SOUND_HELP, R.raw.help_ding);
+		SoundManager.addSound(WGlobals.SOUND_HELP, R.raw.help_ding_single);
 		SoundManager.addSound(WGlobals.SOUND_WHEEL, R.raw.wheel2);
 
 		// Need to get the database going.  This MUST happend before
@@ -144,7 +140,6 @@ public class WelcomeActivity extends BaseDialogActivity
 				startActivityForResult(itt, WGlobals.PREFSACTIVITY);
 				break;
 
-			case R.id.welcome_manage_db_butt:
 			case R.id.welcome_user_name_tv:
 				WGlobals.play_short_click();
 				itt = new Intent (this, ManageDatabaseActivity.class);
@@ -194,7 +189,6 @@ public class WelcomeActivity extends BaseDialogActivity
 				show_help_dialog(R.string.welcome_graphs_help_title, R.string.welcome_graphs_help_msg);
 				return true;
 
-			case R.id.welcome_manage_db_butt:
 			case R.id.welcome_user_name_tv:
 				show_help_dialog(R.string.welcome_manage_db_help_title, R.string.welcome_manage_db_help_msg);
 				return true;

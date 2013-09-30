@@ -14,6 +14,7 @@
 				greater than		==>	\u003e		(unicode)
 				ampersand &		==> \u0026		(unicode)
 				check (heavy)	==> \u2714		(unicode)
+				bullet			==> \u2022		(html)
 	-->
 
 	<!-- General strings -->
@@ -128,43 +129,49 @@
 
 	<string name="welcome_help_help_title">Help!</string>
 	<string name="welcome_help_help_msg">Welcome to the
-		Hyde Park Gym Workout Tool. This app keeps track of
+		Hyde Park Gym Workout Tool. This app records
 		your workouts and tracks your progress.
-		\n\nThis app is descriptive, not proscriptive.  That is, it does
-		not tell
+		\n\n\u2022 Note that this app is descriptive, not proscriptive.
+		That is, it doesn\'t tell
 		you what you SHOULD do, it just keeps track of what you did.
-		I think
-		you are smart enough to know what sort of workout you want (or
+		Come on,
+		you\'re smart enough to know what sort of workout you want (or
 		at least to find the information for yourself).
-		\n\nFor general help about what a screen does, tap on
+		\n\n\u2022 For general help about what a screen does, tap on
 		the Hyde Park Gym logo at the top right of the screen.
-		\n\nFor help on specific functions, press and hold
+		\n\n\u2022 For help on specific functions, long-tap (press and hold
+		for a second or two)
 		any button or widget, and a help message will pop up
 		describing that function.
-		\n\nThe first
+		\n\n\u2022 The first
 		time you use this app, a few popular exercises are
 		listed already listed. You will have to add your favorite
 		exercises to the list. But the
 		program will remember your exercises, so the next
 		time you workout, you can simply select that
 		exercise from the list.
-		\n\nChoose an exercise and record how
-		much you completed for that set. Do it again for each
+		\n\n\u2022 Choose an exercise and record what
+		you completed for that set. Do it again for each
 		set. The data you
 		enter is added to a database which can be viewed
 		to track your progress.
-		\n\nThis app was created by Scott Morgan Biggs in his spare
-		time. The good people at Hyde Park Gym provided invaluable help
+		\n\n\u2022 You can change your name from the boring \'default
+		user\' and add other users for this app by tapping on the name.
+		It\'s a pretty nifty screen\u2014other cool bookkeeping stuff
+		can be done there, check it out.
+		\n\n\u2022 This app was created by Scott Morgan Biggs in his spare
+		time. The good people at Hyde Park Gym in Austin, Texas provided invaluable help
 		and assistance. They also trusted me with their good name, but
 		are in no way responsible for any damage, frustration, or insults
 		that may (or may not) crop up while using this app.  So you should
 		send your hate messages to me through the Google Play site. I promise
 		to do my best to address the issues (which may not be much\u2014I am
-		very far from a programming god, sorry). Anyway, I did lots of
+		very far from a programming god, sorry).
+		\n\nAnyway, I did lots of
 		this stuff in the middle of the night, so you might be amused or
 		offended by some of these help messages. So it goes. But in any
-		event, I hope this app is as useful to you as it has been to me
-		and the people at HPG.
+		event, I hope this app is as useful to you as it has been to me.
+		And THANKS to Brook and all the good people at HPG!
 		\n\nHave a good workout!
 		</string>
 
@@ -176,7 +183,7 @@
 		Gym in Austin, Texas\u2014just look for place with the arm
 		sticking out! Programmed by Scott Biggs.</string>
 	<string name="welcome_menu_exit_button">exit</string>
-	<string name="welcome_version_number">v. 0.7 Alpha Test</string>
+	<string name="welcome_version_number">v. 0.72 Alpha Test</string>
 
 	<string name="welcome_manage_db_button">manage users</string>
 	<string name="welcome_manage_db_help_title">Manage Users</string>
