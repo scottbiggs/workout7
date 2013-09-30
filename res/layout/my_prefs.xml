@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	The main layout for the preferences.  This is my "wrapper"
+	that allows me the ability to have other widgets on the normally
+	generic preferences screen.
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@drawable/rounded_edges_black" >
+
+	<TextView
+		android:id="@+id/my_prefs_title_tv"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentTop="true"
+		android:layout_marginBottom="3dp"
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="3dp"
+		android:layout_marginTop="5dp"
+		style="@style/white_text_large"
+		android:text="@string/my_prefs_title" />
+
+	<ImageView
+		android:id="@+id/my_prefs_logo"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:layout_alignParentTop="true"
+		android:layout_marginRight="8dp"
+		android:layout_marginTop="6dp"
+		android:src="@drawable/hpglogo_small" />
+
+	<Button
+		android:id="@+id/my_prefs_done_butt"
+		style="@style/white_text_small"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_centerHorizontal="true"
+		android:layout_marginBottom="8dp"
+		android:layout_marginLeft="40dp"
+		android:layout_marginRight="40dp"
+		android:layout_marginTop="5dp"
+		android:background="@drawable/button_shiny_black"
+		android:text="@string/done" />
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_above="@+id/my_prefs_done_butt"
+		android:layout_below="@+id/my_prefs_logo"
+		android:layout_margin="3dp"
+		android:background="@drawable/rounded_edges_medium_dark"
+		android:orientation="vertical" >
+
+		<ListView
+			android:id="@android:id/list"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_margin="3dp"
+			android:background="@drawable/rounded_edges_black" >
+
+		</ListView>
+	</LinearLayout>
+
+</RelativeLayout>

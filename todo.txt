@@ -222,6 +222,15 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Modified the preferences screen to make it match the rest of the
+	program (including help and a back button).
+
+"Done" in the prefs doesn't have a click.
+	- done
+
+Change the "inspector" to "history".  It just makes more sense.
+	- done (just changed stuff in strings.xml)
+
 Help file for the Condition is OLD.
 	- fixed
 

@@ -94,10 +94,10 @@
 	<string name="welcome_start_help_title">start a workout</string>
 	<string name="welcome_start_help_msg">Press this button to
 		begin or continue working out.
-		\n\nThis takes you to the Grid, where all your exercises
+		\n\n\u2022This takes you to the Grid, where all your exercises
 		are listed and the details of your workouts can be
 		found.
-		\n\nHave fun!</string>
+		\n\nGet ready to sweat!</string>
 
 	<string name="welcome_settings_button">preferences</string>
 	<string name="welcome_settings_help_title">Preferences</string>
@@ -191,11 +191,9 @@
 		This takes you to a screen to manage your all the different users.
 		You can add more users to the app, change the active
 		user, clear the user\'s data, and more!
-		\n\nTo actually change the details of the user\'s data, go
-		to the main grid.  Long-tap an exercise to change how it
-		works (or remove it). Select an exercise and then go to
-		the Inspector to modify individual exercise sets.
-		</string>
+		\n\nDetails of the user\'s data, like their exercises and workout
+		sets are changed from the main grid (tap the \'workout\' button).
+	</string>
 
 	<string name="welcome_user_name">Hello, %s!</string>
 
@@ -1176,7 +1174,7 @@
 	<!-- ============ Inspector	============ -->
 	<!-- ============           ============ -->
 
-	<string name="inspector_title">Set Inspector</string>
+	<string name="inspector_title">Set History</string>
 	<string name="inspector_empty">No Sets to Display</string>
 
 	<string name="inspector_oldest_first_msg">oldest first</string>
@@ -1225,7 +1223,7 @@
 	<string name="inspector_set_notes_label">notes</string>
 	<string name="inspector_set_notes_data_none">\u003cno comment\u003e</string>
 
-	<string name="inspector_help_title">Inspector Help</string>
+	<string name="inspector_help_title">History Help</string>
 	<string name="inspector_help_msg">
 		Want to see all the details of all your workout sets
 		for this exercise? You\'ve come to the right place!
@@ -1384,10 +1382,50 @@
 	<string name="enter_stress_cond_stress_error">error!</string>
 	<string name="enter_stress_cond_stress_none">n\/a</string>
 
+	<!-- ============           ============ -->
+	<!-- ============ My Prefs  ============ -->
+	<!-- ============           ============ -->
+	<!-- This is the "wrapper" screen for the preferences (which has its
+		strings below).						 -->
+
+	<string name="my_prefs_title">Preferences</string>
+
+	<string name="my_prefs_help_title">Prefs Help</string>
+	<string name="my_prefs_help_msg">
+		Just like you\'ve seen in so many other apps, here\'s the
+		preferences screen. But unlike those others, here is a detailed
+		run-down of what each thing does.
+		\n\n\u2022 Nag: Warning pop-ups messages that remind you about
+		important details of an action are called <i>nags</i>. For this
+		app, I will nag you about deleting information every time. But
+		some stuff isn\'t that important. So you have the option of turning
+		those minor nags off.
+		\n\n\u2022Sound: Yes, just what you think. Turn sounds on or off.
+		\n\n\u2022Enable Screen Saver: To save batteries, I generally have
+		my phone\'s screen saver kick in pretty quickly. But that\'s distracting
+		and annoying while working out, so I disable the screensaver when this
+		app is running. You can disable my screen saver\'s disabler :)
+		\n\n\u2022Number Wheels: When adding information to an exercise set,
+		I added some wheels (or dials if you prefer) as a fun user interface.
+		If you don\'t think they\'re fun, simply disable them; doing so can
+		greatly increase the room for small phones.
+		\n\n\u2022Fat Wheels: If you <i>do</i> have wheels, the gentlemen may
+		be having problems using them as the wheels are so narrow. Enable this
+		preference and see the nice big plump wheels, perfect for manly fingers!
+		\n\n\u2022Chronological: When displaying the history of a single
+		exercise in the <b>History</b> tab, you have the option of ordering
+		the workout sets chronologically or most recent first.
+		\n\n\u2022Display Mode: This pertains to the graphs of your workouts.
+		The normal mode draws a dot for every single set of an exercise that
+		you recorded. These dots can be so close together that can be kind of
+		confusing. To simplify, you have the option of viewing your data on
+		a daily basis.
+	</string>
 
 	<!-- ============              ============ -->
 	<!-- ============ Preferences  ============ -->
 	<!-- ============              ============ -->
+
 
 	<string name="prefs_category_general">GENERAL</string>
 	<string name="prefs_category_inspector">WORKOUT HISTORY</string>
@@ -1408,7 +1446,7 @@
 	</string>
 
 	<string name="prefs_sound_key">sound</string>
-	<string name="prefs_sound_title">Play Sounds</string>
+	<string name="prefs_sound_title">Sounds</string>
 	<string name="prefs_sound_on_msg">Can you hear that\?
 		Yeah, I think this program is trying to make some noises (default)!</string>
 	<string name="prefs_sound_off_msg">Shhhhh, we\'re playing
@@ -1429,11 +1467,11 @@
 	<string name="prefs_inspector_quickview_key">quickview</string>
 	<string name="prefs_inspector_quickview_title">Brief History</string>
 	<string name="prefs_inspector_quickview_on_msg">
-		The Exercise Set Inspector will try to save space when
+		The Exercise Set History will try to save space when
 		displaying your workout sets.
 	</string>
 	<string name="prefs_inspector_quickview_off_msg">
-		The Exercise Set Inspector will display all details
+		The Exercise Set History will display all details
 		in a large and easy-to-read style (default).
 	</string>
 
@@ -1696,7 +1734,7 @@
 	<string name="exercise_tabhost_to_grid_butt">back to grid</string>
 	<string name="exer_tabhost_tab_aset">do a set</string>
 	<string name="exer_tabhost_tab_edit_exercise">edit exercise</string>
-	<string name="exer_tabhost_tab_inspector">inspector</string>
+	<string name="exer_tabhost_tab_inspector">history</string>
 	<string name="exer_tabhost_tab_graph">graph</string>
 	<string name="exer_tabhost_tab_history">show history</string>
 
