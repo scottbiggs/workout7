@@ -172,14 +172,14 @@
 								android:text="@string/graph_options_daily_toggle_off_butt" />
 
 							<View
-							    android:id="@+id/graph_options_reps_line"
-							    android:layout_width="1dp"
-							    android:layout_height="fill_parent"
-							    android:layout_marginBottom="5dp"
-							    android:layout_marginLeft="8dp"
-							    android:layout_marginRight="8dp"
-							    android:layout_marginTop="5dp"
-							    android:background="@color/hpg_orange_desaturated1" />
+								android:id="@+id/graph_options_reps_line"
+								android:layout_width="1dp"
+								android:layout_height="fill_parent"
+								android:layout_marginBottom="5dp"
+								android:layout_marginLeft="8dp"
+								android:layout_marginRight="8dp"
+								android:layout_marginTop="5dp"
+								android:background="@color/hpg_orange_desaturated1" />
 
 							<RadioButton
 								android:id="@+id/graph_options_daily_on_butt"
@@ -341,6 +341,7 @@
 					>
 
 					<TextView
+						android:id="@+id/graph_options_with_tv"
 						style="@style/white_text_small"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"

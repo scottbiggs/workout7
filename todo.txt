@@ -30,6 +30,10 @@ AddSet activity loads SOOOOO slowly!  Fix it!
 To finalize, remove "super winking" from the startup exercise
 	file.  :)
 
+Graph by muscle group.
+
+Graph by exercise type.
+
 TEST the nags.
 
 Preferences:
@@ -158,14 +162,6 @@ Minor Bug: When zooming a LOT, garbage appears in the left-side of the date
 	area.  It disappears when zooming back out.  It kind of looks like
 	some dates are wrapping and drawing on top of each other.
 
-Okay, what the hell is the Graph supposed to do when there are
-	different things on the same date?  You did ten reps the first
-	set, twenty the second, and thirty the third.  Should it average,
-	sum, pick the highest, lowest, graph 'em all (which is sort of
-	what it's doing now), --what?
-	- It does the right thing.  All the points are draw, although
-	VERY close together.  You can see it when you zoom in a LOT.
-
 Minor: The new custom tabs don't have the gray line beneath them!
 
 Make custom DatePicker and TimePicker to match the widgets
@@ -181,10 +177,6 @@ Click on a date, and get a summary of that day.  You also
 Implement fragments.  Specifically: from the graph selection
 	page to the graph itself.  It's PERFECT for fragments.
 	Also from the Grid to the tabs.
-
-Graph by muscle group.
-
-Graph by exercise type.
 
 Incorporate DropBox--perhaps for saving/loading data?
 
@@ -295,6 +287,14 @@ Add a way to clear all the workout data of a database.  This'd just be another
 	button in the ManageDatabaseActivityPopup and some more stuff in the two
 	related classes.
 	- done
+
+Okay, what the hell is the Graph supposed to do when there are
+	different things on the same date?  You did ten reps the first
+	set, twenty the second, and thirty the third.  Should it average,
+	sum, pick the highest, lowest, graph 'em all (which is sort of
+	what it's doing now), --what?
+	- It does the right thing.  All the points are draw, although
+	VERY close together.  You can see it when you zoom in a LOT.
 
 BUG: If you add a database and then just go back, the activite database change isn't
 	registered as active in the WelcomeActivity (or any other subsequent Activities).

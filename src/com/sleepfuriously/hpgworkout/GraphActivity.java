@@ -22,6 +22,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -34,6 +35,7 @@ public class GraphActivity
 						BaseDialogActivity
 					implements
 						OnClickListener,
+						OnLongClickListener,
 						OnTouchListener {
 
 	//-------------------------
@@ -168,6 +170,7 @@ public class GraphActivity
 
 		m_options_butt = (Button) findViewById(R.id.graph_options_butt);
 		m_options_butt.setOnClickListener(this);
+		m_options_butt.setOnLongClickListener(this);
 
 		// Check whether we're doing a regular or daily graph.
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -231,6 +234,7 @@ public class GraphActivity
 
 			m_daily_mode_tv = (TextView) findViewById(R.id.graph_daily_toggle_mode_tv);
 			m_daily_mode_tv.setOnClickListener(this);
+			m_daily_mode_tv.setOnLongClickListener(this);
 			if (m_daily)
 				m_daily_mode_tv.setText(R.string.graph_options_daily_mode_on_msg);
 			else
@@ -289,6 +293,19 @@ public class GraphActivity
 		}
 
 	} // onClick(v)
+
+
+	@Override
+	public boolean onLongClick(View v) {
+		if ((v == m_options_butt) || (v == m_daily_mode_tv)) {
+			WGlobals.play_long_click();
+			show_help_dialog(R.string.graph_options_butt_help_title, R.string.graph_options_butt_help_msg);
+			return true;
+		}
+
+		Log.e(tag, "Unrecognized long click!!!");
+		return false;
+	}
 
 
 	//-------------------------

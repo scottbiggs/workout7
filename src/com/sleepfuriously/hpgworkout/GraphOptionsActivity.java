@@ -41,6 +41,7 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -151,13 +152,15 @@ public class GraphOptionsActivity
 	private MySpinner m_with_reps_myspin;
 
 	/** The basic buttons */
-	Button m_cancel, m_done;
+	private Button m_cancel, m_done;
 
 	/** The radio buttons that toggle daily mode */
-	RadioButton m_daily_on, m_daily_off;
+	private RadioButton m_daily_on, m_daily_off;
 
-	ImageView m_help;
+	private ImageView m_help;
 
+	private TextView m_daily_label_tv, m_with_reps_label_tv;
+	
 
 	//--------------------
 	//	Class Data
@@ -233,7 +236,12 @@ public class GraphOptionsActivity
 		m_help.setOnClickListener(this);
 		m_done.setOnClickListener(this);
 
+		m_daily_label_tv = (TextView) findViewById(R.id.graph_options_daily_toggle_title);
+		m_daily_label_tv.setOnLongClickListener(this);
 
+		m_with_reps_label_tv = (TextView) findViewById(R.id.graph_options_with_tv);
+		m_with_reps_label_tv.setOnLongClickListener(this);
+		
 		m_reps_cb = (CheckBox) findViewById(R.id.graph_options_reps_check);
 		m_reps_cb.setOnClickListener(this);
 		m_reps_cb.setOnLongClickListener(this);
@@ -373,9 +381,8 @@ public class GraphOptionsActivity
 
 		else if (v == m_help) {
 			WGlobals.play_help_click();
-			String[] args = {m_exercise_name};
-			show_help_dialog(R.string.graph_options_help_title, null,
-							R.string.graph_options_help_msg, args);
+			show_help_dialog(R.string.graph_options_help_title,
+							R.string.graph_options_help_msg);
 		}
 
 		else if (v == m_cancel) {
@@ -402,7 +409,7 @@ public class GraphOptionsActivity
 	public boolean onLongClick(View v) {
 		WGlobals.play_long_click();
 
-		if (v == m_with_reps_myspin) {
+		if ((v == m_with_reps_myspin) || (v == m_with_reps_label_tv)) {
 			show_help_dialog(R.string.graph_options_with_help_title,
 							R.string.graph_options_with_help_msg);
 			return true;
@@ -416,7 +423,7 @@ public class GraphOptionsActivity
 				return true;
 		}
 
-		if (v.getClass() == RadioButton.class) {
+		if ((v.getClass() == RadioButton.class) || (v == m_daily_label_tv)) {
 			show_help_dialog(R.string.graph_options_daily_toggle_help_title,
 							R.string.graph_options_daily_toggle_help_msg);
 			return true;

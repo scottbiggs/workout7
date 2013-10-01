@@ -9,7 +9,7 @@
 				non-break space	==> &#xA0		(html)
 				"			"	==>	\u00a0		(unicode)
 					(doesn't cause a line-break)
-				colon			==> \u003a		(unicode)
+				colon :			==> \u003a		(unicode)
 				less than		==>	\u003c		(unicode)
 				greater than		==>	\u003e		(unicode)
 				ampersand &		==> \u0026		(unicode)
@@ -94,9 +94,10 @@
 	<string name="welcome_start_help_title">start a workout</string>
 	<string name="welcome_start_help_msg">Press this button to
 		begin or continue working out.
-		\n\n\u2022This takes you to the Grid, where all your exercises
+		\n\n\u2022 This takes you to the <i>Grid</i>, where all your exercises
 		are listed and the details of your workouts can be
-		found.
+		found. Most of the time you will start at the Grid, that\'s why it\'s
+		the top button!
 		\n\nGet ready to sweat!</string>
 
 	<string name="welcome_settings_button">preferences</string>
@@ -191,7 +192,7 @@
 		This takes you to a screen to manage your all the different users.
 		You can add more users to the app, change the active
 		user, clear the user\'s data, and more!
-		\n\nDetails of the user\'s data, like their exercises and workout
+		\n\n\u2022Details of the user\'s data, like their exercises and workout
 		sets are changed from the main grid (tap the \'workout\' button).
 	</string>
 
@@ -1395,27 +1396,27 @@
 		Just like you\'ve seen in so many other apps, here\'s the
 		preferences screen. But unlike those others, here is a detailed
 		run-down of what each thing does.
-		\n\n\u2022 Nag: Warning pop-ups messages that remind you about
+		\n\n\u2022 Nag\u003a Warning pop-ups messages that remind you about
 		important details of an action are called <i>nags</i>. For this
 		app, I will nag you about deleting information every time. But
 		some stuff isn\'t that important. So you have the option of turning
 		those minor nags off.
-		\n\n\u2022Sound: Yes, just what you think. Turn sounds on or off.
-		\n\n\u2022Enable Screen Saver: To save batteries, I generally have
+		\n\n\u2022Sound\u003a Yes, just what you think. Turn sounds on or off.
+		\n\n\u2022Enable Screen Saver\u003a To save batteries, I generally have
 		my phone\'s screen saver kick in pretty quickly. But that\'s distracting
 		and annoying while working out, so I disable the screensaver when this
-		app is running. You can disable my screen saver\'s disabler :)
-		\n\n\u2022Number Wheels: When adding information to an exercise set,
+		app is running. You can disable my screen saver\'s disabler \u003a)
+		\n\n\u2022Number Wheels\u003a When adding information to an exercise set,
 		I added some wheels (or dials if you prefer) as a fun user interface.
 		If you don\'t think they\'re fun, simply disable them; doing so can
 		greatly increase the room for small phones.
-		\n\n\u2022Fat Wheels: If you <i>do</i> have wheels, the gentlemen may
+		\n\n\u2022Fat Wheels\u003a If you <i>do</i> have wheels, the gentlemen may
 		be having problems using them as the wheels are so narrow. Enable this
 		preference and see the nice big plump wheels, perfect for manly fingers!
-		\n\n\u2022Chronological: When displaying the history of a single
+		\n\n\u2022Chronological\u003a When displaying the history of a single
 		exercise in the <b>History</b> tab, you have the option of ordering
 		the workout sets chronologically or most recent first.
-		\n\n\u2022Display Mode: This pertains to the graphs of your workouts.
+		\n\n\u2022Display Mode\u003a This pertains to the graphs of your workouts.
 		The normal mode draws a dot for every single set of an exercise that
 		you recorded. These dots can be so close together that can be kind of
 		confusing. To simplify, you have the option of viewing your data on
@@ -1542,11 +1543,6 @@
 	<string name="graph_selector_help_msg">
 		Here is a list of all your exercises. Tap on one to see your
 		progress in that exercise.
-		\n\nOther buttons provide other options\u003a
-		\n\t\'Upper\' - show the combined work on all upper body
-		exericses.
-		\n\t\'Lower\' - show the combined work on all the exercises
-		the concentrate on the lower body.
 	</string>
 
 	<!-- ============        ============ -->
@@ -1557,22 +1553,25 @@
 
 	<string name="graph_help_title">Graph Help</string>
 	<string name="graph_help_msg">You want to see your progress (or
-		lack thereof)\? This is the place to be.
+		lack thereof)\? You\'re in the right place.
 		\n\nOn this screen you see a graph (also called a chart) of
 		this exercise.
-		\n\nThe horizontal axis is time, with each individual
-		exercise set presented with its own position.
-		\n\nThe vertical lines represent the quantities of the
-		significant aspect of that exercise (remember that\? it\'s
-		the part of the exercise with the radio button selected
-		next to it when you defined this exercise).  For example,
-		if you were doing bench presses and weight (\'pounds\')
-		were the significant portion, then the graph shows all
-		the different weights (in pounds, of course!) you did for
-		all your exercise sets.
-		\n\nIf you see gaps, that means that there were times
-		that did not have entries for this exercise for this
-		aspect.
+		\n\n\u2022 The horizontal axis is time, with each individual
+		exercise set presented with its own position (in <i>Daily</i>
+		mode, each <i>day</i> has its own position).
+		\n\n\u2022 The vertical height represents the quantities of the
+		aspects of that exercise.
+		\n\n\u2022 You can pinch to zoom in and scroll left and right by
+		swiping to inspect details of your graph.
+		\n\n\u2022 Modes\u003a <b>All Sets</b> vs. <b>Daily</b>
+		\n\u00a0\u00a0\u00a0\u2013 <i>All Sets</i> displays every single
+		workout set you entered for this exercise. Some may have taken place
+		just a minute or so apart, making them appear to overlap on this graph.
+		Zooming in will eventually reveal these sets as seperate events.
+		\n\u00a0\u00a0\u00a0\u2013 <i>Daily</i> mode avoids the overlapping
+		problem by summing up all the sets in the same day. The way it works
+		is a little complicated and explained in great detail in the <b>options</b>
+		screen.
 	</string>
 
 	<string name="graph_units_msg1">%s</string>
@@ -1597,10 +1596,6 @@
 	</string>
 	<string name="graph_null">null</string>
 
-	<!-- ======= Graph Options ======= -->
-
-	<string name="graph_options_title">Graph Options</string>
-
 	<string name="graph_options_butt">options</string>
 	<string name="graph_options_butt_help_title">Options Help</string>
 	<string name="graph_options_butt_help_msg">
@@ -1611,26 +1606,40 @@
 		explanations of what each does.
 	</string>
 
+
+	<!-- ======= 			   ======= -->
+	<!-- ======= Graph Options ======= -->
+	<!-- ======= 			   ======= -->
+	<string name="graph_options_title">Graph Options</string>
+
 	<string name="graph_options_help_title">Graph Options</string>
 	<string name="graph_options_help_msg">
-		Here you customize the display of the graphs for
-		%s.
-		\n\n	Turn the buttons on or off to control which aspects are
+		Here you customize the display of the graphs for this exercise.
+		\n\n	\u2022 Check or uncheck the buttons to control which aspects are
 		shown in the graph.
-		\n\n	The \'reps-with\' drop-down lets you combine the reps
-		with another aspect. For instance, instead of simply
+		\n\n	\u2022 The <i>reps-and</i> drop-down button lets you combine the reps
+		with another aspect. For example, instead of simply
 		counting how many bench presses you did at 100 pounds,
-		select reps-with and tell it with weight, and you will
+		select <i>reps-and</i>, then select <i>weight</i>, and you will
 		see the number of reps times the weight. Yes, that\'s ALL
 		the weight you moved in that set total!
+		\n\u0020\u0020\u0020\u2013 Note\u003a this is automatically
+		done for most aspects when in <i>Daily</i> mode.
+		\n\n\u2022 Speaking of that, the <b>Display Mode</b> affects how sets in the same day are
+		handled. The default is <i>all sets</i>, which simply shows every
+		set you recorded.
+		\n\nIf two or more sets are very close together in time
+		(like on the same day), they will appear to overlap unless you zoom in
+		quite a bit. <i>Daily</i> mode solves that problem by combining all the
+		sets of the same day into one graph point. Long-click on the Display Mode
+		button for more details.
 	</string>
 
 	<string name="graph_options_checkbox_help_title">Graph Options Check</string>
 	<string name="graph_options_checkbox_help_msg">
 		Each checkbox displayed here represents an aspect of your workout.
-		\n\nYou may turn on or off what aspects you want to see in the
-		graph window by with these checkboxes. Pretty simple once you
-		think about it.
+		\n\nTurn on or off what aspects you want to see in the
+		graph window with these checkboxes. Simple, right?
 	</string>
 
 	<!-- Added the no-break character to keep the TextView from clipping the leaning part of the italics -->
@@ -1638,18 +1647,19 @@
 	<string name="graph_options_with_prompt">Combine reps with...</string>
 	<string name="graph_options_with_help_title">Combine Reps Help</string>
 	<string name="graph_options_with_help_msg">
-		This graph is a little unusual, so I\'ll try to break it down
+		This part of the graph is a little unusual, so I\'ll try to break it down
 		for you.
-		\n\nSure, it\'s nice to know how many reps you do. And it\'s
+		\n\nSure, it\'s nice to know how many reps you did. And it\'s
 		nice to know how much weight you are pushing, too. But wouldn\'t
 		it be great to know the total weight you moved during that set?
-		Well, I do. So I added this feature.
+		Well, I think so. Hence this feature.
 		\n\nTurn this on, and a graph will show the total weight you
 		moved for each set. Yeah, reps * weight = total.
-		\n\nBut you gotta tell the program what to multiply the reps
-		by. Select this and a list will pop up\u003a pick what you want to
-		graph (which will probably be weight, but who knows? I\'ll
-		leave it up to you).
+		\n\nBut wait, that\'s not all! You can do other things besides weight!
+		Just tell the program what to multiply the reps
+		by.
+		\n\n\u2022 Select this drop-down button, and a list will pop up. Pick what you want to
+		graph multiplied by reps.
 		\n\nNow you can walk over to that muscle-head and brag that you
 		lift more per set them him (except that you did 150 reps of ten
 		pounds instead of his two reps of&#x2026;well I can\'t count that high,
@@ -1667,42 +1677,43 @@
 	<string name="graph_options_daily_toggle_on_butt">daily</string>
 	<string name="graph_options_daily_toggle_off_butt">all sets</string>
 
-	<string name="graph_options_daily_mode_on_msg">mode: Daily</string>
-	<string name="graph_options_daily_mode_off_msg">mode: All Sets</string>
+	<string name="graph_options_daily_mode_on_msg">mode\u003a Daily</string>
+	<string name="graph_options_daily_mode_off_msg">mode\u003a All Sets</string>
 
 	<string name="graph_options_daily_toggle_help_title">Display Mode</string>
 	<string name="graph_options_daily_toggle_help_msg">
-		These two buttons give you two options for how to display your
+		These buttons give you two options for how to display your
 		workout data.
-		\n\n\'all sets\' (default) graphs a point for every single exercise
-		set you enter. If you do your exercise sets very closely (like most people)
-		you may see them clump together so closely that you must zoom in a LOT to
+		\n\n<i>All sets</i> (default) graphs a point for every single exercise
+		set you enter. If you do more than one set per day,
+		you may see the graph clump the sets together so closely that you must zoom in a LOT to
 		notice any difference.
-		\n\n\'daily\' Shows all the results of one day added up. This is kind of
-		complicated. Here goes:
+		\n\n\u2022 <i>Daily</i> shows all the results of each day added up. This is kind of
+		complicated. Here goes\u003a
 		\n\nAll the repetions for a day are added together. So if you did one set
 		of ten, another set of five, and a third set of just one, you will see
-		16 graphed for that day.
+		16 graphed for <b>reps</b> that day.
 		\n\nThe other aspects are similar to reps, but take repetitions into
 		account.
 		\n\nSo for that same exercise sets, if you did fifty pounds
 		for the first set, eighty pounds for the second set, and one hundred pounds
-		for the third set, you moved a grand total for \'weight\' of 1000 pounds (10 x 50 +
+		for the third set, you moved a grand total <b>weight</b> of 1000 pounds (10 x 50 +
 		5 x 80 + 1 x 100 = 1000, \u2714 ).
-		\n\n	If reps is not present for a
+		\n\nIf <b>reps</b> is not present for a
 		particular exercise (like for jogging, which just includes time and distance), then no multiplication is done; the sets are simply
 		added up for the day. So if you jogged for 2 miles in the morning, 1 mile during lunch,
 		and burned off some steam after work by jogging 4 miles (whew!), then the
-		daily \'distance\' would be 7 miles. Makes sense if you think about it.
-		\n\nAs if that wasn\'t complicated enough, \'levels\' don\'t make sense
-		to accumulate. So they are actually averaged for the day (yeah, a WEIGHTED average
-		if reps are present). This means that if you ran on an eliptical trainer
-		at level eight for a while and then ran again at level ten, your daily \'level\'
+		daily <b>distance</b> would be 7 miles. Makes sense if you think about it.
+		\n\nAs if that wasn\'t complicated enough, <b>levels</b> don\'t make sense
+		to accumulate. So they are averaged for the day (yeah, a <i>weighted</i> average
+		if <b>reps</b> are present\u2014for you nerds). This means that if you ran on an eliptical trainer
+		at level eight for a while and then ran again at level ten, your daily <b>level</b>
 		would be averaged to a 9. Makes sense, too, but you have to think harder about
 		it.
-		\n\nAnd finally, the aspect of a workout exercise initially called \'other\'. Since
-		this is quite customizable by the user (that\'s the main point of it), the program
-		has no way to know how to summarize a day of these sets. So my best guess is to
+		\n\nAnd finally, there\'s the aspect initially called <b>other</b>
+		(you should have given it a more meaningful name when creating the exercise). Since
+		this apect is quite customizable by the user (that\'s the main point of it), the program
+		can\'t know how to summarize a day of these sets. So my best guess is to
 		simply display the highest value for the day.
 		\n\nSorry about the long help page, but there\'s a lot to explain here.
 	</string>
@@ -1777,25 +1788,25 @@
 	<!-- ============              	  ============ -->
 
 	<string name="manage_db_title">Manage Users</string>
-	<string name="manage_db_help_title">Manage the Users</string>
+	<string name="manage_db_help_title">Manage Users</string>
 	<string name="manage_db_help_msg">
 		Want control of all that workout data for more than one person?
 		That\'s what this screen is for!
 		\n\nMost of the time it\'s just you and your workout.
 		But sometimes you might want to share your phone with
 		a friend, keep track of another person, or experiment
-		around. That\'s what this section is for.
-		\n\nSo this app organizes your workout groups by person\u003a each
-		person (aka \'user\')has one group of workout data. The users are listed
+		around\u2014that\'s what this section is for.
+		\n\nYour workouts are grouped by person\u003a each
+		person (or <i>user</i>) has one group of workout data. The users are listed
 		on this screen.
-		\n\nTo change who is the currently active user,
+		\n\n\u2022 To change who is the <b>currently active user</b>,
 		scroll through the list and tap to make that person
 		active.
-		\n\nYou can create a new user by filling out a name and
+		\n\n\u2022 You can create a <b>new user</b> by typing a name and
 		hitting the add button.
-		\n\nLong-tap (press and hold for one second) a user to
-		edit that user\'s workout data. You\'ll be able to delete,
-		rename, or clear that user\'s data on that screen.
+		\n\n\u2022 Long-tap (press and hold for one second) a user to
+		edit that user\'s workout data. You\'ll be able to <b>delete</b>,
+		<b>rename</b>, or <b>clear</b> that user\'s data on that screen.
 	</string>
 
 	<string name="manage_db_current_label">current\u003a</string>
@@ -1822,7 +1833,7 @@
 		for most simple spreadsheets.
 	</string>
 
-	<string name="manage_db_username_used_dialog_title">Used: %s</string>
+	<string name="manage_db_username_used_dialog_title">Used\u003a %s</string>
 	<string name="manage_db_username_used_dialog_msg">
 		The username you typed in (%s) is already taken. Try a different
 		name.
@@ -1869,7 +1880,7 @@
 	<string name="manage_db_popup_delete_help_title">Delete</string>
 	<string name="manage_db_popup_delete_help_msg">
 		Yes, this does exactly what you think it does. It permanently
-		removes the selected user. And yes, there is no going back.
+		removes the selected user and all their data. And yes, there is no going back.
 		\n\nSo be careful!
 	</string>
 
@@ -1881,7 +1892,7 @@
 		Did you just get married and want to change your name? Or maybe
 		you just don\'t like your name? Regardless of the reason, this
 		is how you rename your data.
-		\n\nSimply type the new name here and press the \'change\'
+		\n\nSimply type the new name here and press the <i>change</i>
 		button. That\'s all there is to it.
 	</string>
 	<string name="manage_db_popup_rename_no_name_error">
@@ -1893,7 +1904,7 @@
 	<string name="manage_db_popup_cancel_help_msg">
 		Yes, this button sends you back to the previous screen without
 		doing anything. Why do I even bother explaining something so obvious?
-		\'Cause I\'m an anal nut.
+		\'Cause I\'m nuts.
 	</string>
 
 	<string name="manage_db_popup_delete_sure_title">Delete %s!</string>
@@ -1915,7 +1926,6 @@
 		of all those workout sets for this user will be erased for good.
 		\n\nThe exercises you created will still be there (whew, at least you don\'t have to
 		do that again!).
-		\n\nIf you want to remove those, you\'ll have to delete the exercises
 		one-by-one by long-touching them at the main grid.
 	</string>
 	<string name="manage_db_popup_clear_set_data_yesno_title">Clear %s\'s Workout Data?</string>
