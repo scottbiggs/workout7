@@ -43,7 +43,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.View.OnLongClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TableRow;
@@ -370,12 +369,12 @@ public class AddSetActivity
 
 
 	@Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        WGlobals.g_sound = true;		// Turn sound back on.
-    }
-	
-	
+	public void onWindowFocusChanged(boolean hasFocus) {
+		super.onWindowFocusChanged(hasFocus);
+		WGlobals.g_sound = true;		// Turn sound back on.
+	}
+
+
 	//------------------------------
 	//	Initialize the menu.
 	//

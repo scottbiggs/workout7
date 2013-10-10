@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -30,6 +31,7 @@ public class EditSetActivity
 						BaseDialogActivity
 					implements
 						OnClickListener,
+						OnLongClickListener,
 						DatePickerDialog.OnDateSetListener,
 						TimePickerDialog.OnTimeSetListener {
 
@@ -154,59 +156,105 @@ public class EditSetActivity
 		// are local variables instead of class members).
 		TextView date_label_tv = (TextView) findViewById(R.id.editset_date_label_tv);
 		date_label_tv.setOnClickListener(this);
+		date_label_tv.setOnLongClickListener(this);;
+
 		TextView cal_time_label_tv = (TextView) findViewById(R.id.editset_calendar_time_label_tv);
 		cal_time_label_tv.setOnClickListener(this);
+		cal_time_label_tv.setOnLongClickListener(this);
+
 		TextView reps_label_tv = (TextView) findViewById(R.id.editset_reps_label_tv);
 		reps_label_tv.setOnClickListener(this);
+		reps_label_tv.setOnLongClickListener(this);
+
 		m_weight_label_tv = (TextView) findViewById(R.id.editset_weight_label_tv);
 		m_weight_label_tv.setOnClickListener(this);
+		m_weight_label_tv.setOnLongClickListener(this);
+
 		TextView level_label_tv = (TextView) findViewById(R.id.editset_level_label_tv);
 		level_label_tv.setOnClickListener(this);
+		level_label_tv.setOnLongClickListener(this);
+
 		TextView cals_label_tv = (TextView) findViewById(R.id.editset_cals_label_tv);
 		cals_label_tv.setOnClickListener(this);
+		cals_label_tv.setOnLongClickListener(this);
+
 		m_dist_label_tv = (TextView) findViewById(R.id.editset_dist_label_tv);
 		m_dist_label_tv.setOnClickListener(this);
+		m_dist_label_tv.setOnLongClickListener(this);
+
 		m_time_label_tv = (TextView) findViewById(R.id.editset_time_label_tv);
 		m_time_label_tv.setOnClickListener(this);
+		m_time_label_tv.setOnLongClickListener(this);
+
 		m_other_label_tv = (TextView) findViewById(R.id.editset_other_label_tv);
 		m_other_label_tv.setOnClickListener(this);
+		m_other_label_tv.setOnLongClickListener(this);
+
 		TextView stress_label_tv = (TextView) findViewById(R.id.editset_stress_label_tv);
 		stress_label_tv.setOnClickListener(this);
+		stress_label_tv.setOnLongClickListener(this);
+
 		TextView notes_label_tv = (TextView) findViewById(R.id.editset_notes_label_tv);
 		notes_label_tv.setOnClickListener(this);
+		notes_label_tv.setOnLongClickListener(this);
 
 		// The data TextViews
 		m_calendar_date_data_tv = (TextView) findViewById(R.id.editset_date_data_tv);
 		m_calendar_date_data_tv.setOnClickListener(this);
+		m_calendar_date_data_tv.setOnLongClickListener(this);
+
 		m_calendar_time_data_tv = (TextView) findViewById(R.id.editset_calendar_time_data_tv);
 		m_calendar_time_data_tv.setOnClickListener(this);
+		m_calendar_time_data_tv.setOnLongClickListener(this);
+
 		m_reps_data_tv = (TextView) findViewById(R.id.editset_reps_data_tv);
 		m_reps_data_tv.setOnClickListener(this);
+		m_reps_data_tv.setOnLongClickListener(this);
+
 		m_weight_data_tv = (TextView) findViewById(R.id.editset_weight_data_tv);
 		m_weight_data_tv.setOnClickListener(this);
+		m_weight_data_tv.setOnLongClickListener(this);
+
 		m_level_data_tv = (TextView) findViewById(R.id.editset_level_data_tv);
 		m_level_data_tv.setOnClickListener(this);
+		m_level_data_tv.setOnLongClickListener(this);
+
 		m_cals_data_tv = (TextView) findViewById(R.id.editset_cals_data_tv);
 		m_cals_data_tv.setOnClickListener(this);
+		m_cals_data_tv.setOnLongClickListener(this);
+
 		m_dist_data_tv = (TextView) findViewById(R.id.editset_dist_data_tv);
 		m_dist_data_tv.setOnClickListener(this);
+		m_dist_data_tv.setOnLongClickListener(this);
+
 		m_time_data_tv = (TextView) findViewById(R.id.editset_time_data_tv);
 		m_time_data_tv.setOnClickListener(this);
+		m_time_data_tv.setOnLongClickListener(this);
+
 		m_other_data_tv = (TextView) findViewById(R.id.editset_other_data_tv);
 		m_other_data_tv.setOnClickListener(this);
+		m_other_data_tv.setOnLongClickListener(this);
 
 		m_stress_data_iv = (ImageView) findViewById(R.id.editset_stress_data_iv);
 		m_stress_data_iv.setOnClickListener(this);
+		m_stress_data_iv.setOnLongClickListener(this);
 
 		m_notes_data_tv = (TextView) findViewById(R.id.editset_notes_data_tv);
 		m_notes_data_tv.setOnClickListener(this);
+		m_notes_data_tv.setOnLongClickListener(this);
 
 		m_delete = (Button) findViewById(R.id.editset_delete_butt);
 		m_delete.setOnClickListener(this);
+		m_delete.setOnLongClickListener(this);
+
 		m_done = (Button) findViewById(R.id.editset_ok_butt);
 		m_done.setOnClickListener(this);
+		m_done.setOnLongClickListener(this);
+
 		m_cancel = (Button) findViewById(R.id.editset_cancel_butt);
 		m_cancel.setOnClickListener(this);
+		m_cancel.setOnLongClickListener(this);
+
 		m_help = (ImageView) findViewById(R.id.editset_logo);
 		m_help.setOnClickListener(this);
 
@@ -495,6 +543,90 @@ public class EditSetActivity
 		} // switch on v id
 
 	} // onClick (v)
+
+
+	//-------------------------
+	@Override
+	public boolean onLongClick(View v) {
+		WGlobals.play_long_click();
+
+		switch (v.getId()) {
+			case R.id.editset_date_label_tv:
+			case R.id.editset_date_data_tv:
+				show_help_dialog(R.string.editset_date_help_title, R.string.editset_date_help_msg);
+				return true;
+
+			case R.id.editset_calendar_time_label_tv:
+			case R.id.editset_calendar_time_data_tv:
+				show_help_dialog(R.string.editset_calendar_time_help_title, R.string.editset_calendar_time_help_msg);
+				return true;
+
+			case R.id.editset_reps_label_tv:
+			case R.id.editset_reps_data_tv:
+				show_help_dialog(R.string.editset_reps_help_title, R.string.editset_reps_help_msg);
+				return true;
+
+			case R.id.editset_weight_label_tv:
+			case R.id.editset_weight_data_tv:
+				show_help_dialog(R.string.editset_weight_help_title, R.string.editset_weight_help_msg);
+				return true;
+
+			case R.id.editset_level_label_tv:
+			case R.id.editset_level_data_tv:
+				show_help_dialog(R.string.editset_level_help_title, R.string.editset_level_help_msg);
+				return true;
+
+			case R.id.editset_cals_label_tv:
+			case R.id.editset_cals_data_tv:
+				show_help_dialog(R.string.editset_cals_help_title, R.string.editset_cals_help_msg);
+				return true;
+
+			case R.id.editset_dist_label_tv:
+			case R.id.editset_dist_data_tv:
+				show_help_dialog(R.string.editset_dist_help_title, R.string.editset_dist_help_msg);
+				return true;
+
+			case R.id.editset_time_label_tv:
+			case R.id.editset_time_data_tv:
+				show_help_dialog(R.string.editset_time_elapsed_help_title, R.string.editset_time_elapsed_help_msg);
+				return true;
+
+			case R.id.editset_other_label_tv:
+			case R.id.editset_other_data_tv:
+				show_help_dialog(R.string.editset_other_help_title, R.string.editset_other_help_msg);
+				return true;
+
+			case R.id.editset_stress_label_tv:
+			case R.id.editset_stress_data_iv:
+				show_help_dialog(R.string.editset_stress_help_title, R.string.editset_stress_help_msg);
+				return true;
+
+			case R.id.editset_notes_label_tv:
+			case R.id.editset_notes_data_tv:
+				show_help_dialog(R.string.editset_notes_help_title, R.string.editset_notes_help_msg);
+				return true;
+
+
+			case R.id.editset_delete_butt:
+				show_help_dialog(R.string.editset_delete_help_title, R.string.editset_delete_help_msg);
+				return true;
+
+			case R.id.editset_ok_butt:
+				show_help_dialog(R.string.editset_done_help_title, R.string.editset_done_help_msg);
+				return true;
+
+			case R.id.editset_cancel_butt:
+				show_help_dialog(R.string.editset_cancel_help_title, R.string.editset_cancel_help_msg);
+				return true;
+
+			default:
+				Log.e(tag, "Illegal View id in onLongClick()!");
+				break;
+		} // switch on v id
+
+		Log.e(tag, "Unrecognized long click!");
+		return false;
+	} // onLongClick(v)
 
 
 	//-------------------------
@@ -979,9 +1111,8 @@ public class EditSetActivity
 
 		if (m_exer_data.btime) {
 			// Unit of Time
-
 			m_time_label_tv = (TextView) findViewById(R.id.editset_time_label_tv);
-			String time_label_str = getString (R.string.inspector_set_time_label, m_exer_data.time_unit);
+			String time_label_str = getString (R.string.editset_time_label, m_exer_data.time_unit);
 			m_time_label_tv.setText(time_label_str);
 			if (DatabaseHelper.EXERCISE_COL_TIME_NUM == m_exer_data.significant) {
 				m_time_label_tv.setTypeface(null, Typeface.BOLD);

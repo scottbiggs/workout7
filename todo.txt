@@ -1,5 +1,8 @@
 TODO:
 -----------------
+EditSetActivity: the border doesn't look right.  It looks like the radii
+of the backgrounds don't match.
+
 Test all the help files.
 
 When first starting, the grid looks funny.  This probably is because the

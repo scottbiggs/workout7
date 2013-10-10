@@ -178,11 +178,12 @@
 
 	<string name="welcome_menu_credits_button">show credits</string>
 	<string name="welcome_menu_credits_title">Show Credits</string>
-	<string name="welcome_menu_credits_msg">Hyde Park Gym is owned
+	<string name="welcome_menu_credits_msg">
+		Hyde Park Gym (4125 Guadalupe St., Austin, TX, 78751, http://hydeparkgym.com/ ) is owned
 		and run by Brook Jones. This tool was created with the
 		help of him and many of the other fine folks at Hyde Park
-		Gym in Austin, Texas\u2014just look for place with the arm
-		sticking out! Programmed by Scott Biggs.</string>
+		Gym\u2014just look for place with the big arm
+		sticking out! Programmed by Scott M. Biggs.</string>
 	<string name="welcome_menu_exit_button">exit</string>
 	<string name="welcome_version_number">v. 0.72 Alpha Test</string>
 
@@ -223,7 +224,7 @@
 		and aerobic. Anaerobic are strength building exercises like
 		bench presses and squats. Aerobic exercises build endurance
 		and cardiovascular health (jogging, jump rope, and swimming
-		for examples). You need to tell this program what type of
+		are examples). You need to tell this program what type of
 		exercise this is because it does keep track, and we don\'t
 		want to confuse how your muscles are worked!
 		\n\nAlso, this program wants to know which group of muscles
@@ -245,7 +246,7 @@
 		\n\nAnd like always, you can long-touch (touch and hold for
 		two seconds) any widget and get specific help for that
 		item.
-		\n\nNow for an example\u003a\n
+		\n\n<u>Now for an example</u>\u003a\n
 		A good friend is a competitive synchronized swimmer, and her
 		group has some unusual types of exercises for their team.
 		\n\nOne of them is called \'Smiling\', so she enters that
@@ -481,28 +482,29 @@
 
 	<string name="grid_help_title">Help!</string>
 	<string name="grid_help_button">help</string>
-	<string name="grid_help_msg">Yeah, this screen can look
-		very complicated, but it\'s really not.
-		\n\nWhat you see\u003a
-		\n\u2013This screen is rather like a spreadsheet for all your exercises and
-		the sets you have done for those exercises.
-		\n\u2013Each row is an exercise. The first item in the row (right-most)
-		is the name of the exercise.
-		\n\u2013The columns are dates when you have worked out. The top of the
-		column tells you the day that column represents.
-		\n\u2013Each cell tells you how many sets of an exercise you did on
-		a given date.
-		\n\nWhat do do\u003a
-		\n\u2013To record a new set for an exercise, just
+	<string name="grid_help_msg">Yeah, this screen seems
+		complicated, but it\'s really not.
+		\n\n<u>What you see</u>\u003a
+		\n\u00a0\u00a0Before you is a spreadsheet of all your exercises and
+		the workout sets you recorded for those exercises.
+		\n\n\u2022 Each row is an exercise. The first item in the row
+		is the name of the exercise (in orange).
+		\n\n\u2022 The columns are the days you worked out. The top of the
+		column lists the specific date.
+		\n\n\u2022 Each cell tells you how many sets of an exercise you did on
+		that particular date.
+		\n\n<u>What to do</u>\u003a
+		\n\u2022 To record a new set for an exercise, just
 		tap on the exercise name.
-		\n\u2013To see
-		details of an exercise set, tap directly on its number.
-		\n\u2013Pressing and holding
+		\n\n\u2022 Pressing and holding an exercise name
 		allows you to edit or delete that entry.
-		\n\u2013Hit the \'add\' button to make an exercise just the
-		way you want it.
-		\n\u2013The \'change order\' button will let you rearrange
-		the order the exercises are displayed.
+		\n\n\u2022 To see
+		details of an exercise set, tap directly on its number.
+		\n\n\u2022 If there\'s just one set for that day (you see the number 1 in the cell),
+		you can edit it immediately by long-pressing that cell.
+		\n\n\u2022 Hit the <i>add</i> button to create a new exercise.
+		\n\n\u2022 The <i>change order</i> button will let you rearrange
+		the order that the exercises are displayed.
 		\n\nWhew, that was good; time for a shower!
 		</string>
 
@@ -569,12 +571,11 @@
 	<string name="editexer_help_title">Edit Exercise Help</string>
 	<string name="editexer_help_msg">(Hoo boy, get ready for a long one!)
 		\n\nThis screen gives you the
-		ability to modify or delete an exercise. And here begins
-		a very long help message\u003a
-		\n\nWARNING\u003a\n
+		ability to modify or delete an exercise. But I gotta start with
+		a caveat\u003a
+		\n\n<b>WARNING</b>\u003a\n
 		\tChanging an exercise may have odd results
-		on workout sets that you have already done with this
-		exercise.
+		on workout sets that have already been entered.
 		\n\nI\'ll do my best to try to retain data, but
 		some things just won\'t work (like changing the
 		unit\u2014there is no way I can convert from the old
@@ -582,70 +583,76 @@
 		some sort of formula, which is the sort of thing
 		you\'re avoiding by using a computer, right\?).
 		\n\nConsequently, the sets you did before the change
-		may be messed up. But you can edit them and fix
-		the weirdness if you like.
-		\n\nTo start, the textbox near the top allows you to change the
-		name if you don\'t like it.
-		\n\nExercises generally fall into two different types\u003a anaerobic
-		and aerobic. Anaerobic are strength building exercises like
-		bench presses and squats. Aerobic exercises build endurance
+		may be a little messed up. Of course you can edit those sets to fix
+		the weirdness if you like. <b>end Warning</b>
+		\n\n<b>name</b>\u003a\u00a0 The textbox near the top allows you to change the
+		name. \u2013Ha, that was easy!
+		\n\n<b>exercise type</b>\u003a\u00a0 Exercises generally fall
+		into two different types, <i>anaerobic</i>
+		and <i>aerobic</i>.
+		\n\u00a0\u2022 <i>Anaerobic</i> are strength building exercises like
+		bench presses and squats.
+		\n\u00a0\u2022 <i>Aerobic</i> exercises build endurance
 		and cardiovascular health (jogging, jump rope, and swimming
-		for examples). You need to tell this program what type of
-		exercise this is because it does keep track, and we don\'t
+		are examples).
+		\n\u00a0\u2014 You need to tell this program what type of
+		exercise this is because it does keep track of these things, and we don\'t
 		want to confuse how your muscles are worked!
-		\n\nAlso, this program wants to know which group of muscles
+		\n\n<b>muscle group</b>\u003a\u00a0 This program wants to know which group of muscles
 		you are using with this exercise. You don\'t have to be
 		too specific; a rough guesstimate is good enough.
-		\n\nSelect the
-		checkbox to left for each measurement you want to record
+		\n\n<b>aspects</b>\u003a\u00a0 Select the
+		checkbox on the left for each measurement (aspect) you want to record
 		for this exercise. Uncheck to disable this measurement.
-		\n\nThen touch the drop-down to the right to select the unit
-		of measurement.  If you want to create your own unit,
-		select \'customize\' and fill in the following form.
-		\n\nFor each exercise, there is usually one measurement that
-		is the most important. Select the radio button on the right
+		\n\n<b>unit</b>\u003a\u00a0 If applicable, touch the drop-down to the right
+		of the checkbox to select the unit
+		of measurement. If you want to create your own unit,
+		select <i>customize</i> at the bottom of the list.
+		\n\n<b>significant</b>\u003a\u00a0 For each exercise, there is usually one measurement that
+		is the most important, which I call the <i>significant</i> aspect. Select the radio button on the right
 		side next to the measurement that is the most important
-		part of this particular exercise.
-		\n\nThe \'other\' section allows you to completely customize.
-		You can name both the measurement AND the unit. This is
-		for those exercises that I just could not think of.
+		part of this particular exercise. You can skip entries, but not the
+		<i>significant</i> entry.
+		\n\n<b>other</b>\u003a\u00a0 This section allows you to completely customize.
+		You can name both the <i>measurement</i> AND the <i>unit</i>. This is
+		a catch-all to allow plenty of customization.
 		\n\nAnd like always, you can long-touch (touch and hold for
 		two seconds) any widget and get specific help for that
 		item.
-		\n\nNow for an example\u003a\n
-		My buddy is a tiddly-winks champion and does a very specific
-		exercise to train for this sport called winking.
-		\n\nSo he enters \'winking\' for the name.
-		\n\nHe always count repetitions, so he checks \'reps\'.
-		\n\nThere are no levels to this exercise, so he leaves this
+		\n\n<u>Now for an example</u>\u003a
+		\n\nMy buddy is a tiddly-winks champion and trains with a very specific
+		exercise called winking.
+		\n\n\u2022 So he types \'winking\' for the name.
+		\n\n\u2022 Winking doesn\'t quite fit into either the standard
+		exercise types, so he chooses <i>misc</i>.
+		\n\n\u2022 This exercise uses fingers and lots of kneeling, so for
+		the muscle group he selects <i>all</i>.
+		\n\n\u2022 He always count repetitions, so he checks <i>reps</i>.
+		\n\n\u2022 There are no levels to this exercise, so he leaves this
 		unchecked (levels are generally used with exercise machines
 		like Stair Steppers or rowers).
-		\n\nCounting calories\? for tiddly-winks\? You gotta be kidding!
-		\n\nWinks do have a weight, so he checks \'weighted\'.
-		He then presses on the drop-down nextdoor and select \'grains\',
+		\n\n\u2022 Counting calories\? for tiddly-winks\? You gotta be kidding!
+		\n\n\u2022 Winks do have a weight, so he checks <i>weighted</i>.
+		He then presses on the drop-down nextdoor and select <i>grains</i>,
 		the unit of weight for a wink.
-		\n\nWhen winking, they do go a distance, but that is not important
+		\n\n\u2022 When winking, they do go a distance, but that is not important
 		(accuracy is), so he leaves this unchecked.
-		\n\nTime is not an issue in this sport, so that also remains
+		\n\n\u2022 Time is not an issue in this sport, so that also remains
 		unchecked.
-		\n\nBut there is one more aspect to the tiddly-winks workout that
+		\n\n\u2022 But there is one more aspect to the tiddly-winks workout that
 		the program has not provided for\u003a accuracy. So my friend
-		checks \'other\' and types \'accuracy\' in the textbox
-		next to it.
-		\n\nThe unit for accuracy while winking is \'tiddles\', so
-		he types this in the lower box.
-		\n\nLastly, he must decide which of these is the most significant
+		checks <i>other</i> and types \'accuracy\' for the <i>name</i>.
+		\n\n\u2022 The <i>unit</i> for accuracy while winking is \'tiddles\', so
+		he types this in too.
+		\n\n\u2022 Almost done\u2014he must decide which of these is the most significant
 		part of the winking exercise. While accuracy is important, this
 		is an exercise, and he wants to keep track of the repetitions.
-		So he selects the right-most radio button in the \'reps\' row.
-		\n\nLike other programs you have used, hit \'ok\' to save the
-		changes, and \'cancel\' if you change your mind and like
-		things the way they were.
-		\n\nRemember, if you later decide to change anything, then come
-		back to the Edit Excercise screen any time.
+		So he selects the right-most radio button in the <i>reps</i> row.
+		\n\n\u2022 Finally he hits <b>execute changes</b> to save this
+		exercise. If he decided he didn\'t want this exercise after all he would tap <b>cancel</b>.
 		\n\nThat\'s it.  Sorry for the long explanation, but I think it\'s
-		better to bore you than to let you languish in confusion. Have
-		a great workout!
+		better to bore you to tears rather than letting you languish in confusion.
+		\n\nHave a great workout!
 	</string>
 
 
@@ -920,27 +927,27 @@
 		Oooh, that looked painful!</string>
 
 
-	<string name="aset_help_title">Enter a Set Help</string>
+	<string name="aset_help_title">Do a Set Help</string>
 	<string name="aset_help_msg">You\'re now working hard,
 		executing a rigorous set of an arduous exercise.
-		Tell us about it, that\'s what this program is for,
+		Tell us about it, that\'s what this program\'s for,
 		right\?
 
-		\n\nThe data from the last time you did the set is
+		\n\n\u2022 The entries from the last time you did the set are
 		automatically filled in. You can change them or
-		press the \'clear\' button and start fresh. (Your
-		stress condition is ALWAYS set to \'just right\', the
+		press the <i>clear</i> button and start fresh. (Your
+		<i>stress condition</i> is ALWAYS set to \'just right\', the
 		first button. The
-		notes from your previous set is just a hint\u2014it will
+		notes from your previous set are just a hint\u2014it will
 		disappear when you save or start writing something else.)
 
-		\n\nInput the numbers and any comments and don\'t forget
+		\n\n\u2022 Input the numbers and any comments and don\'t forget
 		to press
-		\'enter set\'! That\'s how this program knows to enter
-		this information into the database.
+		<i>enter set</i>! That\'s how this program knows to enter
+		this information into the database, duh.
 
-		\n\nSelect a radio button that indicates how hard this
-		set has been for you (I call it the \'stress\' condition).
+		\n\n\u2022 Select a radio button that indicates how hard this
+		set has been for you (I call it the <b>stress</b> condition).
 		The first choice means that this exercise set was just
 		right\u2014you had to push to complete it.
 
@@ -952,18 +959,18 @@
 		that you could not finish, tap on the third button (too
 		heavy).
 
-		\n\nWhile I hope your exercises never come to this, but
+		\n\nI hope your exercises never come to this, but
 		if something
-		odd or bad does happen (accident, injury, etc.),
+		odd or bad does happen (accident, injury, etc),
 		press the last button, ouch! At least you can record
 		exactly what you were doing and when it happened.
 
-		\n\nThe notes section is there for whatever pops up,
+		\n\n\u2022 The notes section is there for whatever pops up,
 		usually relevant to the set you just did.  Of course you\'re
 		welcome to write that great novel you\'ve been thinking
-		of while cooling down between sets.
+		of while catching your breath between sets.
 
-		\n\nIf you are like me and have big bulky fingers, you
+		\n\n\u2022 If you\'re like me and have big bulky fingers, you
 		can change the width of the number wheel thingies by hitting
 		the menu button. But if your phone is small, this may
 		put a nasty cramp in how this screen lays out. Your call.
@@ -972,6 +979,10 @@
 		turn them off at the preferences from the welcome screen.
 		(Of course, if you don\'t
 		see anything they\'re probably already turned off.)
+		\n\n\u2022 Lastly, if you leaving an item blank is ok as long as
+		it\'s not the <i>signficant</i> aspect of this exercise, which
+		MUST be entered. Otherwise, blanks just count as a goose-egg (0).
+		\n\nEnough already, let\'s get back to working out!
 		</string>
 
 	<string name="aset_leave_title">Really\?</string>
@@ -1001,7 +1012,7 @@
 	<string name="aset_time_unit">minutes</string>
 	<string name="aset_time_help_title">Time</string>
 	<string name="aset_time_help_msg">Just enter the time
-		you spent on this exercise. Use the units provided.
+		you spent on this exercise set. Use the units provided.
 		You can change the time units by long-pressing this
 		exercise in the main grid.</string>
 	<string name="aset_time_hint">%s</string>
@@ -1023,14 +1034,15 @@
 		heat necessary to raise one gram of water one degree
 		Celcius.
 		\n\nThis isn\'t very much, compared to the
-		massive amount of heat food can produce . So in the
+		massive amount of heat that food can produce . So in the
 		world of food and exercise, people have used the
 		same word differently (sometimes called a \'dietary
-		calorie\')\u003a one thousand times more heat! enough
+		calorie\' or \'kilocalorie\')\u003a one thousand times more heat!
+		That\'s enough
 		to raise a kilogram of water one degree Celsius.
 		\n\nImagine if we were using the small scientific
 		calorie\u003a \"Hey, George!  You\'re gonna have to
-		jog a long time to match the 300,000 calories from that
+		jog a long time to take off the 300,000 calories from that
 		candy bar!\"
 	</string>
 	<string name="aset_calorie_hint">how many calories\?</string>
@@ -1065,8 +1077,8 @@
 
 	<string name="aset_notes_label">notes</string>
 	<string name="aset_notes_help_title">Notes</string>
-	<string name="aset_notes_help_msg">If you have anything
-		to add to this set, jot it down here. It\'s great
+	<string name="aset_notes_help_msg">If you have any comments
+		or notes for this set, record it here. It\'s also great
 		place to jot down phone numbers\u2014what other app
 		thinks this far ahead\?.</string>
 	<string name="aset_notes_hint">anything at all&#x2026;</string>
@@ -1228,12 +1240,13 @@
 	<string name="inspector_help_msg">
 		Want to see all the details of all your workout sets
 		for this exercise? You\'ve come to the right place!
-		\n\nAll your workout sets are listed on this screen. Scroll
+		\n\n\u2022 All your workout sets are listed on this screen. Scroll
 		through to see \'em all.
-		\n\nWant to see them in reverse order? You can do that
-		by selecting from the menu.
-		\n\nLong click on an exercise set to edit (or even delete)
-		details of that set. This way
+		\n\n\u2022 Want to reverse the order? No problem. By using the menu
+		all your data can be displayed <i>oldest first</i> (chronological order)
+		or <i>most-recent-first</i> (default).
+		\n\n\u2022 Long click on an exercise set to edit (or even delete)
+		that set. This way
 		you can go back
 		and fix mistakes or even erase bad memories. After all,
 		we\'re only human.
@@ -1261,7 +1274,7 @@
 	<string name="editset_level_label">level</string>
 	<string name="editset_cals_label">calories</string>
 	<string name="editset_dist_label">distance (%s)</string>
-	<string name="editset_time_label">time (%s)</string>
+	<string name="editset_time_label">elapsed time (%s)</string>
 	<string name="editset_other_label">%1$s (%2$s)</string>
 	<string name="editset_stress_label">stress level</string>
 	<string name="editset_notes_label">notes</string>
@@ -1280,15 +1293,35 @@
 
 	<string name="editset_help_title">Edit Exercise Set</string>
 	<string name="editset_help_msg">
-		This screen allows you to modify or delete an exercise
-		set that you have already entered.
-		\n\nTap on the data that you want to change. A dialog
+		This screen allows you to modify or delete an existing exercise
+		set.
+		\n\n\u2022 Tap on the data that you want to change. A dialog
 		will pop up where you can enter a new value.
-		\n\nPress the \'delete set\' button to remove the
+		\n\n\u2022 Press the <i>delete set</i> button to remove the
 		whole set. Beware, because you can\'t get it back
 		(other than entering it in again).
-		\n\nAs usual, if you change your mind, you can hit
-		the \'back\' or the \'cancel\' buttons.
+		\n\n\u2022 As usual, if you change your mind, you can hit
+		the <i>back</i> or the <i>cancel</i> buttons.
+	</string>
+
+	<string name="editset_delete_help_title">Delete Set Help</string>
+	<string name="editset_delete_help_msg">
+		This button permanently deletes the data of this one exercise set.
+		You can\'t get it back, but it is pretty easy to re-enter it if
+		you like.
+	</string>
+
+	<string name="editset_cancel_help_title">Cancel Help</string>
+	<string name="editset_cancel_help_msg">
+		Change your mind? No sweat ;)
+		\n\nJust tap on the <i>cancel</i>
+		button to go back as if nothing had ever happened.
+	</string>
+
+	<string name="editset_done_help_title">Done Help</string>
+	<string name="editset_done_help_msg">
+		Tap on this button when you are done editing this set. Your changes
+		will be saved for posterity.
 	</string>
 
 	<string name="editset_delete_warning_title">Delete a Set</string>
@@ -1298,6 +1331,78 @@
 		\n\nAre you sure you want to delete the %2$s set performed
 		on %3$s at %4$s\?
 	</string>
+
+	<string name="editset_date_help_title">Date Help</string>
+	<string name="editset_date_help_msg">
+		Change the date of this set. Should be pretty easy as this
+		is the default date widget for your device.
+	</string>
+
+	<string name="editset_calendar_time_help_title">Time Help</string>
+	<string name="editset_calendar_time_help_msg">
+		This is the time that you <i>finished</i> the set. The
+		elapsed time is entered elsewhere (if applicable).
+	</string>
+
+	<string name="editset_reps_help_title">Reps Help</string>
+	<string name="editset_reps_help_msg">
+		How many times did you go for this set? Enter your repetitions
+		with this fine and dandy pop-up.
+	</string>
+
+	<string name="editset_weight_help_title">Weight Help</string>
+	<string name="editset_weight_help_msg">
+		Whether it\'s kilograms, pounds, grains, or tons, you can change the
+		weight of this set here.
+	</string>
+
+	<string name="editset_level_help_title">Level Help</string>
+	<string name="editset_level_help_msg">
+		What level did you do this set? There\'s probably a setting somewhere
+		that\'ll tell you.
+	</string>
+
+	<string name="editset_cals_help_title">Calories Help</string>
+	<string name="editset_cals_help_msg">
+		Oh yeah, here\'s a biggie. How many <i>calories</i> did you burn for this
+		set? Doesn\'t matter to me which calorie you use, as long as it\'s
+		consistent.
+	</string>
+
+	<string name="editset_dist_help_title">Distance Help</string>
+	<string name="editset_dist_help_msg">
+		How far did you go? Answer this question, Grasshoppa, and you
+		will know how to modify this set.
+	</string>
+
+	<string name="editset_time_elapsed_help_title">Elapsed Time Help</string>
+	<string name="editset_time_elapsed_help_msg">
+		This records the time that <i>elapsed</i> while you did this
+		set. For you and me, just answer the question\u003a How long did this set take to complete?
+		\n\nFor the other time (when you completed the set), look at the \'time\' section above.
+		\n\nOh yeah, instead of bothering with all those years, minutes,
+		seconds, or whatever, just use the unit it tells you and subdivide
+		into decimal places. So if you\'re unit is minutes, and you worked
+		on this set for two minutes and thirty seconds, enter <b>2.5</b> for your time.
+	</string>
+
+	<string name="editset_other_help_title">Misc. Help</string>
+	<string name="editset_other_help_msg">
+		Just enter the number you want. Please.
+	</string>
+
+	<string name="editset_stress_help_title">Stress Help</string>
+	<string name="editset_stress_help_msg">
+		How stressful was this set? See the help on the next
+		screen for more details.
+	</string>
+
+	<string name="editset_notes_help_title">Notes Help</string>
+	<string name="editset_notes_help_msg">
+		This allows you to add or change your notes for this set.
+		You can write anything. <b>Anything</b>.
+	</string>
+
 
 	<!-- ============                ============ -->
 	<!-- ============ Enter a Number ============ -->
@@ -1309,8 +1414,8 @@
 
 	<string name="enter_a_number_help_title">Number Help</string>
 	<string name="enter_a_number_help_msg">
-		Type in a number here.
-		\n\n\n\nGee, why do I even bother\? \'Cause I\'m anal, that\'s
+		Type in a number here. Like every calculator you\'ve ever used, \'<b>C</b>\' clears the entry.
+		\n\n\nGee, why do I even bother\? \'Cause I\'m anal, that\'s
 		why.
 		\n\nI&#x2026; must&#x2026; cross&#x2026; the&#x2026; T\'s&#x2026; dot&#x2026;
 		the&#x2026; I\'s&#x2026; and&#x2026; &#x2026; &#x2026;
@@ -1361,18 +1466,19 @@
 	<string name="enter_stress_help_msg">
 		Select the stress level of this exercise set.
 		\n\n
-		\t\'just right\' is the selection for your normal workout.
+		\t<b>just right</b> is the selection for your normal workout.
 		You pushed to finish, but did not strain.\n
-		\t\'too easy\' means just that; this is a note to make it harder
+		\t<b>too easy</b> means just that; this is a note to make it harder
 		next time.\n
-		\t\'too hard\' indicates that you
+		\t<b>too hard</b> indicates that you
 		either could not finish or had to strain dangerously (and
 		unproductively) to finish this set.\n
-		\t\'injury\' is bad! An injury or something very unusual
+		\t<b>injury</b> is bad! An injury or something very unusual
 		occurred. Sorry.
-		\n\nYou don\'t have to keep track of these items. I find them helpful
+		\n\nYour stress condition is something I use
 		to know when it\'s time to up the weight or increase
-		the difficulty in my own workouts.
+		the difficulty in my own workouts. If you don\'t like
+		this option, then just don\'t do it. See if I care.
 	</string>
 
 	<string name="enter_stress_cond_label">stress</string>
