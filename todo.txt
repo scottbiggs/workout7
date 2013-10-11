@@ -3,8 +3,6 @@ TODO:
 EditSetActivity: the border doesn't look right.  It looks like the radii
 of the backgrounds don't match.
 
-Test all the help files.
-
 When first starting, the grid looks funny.  This probably is because the
 database isn't properly setup.  Hard to reproduce...
 
@@ -217,6 +215,9 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Test all the help files.
+	- done
+
 Modified the preferences screen to make it match the rest of the
 	program (including help and a back button).
 

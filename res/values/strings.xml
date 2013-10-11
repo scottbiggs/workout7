@@ -454,8 +454,8 @@
 		\n\nTouch the radio button to the right of
 		that measurement to tell the program which part you think
 		is the most important. For example, squats are all about
-		the weight. So make sure the \'weighted\' line has its
-		radio button turned on. For jogging, the \'distanced\'
+		the weight. So make sure the <i>weighted</i> line has its
+		radio button turned on. For jogging, the <i>distanced</i>
 		line is probably what you are most interested in.</string>
 
 	<string name="addexer_done_title">Done</string>
@@ -463,7 +463,7 @@
 
 	<string name="addexer_cancel_title">Cancel Add</string>
 	<string name="addexer_cancel_msg">If you decide to not add this
-		exercise, hit the \'cancel\' button. The program will forget
+		exercise, hit the <i>cancel</i> button. The program will forget
 		this entire entry.</string>
 
 	<string name="addexer_ok_title">Okay Button</string>
