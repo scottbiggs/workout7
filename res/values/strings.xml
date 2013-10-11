@@ -213,74 +213,74 @@
 
 	<!-- Menus -->
 	<string name="addexer_help_title">Add Exercise Help</string>
-	<string name="addexer_help_msg">On this screen you create
-		a new exercise for your workout list.
-		\n\nGive
-		this exercise a good name (something to easily distinguish
-		it from other exercises). Like all things here, if you
-		change your mind later, you can easily come back and edit
-		the name.
-		\n\nExercises generally fall into two different types\u003a anaerobic
-		and aerobic. Anaerobic are strength building exercises like
-		bench presses and squats. Aerobic exercises build endurance
+	<string name="addexer_help_msg">
+		Create a new exercise on this screen.
+		\n\n<b>name</b>\u003a Give this exercise a good name (something to easily distinguish
+		it from other exercises).
+		\n\n<b>exercise type</b>\u003a Exercises generally fall into two different types\u003a <i>anaerobic</i>
+		and <i>aerobic</i>.
+		\n\n\u0020\u2022 <i>Anaerobic</i> are strength building exercises like
+		bench presses and squats.
+		\n\n\u0020\u2022 <i>Aerobic</i> exercises build endurance
 		and cardiovascular health (jogging, jump rope, and swimming
-		are examples). You need to tell this program what type of
+		are examples).
+		\n\n\u0020\u2013 You need to tell this program what type of
 		exercise this is because it does keep track, and we don\'t
 		want to confuse how your muscles are worked!
-		\n\nAlso, this program wants to know which group of muscles
-		you are using with this exercise. You don\'t have to be
+		\n\n<b>muscle group</b>\u003a Which group of muscles
+		you are using with this exercise? You don\'t have to be
 		too specific; a rough guesstimate is good enough.
-		\n\nSelect the
+		\n\n<b>aspects</b>\u003a Select the
 		checkbox to left for each measurement you want to record
 		for this exercise. Uncheck to disable this measurement.
-		\n\nThen touch the drop-down to the right to select the unit
+		\n\n\u00a0\u2022 Touch the drop-down to the right to select the unit
 		of measurement.  If you want to create your own unit,
-		select \'customize\' and fill in the following form.
-		\n\nFor each exercise, there is usually one measurement that
+		select <i>customize</i> and fill in the following form.
+		\n\n<b>significant</b>\u003a For each exercise, there is usually one measurement that
 		is the most important. Select the radio button on the right
 		side next to the measurement that is the most important
 		part of this particular exercise.
-		\n\nThe \'other\' section allows you to completely customize.
-		You can name both the measurement AND the unit. This is
+		\n\n<b>other</b>\u003a This section allows you to customize an exercise.
+		You can name both the <i>measurement</i> AND the <i>unit</i>. This is
 		for those exercises that I just could not think of.
-		\n\nAnd like always, you can long-touch (touch and hold for
+		\n\n\u2022 And like always, you can long-touch (touch and hold for
 		two seconds) any widget and get specific help for that
 		item.
-		\n\n<u>Now for an example</u>\u003a\n
-		A good friend is a competitive synchronized swimmer, and her
-		group has some unusual types of exercises for their team.
-		\n\nOne of them is called \'Smiling\', so she enters that
-		for the name of her exercise.
-		\n\nRepetitions are important for this one, so she checks \'reps\'.
-		\n\nThere are no levels to this exercise, so she leaves this
+		\n\n<u>Now for an example</u>\u003a
+		\n\nA good friend is a competitive synchronized swimmer, and her
+		team has some unusual exercises.
+		\n\n\u2022 One of the exercises is called \'Smiling\', so she enters that
+		for the <i>name</i>.
+		\n\n\u2022 Repetitions are counted, so she checks <i>reps</i>.
+		\n\n\u2022 There are no <i>levels</i> to this exercise, so she leaves this
 		unchecked (levels are generally used with exercise machines
 		like Stair Steppers or rowers).
-		\n\nCalories? Yes, she is quite concerned about calories, but
-		there is no simple way to measure them.  So this is left blank.
-		\n\nSmiling is not weighted (imagine if it were!), so that remains unchecked.
-		\n\nHowever there is a distance, so she checks \'distanced\'
-		and taps on the drop-down button and selects \'millimeters\'.
-		\n\nTime is measured for this exercise, so she checks \'timed\'.
+		\n\n\u2022 Calories? Yes, she is quite concerned about calories, but
+		there is no simple way to measure them.  So <i>calories</i> is left blank.
+		\n\n\u2022 Smiling is not <i>weighted</i> (imagine if it were!), so that remains unchecked.
+		\n\n\u2022 However there is a distance, so she checks <i>distanced</i>
+		and taps on the drop-down button and selects <i>millimeters</i>.
+		\n\n\u2022 Time is measured for this exercise, so she checks <i>timed</i>.
 		They do this exercise to music, counting beats.  But beats
-		are not in the time list, so she chooses \'custom\' from
+		are not in the time list, so she chooses <i>custom</i> from
 		the drop-down list and types \'beats\' in the editbox.
-		\n\nBut there is one more aspect to the Smiling workout that
+		\n\n\u2022 But there is one more aspect to the Smiling workout that
 		the program has not provided for\u003a glow. So my friend
-		checks \'other\' and types \'glow\' in the textbox
+		checks <i>other</i> and types \'glow\' in the textbox
 		next to it.
 		\n\nThe unit for glowing while smiling is called \'happies\', so
 		she types this in the lower box.
-		\n\nLastly, she must decide which of these is the most significant
+		\n\n\u2022 Lastly, she must decide which of these is the most significant
 		part of the smiling exercise. While glowing is very important, this
 		is an exercise, and she most wants to keep track of the repetitions.
-		So she selects the right-most radio button in the \'reps\' row.
-		\n\nLike other programs you have used, hit \'ok\' to save the
-		changes, and \'cancel\' if you change your mind and like
-		things the way they were.
-		\n\nRemember, if you later decide to change anything, you can
-		edit an exercise by long-pressing it in the main \'grid\'.
+		So she selects the right-most radio button in the <i>reps</i> row.
+		\n\n\u2022 Like most other programs, she hits <i>ok</i> to save the
+		changes, or <i>cancel</i> to, ah, uh, cancel (sigh).
+		\n\n\u2022 Remember, if you later decide to change this exercise, you can
+		edit it by long-pressing the name in the main <b>grid</b>.
 		\n\nYeah, that\'s a long explanation. But you deserve to
-		really understand what you\'re doing. Right\? Have
+		really understand what you\'re doing. Right\?
+		\n\nHave
 		a great workout!
 	</string>
 
@@ -290,7 +290,7 @@
 		\n\nIt looks like you
 		are about to cancel, even though you\'ve done a little
 		work on this new exercise.
-		\n\n(You can turn this warning off in the \'preferences\'.)
+		\n\n(You can turn this warning off in the <i>preferences</i>.)
 	</string>
 
 
@@ -622,13 +622,13 @@
 		\n\n<u>Now for an example</u>\u003a
 		\n\nMy buddy is a tiddly-winks champion and trains with a very specific
 		exercise called winking.
-		\n\n\u2022 So he types \'winking\' for the name.
+		\n\n\u2022 So he types \'winking\' for the <i>name</i>.
 		\n\n\u2022 Winking doesn\'t quite fit into either the standard
 		exercise types, so he chooses <i>misc</i>.
 		\n\n\u2022 This exercise uses fingers and lots of kneeling, so for
 		the muscle group he selects <i>all</i>.
 		\n\n\u2022 He always count repetitions, so he checks <i>reps</i>.
-		\n\n\u2022 There are no levels to this exercise, so he leaves this
+		\n\n\u2022 There are no <i>levels</i> to this exercise, so he leaves this
 		unchecked (levels are generally used with exercise machines
 		like Stair Steppers or rowers).
 		\n\n\u2022 Counting calories\? for tiddly-winks\? You gotta be kidding!
@@ -678,7 +678,7 @@
 	<string name="editexer_cancel_warning_msg">I think you have made
 		some changes to this exercise.
 		\n\nAre you sure you want to cancel these changes\?
-		\n\n(You can turn this warning off in the \'preferences\'.)
+		\n\n(You can turn this warning off in the <i>preferences</i>.)
 	</string>
 
 	<string name="editexer_ok_butt">execute changes</string>
@@ -880,7 +880,7 @@
 	<string name="row_edit_cancel_warning_msg">I think you have made
 		some changes to the row order here.
 		\n\nAre you sure you want to cancel these changes\?
-		\n\n(You can turn this warning off in the \'preferences\'.)
+		\n\n(You can turn this warning off in the <i>preferences</i>.)
 	</string>
 
 	<!-- ============      ============ -->
@@ -1087,7 +1087,7 @@
 	<string name="aset_cancel_warning_msg">You\'ve started
 		filling in the details for this set.  Are you sure
 		you want to cancel\?
-		\n\n(You can turn this warning off in the \'preferences\'.)
+		\n\n(You can turn this warning off in the <i>preferences</i>.)
 	</string>
 
 	<string name="aset_cancel_help_title">Cancel Help</string>
@@ -1141,7 +1141,7 @@
 	<string name="aset_nag_no_changes_msg">It looks like you didn\'t
 		make any changes.  Are you sure that you want
 		to enter this set\?
-		\n\n(You can turn this warning off in the \'preferences\'.)
+		\n\n(You can turn this warning off in the <i>preferences</i>.)
 		</string>
 
 	<string name="aset_clear_button">clear</string>
@@ -1288,7 +1288,7 @@
 	<string name="editset_cancel_warning_msg">I think you have made
 		some changes to this exercise set.
 		\n\nAre you sure you want to cancel these changes\?
-		\n\n(You can turn this warning off in the \'preferences\'.)
+		\n\n(You can turn this warning off in the <i>preferences</i>.)
 	</string>
 
 	<string name="editset_help_title">Edit Exercise Set</string>
@@ -1427,7 +1427,7 @@
 	<string name="enter_a_number_cancel_warn_msg">
 		It looks like you made some changes to this number.
 		\n\nAre you sure you want to cancel these changes\?
-		\n\n(You can turn this warning off in the \'preferences\'.)
+		\n\n(You can turn this warning off in the <i>preferences</i>.)
 	</string>
 
 	<!-- ============            ============ -->
@@ -1452,7 +1452,7 @@
 	<string name="enter_text_cancel_warn_msg">
 		It looks like you made some changes to your note.
 		\n\nAre you sure you want to cancel these changes\?
-		\n\n(You can turn this warning off in the \'preferences\'.)
+		\n\n(You can turn this warning off in the <i>preferences</i>.)
 	</string>
 
 
