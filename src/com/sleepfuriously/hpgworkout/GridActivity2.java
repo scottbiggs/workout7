@@ -17,26 +17,23 @@
  *
  * - The top row is the date (this may or may not be visible).
  *
- * - At the bottom are three buttons:
+ * - At the bottom are two buttons:
  * 		- Add Exercise, which invokes the AddExerciseActivity
- * 		- Back, which exits this Activity and goes back to the
- * 			main screen.
- * 		- Order, where the user can change the order of the
+ * 		- Change Order, where the user can change the order of the
  * 			displayed exercises.
- * 		- Help, which brings up a nice help dialog.
  *
- * - Scroll left/right, up/down to see the previous workouts.
+ * - Scroll left/right, up/down to see the other workout days.
  *
- * - Click on a left-column item to execute a workout set
+ * - Tap on a left-column item to execute a workout set
  * 	on that exercise.
  *
- * - Long-click a left-column item to edit/delete that exercise.
+ * - Long-tap a left-column item to edit/delete that exercise.
  *
- * - Click on a previously done exercise to view its details
+ * - Tap on a previously done exercise to view its details (one of the cells)
  *
- * - Long-click a previously done exercise to edit.
+ * - Long-tap a previously done exercise to edit.
  *
- * - When scrolling way back into the past, the system may pause
+ * - todo: When scrolling way back into the past, the system may pause
  * 	to load old data.  A message and "working" animation pops up.
  */
 package com.sleepfuriously.hpgworkout;
@@ -115,9 +112,9 @@ public class GridActivity2 extends BaseDialogActivity
 	//-------------------
 
 	/** The buttons for this screen. */
-	private Button m_add, m_order;
+	private Button m_add_butt, m_order_butt;
 
-	private ImageView m_help;
+	private ImageView m_help_iv;
 
 	/**
 	 * The two tables of the grid.
@@ -130,7 +127,7 @@ public class GridActivity2 extends BaseDialogActivity
 	TableLayout m_left_table, m_main_table;
 
 	/** For handling the scroll of the main table */
-	HorizontalScrollView m_main_table_scroller;
+	HorizontalScrollView m_main_table_sv;
 
 
 	//-------------------
@@ -168,6 +165,7 @@ public class GridActivity2 extends BaseDialogActivity
 	 */
 	protected boolean m_pref_oldest_first;
 
+
 	//-------------------
 	//	Methods
 	//-------------------
@@ -180,16 +178,16 @@ public class GridActivity2 extends BaseDialogActivity
 		setContentView(R.layout.maingrid);
 
 		// Get UI references.
-		m_add = (Button) findViewById(R.id.grid_add_exercise_button);
-		m_add.setOnClickListener(this);
-		m_add.setOnLongClickListener(this);
+		m_add_butt = (Button) findViewById(R.id.grid_add_exercise_button);
+		m_add_butt.setOnClickListener(this);
+		m_add_butt.setOnLongClickListener(this);
 
-		m_order = (Button) findViewById(R.id.grid_order_button);
-		m_order.setOnClickListener(this);
-		m_order.setOnLongClickListener(this);
+		m_order_butt = (Button) findViewById(R.id.grid_order_button);
+		m_order_butt.setOnClickListener(this);
+		m_order_butt.setOnLongClickListener(this);
 
-		m_help = (ImageView) findViewById(R.id.grid_logo);
-		m_help.setOnClickListener(this);
+		m_help_iv = (ImageView) findViewById(R.id.grid_logo);
+		m_help_iv.setOnClickListener(this);
 
 		m_left_table = (TableLayout)findViewById(R.id.left_table);
 		m_main_table = (TableLayout)findViewById(R.id.big_table);
@@ -200,7 +198,7 @@ public class GridActivity2 extends BaseDialogActivity
 		HEADER_TEXT_COLOR = getResources().getColor(R.color.hpg_orange_lighter);
 		CELL_TEXT_COLOR = getResources().getColor(R.color.floral_white);
 
-		m_main_table_scroller = (HorizontalScrollView) findViewById(R.id.grid_horiz_sv);
+		m_main_table_sv = (HorizontalScrollView) findViewById(R.id.grid_horiz_sv);
 
 		TextView title_tv = (TextView) findViewById(R.id.grid_title);
 		String current_user = DatabaseFilesHelper.get_active_username(this);
@@ -219,6 +217,8 @@ public class GridActivity2 extends BaseDialogActivity
 	 * new one if necessary.
 	 */
 	private void start_async_task() {
+		Log.v(tag, "entering start_async_task()");
+
 		// First, try to grab a reference it from a previous
 		// instance of this Activity.
 		m_task = (GridASyncTask) getLastNonConfigurationInstance();
@@ -254,6 +254,7 @@ public class GridActivity2 extends BaseDialogActivity
 	 * 	m_task is VALID and pointing to a real object (not null)
 	 */
 	private void catch_up() {
+		Log.v(tag, "entering catch_up()");
 
 		// Note that we're going to LESS THAN EQUAL here!!!
 		for (int i = 0; i <= m_task.m_last_completed_row; i++) {
@@ -261,10 +262,10 @@ public class GridActivity2 extends BaseDialogActivity
 		}
 
 		// Scroll all the way to the right.
-		m_main_table_scroller.post(new Runnable() {
+		m_main_table_sv.post(new Runnable() {
 			@Override
 			public void run() {
-				m_main_table_scroller.fullScroll(View.FOCUS_RIGHT);
+				m_main_table_sv.fullScroll(View.FOCUS_RIGHT);
 			}
 		});
 
@@ -274,6 +275,8 @@ public class GridActivity2 extends BaseDialogActivity
 	//------------------------------
 	@Override
 	protected void onResume() {
+		Log.v(tag, "entering onResume()");
+
 		super.onResume();
 
 		// Load up the prefs
@@ -310,6 +313,8 @@ public class GridActivity2 extends BaseDialogActivity
 	protected void onActivityResult(int request_code,
 									int result_code,
 									Intent data) {
+		Log.v(tag, "entering onActivityResult()");
+
 		// This means that the Database has changed.  Reload
 		// everything.
 		if (result_code == RESULT_OK) {
@@ -333,6 +338,8 @@ public class GridActivity2 extends BaseDialogActivity
 	 */
 	@Override
 	public Object onRetainNonConfigurationInstance() {
+		Log.v(tag, "entering onRetainNonConfigurationInstance()");
+
 		m_task.detach();		// Tells task to remove its reference
 							// to this Activity as I'm about to
 							// die.
@@ -348,6 +355,8 @@ public class GridActivity2 extends BaseDialogActivity
 	 * off any dialogs that are still going.
 	 */
 	public void loading_done() {
+		Log.v(tag, "entering load_done()");
+
 		HorizontalScrollView horiz_sv = (HorizontalScrollView) findViewById(R.id.grid_horiz_sv);
 		stop_progress_dialog();
 		horiz_sv.fullScroll(View.FOCUS_RIGHT);
@@ -422,12 +431,12 @@ public class GridActivity2 extends BaseDialogActivity
 
 		int id = v.getId();
 
-		if (id == m_add.getId()) {
+		if (id == m_add_butt.getId()) {
 			WGlobals.play_long_click();
 			show_help_dialog(R.string.grid_add_title, R.string.grid_add_msg);
 		}
 
-		else if (id == m_order.getId()) {
+		else if (id == m_order_butt.getId()) {
 			WGlobals.play_long_click();
 			show_help_dialog(R.string.grid_order_title, R.string.grid_order_msg);
 		}
@@ -563,10 +572,12 @@ public class GridActivity2 extends BaseDialogActivity
 	 *
 	 * @param dates		This is an array of the dates to display.
 	 *
-	 * @param	lines		When true, draw horizontal lines
-	 * 						to seperate the entries.
+	 * @param lines		When true, draw horizontal lines
+	 * 					to seperate the entries.
 	 */
 	void add_row_dates (String dates[], boolean lines) {
+		Log.v(tag, "entering add_row_dates(), lines = " + lines);
+
 		// We'll need the current date.  "Today" will be a
 		// different color than the other columns.
 		MyCalendar today = new MyCalendar();
@@ -610,7 +621,7 @@ public class GridActivity2 extends BaseDialogActivity
 			if (today_date_str.equals(dates[i])) {
 				cell.setBackgroundColor(TODAY_BACKGROUND_COLOR);
 				m_today_column = i;
-				Log.v(tag, "m_today_column = " + m_today_column);
+//				Log.v(tag, "m_today_column = " + m_today_column);
 			}
 			else {
 				cell.setBackgroundColor(NORMAL_BACKGROUND_COLOR);
@@ -689,28 +700,24 @@ public class GridActivity2 extends BaseDialogActivity
 				column_count++;
 			}
 
-			// Do nothing under two conditions:
-			//	1.  No data for this day.
-			//	2.	The day we're looking at is NOT the current day.
-			if ((row_array[i] == null) && (i != m_today_column)) {
-//				Log.d(tag, "add_row_faster2: found a null at i = " + i);
-				column_count++;
-				continue;
-			}
-
 			// Preparing the string for this cell.
 			String cell_str = null;
 
 			// This must be checked because there can be nulls if
 			// we're displaying the current day (to make the column
 			// look good).
+			TextView tv;
 			if (row_array[i] != null) {
 				cell_str = "" + row_array[i].m_count;
+				tv = make_cell_tv (cell_str,
+								row_num,
+								i,
+								row_array[i]);
 			}
-			TextView tv = make_cell_tv (cell_str,
-										row_num,
-										i,
-										row_info[row_num].tag_array[i]);
+			else {
+				tv = make_blank_cell_tv(i);	// a little faster to make than full-blown cells
+			}
+
 			main_row.addView(tv);
 			column_count++;
 		}
@@ -816,6 +823,33 @@ public class GridActivity2 extends BaseDialogActivity
 		cell.setTag(tag);
 		return cell;
 	}
+
+	/***************
+	 * Like the above method, except that this is a little faster and designed
+	 * only for empty cells.
+	 *
+	 * side effects:
+	 * 		Uses m_today_column to determine the cell's background color.
+	 *
+	 * @param index		The index into the tag_array
+	 * 					where this cell resides (i).  Used
+	 * 					to determine the cell's id.
+	 *
+	 * @return	A TextView suitable for inserting into the main grid.
+	 */
+	private TextView make_blank_cell_tv (int index) {
+		TextView cell = new TextView(this);
+		cell.setPadding(GRID_CELL_PADDING_LEFT,  GRID_CELL_PADDING_TOP,  GRID_CELL_PADDING_RIGHT,  GRID_CELL_PADDING_BOTTOM);
+
+		if (index == m_today_column) {
+			cell.setBackgroundColor(TODAY_BACKGROUND_COLOR);
+		}
+		else {
+			cell.setBackgroundColor(NORMAL_BACKGROUND_COLOR);
+		}
+		return cell;
+	} // make_blank_cell_tv()
+
 
 	/***************
 	 * Creates an unique ID number given a specified row and column.
@@ -993,6 +1027,8 @@ public class GridActivity2 extends BaseDialogActivity
 		 * communicates with that Activity.
 		 */
 		public GridASyncTask (GridActivity2 activity) {
+			Log.v(tag, "entering constructor, id = " + this.toString());
+
 			attach (activity);
 		} // constructor
 
@@ -1005,7 +1041,7 @@ public class GridActivity2 extends BaseDialogActivity
 		 */
 		@Override
 		protected void onPreExecute() {
-//			Log.d(tag, "onPreExecute() starting.");
+			Log.d(tag, "onPreExecute() starting, id = " + this.toString());
 			m_done = false;
 			m_last_completed_row = -1;
 			m_exercise_data.clear();
@@ -1020,7 +1056,7 @@ public class GridActivity2 extends BaseDialogActivity
 		 */
 		@Override
 		protected Void doInBackground(Void... arg0) {
-//			Log.d(tag, "doInBackground() starting.");
+			Log.d(tag, "doInBackground() starting, id = " + this.toString());
 			SQLiteDatabase db = null;
 			int col;
 
@@ -1154,6 +1190,7 @@ public class GridActivity2 extends BaseDialogActivity
 		 */
 		@Override
 		protected void onProgressUpdate(Integer ... row_num) {
+			Log.d(tag, "entering onProgressUpdate()");
 
 			// Check for a lock condition--probably not
 			// necessary
@@ -1169,7 +1206,7 @@ public class GridActivity2 extends BaseDialogActivity
 			while (m_the_grid == null) {
 				// todo
 				// 	HACK!!!  This causes progress to be halted
-				//	until the new activity comes back!  Do BEtter!!!
+				//	until the new activity comes back!  Do Better!!!
 				//
 				// Wait until we are attached to a grid
 				SystemClock.sleep(50); // Wait 1/20 of a second
@@ -1204,6 +1241,8 @@ public class GridActivity2 extends BaseDialogActivity
 		 */
 		@Override
 		protected void onPostExecute(Void result) {
+			Log.v(tag, "entering onPostExecute(), id = " + this.toString());
+
 			if (m_the_grid != null) {
 				m_the_grid.loading_done();	// Tell the activity to dismiss
 											// the progress dialog.
@@ -1337,6 +1376,7 @@ public class GridActivity2 extends BaseDialogActivity
 		 * 			is the next day that the user worked out.
 		 */
 		ArrayList<MyCalendar> construct_days_list(SQLiteDatabase db) {
+			Log.d(tag, "entering construct_days_list()");
 
 			// Construct a list of all the individual days that
 			// the user has exercised.
@@ -1547,6 +1587,7 @@ public class GridActivity2 extends BaseDialogActivity
 		 * so that we're not using invalid pointers!
 		 */
 		public void detach() {
+			Log.d(tag, "entering detach(), id = " + this.toString());
 			m_the_grid = null;
 		}
 
@@ -1556,6 +1597,7 @@ public class GridActivity2 extends BaseDialogActivity
 		 * resources!
 		 */
 		public void kill() {
+			Log.d(tag, "entering kill(), id = " + this.toString());
 			m_row_info = null;	// GC
 		}
 

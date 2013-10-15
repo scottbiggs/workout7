@@ -1,10 +1,18 @@
 TODO:
 -----------------
+BUG: Sound plays even when the phone has sound turned off!
+
+BUG: When graphing superwinking in landscape mode, the colored words overwrite the
+mode button at the top.
+
+BUG!!! When looking at any of the tabbed activities, we crash when going
+from landscape to portrait.
+
+Wheels: make the fat the normal, and create thin and FAT wheels.  So
+we'll have 3 different sizes.
+
 EditSetActivity: the border doesn't look right.  It looks like the radii
 of the backgrounds don't match.
-
-When first starting, the grid looks funny.  This probably is because the
-database isn't properly setup.  Hard to reproduce...
 
 Bug: I think I caused a crash by rotating.  Again.  In the AddSetActivity.
 	Rotating from landscape to portrait causes a crash.  Also in Inspector.
@@ -25,6 +33,7 @@ Add a special sound for:
 		adding a new exercise
 		spinning wheels			- wheel2			- done
 		MySpinner 				- now is a click
+		nags
 
 AddSet activity loads SOOOOO slowly!  Fix it!
 
@@ -215,6 +224,10 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Bug: When first starting, the grid looks funny.  This probably is because the
+database isn't properly setup.  Hard to reproduce...
+	- Fixed.  The Grid wasn't being drawn correctly.
+
 Test all the help files.
 	- done
 

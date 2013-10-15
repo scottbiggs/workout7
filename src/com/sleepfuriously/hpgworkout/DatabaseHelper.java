@@ -1392,6 +1392,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	/********************
 	 * Initializes the set table.
+	 *
+	 * todo
+	 * 	Remove all calls to this.
+	 *
 	 */
 	private void init_sets (SQLiteDatabase db) {
 		ContentValues values = new ContentValues();
@@ -1401,9 +1405,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 		values.clear();
 		values.put(SET_COL_DATEMILLIS, millis);
-		values.put(SET_COL_NAME, "squats");
+		values.put(SET_COL_NAME, "super winking");
 		values.put(SET_COL_REPS, 10);
 		values.put(SET_COL_WEIGHT, 400f);
+		values.put(SET_COL_CALORIES, 20);
+		values.put(SET_COL_DIST, 5);
+		values.put(SET_COL_LEVELS, 2);
+		values.put(SET_COL_OTHER, 15);
+		values.put(SET_COL_TIME, 30);
 		values.put(SET_COL_CONDITION, SET_COND_OK);
 		db.insert(SET_TABLE_NAME, null, values);
 
@@ -1413,9 +1422,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 		values.clear();
 		values.put(SET_COL_DATEMILLIS, millis);
-		values.put(SET_COL_NAME, "squats");
-		values.put(SET_COL_REPS, 10);
-		values.put(SET_COL_WEIGHT, 200f);
+		values.put(SET_COL_NAME, "super winking");
+		values.put(SET_COL_REPS, 30);
+		values.put(SET_COL_WEIGHT, 100f);
+		values.put(SET_COL_CALORIES, 30);
+		values.put(SET_COL_DIST, 5);
+		values.put(SET_COL_LEVELS, 2);
+		values.put(SET_COL_OTHER, 15);
+		values.put(SET_COL_TIME, 60);
 		values.put(SET_COL_CONDITION, SET_COND_OK);
 		db.insert(SET_TABLE_NAME, null, values);
 
@@ -1424,11 +1438,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 		values.clear();
 		values.put(SET_COL_DATEMILLIS, millis);
-		values.put(SET_COL_NAME, "squats");
-		values.put(SET_COL_REPS, 10);
-		values.put(SET_COL_WEIGHT, 100f);
+		values.put(SET_COL_NAME, "super winking");
+		values.put(SET_COL_REPS, 60);
+		values.put(SET_COL_WEIGHT, 90f);
+		values.put(SET_COL_CALORIES, 50);
+		values.put(SET_COL_DIST, 7);
+		values.put(SET_COL_LEVELS, 2);
+		values.put(SET_COL_OTHER, 15);
+		values.put(SET_COL_TIME, 70);
 		values.put(SET_COL_CONDITION, SET_COND_OK);
 		db.insert(SET_TABLE_NAME, null, values);
+
+
 	} // init_sets (db)
 
 
