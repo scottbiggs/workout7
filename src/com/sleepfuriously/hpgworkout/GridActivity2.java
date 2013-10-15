@@ -700,6 +700,16 @@ public class GridActivity2 extends BaseDialogActivity
 				column_count++;
 			}
 
+			// Do nothing under these conditions:
+			//	1.  No data for this day.
+			//	2.	This is NOT the first column--each row needs at least 1 item
+			//	3.	The day we're looking at is NOT the current day--current day is always colored
+			if ((row_array[i] == null) && (i != 0) && (i != m_today_column)) {
+				Log.d(tag, "add_row_faster2: found a null at i = " + i);
+				column_count++;
+				continue;
+			}
+
 			// Preparing the string for this cell.
 			String cell_str = null;
 
