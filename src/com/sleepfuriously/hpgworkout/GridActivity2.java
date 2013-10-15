@@ -173,7 +173,7 @@ public class GridActivity2 extends BaseDialogActivity
 	//------------------------------
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		Log.v(tag, "entering onCreate()");
+//		Log.v(tag, "entering onCreate()");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.maingrid);
 
@@ -217,7 +217,7 @@ public class GridActivity2 extends BaseDialogActivity
 	 * new one if necessary.
 	 */
 	private void start_async_task() {
-		Log.v(tag, "entering start_async_task()");
+//		Log.v(tag, "entering start_async_task()");
 
 		// First, try to grab a reference it from a previous
 		// instance of this Activity.
@@ -254,7 +254,7 @@ public class GridActivity2 extends BaseDialogActivity
 	 * 	m_task is VALID and pointing to a real object (not null)
 	 */
 	private void catch_up() {
-		Log.v(tag, "entering catch_up()");
+//		Log.v(tag, "entering catch_up()");
 
 		// Note that we're going to LESS THAN EQUAL here!!!
 		for (int i = 0; i <= m_task.m_last_completed_row; i++) {
@@ -313,7 +313,7 @@ public class GridActivity2 extends BaseDialogActivity
 	protected void onActivityResult(int request_code,
 									int result_code,
 									Intent data) {
-		Log.v(tag, "entering onActivityResult()");
+//		Log.v(tag, "entering onActivityResult()");
 
 		// This means that the Database has changed.  Reload
 		// everything.
@@ -338,7 +338,7 @@ public class GridActivity2 extends BaseDialogActivity
 	 */
 	@Override
 	public Object onRetainNonConfigurationInstance() {
-		Log.v(tag, "entering onRetainNonConfigurationInstance()");
+//		Log.v(tag, "entering onRetainNonConfigurationInstance()");
 
 		m_task.detach();		// Tells task to remove its reference
 							// to this Activity as I'm about to
@@ -355,7 +355,7 @@ public class GridActivity2 extends BaseDialogActivity
 	 * off any dialogs that are still going.
 	 */
 	public void loading_done() {
-		Log.v(tag, "entering load_done()");
+//		Log.v(tag, "entering load_done()");
 
 		HorizontalScrollView horiz_sv = (HorizontalScrollView) findViewById(R.id.grid_horiz_sv);
 		stop_progress_dialog();
@@ -576,7 +576,7 @@ public class GridActivity2 extends BaseDialogActivity
 	 * 					to seperate the entries.
 	 */
 	void add_row_dates (String dates[], boolean lines) {
-		Log.v(tag, "entering add_row_dates(), lines = " + lines);
+//		Log.v(tag, "entering add_row_dates(), lines = " + lines);
 
 		// We'll need the current date.  "Today" will be a
 		// different color than the other columns.
@@ -1037,7 +1037,7 @@ public class GridActivity2 extends BaseDialogActivity
 		 * communicates with that Activity.
 		 */
 		public GridASyncTask (GridActivity2 activity) {
-			Log.v(tag, "entering constructor, id = " + this.toString());
+//			Log.v(tag, "entering constructor, id = " + this.toString());
 
 			attach (activity);
 		} // constructor
@@ -1051,7 +1051,7 @@ public class GridActivity2 extends BaseDialogActivity
 		 */
 		@Override
 		protected void onPreExecute() {
-			Log.d(tag, "onPreExecute() starting, id = " + this.toString());
+//			Log.d(tag, "onPreExecute() starting, id = " + this.toString());
 			m_done = false;
 			m_last_completed_row = -1;
 			m_exercise_data.clear();
@@ -1066,7 +1066,7 @@ public class GridActivity2 extends BaseDialogActivity
 		 */
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			Log.d(tag, "doInBackground() starting, id = " + this.toString());
+//			Log.d(tag, "doInBackground() starting, id = " + this.toString());
 			SQLiteDatabase db = null;
 			int col;
 
@@ -1200,7 +1200,7 @@ public class GridActivity2 extends BaseDialogActivity
 		 */
 		@Override
 		protected void onProgressUpdate(Integer ... row_num) {
-			Log.d(tag, "entering onProgressUpdate()");
+//			Log.d(tag, "entering onProgressUpdate()");
 
 			// Check for a lock condition--probably not
 			// necessary
@@ -1251,7 +1251,7 @@ public class GridActivity2 extends BaseDialogActivity
 		 */
 		@Override
 		protected void onPostExecute(Void result) {
-			Log.v(tag, "entering onPostExecute(), id = " + this.toString());
+//			Log.v(tag, "entering onPostExecute(), id = " + this.toString());
 
 			if (m_the_grid != null) {
 				m_the_grid.loading_done();	// Tell the activity to dismiss
@@ -1386,7 +1386,7 @@ public class GridActivity2 extends BaseDialogActivity
 		 * 			is the next day that the user worked out.
 		 */
 		ArrayList<MyCalendar> construct_days_list(SQLiteDatabase db) {
-			Log.d(tag, "entering construct_days_list()");
+//			Log.d(tag, "entering construct_days_list()");
 
 			// Construct a list of all the individual days that
 			// the user has exercised.
@@ -1597,7 +1597,7 @@ public class GridActivity2 extends BaseDialogActivity
 		 * so that we're not using invalid pointers!
 		 */
 		public void detach() {
-			Log.d(tag, "entering detach(), id = " + this.toString());
+//			Log.d(tag, "entering detach(), id = " + this.toString());
 			m_the_grid = null;
 		}
 
@@ -1607,7 +1607,7 @@ public class GridActivity2 extends BaseDialogActivity
 		 * resources!
 		 */
 		public void kill() {
-			Log.d(tag, "entering kill(), id = " + this.toString());
+//			Log.d(tag, "entering kill(), id = " + this.toString());
 			m_row_info = null;	// GC
 		}
 
