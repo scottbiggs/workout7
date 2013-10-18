@@ -413,6 +413,9 @@ public class GridActivity2 extends BaseDialogActivity
 	public void onBackPressed() {
 		if (m_task != null) {
 			m_task.kill();		// Garbage Collect some memory
+
+			// todo:
+			//	Shouldn't we derefernece m_task by setting it to null?
 		}
 		super.onBackPressed();
 	}
