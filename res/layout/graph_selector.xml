@@ -110,7 +110,7 @@
 			android:layout_height="wrap_content"
 			android:layout_margin="5dp"
 			android:background="@drawable/rounded_edges_medium"
-			android:cacheColorHint="@color/gray_dark"
+			android:cacheColorHint="@color/gray_medium"
 			android:padding="3dp" >
 
 		</ListView>
