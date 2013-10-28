@@ -1,5 +1,10 @@
 TODO:
 -----------------
+Bug: The Graph still won't exit the loading dialog when returning from options.
+
+Bug: sometimes I hear clicks when the orientation changes. This only occurs
+	when doing the any of the tabbed Activities.
+
 BUG: Sound plays even when the phone has sound turned off!
 
 BUG: When graphing superwinking in landscape mode, the colored words overwrite the
@@ -224,6 +229,9 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Bug: in SuperWinking on the graph in landscape mode, the words cover the mode.
+	- fixed
+
 Bug: When first starting, the grid looks funny.  This probably is because the
 database isn't properly setup.  Hard to reproduce...
 	- Fixed.  The Grid wasn't being drawn correctly.
