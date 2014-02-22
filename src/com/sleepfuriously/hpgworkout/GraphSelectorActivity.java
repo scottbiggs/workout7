@@ -52,7 +52,7 @@ public class GraphSelectorActivity
 	//
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		Log.v(tag, "entering onCreate()");
+//		Log.v(tag, "entering onCreate()");
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.graph_selector);

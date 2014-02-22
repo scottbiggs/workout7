@@ -368,11 +368,13 @@ public class AddSetActivity
 	} // init_widgets_with_wheels()
 
 
-	@Override
-	public void onWindowFocusChanged(boolean hasFocus) {
-		super.onWindowFocusChanged(hasFocus);
-		WGlobals.g_sound = true;		// Turn sound back on.
-	}
+	// What is THIS doing here???
+	//
+//	@Override
+//	public void onWindowFocusChanged(boolean hasFocus) {
+//		super.onWindowFocusChanged(hasFocus);
+//		WGlobals.g_sound = true;		// Turn sound back on.
+//	}
 
 
 	//------------------------------

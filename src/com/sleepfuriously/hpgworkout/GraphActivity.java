@@ -11,7 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -88,9 +88,13 @@ public class GraphActivity
 	//-------------------------
 
 	/**
-	 * The name of this exercise.
+	 * Since GridASyncTask is static, it may persist
+	 * when this Activity is destroyed.  This variable
+	 * will be passed back to us via
+	 * onRetainLastConfiguationInstance() and
+	 * getLastNonConfigurationInstance().
 	 */
-	private String m_ex_name;
+	private GraphASyncTask m_task = null;
 
 
 	//--------
@@ -98,11 +102,11 @@ public class GraphActivity
 	//	with our exercise.
 	//--------
 
-	/** Holds all the info about this exercise */
-	protected ExerciseData m_exercise_data = null;
+	/**
+	 * The name of this exercise.
+	 */
+	private String m_ex_name;
 
-	/** Holds all the set data from our database to be processed later. */
-	protected ArrayList<SetData> m_set_data;
 
 	/** Are we drawing regular graphs (false) or daily graphs (true)? */
 	private boolean m_daily = false;
@@ -163,6 +167,7 @@ public class GraphActivity
 	//-------------------------
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		Log.d(tag, "onCreate(), id = " + this);
 		String str;
 
 		super.onCreate(savedInstanceState);
@@ -172,11 +177,14 @@ public class GraphActivity
 		m_options_butt.setOnClickListener(this);
 		m_options_butt.setOnLongClickListener(this);
 
+		m_daily_mode_tv = (TextView) findViewById(R.id.graph_daily_toggle_mode_tv);
+		m_daily_mode_tv.setOnClickListener(this);
+		m_daily_mode_tv.setOnLongClickListener(this);
+
 		// Check whether we're doing a regular or daily graph.
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		m_daily = prefs.getBoolean(getString(R.string.prefs_graphs_daily_toggle_key), false);
 
-		// Init buttons and the main graph View
 		m_view = (GView) findViewById(R.id.graph_view);
 		int text_size = getResources().getDimensionPixelSize(R.dimen.font_size_very_small);
 		m_view.set_label_size(text_size);
@@ -217,7 +225,11 @@ public class GraphActivity
 			title.setText(user + possessive + " " + m_ex_name);
 		}
 
-		// Continued in onResume()
+
+		// Try to grab a reference it from a previous
+		// instance of this Activity.
+		m_task = (GraphASyncTask) getLastNonConfigurationInstance();
+		Log.d(tag, "   onCreate(): after getLastNonConfigurationInstance() m_task = " + m_task);
 
 	} // onCreate (.)
 
@@ -225,25 +237,157 @@ public class GraphActivity
 	//-------------------------
 	@Override
 	protected void onResume() {
+		Log.d(tag, "onResume(), id = " + this);
 		super.onResume();
 
 		// Do we need to reload the database and redraw everything?
 		if (m_db_dirty) {
-			Log.v(tag, "Redrawing the graph!");
-			setup_data();
+			Log.d(tag, "   onResume(): m_db_dirty, drawing the graph!");
 
-			m_daily_mode_tv = (TextView) findViewById(R.id.graph_daily_toggle_mode_tv);
-			m_daily_mode_tv.setOnClickListener(this);
-			m_daily_mode_tv.setOnLongClickListener(this);
-			if (m_daily)
-				m_daily_mode_tv.setText(R.string.graph_options_daily_mode_on_msg);
-			else
-				m_daily_mode_tv.setText(R.string.graph_options_daily_mode_off_msg);
+			if (m_task == null) {
+				// There is no GridASyncTask running, so go ahead
+				// and start it up.
+				start_async_task();
+//				setup_data();
+			}
+			else {
+				// There is already a GridASyncTask running,
+				// establish a connection to it.
+				m_task.attach(this, m_daily);
+				Log.d(tag, "   onResume(): restarting progress dialog");
+				start_progress_dialog(R.string.loading_str);
+
+				// If the ASyncTask is already done, we need to call
+				// the onPostExecute() to get the UI drawn.
+				if (m_task.isDone() == true) {
+					m_task.onPostExecute(null);
+				}
+				else {
+					Log.d(tag, "   onResume(): m_task is not done--it'll update the GView");
+				}
+
+			}
 
 			m_db_dirty = false;
 		}
 
+		else {
+			// The graph is not dirty, but we still need to
+			// attach to the asynctask.
+			if (m_task == null) {
+				Log.e (tag, "m_task is null, but the graph is NOT dirty! ABORTING!");
+				return;
+			}
+			m_task.attach(this, m_daily);
+			if (m_task.isDone() == false) {
+				// todo is this necessary???
+				Log.d(tag, "   onResume(): restarting progress dialog--2");
+				start_progress_dialog(R.string.loading_str);
+			}
+		}
+
 	} // onResume()
+
+
+	/*************************
+	 * Called when an Activity is destroyed during a
+	 * configuration/orientation change.  Whatever is
+	 * returned here can be retrieved by the new replacement
+	 * Activity by calling getlastNonConfigurationInstance().
+	 *
+	 * @see android.app.Activity#onRetainNonConfigurationInstance()
+	 */
+	@Override
+	public Object onRetainNonConfigurationInstance() {
+		Log.d(tag, "entering onRetainNonConfigurationInstance()");
+
+		m_task.detach();		// Tells task to remove its reference
+							// to this Activity as I'm about to
+							// die.
+
+		return m_task;	// Return the GridSynceTask so the
+						// new Activity can find it (and then
+						// attach it to the GridASyncTask).
+	}
+
+	/*********************
+	 * Does all the work of starting the ASyncTask.  This
+	 * will connect to an existing ASyncTask or start a
+	 * new one if necessary.
+	 */
+	private void start_async_task() {
+		// First, try to grab a reference it from a previous
+		// instance of this Activity.
+		m_task = (GraphASyncTask) getLastNonConfigurationInstance();
+
+		if (m_task == null) {
+			// There is no ASyncTask running, so go ahead
+			// and start it up.
+			start_progress_dialog(R.string.loading_str);
+			m_task = new GraphASyncTask(this, m_ex_name, m_daily);
+			m_task.execute();
+		}
+		else {
+			// There is already a GridASyncTask running,
+			// establish a connection to it.
+			m_task.attach(this, m_daily);
+
+			// If the ASyncTask is still working, re-start
+			// the progress dialog.
+			if (m_task.isDone() == false) {
+				start_progress_dialog(R.string.loading_str);
+			}
+
+//			catch_up();		not used in this Activity as there's no ProgressUpdate()
+		}
+
+	} // start_async_task()
+
+
+	//***********************
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
+	 */
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Log.d(tag, "onActivityResult(), id = " + this);
+
+		if ((requestCode == WGlobals.GRAPHOPTIONSACTIVITY) &&
+			(resultCode == RESULT_OK)) {
+			// Grab the info from our intent and update
+			// our data (and possibly the database, too).
+			m_task.m_exercise_data.g_reps = data.getBooleanExtra(GraphOptionsActivity.ITT_KEY_GRAPH_REPS, false);
+			m_task.m_exercise_data.g_level = data.getBooleanExtra(GraphOptionsActivity.ITT_KEY_GRAPH_LEVEL, false);
+			m_task.m_exercise_data.g_cals = data.getBooleanExtra(GraphOptionsActivity.ITT_KEY_GRAPH_CALS, false);
+			m_task.m_exercise_data.g_weight = data.getBooleanExtra(GraphOptionsActivity.ITT_KEY_GRAPH_WEIGHT, false);
+			m_task.m_exercise_data.g_dist = data.getBooleanExtra(GraphOptionsActivity.ITT_KEY_GRAPH_DIST, false);
+			m_task.m_exercise_data.g_time = data.getBooleanExtra(GraphOptionsActivity.ITT_KEY_GRAPH_TIME, false);
+			m_task.m_exercise_data.g_other = data.getBooleanExtra(GraphOptionsActivity.ITT_KEY_GRAPH_OTHER, false);
+
+			m_task.m_exercise_data.g_with_reps = data.getIntExtra(GraphOptionsActivity.ITT_KEY_WITH_REPS, -1);
+
+			// Check our preferences to see if the type of graph has
+			// changed.
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+			m_daily = prefs.getBoolean(getString(R.string.prefs_graphs_daily_toggle_key), false);
+
+			// Check for error condition of NOTHING being
+			// graphed.  If so, err report and set to the
+			// significant.
+			if (test_and_fix_graph_settings() == false) {
+				Log.e(tag, "test_and_fix_graph_settings() returned false! Aborting!");
+				return;
+			}
+
+			// Change the database
+			save_data();
+
+			m_db_dirty = true;
+//			m_task = null;		// signal restart (is this necessary?)
+
+		} // return from GraphOptionsActivity
+
+	} // onActivityResult(...)
 
 
 	//-------------------------
@@ -262,31 +406,31 @@ public class GraphActivity
 			itt = new Intent(this, GraphOptionsActivity.class);
 
 			// fill in the Intent
-			itt.putExtra(GraphOptionsActivity.ITT_KEY_EXERCISE_NAME, m_exercise_data.name);
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_EXERCISE_NAME, m_task.m_exercise_data.name);
 
-			itt.putExtra(GraphOptionsActivity.ITT_KEY_EXERCISE_SIGNIFICANT, m_exercise_data.significant);
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_EXERCISE_SIGNIFICANT, m_task.m_exercise_data.significant);
 
-			itt.putExtra(GraphOptionsActivity.ITT_KEY_ASPECT_REPS, m_exercise_data.breps);
-			itt.putExtra(GraphOptionsActivity.ITT_KEY_ASPECT_LEVEL, m_exercise_data.blevel);
-			itt.putExtra(GraphOptionsActivity.ITT_KEY_ASPECT_CALS, m_exercise_data.bcals);
-			itt.putExtra(GraphOptionsActivity.ITT_KEY_ASPECT_WEIGHT, m_exercise_data.bweight);
-			itt.putExtra(GraphOptionsActivity.ITT_KEY_ASPECT_DIST, m_exercise_data.bdist);
-			itt.putExtra(GraphOptionsActivity.ITT_KEY_ASPECT_TIME, m_exercise_data.btime);
-			itt.putExtra(GraphOptionsActivity.ITT_KEY_ASPECT_OTHER, m_exercise_data.bother);
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_ASPECT_REPS, m_task.m_exercise_data.breps);
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_ASPECT_LEVEL, m_task.m_exercise_data.blevel);
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_ASPECT_CALS, m_task.m_exercise_data.bcals);
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_ASPECT_WEIGHT, m_task.m_exercise_data.bweight);
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_ASPECT_DIST, m_task.m_exercise_data.bdist);
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_ASPECT_TIME, m_task.m_exercise_data.btime);
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_ASPECT_OTHER, m_task.m_exercise_data.bother);
 
-			if (m_exercise_data.bother) {
-				itt.putExtra(GraphOptionsActivity.ITT_KEY_GRAPH_OTHER_NAME, m_exercise_data.other_title);
+			if (m_task.m_exercise_data.bother) {
+				itt.putExtra(GraphOptionsActivity.ITT_KEY_GRAPH_OTHER_NAME, m_task.m_exercise_data.other_title);
 			}
 
-			itt.putExtra(GraphOptionsActivity.ITT_KEY_GRAPH_REPS, m_exercise_data.g_reps);
-			itt.putExtra(GraphOptionsActivity.ITT_KEY_GRAPH_LEVEL, m_exercise_data.g_level);
-			itt.putExtra(GraphOptionsActivity.ITT_KEY_GRAPH_CALS, m_exercise_data.g_cals);
-			itt.putExtra(GraphOptionsActivity.ITT_KEY_GRAPH_WEIGHT, m_exercise_data.g_weight);
-			itt.putExtra(GraphOptionsActivity.ITT_KEY_GRAPH_DIST, m_exercise_data.g_dist);
-			itt.putExtra(GraphOptionsActivity.ITT_KEY_GRAPH_TIME, m_exercise_data.g_time);
-			itt.putExtra(GraphOptionsActivity.ITT_KEY_GRAPH_OTHER, m_exercise_data.g_other);
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_GRAPH_REPS, m_task.m_exercise_data.g_reps);
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_GRAPH_LEVEL, m_task.m_exercise_data.g_level);
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_GRAPH_CALS, m_task.m_exercise_data.g_cals);
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_GRAPH_WEIGHT, m_task.m_exercise_data.g_weight);
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_GRAPH_DIST, m_task.m_exercise_data.g_dist);
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_GRAPH_TIME, m_task.m_exercise_data.g_time);
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_GRAPH_OTHER, m_task.m_exercise_data.g_other);
 
-			itt.putExtra(GraphOptionsActivity.ITT_KEY_WITH_REPS, m_exercise_data.g_with_reps);
+			itt.putExtra(GraphOptionsActivity.ITT_KEY_WITH_REPS, m_task.m_exercise_data.g_with_reps);
 
 
 			startActivityForResult(itt, WGlobals.GRAPHOPTIONSACTIVITY);
@@ -311,28 +455,35 @@ public class GraphActivity
 	//-------------------------
 	@Override
 	public void onBackPressed() {
-		Log.d(tag, "entering onBackPressed()");
+//		Log.d(tag, "entering onBackPressed()");
 		if (ExerciseTabHostActivity.m_dirty)
 			setResult(RESULT_OK);
 		else
 			setResult(RESULT_CANCELED);
+		if (m_task != null) {
+			m_task.kill();		// Garbage Collect some memory
+
+			//	Shouldn't we derefernece m_task by setting it to null?
+			//	No, this wouldn't do anything as the ASyncTask is STATIC.
+			//	The kill() method is sufficient for cleaning up.
+
+		}
 		finish();
 	}
-
 
 
 	//-------------------------
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
-		Log.d(tag, "entering onKeyUp()");
+//		Log.d(tag, "entering onKeyUp()");
 
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			if (ExerciseTabHostActivity.m_dirty) {
-				Log.d(tag, "ExerciseTabHostActivity.m_dirty is true");
+//				Log.d(tag, "ExerciseTabHostActivity.m_dirty is true");
 				setResult(RESULT_OK);
 			}
 			else {
-				Log.d(tag, "ExerciseTabHostActivity.m_dirty is false");
+//				Log.d(tag, "ExerciseTabHostActivity.m_dirty is false");
 				setResult(RESULT_CANCELED);
 			}
 			finish();
@@ -497,50 +648,6 @@ public class GraphActivity
 	} // touch_dump_event (event)
 
 
-	//***********************
-	/* (non-Javadoc)
-	 * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
-	 */
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if ((requestCode == WGlobals.GRAPHOPTIONSACTIVITY) &&
-			(resultCode == RESULT_OK)) {
-			// Grab the info from our intent and update
-			// our data (and possibly the database, too).
-			m_exercise_data.g_reps = data.getBooleanExtra(GraphOptionsActivity.ITT_KEY_GRAPH_REPS, false);
-			m_exercise_data.g_level = data.getBooleanExtra(GraphOptionsActivity.ITT_KEY_GRAPH_LEVEL, false);
-			m_exercise_data.g_cals = data.getBooleanExtra(GraphOptionsActivity.ITT_KEY_GRAPH_CALS, false);
-			m_exercise_data.g_weight = data.getBooleanExtra(GraphOptionsActivity.ITT_KEY_GRAPH_WEIGHT, false);
-			m_exercise_data.g_dist = data.getBooleanExtra(GraphOptionsActivity.ITT_KEY_GRAPH_DIST, false);
-			m_exercise_data.g_time = data.getBooleanExtra(GraphOptionsActivity.ITT_KEY_GRAPH_TIME, false);
-			m_exercise_data.g_other = data.getBooleanExtra(GraphOptionsActivity.ITT_KEY_GRAPH_OTHER, false);
-
-			m_exercise_data.g_with_reps = data.getIntExtra(GraphOptionsActivity.ITT_KEY_WITH_REPS, -1);
-
-			// Check our preferences to see if the type of graph has
-			// changed.
-			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-			m_daily = prefs.getBoolean(getString(R.string.prefs_graphs_daily_toggle_key), false);
-
-			// Check for error condition of NOTHING being
-			// graphed.  If so, err report and set to the
-			// significant.
-			if (test_and_fix_graph_settings() == false) {
-				Log.e(tag, "test_and_fix_graph_settings() returned false! Aborting!");
-				return;
-			}
-
-			// Change the database
-			save_data();
-
-			m_db_dirty = true;
-			onResume();
-
-		} // return from GraphOptionsActivity
-
-	} // onActivityResult(...)
-
-
 	/************************
 	 * Creates the legend that helps the user understand
 	 * what the colors of the graph mean.
@@ -554,75 +661,75 @@ public class GraphActivity
 				new StyleableSpannableStringBuilder();
 
 		boolean needs_seperator = false;
-		if (m_exercise_data.g_reps) {
+		if (m_task.m_exercise_data.g_reps) {
 			str = getString(R.string.reps_readable);
 			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_reps),
-											m_exercise_data.is_reps_significant());
+											m_task.m_exercise_data.is_reps_significant());
 			needs_seperator = true;
 		}
-		if (m_exercise_data.g_level) {
+		if (m_task.m_exercise_data.g_level) {
 			if (needs_seperator)
 				builder.append (DEFAULT_LEGEND_SPACER);
 			str = getString(R.string.level_readable);
 			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_level),
-											m_exercise_data.is_level_significant());
+											m_task.m_exercise_data.is_level_significant());
 			needs_seperator = true;
 		}
-		if (m_exercise_data.g_cals) {
+		if (m_task.m_exercise_data.g_cals) {
 			if (needs_seperator)
 				builder.append (DEFAULT_LEGEND_SPACER);
 			str = getString(R.string.cals_readable);
 			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_cals),
-											m_exercise_data.is_cals_significant());
+											m_task.m_exercise_data.is_cals_significant());
 			needs_seperator = true;
 		}
-		if (m_exercise_data.g_weight) {
+		if (m_task.m_exercise_data.g_weight) {
 			if (needs_seperator)
 				builder.append (DEFAULT_LEGEND_SPACER);
 			str = getString(R.string.weight_readable);
 			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_weight),
-											m_exercise_data.is_weight_significant());
+											m_task.m_exercise_data.is_weight_significant());
 			needs_seperator = true;
 		}
 
-		if (m_exercise_data.g_dist) {
+		if (m_task.m_exercise_data.g_dist) {
 			if (needs_seperator)
 				builder.append (DEFAULT_LEGEND_SPACER);
 			str = getString(R.string.dist_readable);
 			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_dist),
-											m_exercise_data.is_dist_significant());
+											m_task.m_exercise_data.is_dist_significant());
 			needs_seperator = true;
 		}
 
-		if (m_exercise_data.g_time) {
+		if (m_task.m_exercise_data.g_time) {
 			if (needs_seperator)
 				builder.append (DEFAULT_LEGEND_SPACER);
 			str = getString(R.string.time_readable);
 			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_time),
-											m_exercise_data.is_time_significant());
+											m_task.m_exercise_data.is_time_significant());
 			needs_seperator = true;
 		}
 
-		if (m_exercise_data.g_other) {
+		if (m_task.m_exercise_data.g_other) {
 			if (needs_seperator)
 				builder.append (DEFAULT_LEGEND_SPACER);
-			str = m_exercise_data.other_title;
+			str = m_task.m_exercise_data.other_title;
 			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_other),
-											m_exercise_data.is_other_significant());
+											m_task.m_exercise_data.is_other_significant());
 			needs_seperator = true;
 		}
 
-		if (m_exercise_data.g_with_reps != -1) {
+		if (m_task.m_exercise_data.g_with_reps != -1) {
 			if (needs_seperator)
 				builder.append (DEFAULT_LEGEND_SPACER);
 
 			// What is combined with reps?
 			String with_name;
-			if (m_exercise_data.g_with_reps == DatabaseHelper.EXERCISE_COL_OTHER_NUM) {
-				with_name = m_exercise_data.other_title;
+			if (m_task.m_exercise_data.g_with_reps == DatabaseHelper.EXERCISE_COL_OTHER_NUM) {
+				with_name = m_task.m_exercise_data.other_title;
 			}
 			else {
-				with_name = get_nice_string_from_aspect_num(this, m_exercise_data.g_with_reps);
+				with_name = get_nice_string_from_aspect_num(this, m_task.m_exercise_data.g_with_reps);
 			}
 			str = getString(R.string.with_readable, with_name);
 			builder.appendWithForegroundColor(str, getResources().getColor(R.color.color_with_reps),
@@ -641,7 +748,7 @@ public class GraphActivity
 	 * Activity.
 	 * <p>
 	 *  preconditions:<br/>
-	 *		<i>m_exercise_data</i> is fully loaded.<br/>
+	 *		<i>m_task.m_exercise_data</i> is fully loaded.<br/>
 	 *		<i>m_set_data</i> is also fully loaded.
 	 * <p>
 	 *  side effects:<br/>
@@ -653,49 +760,49 @@ public class GraphActivity
 	protected void construct_collections_for_aspects() {
 		float radius = Graph2.BIG_DOT_RADIUS;
 
-		if (m_exercise_data.g_reps) {
+		if (m_task.m_exercise_data.g_reps) {
 			add_new_collection(DatabaseHelper.EXERCISE_COL_REP_NUM,
 							getResources().getColor(R.color.color_reps),
 							radius);
 			radius -= Graph2.DOT_RADIUS_INCREMENT;
 		}
 
-		if (m_exercise_data.g_cals) {
+		if (m_task.m_exercise_data.g_cals) {
 			add_new_collection(DatabaseHelper.EXERCISE_COL_CALORIE_NUM,
 							getResources().getColor(R.color.color_cals),
 							radius);
 			radius -= Graph2.DOT_RADIUS_INCREMENT;
 		}
 
-		if (m_exercise_data.g_level) {
+		if (m_task.m_exercise_data.g_level) {
 			add_new_collection(DatabaseHelper.EXERCISE_COL_LEVEL_NUM,
 							getResources().getColor(R.color.color_level),
 							radius);
 			radius -= Graph2.DOT_RADIUS_INCREMENT;
 		}
 
-		if (m_exercise_data.g_weight) {
+		if (m_task.m_exercise_data.g_weight) {
 			add_new_collection(DatabaseHelper.EXERCISE_COL_WEIGHT_NUM,
 							getResources().getColor(R.color.color_weight),
 							radius);
 			radius -= Graph2.DOT_RADIUS_INCREMENT;
 		}
 
-		if (m_exercise_data.g_dist) {
+		if (m_task.m_exercise_data.g_dist) {
 			add_new_collection(DatabaseHelper.EXERCISE_COL_DIST_NUM,
 							getResources().getColor(R.color.color_dist),
 							radius);
 			radius -= Graph2.DOT_RADIUS_INCREMENT;
 		}
 
-		if (m_exercise_data.g_time) {
+		if (m_task.m_exercise_data.g_time) {
 			add_new_collection(DatabaseHelper.EXERCISE_COL_TIME_NUM,
 							getResources().getColor(R.color.color_time),
 							radius);
 			radius -= Graph2.DOT_RADIUS_INCREMENT;
 		}
 
-		if (m_exercise_data.g_other) {
+		if (m_task.m_exercise_data.g_other) {
 			add_new_collection(DatabaseHelper.EXERCISE_COL_OTHER_NUM,
 							getResources().getColor(R.color.color_other),
 							radius);
@@ -720,8 +827,8 @@ public class GraphActivity
 	 * 		to graph).
 	 */
 	private void construct_with_reps() {
-		if ((m_exercise_data.g_with_reps == -1) ||
-			(m_exercise_data.breps == false)) {
+		if ((m_task.m_exercise_data.g_with_reps == -1) ||
+			(m_task.m_exercise_data.breps == false)) {
 			return;
 		}
 
@@ -732,7 +839,7 @@ public class GraphActivity
 		RectD bounds = new RectD(Double.MAX_VALUE, -Double.MAX_VALUE,
 								-Double.MAX_VALUE, Double.MAX_VALUE);
 
-		for (SetData set_data : m_set_data) {
+		for (SetData set_data : m_task.m_set_data) {
 			PointD pt = new PointD();
 
 			pt.x = set_data.millis;
@@ -742,7 +849,7 @@ public class GraphActivity
 				bounds.right = pt.x;
 
 
-			switch (m_exercise_data.g_with_reps) {
+			switch (m_task.m_exercise_data.g_with_reps) {
 				case DatabaseHelper.EXERCISE_COL_REP_NUM:
 					Log.e(tag, "Error in setup_with_reps()! Tried to combine reps with itself!  Aborting.");
 					return;
@@ -837,7 +944,7 @@ public class GraphActivity
 		m_view.m_graph_x_axis = new GraphXAxis2();
 		long left = Long.MAX_VALUE, right = -Long.MAX_VALUE;
 
-		for (SetData set_data : m_set_data) {
+		for (SetData set_data : m_task.m_set_data) {
 			MyCalendar cal = new MyCalendar(set_data.millis);
 			String str = cal.print_month_day_numbers();
 			m_view.m_graph_x_axis.add_date(set_data.millis);
@@ -924,28 +1031,28 @@ public class GraphActivity
 		// Fill in the text.
 		String str;
 		if (m_daily) {
-			str = getString(R.string.graph_one_set_daily_msg, m_exercise_data.name);
+			str = getString(R.string.graph_one_set_daily_msg, m_task.m_exercise_data.name);
 		}
 		else {
-			str = getString(R.string.graph_one_set_msg, m_exercise_data.name);
+			str = getString(R.string.graph_one_set_msg, m_task.m_exercise_data.name);
 		}
 
 		// Append to the string, depending on the current aspects.
-		if (m_exercise_data.breps)
-			str += "\n\treps: " + set_data_to_str(m_set_data.get(0).reps);
-		if (m_exercise_data.blevel)
-			str += "\n\tlevels: " + set_data_to_str(m_set_data.get(0).levels);
-		if (m_exercise_data.bcals)
-			str += "\n\tcalories: " + set_data_to_str(m_set_data.get(0).cals);
-		if (m_exercise_data.bweight)
-			str += "\n\tweight (" + m_exercise_data.weight_unit + "): " + set_data_to_str(m_set_data.get(0).weight);
-		if (m_exercise_data.bdist)
-			str += "\n\tdistance (" + m_exercise_data.dist_unit + "): " + set_data_to_str(m_set_data.get(0).dist);
-		if (m_exercise_data.btime)
-			str += "\n\ttime (" + m_exercise_data.time_unit + "): " + set_data_to_str(m_set_data.get(0).time);
-		if (m_exercise_data.bother)
-			str += "\n\t" + m_exercise_data.other_title + " (" + m_exercise_data.other_unit + "): " + set_data_to_str(m_set_data.get(0).other);
-		switch (m_set_data.get(0).cond) {
+		if (m_task.m_exercise_data.breps)
+			str += "\n\treps: " + set_data_to_str(m_task.m_set_data.get(0).reps);
+		if (m_task.m_exercise_data.blevel)
+			str += "\n\tlevels: " + set_data_to_str(m_task.m_set_data.get(0).levels);
+		if (m_task.m_exercise_data.bcals)
+			str += "\n\tcalories: " + set_data_to_str(m_task.m_set_data.get(0).cals);
+		if (m_task.m_exercise_data.bweight)
+			str += "\n\tweight (" + m_task.m_exercise_data.weight_unit + "): " + set_data_to_str(m_task.m_set_data.get(0).weight);
+		if (m_task.m_exercise_data.bdist)
+			str += "\n\tdistance (" + m_task.m_exercise_data.dist_unit + "): " + set_data_to_str(m_task.m_set_data.get(0).dist);
+		if (m_task.m_exercise_data.btime)
+			str += "\n\ttime (" + m_task.m_exercise_data.time_unit + "): " + set_data_to_str(m_task.m_set_data.get(0).time);
+		if (m_task.m_exercise_data.bother)
+			str += "\n\t" + m_task.m_exercise_data.other_title + " (" + m_task.m_exercise_data.other_unit + "): " + set_data_to_str(m_task.m_set_data.get(0).other);
+		switch (m_task.m_set_data.get(0).cond) {
 			case DatabaseHelper.SET_COND_OK:
 				str += "\n\tcondition: OK";
 				break;
@@ -965,7 +1072,7 @@ public class GraphActivity
 				str += "\n\tcondition: unknown";
 				break;
 		}
-		String notes = m_set_data.get(0).notes;
+		String notes = m_task.m_set_data.get(0).notes;
 		if ((notes != null) && (notes.length() > 0)) {
 			str += "\n\n\t" + notes;
 		}
@@ -973,6 +1080,7 @@ public class GraphActivity
 		TextView tv = (TextView) findViewById(R.id.graph_gview_tv);
 		tv.setText(str);
 	} // construct_one_set()
+
 
 	/************************
 	 * Helper method that takes quantity in some set data
@@ -1001,25 +1109,36 @@ public class GraphActivity
 	}
 
 
-	/************************
-	 * Used during onCreate() and onResume(), this does two things:
-	 * 	1.	Creates the ArrayList to hold the graph data
-	 * 	2.	Starts the ASyncTask to read that data and
-	 * 		draw the graph.
-	 */
-	private void setup_data() {
-		// Set up this data list!
-		if (m_set_data != null) {
-			m_set_data.clear();
-			m_set_data = null;
-		}
-		m_set_data = new ArrayList<SetData>();
-		m_set_data.clear();
-
-		// Start the AsyncTask.
-		new GraphSyncTask().execute();
-
-	} // setup_graph()
+//	/************************
+//	 * Used during onCreate() and onResume(), this does two things:
+//	 * 	1.	Creates the ArrayList to hold the graph data
+//	 * 	2.	Starts the ASyncTask to read that data and
+//	 * 		draw the graph.
+//	 *
+//	 * preconditions:
+//	 * 	m_ex_name holds the name of this exercise.
+//	 *
+//	 */
+//	@Deprecated
+//	private void setup_data() {
+//		m_task = new GraphASyncTask(this, m_ex_name, m_daily);
+//
+//		//	Moved to the Constructor of the
+//		//	ASyncTask.
+//		//
+//		// Set up this data list!
+////		if (m_task.m_set_data != null) {
+////			m_task.m_set_data.clear();
+////			m_task.m_set_data = null;
+////		}
+////		m_task.m_set_data = new ArrayList<SetData>();
+////		m_task.m_set_data.clear();
+//
+//		// Start the AsyncTask.
+//		m_task.execute();
+////		new GraphASyncTask().execute();
+//
+//	} // setup_graph()
 
 
 	/************************
@@ -1036,20 +1155,20 @@ public class GraphActivity
 	 * 		This should probably be called during an ASyncTask, as
 	 * 		it could take a long time!
 	 */
-	private void test_m_db() {
-		if (m_db != null) {
-			// The database may be used by another tab.  Give
-			// it some time to finish.
-			try {
-				Thread.sleep(1000);
-			}
-			catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			if (m_db != null)
-				throw new SQLiteException("m_db not null when starting doInBackground() in GraphActivity!");
-		}
-	} // test_m_db()
+//	private void test_m_db() {
+//		if (m_db != null) {
+//			// The database may be used by another tab.  Give
+//			// it some time to finish.
+//			try {
+//				Thread.sleep(1000);
+//			}
+//			catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//			if (m_db != null)
+//				throw new SQLiteException("m_db not null when starting doInBackground() in GraphActivity!");
+//		}
+//	} // test_m_db()
 
 
 	/************************
@@ -1084,7 +1203,7 @@ public class GraphActivity
 		RectD bounds = new RectD(Double.MAX_VALUE, -Double.MAX_VALUE,
 								-Double.MAX_VALUE, Double.MAX_VALUE);
 
-		for (SetData set_data : m_set_data) {
+		for (SetData set_data : m_task.m_set_data) {
 			PointD pt = new PointD();
 
 			pt.x = set_data.millis;
@@ -1172,53 +1291,53 @@ public class GraphActivity
 	 * This tests the current settings
 	 *
 	 * preconditions:
-	 * 	m_exercise_data		Should be filled out (either correctly
+	 * 	m_task.m_exercise_data		Should be filled out (either correctly
 	 * 						or incorrectly).
 	 *
 	 * side effects:
-	 * 	m_exercise_data		If all the graphs are turned off, this
+	 * 	m_task.m_exercise_data		If all the graphs are turned off, this
 	 * 						fixes that problem by turning the
 	 * 						significant graph on.
 	 *
-	 * @return	true iff no problems were found. m_exercise_data
+	 * @return	true iff no problems were found. m_task.m_exercise_data
 	 * 			will be unchanged.
 	 */
 	private boolean test_and_fix_graph_settings() {
-		if ((m_exercise_data.g_reps) ||
-			(m_exercise_data.g_level) ||
-			(m_exercise_data.g_cals) ||
-			(m_exercise_data.g_weight) ||
-			(m_exercise_data.bdist) ||
-			(m_exercise_data.g_time) ||
-			(m_exercise_data.g_other)) {
+		if ((m_task.m_exercise_data.g_reps) ||
+			(m_task.m_exercise_data.g_level) ||
+			(m_task.m_exercise_data.g_cals) ||
+			(m_task.m_exercise_data.g_weight) ||
+			(m_task.m_exercise_data.bdist) ||
+			(m_task.m_exercise_data.g_time) ||
+			(m_task.m_exercise_data.g_other)) {
 			return true;
 		}
 
 		// Figure out the significant and turn it on.
-		switch (m_exercise_data.significant) {
+		switch (m_task.m_exercise_data.significant) {
 			case DatabaseHelper.EXERCISE_COL_GRAPH_REPS_NUM:
-				m_exercise_data.g_reps = true;
+				m_task.m_exercise_data.g_reps = true;
 				break;
 			case DatabaseHelper.EXERCISE_COL_GRAPH_LEVEL_NUM:
-				m_exercise_data.g_level = true;
+				m_task.m_exercise_data.g_level = true;
 				break;
 			case DatabaseHelper.EXERCISE_COL_GRAPH_CALS_NUM:
-				m_exercise_data.g_cals = true;
+				m_task.m_exercise_data.g_cals = true;
 				break;
 			case DatabaseHelper.EXERCISE_COL_GRAPH_WEIGHT_NUM:
-				m_exercise_data.g_weight = true;
+				m_task.m_exercise_data.g_weight = true;
 				break;
 			case DatabaseHelper.EXERCISE_COL_GRAPH_DIST_NUM:
-				m_exercise_data.g_dist = true;
+				m_task.m_exercise_data.g_dist = true;
 				break;
 			case DatabaseHelper.EXERCISE_COL_GRAPH_TIME_NUM:
-				m_exercise_data.g_time = true;
+				m_task.m_exercise_data.g_time = true;
 				break;
 			case DatabaseHelper.EXERCISE_COL_GRAPH_OTHER_NUM:
-				m_exercise_data.g_other = true;
+				m_task.m_exercise_data.g_other = true;
 				break;
 			default:
-				Log.e (tag, "Can't find the significant aspect of the " + m_exercise_data.name + " exercise in test_and_fix_graph_settings()!");
+				Log.e (tag, "Can't find the significant aspect of the " + m_task.m_exercise_data.name + " exercise in test_and_fix_graph_settings()!");
 				break;
 		}
 		return false;
@@ -1245,42 +1364,42 @@ public class GraphActivity
 			// row and add in the modified row.
 			if (m_db.delete(DatabaseHelper.EXERCISE_TABLE_NAME,
 							DatabaseHelper.EXERCISE_COL_NAME + "=?",
-							new String[] {m_exercise_data.name})
+							new String[] {m_task.m_exercise_data.name})
 					== 0) {
 				Log.e(tag, "Error deleting row in save_data()!");
 				return;
 			}
 
 			ContentValues values = new ContentValues();
-			values.put (DatabaseHelper.EXERCISE_COL_NAME, m_exercise_data.name);
-			values.put (DatabaseHelper.EXERCISE_COL_TYPE, m_exercise_data.type);
-			values.put (DatabaseHelper.EXERCISE_COL_GROUP, m_exercise_data.group);
-			values.put (DatabaseHelper.EXERCISE_COL_WEIGHT, m_exercise_data.bweight);
-			values.put (DatabaseHelper.EXERCISE_COL_REP, m_exercise_data.breps);
-			values.put (DatabaseHelper.EXERCISE_COL_DIST, m_exercise_data.bdist);
-			values.put (DatabaseHelper.EXERCISE_COL_TIME, m_exercise_data.btime);
-			values.put (DatabaseHelper.EXERCISE_COL_LEVEL, m_exercise_data.blevel);
-			values.put (DatabaseHelper.EXERCISE_COL_CALORIES, m_exercise_data.bcals);
-			values.put (DatabaseHelper.EXERCISE_COL_OTHER, m_exercise_data.bother);
+			values.put (DatabaseHelper.EXERCISE_COL_NAME, m_task.m_exercise_data.name);
+			values.put (DatabaseHelper.EXERCISE_COL_TYPE, m_task.m_exercise_data.type);
+			values.put (DatabaseHelper.EXERCISE_COL_GROUP, m_task.m_exercise_data.group);
+			values.put (DatabaseHelper.EXERCISE_COL_WEIGHT, m_task.m_exercise_data.bweight);
+			values.put (DatabaseHelper.EXERCISE_COL_REP, m_task.m_exercise_data.breps);
+			values.put (DatabaseHelper.EXERCISE_COL_DIST, m_task.m_exercise_data.bdist);
+			values.put (DatabaseHelper.EXERCISE_COL_TIME, m_task.m_exercise_data.btime);
+			values.put (DatabaseHelper.EXERCISE_COL_LEVEL, m_task.m_exercise_data.blevel);
+			values.put (DatabaseHelper.EXERCISE_COL_CALORIES, m_task.m_exercise_data.bcals);
+			values.put (DatabaseHelper.EXERCISE_COL_OTHER, m_task.m_exercise_data.bother);
 
-			values.put (DatabaseHelper.EXERCISE_COL_WEIGHT_UNIT, m_exercise_data.weight_unit);
-			values.put (DatabaseHelper.EXERCISE_COL_DIST_UNIT, m_exercise_data.dist_unit);
-			values.put (DatabaseHelper.EXERCISE_COL_TIME_UNIT,  m_exercise_data.time_unit);
-			values.put (DatabaseHelper.EXERCISE_COL_OTHER_TITLE, m_exercise_data.other_title);
-			values.put (DatabaseHelper.EXERCISE_COL_OTHER_UNIT, m_exercise_data.other_unit);
+			values.put (DatabaseHelper.EXERCISE_COL_WEIGHT_UNIT, m_task.m_exercise_data.weight_unit);
+			values.put (DatabaseHelper.EXERCISE_COL_DIST_UNIT, m_task.m_exercise_data.dist_unit);
+			values.put (DatabaseHelper.EXERCISE_COL_TIME_UNIT,  m_task.m_exercise_data.time_unit);
+			values.put (DatabaseHelper.EXERCISE_COL_OTHER_TITLE, m_task.m_exercise_data.other_title);
+			values.put (DatabaseHelper.EXERCISE_COL_OTHER_UNIT, m_task.m_exercise_data.other_unit);
 
-			values.put(DatabaseHelper.EXERCISE_COL_SIGNIFICANT, m_exercise_data.significant);
-			values.put(DatabaseHelper.EXERCISE_COL_LORDER, m_exercise_data.lorder);
+			values.put(DatabaseHelper.EXERCISE_COL_SIGNIFICANT, m_task.m_exercise_data.significant);
+			values.put(DatabaseHelper.EXERCISE_COL_LORDER, m_task.m_exercise_data.lorder);
 
-			values.put(DatabaseHelper.EXERCISE_COL_GRAPH_REPS, m_exercise_data.g_reps);
-			values.put(DatabaseHelper.EXERCISE_COL_GRAPH_LEVEL, m_exercise_data.g_level);
-			values.put(DatabaseHelper.EXERCISE_COL_GRAPH_CALS, m_exercise_data.g_cals);
-			values.put(DatabaseHelper.EXERCISE_COL_GRAPH_WEIGHT, m_exercise_data.g_weight);
-			values.put(DatabaseHelper.EXERCISE_COL_GRAPH_DIST, m_exercise_data.g_dist);
-			values.put(DatabaseHelper.EXERCISE_COL_GRAPH_TIME, m_exercise_data.g_time);
-			values.put(DatabaseHelper.EXERCISE_COL_GRAPH_OTHER, m_exercise_data.g_other);
+			values.put(DatabaseHelper.EXERCISE_COL_GRAPH_REPS, m_task.m_exercise_data.g_reps);
+			values.put(DatabaseHelper.EXERCISE_COL_GRAPH_LEVEL, m_task.m_exercise_data.g_level);
+			values.put(DatabaseHelper.EXERCISE_COL_GRAPH_CALS, m_task.m_exercise_data.g_cals);
+			values.put(DatabaseHelper.EXERCISE_COL_GRAPH_WEIGHT, m_task.m_exercise_data.g_weight);
+			values.put(DatabaseHelper.EXERCISE_COL_GRAPH_DIST, m_task.m_exercise_data.g_dist);
+			values.put(DatabaseHelper.EXERCISE_COL_GRAPH_TIME, m_task.m_exercise_data.g_time);
+			values.put(DatabaseHelper.EXERCISE_COL_GRAPH_OTHER, m_task.m_exercise_data.g_other);
 
-			values.put(DatabaseHelper.EXERCISE_COL_GRAPH_WITH_REPS, m_exercise_data.g_with_reps);
+			values.put(DatabaseHelper.EXERCISE_COL_GRAPH_WITH_REPS, m_task.m_exercise_data.g_with_reps);
 
 			m_db.insert(DatabaseHelper.EXERCISE_TABLE_NAME, null, values);
 
@@ -1358,7 +1477,60 @@ public class GraphActivity
 	//
 	//		Result		- The type of the final result.  Also
 	//					not used here.
-	class GraphSyncTask extends AsyncTask <Void, SetData, Void> {
+	static class GraphASyncTask extends AsyncTask <Void, SetData, Void> {
+
+		private static final String tag = "GraphASyncTask";
+
+		/**
+		 * The Activity that is using this ASyncTask.
+		 * This static class may ONLY access the activity
+		 * through this data member.
+		 * <p>
+		 * NOTE: Make sure this is not NULL before using!!!
+		 * (Actually, this is not necessary. Google promises that
+		 * this will always be valid when done in a UI thread.)
+		 */
+		GraphActivity m_activity = null;
+
+		/** Will be TRUE when the ASyncTask has finished. */
+		boolean m_done = false;
+
+		/** Holds info about this exercise */
+		public ExerciseData m_exercise_data = null;
+
+		/** Holds the name of this exercise */
+		private String m_ex_name;
+
+		/** Are we drawing regular graphs (false) or daily graphs (true)? */
+		private boolean m_daily = false;
+
+		/** Holds all the set data from our database to be processed later. */
+		protected ArrayList<SetData> m_set_data;
+
+
+		/***************
+		 * Constructor
+		 *
+		 * Needs a reference to the Activity that's creating
+		 * this ASyncTask.  It's how this static class
+		 * communicates with that Activity.
+		 */
+		public GraphASyncTask (GraphActivity activity, String ex_name, boolean daily) {
+			Log.v(tag, "entering constructor, id = " + this.toString());
+
+			attach (activity, daily);
+			m_ex_name = ex_name;
+			m_daily = daily;
+
+			if (m_set_data != null) {
+				m_set_data.clear();
+				m_set_data = null;
+			}
+			m_set_data = new ArrayList<SetData>();
+
+		} // constructor
+
+
 
 		/***************
 		 * Called BEFORE the doInBackground(), this allows
@@ -1368,8 +1540,10 @@ public class GraphActivity
 		 */
 		@Override
 		protected void onPreExecute() {
+			Log.v(tag, "onPreExecute(), id = " + this + ", m_activity = " + m_activity.toString());
 			m_loading = true;
-			start_progress_dialog(R.string.loading_str);
+			m_done = false;
+//			m_activity.start_progress_dialog(R.string.loading_str);
 		}
 
 
@@ -1382,178 +1556,172 @@ public class GraphActivity
 		 */
 		@Override
 		protected Void doInBackground(Void... arg0) {
+			Log.v(tag, "doInBackground(), id = " + this);
+			SQLiteDatabase db = null;
+			Cursor set_cursor = null;
+
+			if (WGlobals.g_db_helper == null) {
+				Log.e(tag, "Trying to do something in the background, but g_db_helper is null!!!");
+				return null;
+			}
+
 			try {
-				test_m_db();
-				m_db = WGlobals.g_db_helper.getReadableDatabase();
-				m_exercise_data = DatabaseHelper.getExerciseData(m_db, m_ex_name);
+				db = WGlobals.g_db_helper.getReadableDatabase();
+				m_exercise_data = DatabaseHelper.getExerciseData(db, m_ex_name);
 				if (m_exercise_data == null) {
 					Log.e(tag, "Error reading exercise info in doInBackground()! Aborting!");
 					return null;
 				}
 
-				Cursor set_cursor = null;
+				// LOAD FROM DATABASE
+				set_cursor = DatabaseHelper.getAllSets(db, m_ex_name, true);
 
-				// Read in all the sets and store that information
-				// in a list.
-				try {
-					// LOAD FROM DATABASE
-					set_cursor = DatabaseHelper.getAllSets(m_db, m_ex_name, true);
+				// If there are not enough sets, don't do anything.
+				if (set_cursor.getCount() < 1) {
+					Log.v(tag, "   doInBackground(): Not enough exercise sets to graph.");
+					return null;
+				}
 
-					// If there are not enough sets, don't do anything.
-					if (set_cursor.getCount() < 1) {
-						Log.v(tag, "Not enough exercise sets to graph.");
-						return null;
-					}
 
-					// MAIN LOOP:
-					// Load up the exercise sets one by one into our list.
-					// There are two kinds of looping depending on whether
-					// we're doing a daily or regular graph.
-					if (m_daily) {
-						// Graph workouts in Daily mode.
-						MyCalendar last_day = new MyCalendar(0);
-						SetData last_set_data = null;
+				// MAIN LOOP:
+				// Load up the exercise sets one by one into our list.
+				// There are two kinds of looping depending on whether
+				// we're doing a daily or regular graph.
+				if (m_daily) {
+					// Graph workouts in Daily mode.
+					MyCalendar last_day = new MyCalendar(0);
+					SetData last_set_data = null;
 
-						int day_count = 0;
+					int day_count = 0;
 
-						while (set_cursor.moveToNext()) {
-							SetData new_set_data = DatabaseHelper.getSetData(set_cursor);
-							MyCalendar cal = new MyCalendar(new_set_data.millis);
-							if (cal.is_same_day(last_day)) {
-								// This set falls on the same day as the last one.
-								// Add the new data to the previous data of the
-								// same day.
-								day_count++;
+					while (set_cursor.moveToNext()) {
+						SetData new_set_data = DatabaseHelper.getSetData(set_cursor);
+						MyCalendar cal = new MyCalendar(new_set_data.millis);
+						if (cal.is_same_day(last_day)) {
+							// This set falls on the same day as the last one.
+							// Add the new data to the previous data of the
+							// same day.
+							day_count++;
 
-								if (m_exercise_data.breps) {
-									// There's a reps, so this makes things a
-									// little more complicated.
-									last_set_data.reps += new_set_data.reps;
-									if (m_exercise_data.bcals)
-										last_set_data.cals += new_set_data.cals * new_set_data.reps;
-									if (m_exercise_data.bdist)
-										last_set_data.dist += new_set_data.dist * new_set_data.reps;
-									if (m_exercise_data.blevel) {
-										// Note: levels are averaged using day_count, which weights it.
-										last_set_data.levels =
-											((last_set_data.levels * day_count) +
-													new_set_data.levels ) /
-											(day_count + 1);
-									}
-									if (m_exercise_data.bother) {
-										// Other just keeps the highest number of the day.
-										if (new_set_data.other > last_set_data.other)
-											last_set_data.other = new_set_data.other;
-									}
-									if (m_exercise_data.btime)
-										last_set_data.time += new_set_data.time * new_set_data.reps;
-									if (m_exercise_data.bweight)
-										last_set_data.weight += new_set_data.weight * new_set_data.reps;
+							if (m_exercise_data.breps) {
+								// There's a reps, so this makes things a
+								// little more complicated.
+								last_set_data.reps += new_set_data.reps;
+								if (m_exercise_data.bcals)
+									last_set_data.cals += new_set_data.cals * new_set_data.reps;
+								if (m_exercise_data.bdist)
+									last_set_data.dist += new_set_data.dist * new_set_data.reps;
+								if (m_exercise_data.blevel) {
+									// Note: levels are averaged using day_count, which weights it.
+									last_set_data.levels =
+										((last_set_data.levels * day_count) +
+												new_set_data.levels ) /
+										(day_count + 1);
 								}
-
-								else {
-									// No reps, just simple addition
-									if (m_exercise_data.bcals)
-										last_set_data.cals += new_set_data.cals;
-									if (m_exercise_data.bdist)
-										last_set_data.dist += new_set_data.dist;
-									if (m_exercise_data.blevel) {
-										// Note: levels are averaged using day_count.
-										last_set_data.levels =
-											((last_set_data.levels * day_count) +
-													new_set_data.levels ) /
-											(day_count + 1);
-									}
-									if (m_exercise_data.bother)
-										// Other just keeps the highest number of the day.
-										if (new_set_data.other > last_set_data.other)
-											last_set_data.other = new_set_data.other;
-									if (m_exercise_data.btime)
-										last_set_data.time += new_set_data.time;
-									if (m_exercise_data.bweight)
-										last_set_data.weight += new_set_data.weight;
-								} // no reps
-
-							} // same day
-
-							else {
-								// This is a new day.  Add the last one (as long
-								// it's not null to our m_set_data.
-								if (last_set_data == null) {
-									// Preparing the very first set.
-									last_set_data = new SetData (new_set_data);
+								if (m_exercise_data.bother) {
+									// Other just keeps the highest number of the day.
+									if (new_set_data.other > last_set_data.other)
+										last_set_data.other = new_set_data.other;
 								}
-								else {
-									// Add our old set and get ready for a new day.
-									m_set_data.add(last_set_data);
-									last_set_data = new SetData (new_set_data);
-								}
-								last_day.set_millis(last_set_data.millis);
-								day_count = 0;
-
-								if (m_exercise_data.breps) {
-									// if there are reps, then we need to multiply
-									// our aspects (but not Level and Other).
-									if (m_exercise_data.bcals)
-										last_set_data.cals *= last_set_data.reps;
-									if (m_exercise_data.bdist)
-										last_set_data.dist *= last_set_data.reps;
-									if (m_exercise_data.btime)
-										last_set_data.time *= last_set_data.reps;
-									if (m_exercise_data.bweight)
-										last_set_data.weight *= last_set_data.reps;
-								}
-
-							} // new day
-
-							if (set_cursor.isLast()) {
-								// Add the last day.
-								m_set_data.add(last_set_data);
+								if (m_exercise_data.btime)
+									last_set_data.time += new_set_data.time * new_set_data.reps;
+								if (m_exercise_data.bweight)
+									last_set_data.weight += new_set_data.weight * new_set_data.reps;
 							}
 
-						} // loop through all sets
+							else {
+								// No reps, just simple addition
+								if (m_exercise_data.bcals)
+									last_set_data.cals += new_set_data.cals;
+								if (m_exercise_data.bdist)
+									last_set_data.dist += new_set_data.dist;
+								if (m_exercise_data.blevel) {
+									// Note: levels are averaged using day_count.
+									last_set_data.levels =
+										((last_set_data.levels * day_count) +
+												new_set_data.levels ) /
+										(day_count + 1);
+								}
+								if (m_exercise_data.bother)
+									// Other just keeps the highest number of the day.
+									if (new_set_data.other > last_set_data.other)
+										last_set_data.other = new_set_data.other;
+								if (m_exercise_data.btime)
+									last_set_data.time += new_set_data.time;
+								if (m_exercise_data.bweight)
+									last_set_data.weight += new_set_data.weight;
+							} // no reps
 
-					} // daily mode
+						} // same day
 
+						else {
+							// This is a new day.  Add the last one (as long
+							// it's not null to our m_set_data.
+							if (last_set_data == null) {
+								// Preparing the very first set.
+								last_set_data = new SetData (new_set_data);
+							}
+							else {
+								// Add our old set and get ready for a new day.
+								m_set_data.add(last_set_data);
+								last_set_data = new SetData (new_set_data);
+							}
+							last_day.set_millis(last_set_data.millis);
+							day_count = 0;
 
-					else {
-						// Graph EVERY workout set.
-						while (set_cursor.moveToNext()) {
-							SetData new_set_data = DatabaseHelper.getSetData(set_cursor);
-							m_set_data.add(new_set_data);
-							// todo
-							//	Here is where we would publish our progress.
+							if (m_exercise_data.breps) {
+								// if there are reps, then we need to multiply
+								// our aspects (but not Level and Other).
+								if (m_exercise_data.bcals)
+									last_set_data.cals *= last_set_data.reps;
+								if (m_exercise_data.bdist)
+									last_set_data.dist *= last_set_data.reps;
+								if (m_exercise_data.btime)
+									last_set_data.time *= last_set_data.reps;
+								if (m_exercise_data.bweight)
+									last_set_data.weight *= last_set_data.reps;
+							}
+
+						} // new day
+
+						if (set_cursor.isLast()) {
+							// Add the last day.
+							m_set_data.add(last_set_data);
 						}
-					} // regular mode
+
+					} // loop through all sets
+
+				} // daily mode
 
 
-				} // try reading the SET table
-
-				catch (SQLException e) {
-					e.printStackTrace();
-				}
-				finally {
-					if (set_cursor != null) {
-						set_cursor.close();
-						set_cursor = null;
+				else {
+					// Graph EVERY workout set.
+					while (set_cursor.moveToNext()) {
+						SetData new_set_data = DatabaseHelper.getSetData(set_cursor);
+						m_set_data.add(new_set_data);
+						// todo
+						//	Here is where we would publish our progress.
 					}
+				} // regular mode
 
-				}
 
-			} // try opening the DB
-
-			catch (SQLException e) {
+			} catch (SQLiteException e) {
 				e.printStackTrace();
-			}
-			finally {
-				if (m_db != null) {
-					m_db.close();
-					m_db = null;
+			} finally {
+				if (set_cursor != null) {
+					set_cursor.close();
+					set_cursor = null;
+				}
+				if (db != null) {
+					db.close();
+					db = null;
 				}
 			}
 
+			Log.v(tag, "   exiting doInBackground, id = " + this);
 			return null;
 		} // doInBackground (...)
+
 
 		/****************
 		 * THIS is the part that has access to the UI
@@ -1565,6 +1733,7 @@ public class GraphActivity
 		 */
 		@Override
 		protected void onProgressUpdate(SetData ... set_data) {
+			Log.e(tag, "onProgressUpdate(), id = " + this.toString());
 			// todo:
 			//	draw the points represented by this
 //			m_view.add_point(data[0]);
@@ -1579,24 +1748,31 @@ public class GraphActivity
 		 * the progress dialog.
 		 */
 		@Override
-		protected void onPostExecute(Void result) {
+		protected void onPostExecute(Void not_used) {
+			Log.v(tag, "onPostExecute(), id = " + this + ", m_activity = " + m_activity.toString());
+
+			// Setup the daily buttons (has to happen whenever there's a refresh)
+			if (m_daily)
+				m_activity.m_daily_mode_tv.setText(R.string.graph_options_daily_mode_on_msg);
+			else
+				m_activity.m_daily_mode_tv.setText(R.string.graph_options_daily_mode_off_msg);
 
 			// If there's just one set, do something special
 			if (m_set_data.size() == 1) {
-				construct_one_set();
-				m_view.invalidate();		// Necessary to make sure that
+				m_activity.construct_one_set();
+				m_activity.m_view.invalidate();		// Necessary to make sure that
 										// it's drawn AFTER all the db
 										// stuff happens.
-				m_loading = false;
-				stop_progress_dialog();
+				m_done = true;
+				m_activity.stop_progress_dialog();
 				return;
 			}
 
-			set_one_set_views_visible (false);
+			m_activity.set_one_set_views_visible (false);
 
-			construct_legend();
+			m_activity.construct_legend();
 
-			m_view.clear();
+			m_activity.m_view.clear();
 
 			// If the aspect count is 0 (and there's no other graphs),
 			// then there's been an error or we started with a database that wasn't
@@ -1618,17 +1794,79 @@ public class GraphActivity
 //			}
 
 			// The main constructors...
-			construct_collections_for_aspects();
-			construct_with_reps();
-			construct_x_axis();
+			m_activity.construct_collections_for_aspects();
+			m_activity.construct_with_reps();
+			m_activity.construct_x_axis();
 
-			stop_progress_dialog();
-			m_view.invalidate();		// Necessary to make sure that
-									// it's drawn AFTER all the db
-									// stuff happens.
+			m_activity.stop_progress_dialog();
+			m_activity.m_view.invalidate();		// Necessary to make sure that
+												// it's drawn AFTER all the db
+												// stuff happens.
+
+			m_done = true;
 			m_loading = false;
-		} // onPostExecute( result )
+			Log.v(tag, "   exiting onPostExecute(), id = " + this);
+		} // onPostExecute( not_used )
 
-	} // class GraphSyncTask
+
+		/***************
+		 * Connects this task to an Activity, allowing
+		 * this static class to communicate with that
+		 * Activity (so it can get the data we're reading
+		 * from the database!).
+		 *
+		 * @param activity	The Activity that wants to
+		 * 					use the data.
+		 *
+		 * @param daily		Is this a daily graph?  True if so.
+		 * 					False if this is a set-by-set graph.
+		 */
+		public void attach (GraphActivity activity, boolean daily) {
+			Log.v(tag, "entering attach(), id = " + this + ", activity = " + activity);
+			m_activity = activity;
+			m_daily = daily;
+		}
+
+		/***************
+		 * Removes our connection to whatever Activity
+		 * we're attached to (or does nothing if we're
+		 * not attached to anything).
+		 *
+		 * This is an important call when the Activity
+		 * goes away (like during an orientation change)
+		 * so that we're not using invalid pointers!
+		 */
+		public void detach() {
+			Log.v(tag, "entering detach(), id = " + this);
+			m_activity = null;
+		}
+
+		/****************
+		 * Please call this when the connecting Activity
+		 * goes away for good.  This will free up lots of
+		 * resources!
+		 */
+		public void kill() {
+			Log.v(tag, "entering kill(), id = " + this);
+
+			// cleanup
+			m_exercise_data = null;
+			m_set_data.clear();
+			m_set_data = null;
+		}
+
+		/*****************
+		 * Call this to see if the GridASyncTask is complete.
+		 *
+		 * The done state is reset (to false) when onPreExecute()
+		 * is called, and terminated (true) during onPostExecute().
+		 */
+		public boolean isDone() {
+			return m_done;
+		}
+
+
+
+	} // class GraphASyncTask
 
 }

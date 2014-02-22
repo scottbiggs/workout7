@@ -1028,7 +1028,7 @@ public class GridActivity2 extends BaseDialogActivity
 		 */
 		int m_progress_lock = 0;
 
-		/** Will be TRUE while the ASyncTask is loading up data. */
+		/** Will be TRUE when the ASyncTask has finished. */
 		boolean m_done = false;
 
 
