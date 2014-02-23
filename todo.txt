@@ -1,6 +1,7 @@
 TODO:
 -----------------
-Bug: Sound doesn't always play when adding a set. Intermittent bug.
+Bug: Go to the tabs. Look at the graph. Add a set. Go back to the
+graph, and it does NOT show the added set!
 
 Bug: When changing just the dailymode, the graph won't redraw.
 Also, when changing the mode AND an option, just the option is redrawn.
@@ -11,7 +12,8 @@ Bug: No loading dialog during orientation change in GraphActivity (or
 Bug: sometimes I hear clicks when the orientation changes. This only occurs
 	when doing the tabbed Activities.
 
-BUG: Sound plays even when the phone has sound turned off!
+BUG: Sound plays even when the phone has sound turned off! This is a bug
+that is part of the System, but I should respect the master-sound settings.
 
 BUG: When graphing superwinking in landscape mode, the colored words overwrite the
 mode button at the top.
@@ -235,6 +237,11 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Bug: Sound doesn't always play when adding a set. Intermittent bug.
+	- fixed. The bug was created when turning off sound during onCreate().
+	I did this so that the wheels wouldn't make any noise then. But I forgot
+	to turn the sound back on, which I do now in onClick().
+
 Bug: The Graph still won't exit the loading dialog when returning from options.
 	- fixed, i think
 
