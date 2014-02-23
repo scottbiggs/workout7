@@ -454,6 +454,8 @@ public class AddSetActivity
 	//-----------------------------------
 	@Override
 	public void onClick(View v) {
+		WGlobals.g_sound = true;		// Since this was turned off during onCreate().
+
 		WGlobals.play_short_click();
 
 		if (v == m_done) {
