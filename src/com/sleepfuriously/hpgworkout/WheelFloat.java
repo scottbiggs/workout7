@@ -349,7 +349,7 @@ public class WheelFloat implements OnWheelChangedListener {
 		WGlobals.play_wheel_sound();
 
 		float value = get_value();
-		Log.d(tag, "onChanged(), value is " + value);
+//		Log.d(tag, "onChanged(), value is " + value);
 		if (m_result_tv != null) {
 			m_result_tv.setText(Float.toString(value));
 		}
