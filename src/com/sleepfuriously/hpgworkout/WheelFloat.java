@@ -115,7 +115,7 @@ public class WheelFloat implements OnWheelChangedListener {
 		// Set the mins and maxs for this instance.
 		m_min_val = 0;
 		m_max_val = powers_of_ten(m_wheels.length - m_num_dec_places)
-							- (1 / powers_of_ten(m_num_dec_places));
+							- (1f / ((long)powers_of_ten(m_num_dec_places)));
 
 		// Finish by zeroing out the number.
 		reset(false);
@@ -254,8 +254,9 @@ public class WheelFloat implements OnWheelChangedListener {
 		}
 
 		if (val > max_val()) {
-				val = max_val();
-			}
+			val = max_val();
+//			Log.w(tag, "exceeding max value! val = " + val + ", max_val = " + max_val());
+		}
 		else if (val < min_val()) {
 				val = min_val();
 		}

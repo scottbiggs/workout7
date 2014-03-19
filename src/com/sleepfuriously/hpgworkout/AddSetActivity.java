@@ -850,8 +850,8 @@ public class AddSetActivity
 							{
 							R.id.aset_wheel_reps_1,
 							R.id.aset_wheel_reps_10,
-							R.id.aset_wheel_reps_100,
-							R.id.aset_wheel_reps_1000
+							R.id.aset_wheel_reps_100
+//							R.id.aset_wheel_reps_1000
 							});
 			m_reps_wheels.set_tv(m_reps_tv);
 			m_reps_wheels.setOnWheelIntChangedListener(this);
@@ -862,8 +862,8 @@ public class AddSetActivity
 							{
 							R.id.aset_wheel_level_1,
 							R.id.aset_wheel_level_10,
-							R.id.aset_wheel_level_100,
-							R.id.aset_wheel_level_1000
+							R.id.aset_wheel_level_100
+//							R.id.aset_wheel_level_1000
 							});
 			m_level_wheels.set_tv(m_level_tv);
 			m_level_wheels.setOnWheelIntChangedListener(this);
@@ -874,8 +874,8 @@ public class AddSetActivity
 							{
 							R.id.aset_wheel_calorie_1,
 							R.id.aset_wheel_calorie_10,
-							R.id.aset_wheel_calorie_100,
-							R.id.aset_wheel_calorie_1000
+							R.id.aset_wheel_calorie_100
+//							R.id.aset_wheel_calorie_1000
 							});
 			m_calorie_wheels.set_tv(m_calorie_tv);
 			m_calorie_wheels.setOnWheelIntChangedListener(this);
@@ -888,8 +888,8 @@ public class AddSetActivity
 							R.id.aset_wheel_weight_point,
 							R.id.aset_wheel_weight_1,
 							R.id.aset_wheel_weight_10,
-							R.id.aset_wheel_weight_100,
-							R.id.aset_wheel_weight_1000
+							R.id.aset_wheel_weight_100
+//							R.id.aset_wheel_weight_1000
 							},
 							1);
 			m_weight_wheels.set_tv(m_weight_tv);
@@ -902,8 +902,8 @@ public class AddSetActivity
 							R.id.aset_wheel_dist_point,
 							R.id.aset_wheel_dist_1,
 							R.id.aset_wheel_dist_10,
-							R.id.aset_wheel_dist_100,
-							R.id.aset_wheel_dist_1000
+							R.id.aset_wheel_dist_100
+//							R.id.aset_wheel_dist_1000
 							},
 							1);
 			m_dist_wheels.set_tv(m_dist_tv);
@@ -916,8 +916,8 @@ public class AddSetActivity
 							R.id.aset_wheel_time_point,
 							R.id.aset_wheel_time_1,
 							R.id.aset_wheel_time_10,
-							R.id.aset_wheel_time_100,
-							R.id.aset_wheel_time_1000
+							R.id.aset_wheel_time_100
+//							R.id.aset_wheel_time_1000
 							},
 							1);
 			m_time_wheels.set_tv(m_time_tv);
@@ -930,8 +930,8 @@ public class AddSetActivity
 							R.id.aset_wheel_other_point,
 							R.id.aset_wheel_other_1,
 							R.id.aset_wheel_other_10,
-							R.id.aset_wheel_other_100,
-							R.id.aset_wheel_other_1000
+							R.id.aset_wheel_other_100
+//							R.id.aset_wheel_other_1000
 							},
 							1);
 			m_other_wheels.set_tv(m_other_tv);

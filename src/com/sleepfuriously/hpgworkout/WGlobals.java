@@ -77,10 +77,10 @@ public class WGlobals extends Application {
 
 	/** How many pixels wide for a fat wheel */
 //	public static final int DEFAULT_WHEEL_WIDTH_FAT = 45;
-	public static final int DEFAULT_WHEEL_WIDTH_FAT = 65;
+	public static final int DEFAULT_WHEEL_WIDTH_FAT = 60;
 
 	/** Size of the text for the number wheels. */
-	public static final int DEFAULT_WHEEL_TEXT_SIZE = 12;
+	public static final int DEFAULT_WHEEL_TEXT_SIZE = 15;
 
 	//---------------------------
 	//	WORKOUT CONSTANTS
