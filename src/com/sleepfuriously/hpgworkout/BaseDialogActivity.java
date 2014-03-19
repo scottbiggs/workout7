@@ -481,7 +481,7 @@ public class BaseDialogActivity extends Activity {
 	 * it otherwise.
 	 */
 	public void stop_progress_dialog() {
-		Log.d(tag, "stop_progress_dialog(), id = " + this.toString());
+//		Log.d(tag, "stop_progress_dialog(), id = " + this.toString());
 		if (m_prog_dialog != null) {
 			m_prog_dialog.dismiss();
 			m_prog_dialog = null;
@@ -533,6 +533,18 @@ public class BaseDialogActivity extends Activity {
 
 		m_prog_dialog.show();
 	} // start_progress_dialog()
+
+
+	/************************
+	 * Just like the name says, this returns TRUE iff a
+	 * progress dialog is currently being displayed.
+	 */
+	public boolean is_progress_dialog_active() {
+		if (m_prog_dialog == null) {
+			return false;
+		}
+		return m_prog_dialog.isShowing();
+	} // is_progress_dialog_active()
 
 
 	//--------------------------------------

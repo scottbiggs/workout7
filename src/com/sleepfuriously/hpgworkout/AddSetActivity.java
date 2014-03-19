@@ -119,15 +119,14 @@ public class AddSetActivity
 	public static boolean m_db_dirty = false;
 
 
-	/** Holds all info about this exercise. */
-	protected ExerciseData m_ex_data = null;
-
 	/**
-	 * Holds the data for the most recently done set (which
-	 * is used to fill in our UI).  This is NULL if there
-	 * is no such set (first time the user sees this exercise).
+	 * Since the ASyncTask is static, it may persist
+	 * when this Activity is destroyed.  This variable
+	 * will be passed back to us via
+	 * onRetainLastConfiguationInstance() and
+	 * getLastNonConfigurationInstance().
 	 */
-	protected SetData m_last_set = null;
+	private ASetASyncTask m_task = null;
 
 
 	//------------------------
@@ -142,22 +141,67 @@ public class AddSetActivity
 
 		m_reset_widgets = true;	// Fill the forms the first time this
 								// activity is called.
+
+		// Try to grab a reference it from a previous
+		// instance of this Activity.
+		m_task = (ASetASyncTask) getLastNonConfigurationInstance();
+//		Log.d(tag, "   onCreate(): after getLastNonConfigurationInstance() m_task = " + m_task);
+
 	} // onCreate (.)
 
 
 	//------------------------
-		@Override
-		protected void onResume() {
-	//		Log.v(tag, "onResume()");
-			if (m_reset_widgets) {
-
+	@Override
+	protected void onResume() {
+//		Log.v(tag, "onResume()");
+		if (m_reset_widgets) {
+			if (m_task == null) {
+				// There is no ASyncTask running, so go ahead
+				// and start it up.
 				start_progress_dialog(R.string.loading_str);
-
-				// Start the AsyncTask.  It'll handle the rest.
-				new ASetSyncTask().execute();
+				m_task = new ASetASyncTask(this);
+				m_task.execute();
 			}
-			super.onResume();
-		} // onResume()
+			else {
+				// There is already an ASyncTask running,
+				// establish a connection to it.
+				m_task.attach(this);
+
+				// If the ASyncTask is still working, re-start
+				// the progress dialog.
+				if (m_task.isDone() == false) {
+					start_progress_dialog(R.string.loading_str);
+				}
+				else {
+					// Draw the Activity
+					m_task.onPostExecute(null);
+				}
+
+//				catch_up();		not used in this Activity as there's no ProgressUpdate()
+			}
+		}
+		super.onResume();
+	} // onResume()
+
+
+	/*************************
+	 * Called when an Activity is destroyed during a
+	 * configuration/orientation change.  Whatever is
+	 * returned here can be retrieved by the new replacement
+	 * Activity by calling getlastNonConfigurationInstance().
+	 *
+	 * @see android.app.Activity#onRetainNonConfigurationInstance()
+	 */
+	@Override
+	public Object onRetainNonConfigurationInstance() {
+		m_task.detach();		// Tells task to remove its reference
+							// to this Activity as I'm about to
+							// die.
+
+		return m_task;	// Return the ASyncTask so the
+						// new Activity can find it (and then
+						// attach it to the ASyncTask).
+	}
 
 
 	/***********************
@@ -473,7 +517,7 @@ public class AddSetActivity
 		}
 		else if (v == m_weight_tv) {
 			activate_number_activity (DatabaseHelper.EXERCISE_COL_WEIGHT_NUM,
-				getString(R.string.editset_weight_label, m_ex_data.weight_unit),
+				getString(R.string.editset_weight_label, m_task.m_ex_data.weight_unit),
 				m_weight_tv.getText().toString(), true);
 		}
 		else if (v == m_calorie_tv) {
@@ -483,12 +527,12 @@ public class AddSetActivity
 		}
 		else if (v == m_dist_tv) {
 			activate_number_activity (DatabaseHelper.EXERCISE_COL_DIST_NUM,
-				getString(R.string.editset_dist_label, m_ex_data.dist_unit),
+				getString(R.string.editset_dist_label, m_task.m_ex_data.dist_unit),
 				m_dist_tv.getText().toString(), true);
 		}
 		else if (v == m_time_tv) {
 			activate_number_activity (DatabaseHelper.EXERCISE_COL_TIME_NUM,
-				getString(R.string.editset_time_label, m_ex_data.time_unit),
+				getString(R.string.editset_time_label, m_task.m_ex_data.time_unit),
 				m_time_tv.getText().toString(), true);
 		}
 		else if (v == m_level_tv) {
@@ -498,7 +542,7 @@ public class AddSetActivity
 		}
 		else if (v == m_other_tv) {
 			activate_number_activity (DatabaseHelper.EXERCISE_COL_OTHER_NUM,
-				getString(R.string.editset_other_label, m_ex_data.other_title, m_ex_data.other_unit),
+				getString(R.string.editset_other_label, m_task.m_ex_data.other_title, m_task.m_ex_data.other_unit),
 				m_other_tv.getText().toString(), true);
 		}
 
@@ -547,7 +591,7 @@ public class AddSetActivity
 		}
 
 		else if (v == m_other_tv) {
-			String[] args = {m_ex_data.other_title, m_ex_data.other_unit};
+			String[] args = {m_task.m_ex_data.other_title, m_task.m_ex_data.other_unit};
 			show_help_dialog (R.string.aset_other_help_title, null,
 					R.string.aset_other_help_msg, args);
 			return true;
@@ -801,7 +845,7 @@ public class AddSetActivity
 	 */
 	private void init_wheels() {
 		// The ints first
-		if (m_ex_data.breps) {
+		if (m_task.m_ex_data.breps) {
 			m_reps_wheels = new WheelInt(this, new int[]
 							{
 							R.id.aset_wheel_reps_1,
@@ -813,7 +857,7 @@ public class AddSetActivity
 			m_reps_wheels.setOnWheelIntChangedListener(this);
 		}
 
-		if (m_ex_data.blevel) {
+		if (m_task.m_ex_data.blevel) {
 			m_level_wheels = new WheelInt(this, new int[]
 							{
 							R.id.aset_wheel_level_1,
@@ -825,7 +869,7 @@ public class AddSetActivity
 			m_level_wheels.setOnWheelIntChangedListener(this);
 		}
 
-		if (m_ex_data.bcals) {
+		if (m_task.m_ex_data.bcals) {
 			m_calorie_wheels = new WheelInt(this, new int[]
 							{
 							R.id.aset_wheel_calorie_1,
@@ -838,7 +882,7 @@ public class AddSetActivity
 		}
 
 		// The floats
-		if (m_ex_data.bweight) {
+		if (m_task.m_ex_data.bweight) {
 			m_weight_wheels = new WheelFloat (this, new int[]
 							{
 							R.id.aset_wheel_weight_point,
@@ -852,7 +896,7 @@ public class AddSetActivity
 			m_weight_wheels.setOnWheelFloatChangedListener(this);
 		}
 
-		if (m_ex_data.bdist) {
+		if (m_task.m_ex_data.bdist) {
 			m_dist_wheels = new WheelFloat (this, new int[]
 							{
 							R.id.aset_wheel_dist_point,
@@ -866,7 +910,7 @@ public class AddSetActivity
 			m_dist_wheels.setOnWheelFloatChangedListener(this);
 		}
 
-		if (m_ex_data.btime) {
+		if (m_task.m_ex_data.btime) {
 			m_time_wheels = new WheelFloat (this, new int[]
 							{
 							R.id.aset_wheel_time_point,
@@ -880,7 +924,7 @@ public class AddSetActivity
 			m_time_wheels.setOnWheelFloatChangedListener(this);
 		}
 
-		if (m_ex_data.bother) {
+		if (m_task.m_ex_data.bother) {
 			m_other_wheels = new WheelFloat (this, new int[]
 							{
 							R.id.aset_wheel_other_point,
@@ -930,19 +974,19 @@ public class AddSetActivity
 	 * 	has potentially changed).
 	 */
 	private void set_wheel_width() {
-		if (m_ex_data.breps)
+		if (m_task.m_ex_data.breps)
 			m_reps_wheels.set_wheel_width(WGlobals.g_wheel_width);
-		if (m_ex_data.blevel)
+		if (m_task.m_ex_data.blevel)
 			m_level_wheels.set_wheel_width(WGlobals.g_wheel_width);
-		if (m_ex_data.bcals)
+		if (m_task.m_ex_data.bcals)
 			m_calorie_wheels.set_wheel_width(WGlobals.g_wheel_width);
-		if (m_ex_data.bweight)
+		if (m_task.m_ex_data.bweight)
 			m_weight_wheels.set_wheel_width(WGlobals.g_wheel_width);
-		if (m_ex_data.bdist)
+		if (m_task.m_ex_data.bdist)
 			m_dist_wheels.set_wheel_width(WGlobals.g_wheel_width);
-		if (m_ex_data.btime)
+		if (m_task.m_ex_data.btime)
 			m_time_wheels.set_wheel_width(WGlobals.g_wheel_width);
-		if (m_ex_data.bother)
+		if (m_task.m_ex_data.bother)
 			m_other_wheels.set_wheel_width(WGlobals.g_wheel_width);
 	} // set_wheel_width()
 
@@ -963,18 +1007,18 @@ public class AddSetActivity
 		else
 			reps_label_tv = (TextView) findViewById(R.id.aset_reps_label_tv);
 
-		if (m_ex_data.breps) {
+		if (m_task.m_ex_data.breps) {
 			m_reps_tv.setEnabled(true);
 			m_reps_tv.setFocusable(true);
-			if (m_ex_data.significant == DatabaseHelper.EXERCISE_COL_REP_NUM) {
+			if (m_task.m_ex_data.significant == DatabaseHelper.EXERCISE_COL_REP_NUM) {
 				reps_label_tv.setTypeface(null, Typeface.BOLD);
 			}
 
-			if (m_last_set != null) {
-				if (m_last_set.reps != -1) {
-					m_reps_tv.setText("" + m_last_set.reps);
+			if (m_task.m_last_set != null) {
+				if (m_task.m_last_set.reps != -1) {
+					m_reps_tv.setText("" + m_task.m_last_set.reps);
 					if (WGlobals.g_wheel)
-						m_reps_wheels.set_value(m_last_set.reps, false);
+						m_reps_wheels.set_value(m_task.m_last_set.reps, false);
 				}
 			}
 		}
@@ -999,17 +1043,17 @@ public class AddSetActivity
 		else
 			level_label_tv = (TextView) findViewById(R.id.aset_level_label_tv);
 
-		if (m_ex_data.blevel) {
+		if (m_task.m_ex_data.blevel) {
 			m_level_tv.setEnabled(true);
 			m_level_tv.setFocusable(true);
-			if (m_ex_data.significant == DatabaseHelper.EXERCISE_COL_LEVEL_NUM) {
+			if (m_task.m_ex_data.significant == DatabaseHelper.EXERCISE_COL_LEVEL_NUM) {
 				level_label_tv.setTypeface(null, Typeface.BOLD);
 			}
-			if (m_last_set != null) {
-				if (m_last_set.levels != -1) {
-					m_level_tv.setText("" + m_last_set.levels);
+			if (m_task.m_last_set != null) {
+				if (m_task.m_last_set.levels != -1) {
+					m_level_tv.setText("" + m_task.m_last_set.levels);
 					if (WGlobals.g_wheel)
-						m_level_wheels.set_value(m_last_set.levels, false);
+						m_level_wheels.set_value(m_task.m_last_set.levels, false);
 				}
 			}
 		}
@@ -1032,17 +1076,17 @@ public class AddSetActivity
 		else
 			calorie_label_tv = (TextView) findViewById(R.id.aset_calorie_label_tv);
 
-		if (m_ex_data.bcals) {
+		if (m_task.m_ex_data.bcals) {
 			m_calorie_tv.setEnabled(true);
 			m_calorie_tv.setFocusable(true);
-			if (m_ex_data.significant == DatabaseHelper.EXERCISE_COL_CALORIE_NUM) {
+			if (m_task.m_ex_data.significant == DatabaseHelper.EXERCISE_COL_CALORIE_NUM) {
 				calorie_label_tv.setTypeface(null, Typeface.BOLD);
 			}
-			if (m_last_set != null) {
-				if (m_last_set.cals != -1) {
-					m_calorie_tv.setText("" + m_last_set.cals);
+			if (m_task.m_last_set != null) {
+				if (m_task.m_last_set.cals != -1) {
+					m_calorie_tv.setText("" + m_task.m_last_set.cals);
 					if (WGlobals.g_wheel)
-						m_calorie_wheels.set_value(m_last_set.cals, false);
+						m_calorie_wheels.set_value(m_task.m_last_set.cals, false);
 				}
 			}
 		}
@@ -1075,24 +1119,24 @@ public class AddSetActivity
 			weight_label_tv = (TextView) findViewById(R.id.aset_weight_label_tv);
 		}
 
-		if (m_ex_data.bweight) {
+		if (m_task.m_ex_data.bweight) {
 			m_weight_tv.setEnabled(true);
 			m_weight_tv.setFocusable(true);
 			String weight_unit = getString(R.string.aset_weight_hint,
-					m_ex_data.weight_unit);
+					m_task.m_ex_data.weight_unit);
 			weight_label_tv.setText(getString(R.string.aset_weight_label,
 					weight_unit));
-			if (m_ex_data.significant == DatabaseHelper.EXERCISE_COL_WEIGHT_NUM) {
+			if (m_task.m_ex_data.significant == DatabaseHelper.EXERCISE_COL_WEIGHT_NUM) {
 				weight_label_tv.setTypeface(null,
 						Typeface.BOLD);
 			}
 
 			// Not the first time this set has been added.
-			if (m_last_set != null) {
-				if (m_last_set.weight != -1) {
-					m_weight_tv.setText("" + m_last_set.weight);
+			if (m_task.m_last_set != null) {
+				if (m_task.m_last_set.weight != -1) {
+					m_weight_tv.setText("" + m_task.m_last_set.weight);
 					if (WGlobals.g_wheel)
-						m_weight_wheels.set_value(m_last_set.weight, false);
+						m_weight_wheels.set_value(m_task.m_last_set.weight, false);
 				}
 			}
 		}
@@ -1115,20 +1159,20 @@ public class AddSetActivity
 		else
 			dist_label_tv = (TextView) findViewById(R.id.aset_dist_label_tv);
 
-		if (m_ex_data.bdist) {
+		if (m_task.m_ex_data.bdist) {
 			m_dist_tv.setEnabled(true);
 			m_dist_tv.setFocusable(true);
 //			m_dist_et.setHint(dist_unit);
 			dist_label_tv.setText(getString(R.string.aset_distance_label,
-					m_ex_data.dist_unit));
-			if (m_ex_data.significant == DatabaseHelper.EXERCISE_COL_DIST_NUM) {
+					m_task.m_ex_data.dist_unit));
+			if (m_task.m_ex_data.significant == DatabaseHelper.EXERCISE_COL_DIST_NUM) {
 				dist_label_tv.setTypeface(null, Typeface.BOLD);
 			}
-			if (m_last_set != null) {
-				if (m_last_set.dist != -1) {
-					m_dist_tv.setText("" + m_last_set.dist);
+			if (m_task.m_last_set != null) {
+				if (m_task.m_last_set.dist != -1) {
+					m_dist_tv.setText("" + m_task.m_last_set.dist);
 					if (WGlobals.g_wheel)
-						m_dist_wheels.set_value(m_last_set.dist, false);
+						m_dist_wheels.set_value(m_task.m_last_set.dist, false);
 				}
 			}
 		}
@@ -1150,20 +1194,20 @@ public class AddSetActivity
 		else
 			time_label_tv = (TextView) findViewById(R.id.aset_time_label_tv);
 
-		if (m_ex_data.btime) {
+		if (m_task.m_ex_data.btime) {
 			m_time_tv.setEnabled(true);
 			m_time_tv.setFocusable(true);
 //			m_time_et.setHint(time_unit);
-			if (m_ex_data.significant == DatabaseHelper.EXERCISE_COL_TIME_NUM) {
+			if (m_task.m_ex_data.significant == DatabaseHelper.EXERCISE_COL_TIME_NUM) {
 				time_label_tv.setTypeface(null, Typeface.BOLD);
 			}
 			time_label_tv.setText(getString(R.string.aset_time_label,
-					m_ex_data.time_unit));
-			if (m_last_set != null) {
-				if (m_last_set.time != -1) {
-					m_time_tv.setText("" + m_last_set.time);
+					m_task.m_ex_data.time_unit));
+			if (m_task.m_last_set != null) {
+				if (m_task.m_last_set.time != -1) {
+					m_time_tv.setText("" + m_task.m_last_set.time);
 					if (WGlobals.g_wheel)
-						m_time_wheels.set_value(m_last_set.time, false);
+						m_time_wheels.set_value(m_task.m_last_set.time, false);
 				}
 			}
 		}
@@ -1185,22 +1229,22 @@ public class AddSetActivity
 		else
 			other_label_tv = (TextView) findViewById(R.id.aset_other_label_tv);
 
-		if (m_ex_data.bother) {
+		if (m_task.m_ex_data.bother) {
 			m_other_tv.setEnabled(true);
 			m_other_tv.setFocusable(true);
 
 //			m_other_et.setHint(final_other_label);
 			other_label_tv.setText(getString(R.string.aset_other_label_old,
-					m_ex_data.other_title, m_ex_data.other_unit));
-			if (m_ex_data.significant == DatabaseHelper.EXERCISE_COL_OTHER_NUM) {
+					m_task.m_ex_data.other_title, m_task.m_ex_data.other_unit));
+			if (m_task.m_ex_data.significant == DatabaseHelper.EXERCISE_COL_OTHER_NUM) {
 				other_label_tv.setTypeface(null, Typeface.BOLD);
 			}
 
-			if (m_last_set != null) {
-				if (m_last_set.other != -1) {
-					m_other_tv.setText("" + m_last_set.other);
+			if (m_task.m_last_set != null) {
+				if (m_task.m_last_set.other != -1) {
+					m_other_tv.setText("" + m_task.m_last_set.other);
 					if (WGlobals.g_wheel)
-						m_other_wheels.set_value(m_last_set.other, false);
+						m_other_wheels.set_value(m_task.m_last_set.other, false);
 				}
 			}
 		}
@@ -1221,9 +1265,9 @@ public class AddSetActivity
 	 *  This only does anything if set_valid.
 	 */
 	protected void setup_notes() {
-		if (m_last_set != null) {
-			if (m_last_set.notes != null) {
-				m_notes_tv.setHint(m_last_set.notes);
+		if (m_task.m_last_set != null) {
+			if (m_task.m_last_set.notes != null) {
+				m_notes_tv.setHint(m_task.m_last_set.notes);
 //				Log.d(tag, "Just set m_notes_et to: " + note);
 			}
 		}
@@ -1335,19 +1379,19 @@ public class AddSetActivity
 	 */
 	void clear_wheels() {
 		if (WGlobals.g_wheel) {
-			if (m_ex_data.breps)
+			if (m_task.m_ex_data.breps)
 				m_reps_wheels.reset(true);
-			if (m_ex_data.blevel)
+			if (m_task.m_ex_data.blevel)
 				m_level_wheels.reset(true);
-			if (m_ex_data.bcals)
+			if (m_task.m_ex_data.bcals)
 				m_calorie_wheels.reset(true);
-			if (m_ex_data.bweight)
+			if (m_task.m_ex_data.bweight)
 				m_weight_wheels.reset(true);
-			if (m_ex_data.bdist)
+			if (m_task.m_ex_data.bdist)
 				m_dist_wheels.reset(true);
-			if (m_ex_data.btime)
+			if (m_task.m_ex_data.btime)
 				m_time_wheels.reset(true);
-			if (m_ex_data.bother)
+			if (m_task.m_ex_data.bother)
 				m_other_wheels.reset(true);
 		}
 	}
@@ -1477,7 +1521,7 @@ public class AddSetActivity
 			ContentValues values = new ContentValues();
 
 			// First, the name of the exercise!
-			values.put(DatabaseHelper.SET_COL_NAME, m_ex_data.name);
+			values.put(DatabaseHelper.SET_COL_NAME, m_task.m_ex_data.name);
 
 			if (m_reps_tv.isEnabled()) {
 				str = m_reps_tv.getText().toString();
@@ -1558,7 +1602,7 @@ public class AddSetActivity
 			}
 		}
 
-		entered_set_msg (m_ex_data.name);
+		entered_set_msg (m_task.m_ex_data.name);
 
 		// Indicate that the database has changed and tell the
 		//	other activities to reset.
@@ -1605,7 +1649,7 @@ public class AddSetActivity
 		// filled out.
 		if (!m_widgets_dirty) {
 
-			if (m_last_set == null) {
+			if (m_task.m_last_set == null) {
 				// First time doing this set, so there's nothing
 				// in any of the widgets.  Tell 'em about it and
 				// get outahere!
@@ -1702,9 +1746,9 @@ public class AddSetActivity
 								R.id.aset_wheel_other_label_tv :
 								R.id.aset_other_label_tv);
 
-				if (m_ex_data.significant == DatabaseHelper.EXERCISE_COL_OTHER_NUM) {
+				if (m_task.m_ex_data.significant == DatabaseHelper.EXERCISE_COL_OTHER_NUM) {
 					String args[] = {other_label_tv.getText().toString(),
-									other_label_tv.getText().toString(), m_ex_data.name};
+									other_label_tv.getText().toString(), m_task.m_ex_data.name};
 					show_help_dialog(R.string.aset_nag_significant_title, null,
 							R.string.aset_nag_significant_msg, args);
 					return;
@@ -1783,10 +1827,10 @@ public class AddSetActivity
 	 * 				false	Nope, and nothing has been done.
 	 */
 	private boolean test_and_warn_significant (int column_num) {
-		if (m_ex_data.significant == column_num) {
+		if (m_task.m_ex_data.significant == column_num) {
 			String column_array[] = getResources().getStringArray(R.array.exercise_column_names_array);
 
-			String args[] = {column_array[column_num], column_array[column_num], m_ex_data.name};
+			String args[] = {column_array[column_num], column_array[column_num], m_task.m_ex_data.name};
 			show_help_dialog(R.string.aset_nag_significant_title, null,
 					R.string.aset_nag_significant_msg, args);
 			return true;
@@ -1875,9 +1919,54 @@ public class AddSetActivity
 	 * Starts a loading dialog while this asynchronously
 	 * hits the database to get our data.
 	 */
-	class ASetSyncTask extends AsyncTask <Void, Void, Void> {
+	static class ASetASyncTask extends AsyncTask <Void, Void, Void> {
 
 		private static final String tag = "ASetSyncTask";
+
+		/** TRUE while data is being loaded from the DB */
+		private boolean m_loading = false;
+
+		/** Will be TRUE when the ASyncTask has finished. */
+		boolean m_done = false;
+
+		/**
+		 * The Activity that is using this ASyncTask.
+		 * This static class may ONLY access the activity
+		 * through this data member.
+		 * <p>
+		 * NOTE: Make sure this is not NULL before using!!!
+		 * (Actually, this is not necessary. Google promises that
+		 * this will always be valid when done in a UI thread.)
+		 */
+		private AddSetActivity m_activity = null;
+
+		/** Holds all info about this exercise. */
+		protected ExerciseData m_ex_data = null;
+
+		/**
+		 * Holds the data for the most recently done set (which
+		 * is used to fill in our UI).  This is NULL if there
+		 * is no such set (first time the user sees this exercise).
+		 */
+		protected SetData m_last_set = null;
+
+		/** Counts the number of times this class is instantiated. */
+		private int m_instance_counter = 0;
+
+
+		/***************
+		 * Constructor
+		 *
+		 * Needs a reference to the Activity that's creating
+		 * this ASyncTask.  It's how this static class
+		 * communicates with that Activity.
+		 */
+		public ASetASyncTask (AddSetActivity activity) {
+			m_instance_counter++;
+//			Log.v(tag, "entering constructor, count = " + m_instance_counter +
+//				", id = " + this.toString());
+			attach (activity);
+		} // constructor
 
 
 		//---------------------
@@ -1885,15 +1974,12 @@ public class AddSetActivity
 		//
 		@Override
 		protected void onPreExecute() {
-//			if (WGlobals.g_wheel) {				LET'S MOVE THIS TO onPostExecute!
-//				setContentView(R.layout.aset_wheel);
-//				init_widgets_with_wheels();
-//				init_wheels();
-//			}
-//			else {
-//				setContentView(R.layout.aset);
-//				init_widgets_no_wheels();
-//			}
+			if (m_activity == null) {
+				Log.e (tag, "m_activity is NULL!!! We're about to make a lot of errors!");
+			}
+
+			m_loading = true;
+			m_done = false;
 		} // onPreExecute()
 
 
@@ -1905,8 +1991,13 @@ public class AddSetActivity
 		@Override
 		protected Void doInBackground(Void... args) {
 
+//			Log.d (tag, "doInBackground() starting...");
+
+			// Mark that loading has begun.
+			m_loading = true;
+
 			// Get the info from the Intent that GridActivity sent.
-			Intent itt = getIntent();
+			Intent itt = m_activity.getIntent();
 			String exercise_name = itt.getStringExtra(ExerciseTabHostActivity.KEY_NAME);
 
 			if (exercise_name == null) {
@@ -1917,16 +2008,18 @@ public class AddSetActivity
 
 			try {
 				// Read in that row from the database.
-				test_m_db();
-				m_db = WGlobals.g_db_helper.getReadableDatabase();
+				m_activity.test_m_db();
+				m_activity.m_db = WGlobals.g_db_helper.getReadableDatabase();
 
 				// Read in all the info we need about this
 				// exercise.
-				m_ex_data = DatabaseHelper.getExerciseData(m_db, exercise_name);
+				m_ex_data = DatabaseHelper.getExerciseData(m_activity.m_db,
+														exercise_name);
 
 				Cursor set_cursor = null;
 				try {
-					set_cursor = DatabaseHelper.getLastSet(m_db, exercise_name);
+					set_cursor = DatabaseHelper.getLastSet(m_activity.m_db,
+														exercise_name);
 					if (set_cursor.moveToFirst()) {
 						// Fill in, but only if there IS something
 						// to fill!  Otherwise leave this as NULL.
@@ -1946,10 +2039,11 @@ public class AddSetActivity
 				e.printStackTrace();
 			}
 			finally {
-				if (m_db != null) {
-					m_db.close();
-					m_db = null;
+				if (m_activity.m_db != null) {
+					m_activity.m_db.close();
+					m_activity.m_db = null;
 				}
+				m_loading = false;	// Finished loading!
 			}
 
 			return null;
@@ -1963,15 +2057,26 @@ public class AddSetActivity
 		//
 		@Override
 		protected void onPostExecute(Void result) {
+			if (m_activity == null) {
+				Log.e(tag, "onPostExecute() can't find the Activity!!! This is really bad news.");
+			}
+
+			try {
+				while (m_loading == true) {
+					Thread.sleep(100);	// Wait 1/10 of a second.
+				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 
 			if (WGlobals.g_wheel) {
-				setContentView(R.layout.aset_wheel);
-				init_widgets_with_wheels();
-				init_wheels();
+				m_activity.setContentView(R.layout.aset_wheel);
+				m_activity.init_widgets_with_wheels();
+				m_activity.init_wheels();
 			}
 			else {
-				setContentView(R.layout.aset);
-				init_widgets_no_wheels();
+				m_activity.setContentView(R.layout.aset);
+				m_activity.init_widgets_no_wheels();
 			}
 
 			/**
@@ -1981,51 +2086,108 @@ public class AddSetActivity
 			boolean need_bar = false;
 
 			// Fill in the aspects.
-			setup_reps();
+			m_activity.setup_reps();
 			need_bar = m_ex_data.breps;
 
-			setup_weights();
-			need_bar = turn_off_bar(WGlobals.g_wheel ?
+			m_activity.setup_weights();
+			need_bar =m_activity. turn_off_bar(WGlobals.g_wheel ?
 										R.id.aset_wheel_weight_bar :
 										R.id.aset_weight_bar,
-									m_ex_data.bweight, need_bar);
+										m_ex_data.bweight, need_bar);
 
-			setup_levels();
-			need_bar = turn_off_bar(WGlobals.g_wheel ?
+			m_activity.setup_levels();
+			need_bar = m_activity.turn_off_bar(WGlobals.g_wheel ?
 										R.id.aset_wheel_level_bar :
 										R.id.aset_level_bar,
-									m_ex_data.blevel, need_bar);
+										m_ex_data.blevel, need_bar);
 
-			setup_calories();
-			need_bar = turn_off_bar(WGlobals.g_wheel ?
+			m_activity.setup_calories();
+			need_bar = m_activity.turn_off_bar(WGlobals.g_wheel ?
 										R.id.aset_wheel_cals_bar :
 										R.id.aset_cals_bar,
-									m_ex_data.bcals, need_bar);
+										m_ex_data.bcals, need_bar);
 
-			setup_dist();
-			need_bar = turn_off_bar(WGlobals.g_wheel ?
+			m_activity.setup_dist();
+			need_bar = m_activity.turn_off_bar(WGlobals.g_wheel ?
 										R.id.aset_wheel_dist_bar :
 										R.id.aset_dist_bar,
-									m_ex_data.bdist, need_bar);
+										m_ex_data.bdist, need_bar);
 
-			setup_time();
-			need_bar = turn_off_bar(WGlobals.g_wheel ?
+			m_activity.setup_time();
+			need_bar = m_activity.turn_off_bar(WGlobals.g_wheel ?
 										R.id.aset_wheel_time_bar :
 										R.id.aset_time_bar,
-									m_ex_data.btime, need_bar);
+										m_ex_data.btime, need_bar);
 
-			setup_other();
-			need_bar = turn_off_bar(WGlobals.g_wheel ?
+			m_activity.setup_other();
+			need_bar = m_activity.turn_off_bar(WGlobals.g_wheel ?
 										R.id.aset_wheel_other_bar :
 										R.id.aset_other_bar,
-									m_ex_data.bother, need_bar);
+										m_ex_data.bother, need_bar);
 
-			setup_notes();
+			m_activity.setup_notes();
 
 			m_reset_widgets = false;		// We've done our work here!
 
-			stop_progress_dialog();
+			m_done = true;	// Finally!
+
+			if (m_activity.is_progress_dialog_active()) {
+				m_activity.stop_progress_dialog();
+			}
+
 		} // onPostExecute(.)
+
+
+		/***************
+		 * Connects this task to an Activity, allowing
+		 * this static class to communicate with that
+		 * Activity (so it can get the data we're reading
+		 * from the database!).
+		 *
+		 * @param activity	The Activity that wants to
+		 * 					use the data.
+		 */
+		public void attach (AddSetActivity activity) {
+			m_activity = activity;
+		}
+
+		/***************
+		 * Removes our connection to whatever Activity
+		 * we're attached to (or does nothing if we're
+		 * not attached to anything).
+		 *
+		 * This is an important call when the Activity
+		 * goes away (like during an orientation change)
+		 * so that we're not using invalid pointers!
+		 */
+		public void detach() {
+//			Log.d(tag, "entering detach(), id = " + this.toString());
+			m_activity = null;
+		}
+
+		/****************
+		 * Please call this when the connecting Activity
+		 * goes away for good.  This will free up lots of
+		 * resources!
+		 */
+		public void kill() {
+//			Log.d(tag, "entering kill(), id = " + this.toString());
+
+			// todo	garbage collect
+
+			m_activity = null;
+		}
+
+		/*****************
+		 * Call this to see if the ASyncTask is complete.
+		 *
+		 * The done state is reset (to false) when onPreExecute()
+		 * is called, and terminated (true) during onPostExecute().
+		 */
+		public boolean isDone() {
+			return m_done;
+		}
+
 
 	} // class ASetSyncTask
 

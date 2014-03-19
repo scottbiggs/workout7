@@ -1612,6 +1612,7 @@ public class GridActivity2 extends BaseDialogActivity
 		public void kill() {
 //			Log.d(tag, "entering kill(), id = " + this.toString());
 			m_row_info = null;	// GC
+			detach();		// Why wasn't this done before?
 		}
 
 	} // class GridASyncTask

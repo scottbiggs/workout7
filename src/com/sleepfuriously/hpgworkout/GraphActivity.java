@@ -1853,6 +1853,8 @@ public class GraphActivity
 			m_exercise_data = null;
 			m_set_data.clear();
 			m_set_data = null;
+
+			detach();		// Why wasn't this done before?
 		}
 
 		/*****************

@@ -1,5 +1,18 @@
 TODO:
 -----------------
+Bug: Orientation change in AddSet causes the sound to stop.
+
+BUG: The sound goes out sometimes.  Thought I'd fixed it, but apparently
+there's another issue as well.  This time, it goes out when moving back
+and forth between the Grid and AddSet.  Hmmm, intermittent...sigh.
+Orientation change in AddSet causes the sound to stop.
+
+BUG: Error messages pop up during graphing: "Don't have enough room to
+draw all the y-axii!" and others.
+
+BUG!!! When looking at any of the tabbed activities, we crash when going
+from landscape to portrait.
+
 Bug: Go to the tabs. Look at the graph. Add a set. Go back to the
 graph, and it does NOT show the added set!
 
@@ -17,9 +30,6 @@ that is part of the System, but I should respect the master-sound settings.
 
 BUG: When graphing superwinking in landscape mode, the colored words overwrite the
 mode button at the top.
-
-BUG!!! When looking at any of the tabbed activities, we crash when going
-from landscape to portrait.
 
 Wheels: make the fat the normal, and create thin and FAT wheels.  So
 we'll have 3 different sizes.
