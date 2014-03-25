@@ -96,10 +96,6 @@ public class AddExerciseActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.addexercise);
 
-		if (m_db != null) {
-			Log.e(tag, "Error! m_db is active in onCreate()!!!");
-		}
-
 		// The standard buttons.
 		m_ok = (Button) findViewById(R.id.addexer_ok_butt);
 		m_ok.setOnClickListener(this);
@@ -241,9 +237,6 @@ public class AddExerciseActivity
 		m_exer_other_unit_et.setOnLongClickListener(this);
 		m_exer_other_unit_et.addTextChangedListener(this);
 
-		if (m_db != null) {
-			Log.e(tag, "Error! m_db is active at the end of onCreate()!!!");
-		}
 	} // onCreate();
 
 
@@ -368,62 +361,70 @@ public class AddExerciseActivity
 	 * 		ready to go.
 	 */
 	private void save_data() {
-		if (m_db != null) {
-			Log.e(tag, "Error! m_db is active in save_data()!!! Continuing using this active instance.");
+		SQLiteDatabase db = null;
+
+		try {
+			db = WGlobals.g_db_helper.getWritableDatabase();
+
+			// Collect the data.
+			ContentValues values = new ContentValues();
+
+			values.put (DatabaseHelper.EXERCISE_COL_NAME, m_exer_name_et.getText().toString());
+			values.put (DatabaseHelper.EXERCISE_COL_TYPE, m_exer_type_msp.get_current_selection());
+			values.put (DatabaseHelper.EXERCISE_COL_GROUP, m_exer_group_msp.get_current_selection());
+			values.put (DatabaseHelper.EXERCISE_COL_WEIGHT, m_exer_weight_cb.isChecked());
+			values.put (DatabaseHelper.EXERCISE_COL_REP, m_exer_rep_cb.isChecked());
+			values.put (DatabaseHelper.EXERCISE_COL_DIST, m_exer_dist_cb.isChecked());
+			values.put (DatabaseHelper.EXERCISE_COL_TIME, m_exer_time_cb.isChecked());
+			values.put (DatabaseHelper.EXERCISE_COL_LEVEL, m_exer_level_cb.isChecked());
+			values.put (DatabaseHelper.EXERCISE_COL_CALORIES, m_exer_calorie_cb.isChecked());
+			values.put (DatabaseHelper.EXERCISE_COL_OTHER, m_exer_other_cb.isChecked());
+
+			String unit = "";
+			if (m_exer_weight_cb.isChecked())
+				unit = m_exer_weight_msp.getText().toString();
+			values.put (DatabaseHelper.EXERCISE_COL_WEIGHT_UNIT, unit);
+
+			unit = "";
+			if (m_exer_dist_cb.isChecked())
+				unit = m_exer_dist_msp.getText().toString();
+			values.put (DatabaseHelper.EXERCISE_COL_DIST_UNIT, unit);
+
+			unit = "";
+			if (m_exer_time_cb.isChecked())
+				unit = m_exer_time_msp.getText().toString();
+			values.put (DatabaseHelper.EXERCISE_COL_TIME_UNIT, unit);
+
+			unit = "";
+			String name = "";
+			if (m_exer_other_cb.isChecked()) {
+				name = m_exer_other_name_et.getText().toString();
+				unit = m_exer_other_unit_et.getText().toString();
+			}
+			values.put (DatabaseHelper.EXERCISE_COL_OTHER_TITLE, name);
+			values.put (DatabaseHelper.EXERCISE_COL_OTHER_UNIT, unit);
+
+			values.put(DatabaseHelper.EXERCISE_COL_SIGNIFICANT, get_radio());
+
+			// Put the new one at the top of the list.
+			values.put(DatabaseHelper.EXERCISE_COL_LORDER, 0);
+
+			// Increment the lorder of everything else by 1.
+			shift_order_up (db);
+
+			db.insert(DatabaseHelper.EXERCISE_TABLE_NAME, null, values);
 		}
-		else {
-			m_db = WGlobals.g_db_helper.getWritableDatabase();
+
+		catch (SQLiteException e) {
+			e.printStackTrace();
+		}
+		finally {
+			if (db != null) {
+				db.close();
+				db = null;
+			}
 		}
 
-		// Collect the data.
-		ContentValues values = new ContentValues();
-
-		values.put (DatabaseHelper.EXERCISE_COL_NAME, m_exer_name_et.getText().toString());
-		values.put (DatabaseHelper.EXERCISE_COL_TYPE, m_exer_type_msp.get_current_selection());
-		values.put (DatabaseHelper.EXERCISE_COL_GROUP, m_exer_group_msp.get_current_selection());
-		values.put (DatabaseHelper.EXERCISE_COL_WEIGHT, m_exer_weight_cb.isChecked());
-		values.put (DatabaseHelper.EXERCISE_COL_REP, m_exer_rep_cb.isChecked());
-		values.put (DatabaseHelper.EXERCISE_COL_DIST, m_exer_dist_cb.isChecked());
-		values.put (DatabaseHelper.EXERCISE_COL_TIME, m_exer_time_cb.isChecked());
-		values.put (DatabaseHelper.EXERCISE_COL_LEVEL, m_exer_level_cb.isChecked());
-		values.put (DatabaseHelper.EXERCISE_COL_CALORIES, m_exer_calorie_cb.isChecked());
-		values.put (DatabaseHelper.EXERCISE_COL_OTHER, m_exer_other_cb.isChecked());
-
-		String unit = "";
-		if (m_exer_weight_cb.isChecked())
-			unit = m_exer_weight_msp.getText().toString();
-		values.put (DatabaseHelper.EXERCISE_COL_WEIGHT_UNIT, unit);
-
-		unit = "";
-		if (m_exer_dist_cb.isChecked())
-			unit = m_exer_dist_msp.getText().toString();
-		values.put (DatabaseHelper.EXERCISE_COL_DIST_UNIT, unit);
-
-		unit = "";
-		if (m_exer_time_cb.isChecked())
-			unit = m_exer_time_msp.getText().toString();
-		values.put (DatabaseHelper.EXERCISE_COL_TIME_UNIT, unit);
-
-		unit = "";
-		String name = "";
-		if (m_exer_other_cb.isChecked()) {
-			name = m_exer_other_name_et.getText().toString();
-			unit = m_exer_other_unit_et.getText().toString();
-		}
-		values.put (DatabaseHelper.EXERCISE_COL_OTHER_TITLE, name);
-		values.put (DatabaseHelper.EXERCISE_COL_OTHER_UNIT, unit);
-
-		values.put(DatabaseHelper.EXERCISE_COL_SIGNIFICANT, get_radio());
-
-		// Put the new one at the top of the list.
-		values.put(DatabaseHelper.EXERCISE_COL_LORDER, 0);
-
-		// Increment the lorder of everything else by 1.
-		shift_order_up (m_db);
-
-		m_db.insert(DatabaseHelper.EXERCISE_TABLE_NAME, null, values);
-		m_db.close();
-		m_db = null;
 	} // save_data()
 
 
@@ -1153,22 +1154,19 @@ public class AddExerciseActivity
 	private boolean is_duplicate_name (String name) {
 		boolean ret_val = false;
 
-		if (m_db != null) {
-			Log.e(tag, "WARNING! m_db is active in is_duplicate_name()!!!");
-		}
-
+		SQLiteDatabase db = null;
 		try {
-			m_db = WGlobals.g_db_helper.getReadableDatabase();
+			db = WGlobals.g_db_helper.getReadableDatabase();
 
-			return DatabaseHelper.isExerciseNameExist(m_db, name);
+			return DatabaseHelper.isExerciseNameExist(db, name);
 
 		} catch (SQLiteException e) {
 			e.printStackTrace();
 		}
 		finally {
-			if (m_db != null) {
-				m_db.close();
-				m_db = null;
+			if (db != null) {
+				db.close();
+				db = null;
 			}
 		}
 

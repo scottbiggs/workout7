@@ -9,6 +9,7 @@ import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Typeface;
 import android.media.AudioManager;
@@ -789,7 +790,7 @@ public class EditSetActivity
 	 * save the current state and exit this Activity.
 	 */
 	private void save_and_exit() {
-
+		SQLiteDatabase db = null;
 		ContentValues values = new ContentValues();
 
 		values.put(DatabaseHelper.SET_COL_DATEMILLIS, m_set_date.m_cal.getTimeInMillis());
@@ -804,11 +805,23 @@ public class EditSetActivity
 		values.put(DatabaseHelper.SET_COL_CONDITION, m_stress);
 		values.put(DatabaseHelper.SET_COL_NOTES, m_notes);
 
-		m_db = WGlobals.g_db_helper.getWritableDatabase();
-		int num_rows = m_db.update(DatabaseHelper.SET_TABLE_NAME,
-						values,
-						DatabaseHelper.COL_ID + "=" + m_set_id, null);
-		m_db.close();
+		int num_rows;
+		try {
+			db = WGlobals.g_db_helper.getWritableDatabase();
+			num_rows = db.update(DatabaseHelper.SET_TABLE_NAME,
+								values,
+								DatabaseHelper.COL_ID + "=" + m_set_id, null);
+		} catch (SQLiteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return;
+		}
+		finally {
+			if (db != null) {
+				db.close();
+				db = null;
+			}
+		}
 
 		Log.v(tag, "save_and_exit() updated " + num_rows + " rows");
 
@@ -828,10 +841,21 @@ public class EditSetActivity
 	 * Removes this set from the database.
 	 */
 	private void delete_set() {
-		m_db = WGlobals.g_db_helper.getWritableDatabase();
-		m_db.delete(DatabaseHelper.SET_TABLE_NAME,
-				DatabaseHelper.COL_ID + "=" + m_set_id, null);
-		m_db.close();
+		SQLiteDatabase db = null;
+
+		try {
+			db = WGlobals.g_db_helper.getWritableDatabase();
+			db.delete(DatabaseHelper.SET_TABLE_NAME,
+					DatabaseHelper.COL_ID + "=" + m_set_id, null);
+		} catch (SQLiteException e) {
+			e.printStackTrace();
+		}
+		finally {
+			if (db != null) {
+				db.close();
+				db = null;
+			}
+		}
 	} // delete_set()
 
 
@@ -854,12 +878,13 @@ public class EditSetActivity
 		Log.v (tag, "fill_forms() for set id = " + m_set_id);
 
 
+		SQLiteDatabase db = null;
 		try {
-			m_db = WGlobals.g_db_helper.getReadableDatabase();
+			db = WGlobals.g_db_helper.getReadableDatabase();
 
 			Cursor set_cursor = null;
 			try {
-				set_cursor = m_db.query(
+				set_cursor = db.query(
 						DatabaseHelper.SET_TABLE_NAME,
 						null,	// all columns
 						DatabaseHelper.COL_ID + "=?",
@@ -871,7 +896,7 @@ public class EditSetActivity
 				col = set_cursor.getColumnIndex(DatabaseHelper.SET_COL_NAME);
 				String exercise_name = set_cursor.getString(col);
 
-				m_exer_data = DatabaseHelper.getExerciseData(m_db, exercise_name);
+				m_exer_data = DatabaseHelper.getExerciseData(db, exercise_name);
 
 				// Fill the widgets
 				setup_date (set_cursor);
@@ -898,9 +923,9 @@ public class EditSetActivity
 			e.printStackTrace();
 		}
 		finally {
-			if (m_db != null) {
-				m_db.close();
-				m_db = null;
+			if (db != null) {
+				db.close();
+				db = null;
 			}
 		}
 

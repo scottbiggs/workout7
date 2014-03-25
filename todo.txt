@@ -1,5 +1,8 @@
 TODO:
 -----------------
+BUG: Graphs: changing the options from "every set" to "daily" didn't
+	cause the graph to re-compute and display the new graph.
+
 Bug: Orientation change in AddSet causes the sound to stop.
 
 BUG: The sound goes out sometimes.  Thought I'd fixed it, but apparently

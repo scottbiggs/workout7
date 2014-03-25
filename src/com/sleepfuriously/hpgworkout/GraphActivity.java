@@ -1352,17 +1352,13 @@ public class GraphActivity
 	 * 		ready to go.
 	 */
 	private void save_data() {
-		if (m_db != null) {
-			Log.e (tag, "Trying to save_data(), but m_db is already being used! Aborting!");
-			return;
-		}
-
+		SQLiteDatabase db = null;
 		try {
-			m_db = WGlobals.g_db_helper.getWritableDatabase();
+			db = WGlobals.g_db_helper.getWritableDatabase();
 
 			// The data has already been loaded, so remove that
 			// row and add in the modified row.
-			if (m_db.delete(DatabaseHelper.EXERCISE_TABLE_NAME,
+			if (db.delete(DatabaseHelper.EXERCISE_TABLE_NAME,
 							DatabaseHelper.EXERCISE_COL_NAME + "=?",
 							new String[] {m_task.m_exercise_data.name})
 					== 0) {
@@ -1401,14 +1397,14 @@ public class GraphActivity
 
 			values.put(DatabaseHelper.EXERCISE_COL_GRAPH_WITH_REPS, m_task.m_exercise_data.g_with_reps);
 
-			m_db.insert(DatabaseHelper.EXERCISE_TABLE_NAME, null, values);
+			db.insert(DatabaseHelper.EXERCISE_TABLE_NAME, null, values);
 
 		} catch (SQLiteException e) {
 			e.printStackTrace();
 		} finally {
-			if (m_db != null) {
-				m_db.close();
-				m_db = null;
+			if (db != null) {
+				db.close();
+				db = null;
 			}
 		}
 

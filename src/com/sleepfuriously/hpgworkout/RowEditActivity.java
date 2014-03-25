@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.util.Log;
@@ -165,15 +166,12 @@ public class RowEditActivity
 		int col, id, lorder, pos;
 		String name;
 
-		if (m_db != null) {
-			Log.e(tag, "m_db is NOT null!!! Do something, dammit!");
-		}
-
+		SQLiteDatabase db = null;
 		try {
-			m_db = WGlobals.g_db_helper.getReadableDatabase();
+			db = WGlobals.g_db_helper.getReadableDatabase();
 			Cursor cursor = null;
 			try {
-				cursor = m_db.query(
+				cursor = db.query(
 						DatabaseHelper.EXERCISE_TABLE_NAME,	// table
 						new String[] {DatabaseHelper.COL_ID,
 									DatabaseHelper.EXERCISE_COL_NAME,
@@ -216,9 +214,9 @@ public class RowEditActivity
 			e.printStackTrace();
 		}
 		finally {
-			if (m_db != null) {
-				m_db.close();
-				m_db = null;
+			if (db != null) {
+				db.close();
+				db = null;
 			}
 		}
 	} // load_data()
@@ -310,14 +308,10 @@ public class RowEditActivity
 	 * process to occur.
 	 */
 	private void save() {
-
-		if (m_db != null) {
-			Log.e(tag, "m_db is NOT null when trying to save!");
-		}
-
+		SQLiteDatabase db = null;
 		try {
-			m_db = WGlobals.g_db_helper.getWritableDatabase();
-			if (m_db == null) {
+			db = WGlobals.g_db_helper.getWritableDatabase();
+			if (db == null) {
 				Log.e(tag, "m_db is null in save()!  Aborting!");
 				return;
 			}
@@ -336,7 +330,7 @@ public class RowEditActivity
 					"= \"" + name + "\"";
 
 				try {
-					m_db.execSQL(sql_str);
+					db.execSQL(sql_str);
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -346,9 +340,9 @@ public class RowEditActivity
 			e.printStackTrace();
 		}
 		finally {
-			if (m_db != null) {
-				m_db.close();
-				m_db = null;
+			if (db != null) {
+				db.close();
+				db = null;
 			}
 		}
 

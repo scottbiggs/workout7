@@ -390,124 +390,135 @@ public class EditExerciseActivity
 		// Read in the exercise row from the database.
 		// Here's the select statement:
 		//		select * from exercise_table where _ID = <id>
-		m_db = WGlobals.g_db_helper.getReadableDatabase();
-		m_orig_ex_data = DatabaseHelper.getExerciseData(m_db, orig_exercise_name);
+
+		SQLiteDatabase db = null;
+
+		try {
+			db = WGlobals.g_db_helper.getReadableDatabase();
+			m_orig_ex_data = DatabaseHelper.getExerciseData(db, orig_exercise_name);
 
 
-		// Exercise NAME
-		{
-			set_text_lock (m_exer_name_et, m_orig_ex_data.name);
-		}
-
-		// TYPE MySpinner
-		{
-			m_exer_type_msp.set_selected(m_orig_ex_data.type);
-			m_exer_type_msp.setText (m_exer_type_msp.get_item(m_orig_ex_data.type));
-		}
-
-		// GROUP spinner
-		{
-			m_exer_group_msp.set_selected(m_orig_ex_data.group);
-			m_exer_group_msp.setText (m_exer_group_msp.get_item(m_orig_ex_data.group));
-		}
-
-		// REPS checkbox
-		{
-			m_exer_rep_cb.setChecked(m_orig_ex_data.breps);
-			m_exer_rep_rb.setEnabled(m_orig_ex_data.breps);
-		}
-
-		// LEVELS checkbox
-		{
-			m_exer_level_cb.setChecked(m_orig_ex_data.blevel);
-			m_exer_level_rb.setEnabled(m_orig_ex_data.blevel);
-		}
-
-		// CALORIES checkbox
-		{
-			m_exer_calorie_cb.setChecked(m_orig_ex_data.bcals);
-			m_exer_calorie_rb.setEnabled(m_orig_ex_data.bcals);
-		}
-
-		// WEIGHTS widgets
-		{
-			m_exer_weight_cb.setChecked(m_orig_ex_data.bweight);
-			m_exer_weight_msp.setEnabled(m_orig_ex_data.bweight);
-			m_exer_weight_rb.setEnabled(m_orig_ex_data.bweight);
-			if (m_orig_ex_data.bweight) {
-				m_exer_weight_msp.setClickable(true);
-				int weight_pos = m_exer_weight_msp.get_pos(m_orig_ex_data.weight_unit);
-				if (weight_pos == -1) {
-					// Not in our array, so it's a custom.  Add it!
-					m_exer_weight_msp.add_to_array(m_orig_ex_data.weight_unit);
-					weight_pos = m_exer_weight_msp.length() - 1;
-				}
-				m_exer_weight_msp.set_selected(weight_pos);
-				m_exer_weight_msp.setTextFromPos(weight_pos);
+			// Exercise NAME
+			{
+				set_text_lock (m_exer_name_et, m_orig_ex_data.name);
 			}
-		}
 
-		// DISTANCE widgets
-		{
-			m_exer_dist_cb.setChecked(m_orig_ex_data.bdist);
-			m_exer_dist_msp.setEnabled(m_orig_ex_data.bdist);
-			m_exer_dist_rb.setEnabled(m_orig_ex_data.bdist);
-			if (m_orig_ex_data.bdist) {
-				int dist_pos = m_exer_dist_msp.get_pos(m_orig_ex_data.dist_unit);
-				if (dist_pos == -1) {
-					// Custom distance
-					m_exer_dist_msp.add_to_array(m_orig_ex_data.dist_unit);
-					dist_pos = m_exer_dist_msp.length() - 1;
-				}
-				m_exer_dist_msp.set_selected(dist_pos);
-				m_exer_dist_msp.setTextFromPos(dist_pos);
+			// TYPE MySpinner
+			{
+				m_exer_type_msp.set_selected(m_orig_ex_data.type);
+				m_exer_type_msp.setText (m_exer_type_msp.get_item(m_orig_ex_data.type));
 			}
-		}
 
-		// TIME widgets
-		{
-			m_exer_time_cb.setChecked(m_orig_ex_data.btime);
-			m_exer_time_rb.setEnabled(m_orig_ex_data.btime);
-			m_exer_time_msp.setEnabled(m_orig_ex_data.btime);
-			if (m_orig_ex_data.btime) {
-				int time_pos = m_exer_time_msp.get_pos(m_orig_ex_data.time_unit);
-				if (time_pos == -1) {
-					m_exer_time_msp.add_to_array(m_orig_ex_data.time_unit);
-					time_pos = m_exer_time_msp.length() - 1;
-				}
-				m_exer_time_msp.set_selected(time_pos);
-				m_exer_time_msp.setTextFromPos(time_pos);
+			// GROUP spinner
+			{
+				m_exer_group_msp.set_selected(m_orig_ex_data.group);
+				m_exer_group_msp.setText (m_exer_group_msp.get_item(m_orig_ex_data.group));
 			}
-		}
 
-		// OTHER widgets
-		{
-			m_exer_other_cb.setChecked(m_orig_ex_data.bother);
-			m_exer_other_rb.setEnabled(m_orig_ex_data.bother);
-			m_exer_other_name_et.setEnabled(m_orig_ex_data.bother);
-			m_exer_other_name_et.setFocusable(m_orig_ex_data.bother);	// Hack to work-around bug in setEnabled() for EditTexts.
-			m_exer_other_name_et.setFocusableInTouchMode(m_orig_ex_data.bother);
-			m_exer_other_unit_et.setEnabled(m_orig_ex_data.bother);
-			m_exer_other_unit_et.setFocusable(m_orig_ex_data.bother);
-			m_exer_other_unit_et.setFocusableInTouchMode(m_orig_ex_data.bother);
-			if (m_orig_ex_data.bother) {
-				if (m_orig_ex_data.other_title != "") {
-					set_text_lock (m_exer_other_name_et, m_orig_ex_data.other_title);
-				}
-				if (m_orig_ex_data.other_unit != "") {
-					set_text_lock (m_exer_other_unit_et, m_orig_ex_data.other_unit);
+			// REPS checkbox
+			{
+				m_exer_rep_cb.setChecked(m_orig_ex_data.breps);
+				m_exer_rep_rb.setEnabled(m_orig_ex_data.breps);
+			}
+
+			// LEVELS checkbox
+			{
+				m_exer_level_cb.setChecked(m_orig_ex_data.blevel);
+				m_exer_level_rb.setEnabled(m_orig_ex_data.blevel);
+			}
+
+			// CALORIES checkbox
+			{
+				m_exer_calorie_cb.setChecked(m_orig_ex_data.bcals);
+				m_exer_calorie_rb.setEnabled(m_orig_ex_data.bcals);
+			}
+
+			// WEIGHTS widgets
+			{
+				m_exer_weight_cb.setChecked(m_orig_ex_data.bweight);
+				m_exer_weight_msp.setEnabled(m_orig_ex_data.bweight);
+				m_exer_weight_rb.setEnabled(m_orig_ex_data.bweight);
+				if (m_orig_ex_data.bweight) {
+					m_exer_weight_msp.setClickable(true);
+					int weight_pos = m_exer_weight_msp.get_pos(m_orig_ex_data.weight_unit);
+					if (weight_pos == -1) {
+						// Not in our array, so it's a custom.  Add it!
+						m_exer_weight_msp.add_to_array(m_orig_ex_data.weight_unit);
+						weight_pos = m_exer_weight_msp.length() - 1;
+					}
+					m_exer_weight_msp.set_selected(weight_pos);
+					m_exer_weight_msp.setTextFromPos(weight_pos);
 				}
 			}
-		}
 
-		// SIGNIFICANT radio buttons
-		{
-			set_radio (m_orig_ex_data.significant);
-		}
+			// DISTANCE widgets
+			{
+				m_exer_dist_cb.setChecked(m_orig_ex_data.bdist);
+				m_exer_dist_msp.setEnabled(m_orig_ex_data.bdist);
+				m_exer_dist_rb.setEnabled(m_orig_ex_data.bdist);
+				if (m_orig_ex_data.bdist) {
+					int dist_pos = m_exer_dist_msp.get_pos(m_orig_ex_data.dist_unit);
+					if (dist_pos == -1) {
+						// Custom distance
+						m_exer_dist_msp.add_to_array(m_orig_ex_data.dist_unit);
+						dist_pos = m_exer_dist_msp.length() - 1;
+					}
+					m_exer_dist_msp.set_selected(dist_pos);
+					m_exer_dist_msp.setTextFromPos(dist_pos);
+				}
+			}
 
-		// Clean up!
-		m_db.close();
-		m_db = null;
+			// TIME widgets
+			{
+				m_exer_time_cb.setChecked(m_orig_ex_data.btime);
+				m_exer_time_rb.setEnabled(m_orig_ex_data.btime);
+				m_exer_time_msp.setEnabled(m_orig_ex_data.btime);
+				if (m_orig_ex_data.btime) {
+					int time_pos = m_exer_time_msp.get_pos(m_orig_ex_data.time_unit);
+					if (time_pos == -1) {
+						m_exer_time_msp.add_to_array(m_orig_ex_data.time_unit);
+						time_pos = m_exer_time_msp.length() - 1;
+					}
+					m_exer_time_msp.set_selected(time_pos);
+					m_exer_time_msp.setTextFromPos(time_pos);
+				}
+			}
+
+			// OTHER widgets
+			{
+				m_exer_other_cb.setChecked(m_orig_ex_data.bother);
+				m_exer_other_rb.setEnabled(m_orig_ex_data.bother);
+				m_exer_other_name_et.setEnabled(m_orig_ex_data.bother);
+				m_exer_other_name_et.setFocusable(m_orig_ex_data.bother);	// Hack to work-around bug in setEnabled() for EditTexts.
+				m_exer_other_name_et.setFocusableInTouchMode(m_orig_ex_data.bother);
+				m_exer_other_unit_et.setEnabled(m_orig_ex_data.bother);
+				m_exer_other_unit_et.setFocusable(m_orig_ex_data.bother);
+				m_exer_other_unit_et.setFocusableInTouchMode(m_orig_ex_data.bother);
+				if (m_orig_ex_data.bother) {
+					if (m_orig_ex_data.other_title != "") {
+						set_text_lock (m_exer_other_name_et, m_orig_ex_data.other_title);
+					}
+					if (m_orig_ex_data.other_unit != "") {
+						set_text_lock (m_exer_other_unit_et, m_orig_ex_data.other_unit);
+					}
+				}
+			}
+
+			// SIGNIFICANT radio buttons
+			{
+				set_radio (m_orig_ex_data.significant);
+			}
+
+		}
+		catch (SQLiteException e) {
+			e.printStackTrace();
+		}
+		finally {
+			if (db != null) {
+				db.close();
+				db = null;
+			}
+		}
 
 		return true;
 	} // fill_forms()
@@ -521,102 +532,115 @@ public class EditExerciseActivity
 	 * 		ready to go.
 	 */
 	private void save_data() {
-		m_db = WGlobals.g_db_helper.getWritableDatabase();
 
-		// First, remove the current row.
-		if (m_db.delete(DatabaseHelper.EXERCISE_TABLE_NAME,
-				DatabaseHelper.EXERCISE_COL_NAME + "=?",
-				new String[] {m_orig_ex_data.name})
-				== 0) {
-			Log.e(tag, "Error deleting row in save_data()!");
-			return;
+		SQLiteDatabase db = null;
+
+		try {
+			db = WGlobals.g_db_helper.getWritableDatabase();
+
+			// First, remove the current row.
+			if (db.delete(DatabaseHelper.EXERCISE_TABLE_NAME,
+					DatabaseHelper.EXERCISE_COL_NAME + "=?",
+					new String[] {m_orig_ex_data.name})
+					== 0) {
+				Log.e(tag, "Error deleting row in save_data()!");
+				return;
+			}
+
+			// Collect the data.
+			ContentValues values = new ContentValues();
+
+			String new_name = m_exer_name_et.getText().toString();
+			values.put (DatabaseHelper.EXERCISE_COL_NAME, new_name);
+			values.put (DatabaseHelper.EXERCISE_COL_TYPE, m_exer_type_msp.get_current_selection());
+			values.put (DatabaseHelper.EXERCISE_COL_GROUP, m_exer_group_msp.get_current_selection());
+			values.put (DatabaseHelper.EXERCISE_COL_WEIGHT, m_exer_weight_cb.isChecked());
+			values.put (DatabaseHelper.EXERCISE_COL_REP, m_exer_rep_cb.isChecked());
+			values.put (DatabaseHelper.EXERCISE_COL_DIST, m_exer_dist_cb.isChecked());
+			values.put (DatabaseHelper.EXERCISE_COL_TIME, m_exer_time_cb.isChecked());
+			values.put (DatabaseHelper.EXERCISE_COL_LEVEL, m_exer_level_cb.isChecked());
+			values.put (DatabaseHelper.EXERCISE_COL_CALORIES, m_exer_calorie_cb.isChecked());
+			values.put (DatabaseHelper.EXERCISE_COL_OTHER, m_exer_other_cb.isChecked());
+
+			String unit = "";
+			if (m_exer_weight_cb.isChecked())
+				unit = m_exer_weight_msp.getText().toString();
+			values.put (DatabaseHelper.EXERCISE_COL_WEIGHT_UNIT, unit);
+
+			unit = "";
+			if (m_exer_dist_cb.isChecked())
+				unit = m_exer_dist_msp.getText().toString();
+			values.put (DatabaseHelper.EXERCISE_COL_DIST_UNIT, unit);
+
+			unit = "";
+			if (m_exer_time_cb.isChecked())
+				unit = m_exer_time_msp.getText().toString();
+			values.put (DatabaseHelper.EXERCISE_COL_TIME_UNIT, unit);
+
+			unit = "";
+			String name = "";
+			if (m_exer_other_cb.isChecked()) {
+				name = m_exer_other_name_et.getText().toString();
+				unit = m_exer_other_unit_et.getText().toString();
+			}
+			values.put (DatabaseHelper.EXERCISE_COL_OTHER_TITLE, name);
+			values.put (DatabaseHelper.EXERCISE_COL_OTHER_UNIT, unit);
+
+			values.put(DatabaseHelper.EXERCISE_COL_SIGNIFICANT, get_radio());
+
+			// Turn on the corresponding graph.
+			switch (get_radio()) {
+				case DatabaseHelper.EXERCISE_COL_REP_NUM:
+					values.put(DatabaseHelper.EXERCISE_COL_GRAPH_REPS, true);
+					break;
+				case DatabaseHelper.EXERCISE_COL_LEVEL_NUM:
+					values.put(DatabaseHelper.EXERCISE_COL_GRAPH_LEVEL, true);
+					break;
+				case DatabaseHelper.EXERCISE_COL_CALORIE_NUM:
+					values.put(DatabaseHelper.EXERCISE_COL_GRAPH_CALS, true);
+					break;
+				case DatabaseHelper.EXERCISE_COL_WEIGHT_NUM:
+					values.put(DatabaseHelper.EXERCISE_COL_GRAPH_WEIGHT, true);
+					break;
+				case DatabaseHelper.EXERCISE_COL_DIST_NUM:
+					values.put(DatabaseHelper.EXERCISE_COL_GRAPH_DIST, true);
+					break;
+				case DatabaseHelper.EXERCISE_COL_TIME_NUM:
+					values.put(DatabaseHelper.EXERCISE_COL_GRAPH_TIME, true);
+					break;
+				case DatabaseHelper.EXERCISE_COL_OTHER_NUM:
+					values.put(DatabaseHelper.EXERCISE_COL_GRAPH_OTHER, true);
+					break;
+				default:
+					Log.e(tag, "Illegal radio value in save_data()!");
+					break;
+			}
+
+			values.put(DatabaseHelper.EXERCISE_COL_LORDER, m_orig_ex_data.lorder);
+
+			db.insert(DatabaseHelper.EXERCISE_TABLE_NAME, null, values);
+
+
+			// Now that the exercise is redone, there's a problem:
+			// what if the exercise is renamed?  All the workout
+			// sets using this name no longer refer to this exercise.
+			// Time to fix this.
+
+			if (!m_orig_ex_data.name.equals(new_name)) {
+				fix_name (db, new_name);
+			}
+		} // try
+
+		catch (SQLiteException e) {
+			e.printStackTrace();
+		}
+		finally {
+			if (db != null) {
+				db.close();
+				db = null;
+			}
 		}
 
-		// Collect the data.
-		ContentValues values = new ContentValues();
-
-		String new_name = m_exer_name_et.getText().toString();
-		values.put (DatabaseHelper.EXERCISE_COL_NAME, new_name);
-		values.put (DatabaseHelper.EXERCISE_COL_TYPE, m_exer_type_msp.get_current_selection());
-		values.put (DatabaseHelper.EXERCISE_COL_GROUP, m_exer_group_msp.get_current_selection());
-		values.put (DatabaseHelper.EXERCISE_COL_WEIGHT, m_exer_weight_cb.isChecked());
-		values.put (DatabaseHelper.EXERCISE_COL_REP, m_exer_rep_cb.isChecked());
-		values.put (DatabaseHelper.EXERCISE_COL_DIST, m_exer_dist_cb.isChecked());
-		values.put (DatabaseHelper.EXERCISE_COL_TIME, m_exer_time_cb.isChecked());
-		values.put (DatabaseHelper.EXERCISE_COL_LEVEL, m_exer_level_cb.isChecked());
-		values.put (DatabaseHelper.EXERCISE_COL_CALORIES, m_exer_calorie_cb.isChecked());
-		values.put (DatabaseHelper.EXERCISE_COL_OTHER, m_exer_other_cb.isChecked());
-
-		String unit = "";
-		if (m_exer_weight_cb.isChecked())
-			unit = m_exer_weight_msp.getText().toString();
-		values.put (DatabaseHelper.EXERCISE_COL_WEIGHT_UNIT, unit);
-
-		unit = "";
-		if (m_exer_dist_cb.isChecked())
-			unit = m_exer_dist_msp.getText().toString();
-		values.put (DatabaseHelper.EXERCISE_COL_DIST_UNIT, unit);
-
-		unit = "";
-		if (m_exer_time_cb.isChecked())
-			unit = m_exer_time_msp.getText().toString();
-		values.put (DatabaseHelper.EXERCISE_COL_TIME_UNIT, unit);
-
-		unit = "";
-		String name = "";
-		if (m_exer_other_cb.isChecked()) {
-			name = m_exer_other_name_et.getText().toString();
-			unit = m_exer_other_unit_et.getText().toString();
-		}
-		values.put (DatabaseHelper.EXERCISE_COL_OTHER_TITLE, name);
-		values.put (DatabaseHelper.EXERCISE_COL_OTHER_UNIT, unit);
-
-		values.put(DatabaseHelper.EXERCISE_COL_SIGNIFICANT, get_radio());
-
-		// Turn on the corresponding graph.
-		switch (get_radio()) {
-			case DatabaseHelper.EXERCISE_COL_REP_NUM:
-				values.put(DatabaseHelper.EXERCISE_COL_GRAPH_REPS, true);
-				break;
-			case DatabaseHelper.EXERCISE_COL_LEVEL_NUM:
-				values.put(DatabaseHelper.EXERCISE_COL_GRAPH_LEVEL, true);
-				break;
-			case DatabaseHelper.EXERCISE_COL_CALORIE_NUM:
-				values.put(DatabaseHelper.EXERCISE_COL_GRAPH_CALS, true);
-				break;
-			case DatabaseHelper.EXERCISE_COL_WEIGHT_NUM:
-				values.put(DatabaseHelper.EXERCISE_COL_GRAPH_WEIGHT, true);
-				break;
-			case DatabaseHelper.EXERCISE_COL_DIST_NUM:
-				values.put(DatabaseHelper.EXERCISE_COL_GRAPH_DIST, true);
-				break;
-			case DatabaseHelper.EXERCISE_COL_TIME_NUM:
-				values.put(DatabaseHelper.EXERCISE_COL_GRAPH_TIME, true);
-				break;
-			case DatabaseHelper.EXERCISE_COL_OTHER_NUM:
-				values.put(DatabaseHelper.EXERCISE_COL_GRAPH_OTHER, true);
-				break;
-			default:
-				Log.e(tag, "Illegal radio value in save_data()!");
-				break;
-		}
-
-		values.put(DatabaseHelper.EXERCISE_COL_LORDER, m_orig_ex_data.lorder);
-
-		m_db.insert(DatabaseHelper.EXERCISE_TABLE_NAME, null, values);
-
-
-		// Now that the exercise is redone, there's a problem:
-		// what if the exercise is renamed?  All the workout
-		// sets using this name no longer refer to this exercise.
-		// Time to fix this.
-
-		if (!m_orig_ex_data.name.equals(new_name)) {
-			fix_name (m_db, new_name);
-		}
-
-		m_db.close();
-		m_db = null;
 	} // save_data()
 
 
@@ -662,12 +686,12 @@ public class EditExerciseActivity
 	private void delete_entry() {
 		int col, id;
 
-		m_db = null;
+		SQLiteDatabase db = null;
 		try {
-			m_db = WGlobals.g_db_helper.getWritableDatabase();
+			db = WGlobals.g_db_helper.getWritableDatabase();
 
 			// Remove the current row.
-			if (m_db.delete(DatabaseHelper.EXERCISE_TABLE_NAME,
+			if (db.delete(DatabaseHelper.EXERCISE_TABLE_NAME,
 					DatabaseHelper.EXERCISE_COL_NAME + "=?",
 					new String[] {m_orig_ex_data.name})
 					== 0) {
@@ -677,7 +701,7 @@ public class EditExerciseActivity
 
 			Cursor cursor = null;
 			try {
-				cursor = m_db.query(
+				cursor = db.query(
 						DatabaseHelper.EXERCISE_TABLE_NAME,	// table
 						new String[] {DatabaseHelper.COL_ID, DatabaseHelper.EXERCISE_COL_NAME, DatabaseHelper.EXERCISE_COL_LORDER},
 						DatabaseHelper.EXERCISE_COL_LORDER + " > " + m_orig_ex_data.lorder,//selection
@@ -700,7 +724,7 @@ public class EditExerciseActivity
 
 					ContentValues values = new ContentValues();
 					values.put(DatabaseHelper.EXERCISE_COL_LORDER, i + m_orig_ex_data.lorder);
-					m_db.update(DatabaseHelper.EXERCISE_TABLE_NAME,
+					db.update(DatabaseHelper.EXERCISE_TABLE_NAME,
 							values,
 							DatabaseHelper.COL_ID + " = " + id,
 							null);
@@ -718,7 +742,7 @@ public class EditExerciseActivity
 
 			// Now delete all the entries in the SET table
 			// that use this exercise.
-			int num = m_db.delete(DatabaseHelper.SET_TABLE_NAME,
+			int num = db.delete(DatabaseHelper.SET_TABLE_NAME,
 					DatabaseHelper.SET_COL_NAME + "='" + m_orig_ex_data.name + "'",
 					null);
 			Log.i(tag, "delete_entry() removed " + num + "set entries when deleting the " + m_orig_ex_data.name + " exercise.");
@@ -729,9 +753,9 @@ public class EditExerciseActivity
 			e.printStackTrace();
 		}
 		finally {
-			if (m_db != null) {
-				m_db.close();
-				m_db = null;
+			if (db != null) {
+				db.close();
+				db = null;
 			}
 		}
 
@@ -1555,22 +1579,19 @@ public class EditExerciseActivity
 			return false;
 		}
 
-		if (m_db != null) {
-			Log.e(tag, "WARNING! m_db is active in is_duplicate_name()!!!");
-		}
-
+		SQLiteDatabase db = null;
 		try {
-			m_db = WGlobals.g_db_helper.getReadableDatabase();
+			db = WGlobals.g_db_helper.getReadableDatabase();
 
-			return DatabaseHelper.isExerciseNameExist(m_db, name);
+			return DatabaseHelper.isExerciseNameExist(db, name);
 
 		} catch (SQLiteException e) {
 			e.printStackTrace();
 		}
 		finally {
-			if (m_db != null) {
-				m_db.close();
-				m_db = null;
+			if (db != null) {
+				db.close();
+				db = null;
 			}
 		}
 

@@ -37,10 +37,6 @@ import android.widget.Toast;
  * 		  allows the dialogs to be dismissed properly (which
  * 		  is the whole point of this class).
  *<p>
- * Added:<p>
- * 		An m_db variable.  This cleans up automatically
- * 		when the Activity is destroyed.
- *<p>
  * 		NOTE:	YOU MUST instantiate it yourself in the
  * 				onCreate() or onResume() methods.
  *<p>
@@ -75,10 +71,6 @@ public class BaseDialogActivity extends Activity {
 	private ProgressDialog m_prog_dialog = null;
 
 
-	/** Actually accesses the database */
-	protected SQLiteDatabase m_db = null;
-
-
 	//----------------------
 	//	Doesn't do much, but it IS important that all Activities
 	//	set the preferences correctly.  So might as well do
@@ -106,20 +98,6 @@ public class BaseDialogActivity extends Activity {
 		dismiss_all_dialogs();
 		super.onPause();
 	} // onPause()
-
-
-	//----------------------
-	//	Make sure that the database is closed.  It should be;
-	//	this is a "just in case" scenario.
-	//
-	@Override
-	protected void onDestroy() {
-		if (m_db != null) {
-			m_db.close();
-			m_db = null;
-		}
-		super.onDestroy();
-	}
 
 
 	//--------------------------------------

@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -943,20 +944,20 @@ public class InspectorActivity2
 	 * 		This should probably be called during an ASyncTask, as
 	 * 		it could take a long time!
 	 */
-	private void test_m_db() {
-		if (m_db != null) {
-			// The database may be used by another tab.  Give
-			// it some time to finish.
-			try {
-				Thread.sleep(1000);
-			}
-			catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			if (m_db != null)
-				throw new SQLiteException("m_db not null when starting doInBackground() in InspectorActivity!");
-		}
-	} // test_m_db()
+//	private void test_m_db() {
+//		if (m_db != null) {
+//			// The database may be used by another tab.  Give
+//			// it some time to finish.
+//			try {
+//				Thread.sleep(1000);
+//			}
+//			catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//			if (m_db != null)
+//				throw new SQLiteException("m_db not null when starting doInBackground() in InspectorActivity!");
+//		}
+//	} // test_m_db()
 
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -983,14 +984,13 @@ public class InspectorActivity2
 		//-------------------
 		@Override
 		protected Void doInBackground(Void... not_used) {
-
+			SQLiteDatabase db = null;
 			try {
-				test_m_db();
-				m_db = WGlobals.g_db_helper.getReadableDatabase();
+				db = WGlobals.g_db_helper.getReadableDatabase();
 
 				// Read in all the info we need about this
 				// exercise.
-				m_ex_data = DatabaseHelper.getExerciseData(m_db, m_ex_name);
+				m_ex_data = DatabaseHelper.getExerciseData(db, m_ex_name);
 
 				// Get a cursor for the sets.  Then loop through
 				// them one by one, creating a layout for each.
@@ -999,7 +999,7 @@ public class InspectorActivity2
 				// for that layout.
 				Cursor set_cursor = null;
 				try {
-					set_cursor = DatabaseHelper.getAllSets(m_db, m_ex_name,
+					set_cursor = DatabaseHelper.getAllSets(db, m_ex_name,
 									m_prefs_oldest_order);
 					m_num_sets = set_cursor.getCount();
 
@@ -1035,9 +1035,9 @@ public class InspectorActivity2
 				e.printStackTrace();
 			}
 			finally {
-				if (m_db != null) {
-					m_db.close();
-					m_db = null;
+				if (db != null) {
+					db.close();
+					db = null;
 				}
 				m_db_dirty = false;
 			}

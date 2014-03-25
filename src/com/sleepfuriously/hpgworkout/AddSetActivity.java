@@ -28,6 +28,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -1508,14 +1509,10 @@ public class AddSetActivity
 	 */
 	private void save() {
 		String str;
+		SQLiteDatabase db = null;
 
-		if (m_db != null) {
-			Log.e (tag, "Database already opened when trying to save! Aborting!");
-			return;
-		}
 		try {
-			test_m_db();
-			m_db = WGlobals.g_db_helper.getWritableDatabase();
+			db = WGlobals.g_db_helper.getWritableDatabase();
 
 			// Collect our data for this set.
 			ContentValues values = new ContentValues();
@@ -1590,15 +1587,15 @@ public class AddSetActivity
 			values.put(DatabaseHelper.SET_COL_DATEMILLIS, now.getTimeInMillis());
 
 			// That's it!  Insert and we're done.
-			m_db.insert(DatabaseHelper.SET_TABLE_NAME, null, values);
+			db.insert(DatabaseHelper.SET_TABLE_NAME, null, values);
 		}
 		catch (SQLiteException e) {
 			e.printStackTrace();
 		}
 		finally {
-			if (m_db != null) {
-				m_db.close();
-				m_db = null;
+			if (db != null) {
+				db.close();
+				db = null;
 			}
 		}
 
@@ -1895,20 +1892,20 @@ public class AddSetActivity
 	 * 		This should probably be called during an ASyncTask, as
 	 * 		it could take a long time!
 	 */
-	private void test_m_db() {
-		if (m_db != null) {
-			// The database may be used by another tab.  Give
-			// it some time to finish.
-			try {
-				Thread.sleep(1000);
-			}
-			catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			if (m_db != null)
-				throw new SQLiteException("m_db not null when starting doInBackground() in ASetActivity!");
-		}
-	} // test_m_db()
+//	private void test_m_db() {
+//		if (m_db != null) {
+//			// The database may be used by another tab.  Give
+//			// it some time to finish.
+//			try {
+//				Thread.sleep(1000);
+//			}
+//			catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//			if (m_db != null)
+//				throw new SQLiteException("m_db not null when starting doInBackground() in ASetActivity!");
+//		}
+//	} // test_m_db()
 
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -2002,21 +1999,19 @@ public class AddSetActivity
 				return null;
 			}
 
+			SQLiteDatabase db = null;
 
 			try {
 				// Read in that row from the database.
-				m_activity.test_m_db();
-				m_activity.m_db = WGlobals.g_db_helper.getReadableDatabase();
+				db = WGlobals.g_db_helper.getReadableDatabase();
 
 				// Read in all the info we need about this
 				// exercise.
-				m_ex_data = DatabaseHelper.getExerciseData(m_activity.m_db,
-														exercise_name);
+				m_ex_data = DatabaseHelper.getExerciseData(db, exercise_name);
 
 				Cursor set_cursor = null;
 				try {
-					set_cursor = DatabaseHelper.getLastSet(m_activity.m_db,
-														exercise_name);
+					set_cursor = DatabaseHelper.getLastSet(db, exercise_name);
 					if (set_cursor.moveToFirst()) {
 						// Fill in, but only if there IS something
 						// to fill!  Otherwise leave this as NULL.
@@ -2032,13 +2027,14 @@ public class AddSetActivity
 						set_cursor = null;
 					}
 				}
-			} catch (SQLiteException e) {
+			} 
+			catch (SQLiteException e) {
 				e.printStackTrace();
 			}
 			finally {
-				if (m_activity.m_db != null) {
-					m_activity.m_db.close();
-					m_activity.m_db = null;
+				if (db != null) {
+					db.close();
+					db = null;
 				}
 				m_loading = false;	// Finished loading!
 			}
