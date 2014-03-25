@@ -499,8 +499,6 @@ public class AddSetActivity
 	//-----------------------------------
 	@Override
 	public void onClick(View v) {
-		WGlobals.g_sound = true;		// Since this was turned off during onCreate().
-
 		WGlobals.play_short_click();
 
 		if (v == m_done) {
@@ -2027,7 +2025,7 @@ public class AddSetActivity
 						set_cursor = null;
 					}
 				}
-			} 
+			}
 			catch (SQLiteException e) {
 				e.printStackTrace();
 			}
@@ -2127,6 +2125,7 @@ public class AddSetActivity
 			if (m_activity.is_progress_dialog_active()) {
 				m_activity.stop_progress_dialog();
 			}
+			WGlobals.g_sound = true;		// Since this was turned off during onCreate().
 
 		} // onPostExecute(.)
 

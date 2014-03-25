@@ -3,8 +3,6 @@ TODO:
 BUG: Graphs: changing the options from "every set" to "daily" didn't
 	cause the graph to re-compute and display the new graph.
 
-Bug: Orientation change in AddSet causes the sound to stop.
-
 BUG: The sound goes out sometimes.  Thought I'd fixed it, but apparently
 there's another issue as well.  This time, it goes out when moving back
 and forth between the Grid and AddSet.  Hmmm, intermittent...sigh.
@@ -250,6 +248,12 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Bug: Orientation change in AddSet causes the sound to stop.  Also, the
+	sound issue seems to have popped up again.  Doesn't play any sounds
+	until I make a new Activity (like the pop-up edit).
+	- Fixed the fix!  Now sound is turned back on onPostExecute()
+	instead of in the Activity.  Much better.
+
 Bug: Sound doesn't always play when adding a set. Intermittent bug.
 	- fixed. The bug was created when turning off sound during onCreate().
 	I did this so that the wheels wouldn't make any noise then. But I forgot
