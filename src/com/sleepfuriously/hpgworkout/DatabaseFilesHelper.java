@@ -222,6 +222,12 @@ public class DatabaseFilesHelper {
 		// Create the database with the default filename for the
 		// very first time.
 		String filename = get_next_file_name(ctx);
+
+		// Shouldn't be an active g_db_helper yet!
+		if (WGlobals.g_db_helper != null) {
+			Log.e(tag, "g_db_helper is not null when running init() (place 2)!");
+			close_active_db();	// trying to continue
+		}
 		WGlobals.g_db_helper = new DatabaseHelper(ctx, filename);
 		SQLiteDatabase db = WGlobals.g_db_helper.getReadableDatabase();
 		db.close();
