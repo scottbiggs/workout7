@@ -3,11 +3,6 @@ TODO:
 BUG: Graphs: changing the options from "every set" to "daily" didn't
 	cause the graph to re-compute and display the new graph.
 
-BUG: The sound goes out sometimes.  Thought I'd fixed it, but apparently
-there's another issue as well.  This time, it goes out when moving back
-and forth between the Grid and AddSet.  Hmmm, intermittent...sigh.
-Orientation change in AddSet causes the sound to stop.
-
 BUG: Error messages pop up during graphing: "Don't have enough room to
 draw all the y-axii!" and others.
 
@@ -248,6 +243,12 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+BUG: The sound goes out sometimes.  Thought I'd fixed it, but apparently
+there's another issue as well.  This time, it goes out when moving back
+and forth between the Grid and AddSet.  Hmmm, intermittent...sigh.
+Orientation change in AddSet causes the sound to stop.
+	- Seems fixed as well (see just below).
+
 Bug: Orientation change in AddSet causes the sound to stop.  Also, the
 	sound issue seems to have popped up again.  Doesn't play any sounds
 	until I make a new Activity (like the pop-up edit).
