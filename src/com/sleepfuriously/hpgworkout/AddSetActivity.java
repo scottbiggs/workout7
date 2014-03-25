@@ -1950,8 +1950,6 @@ public class AddSetActivity
 		 */
 		protected SetData m_last_set = null;
 
-		/** Counts the number of times this class is instantiated. */
-		private int m_instance_counter = 0;
 
 
 		/***************
@@ -1962,7 +1960,6 @@ public class AddSetActivity
 		 * communicates with that Activity.
 		 */
 		public ASetASyncTask (AddSetActivity activity) {
-			m_instance_counter++;
 //			Log.v(tag, "entering constructor, count = " + m_instance_counter +
 //				", id = " + this.toString());
 			attach (activity);
