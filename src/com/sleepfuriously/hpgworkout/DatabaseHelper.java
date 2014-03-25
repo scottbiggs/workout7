@@ -888,6 +888,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * Again, all the names of the exercises are in an array,
 	 * ordered in the user's preference.
 	 *
+	 * preconditions:
+	 * 	WGlobals.g_db_helper		Is properly initialized.
+	 *
 	 * @return	An array of Strings.  Could have a size 0.
 	 *
 	 * @see #getAllExerciseNames()
@@ -1306,6 +1309,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 *
 	 * This is an even easier version--you don't need to
 	 * have a db variable lying around for this one.
+	 *
+	 * preconditions:
+	 * 	WGlobals.g_db_helper		Is properly initialized.
 	 *
 	 * @param db			A database ready for reading.
 	 * @param lorder		The row that this exercise appears to
