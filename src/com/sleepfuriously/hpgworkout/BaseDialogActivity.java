@@ -6,10 +6,12 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -625,6 +627,31 @@ public class BaseDialogActivity extends Activity {
 		}
 	}
 
+
+	/*********************
+	 * Finds the current orientation of the device.  Works on
+	 * ALL devices, regardless of anhything. That's because
+	 * it figures out the orientation itself, using the display's
+	 * width and height.
+	 *
+	 * @return	A constant defined in Configuration to tell us
+	 * 			the current orientation.
+	 *
+	 * Taken from http://stackoverflow.com/questions/2795833/check-orientation-on-android-phone/10453034#10453034
+	 */
+	public int get_screen_orientation() {
+		Display display = getWindowManager().getDefaultDisplay();
+
+		if (display.getWidth() == display.getHeight()) {
+			return Configuration.ORIENTATION_SQUARE;
+		}
+
+		if (display.getWidth() < display.getHeight()) {
+			return Configuration.ORIENTATION_PORTRAIT;
+		}
+
+		return Configuration.ORIENTATION_LANDSCAPE;
+	} // get_screen_orientation()
 
 
 }

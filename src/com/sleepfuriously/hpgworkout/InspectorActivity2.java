@@ -9,6 +9,7 @@
 package com.sleepfuriously.hpgworkout;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -64,7 +65,7 @@ public class InspectorActivity2
 	HorizontalScrollView m_hsv = null;
 
 	/** Tells if we're in landscape mode or not. */
-	private boolean m_landscape = false;
+//	private boolean m_landscape = false;
 
 	TextView m_desc_tv;
 
@@ -85,18 +86,29 @@ public class InspectorActivity2
 	private int m_set_id = -1;
 
 
+	/**
+	 * Since the ASyncTask is static, it may persist
+	 * when this Activity is destroyed.  This variable
+	 * will be passed back to us via
+	 * onRetainLastConfiguationInstance() and
+	 * getLastNonConfigurationInstance().
+	 */
+	private InspectorASyncTask m_task = null;
+
+
 	//--------------------
 	//	All from the exercise database
 	//--------------------
 
-	/** Holds all info about this exercise. */
-	protected ExerciseData m_ex_data = null;
+//	/** Holds all info about this exercise. */		moved to ASyncTask
+//	protected ExerciseData m_ex_data = null;
 
 //	protected int m_ex_id;
-	protected String m_ex_name;
+	/** the name of this exercise. */
+	private String m_ex_name;
 
-	/** The number of sets for this exercise. */
-	protected int m_num_sets;
+//	/** The number of sets for this exercise. */
+//	protected int m_num_sets;				moved to ASyncTask
 
 	/**
 	 * This tells the Activity when it needs to load data.  It
@@ -129,8 +141,9 @@ public class InspectorActivity2
 	/** Should we use the quick view or the regular view */
 //	protected boolean m_prefs_quick_view = false;
 
-	/** The order that we should sort the workout sets */
-	protected boolean m_prefs_oldest_order = true;
+//	/** The order that we should sort the workout sets */
+//	protected boolean m_prefs_oldest_order = true;		moved to ASyncTask
+
 
 	//------------------------------
 	@Override
@@ -140,18 +153,13 @@ public class InspectorActivity2
 		setContentView(R.layout.inspector);
 
 		// Are we in landscape mode?
-		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-			m_landscape = true;
-		}
-		else {
-			m_landscape = false;
-		}
+//		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//			m_landscape = true;
+//		}
+//		else {
+//			m_landscape = false;
+//		}
 
-		// Load in our preferences.
-		SharedPreferences prefs =
-			PreferenceManager.getDefaultSharedPreferences(this);
-		m_prefs_oldest_order = prefs.getBoolean(getString(R.string.prefs_inspector_oldest_first_key),
-												false);
 		set_order_msg();
 
 		// Get our Intent and fill in the info that was passed
@@ -172,6 +180,9 @@ public class InspectorActivity2
 
 		m_db_dirty = true;	// True for first time.
 
+
+		m_task = (InspectorASyncTask) getLastNonConfigurationInstance();
+
 	} // onCreate (.)
 
 
@@ -186,6 +197,27 @@ public class InspectorActivity2
 		}
 
 	} // onResume()
+
+
+	/*************************
+	 * Called when an Activity is destroyed during a
+	 * configuration/orientation change.  Whatever is
+	 * returned here can be retrieved by the new replacement
+	 * Activity by calling getlastNonConfigurationInstance().
+	 *
+	 * @see android.app.Activity#onRetainNonConfigurationInstance()
+	 */
+	@Override
+	public Object onRetainNonConfigurationInstance() {
+		m_task.detach();		// Tells task to remove its reference
+							// to this Activity as I'm about to
+							// die.
+
+		return m_task;	// Return the ASyncTask so the
+						// new Activity can find it (and then
+						// attach it to the ASyncTask).
+	}
+
 
 	//------------------------------
 	//	Allows this Activity to send message to the caller
@@ -207,9 +239,7 @@ public class InspectorActivity2
 	//
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-//		menu.add(0, MENU_ID_BRIEF, 0, R.string.null_string);
 		menu.add(0, MENU_ID_ORDER, 0, R.string.null_string);
-
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -224,7 +254,12 @@ public class InspectorActivity2
 //							R.string.inspector_menu_verbose_label :
 //							R.string.inspector_menu_brief_label);
 
-		menu.findItem(MENU_ID_ORDER).setTitle(m_prefs_oldest_order ?
+		SharedPreferences prefs =
+		PreferenceManager.getDefaultSharedPreferences(this);
+		boolean prefs_oldest_order =
+				prefs.getBoolean(getString(R.string.prefs_inspector_oldest_first_key),
+								false);
+		menu.findItem(MENU_ID_ORDER).setTitle(prefs_oldest_order ?
 							R.string.inspector_menu_newest_first_label :
 							R.string.inspector_menu_old_first_label);
 		return super.onPrepareOptionsMenu(menu);
@@ -238,6 +273,10 @@ public class InspectorActivity2
 		SharedPreferences prefs;
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
+		boolean prefs_oldest_order =
+		prefs.getBoolean(getString(R.string.prefs_inspector_oldest_first_key),
+						false);
+
 		int id = item.getItemId();
 		switch (id) {
 //			case MENU_ID_BRIEF:
@@ -248,9 +287,9 @@ public class InspectorActivity2
 //				break;
 
 			case MENU_ID_ORDER:
-				m_prefs_oldest_order = !m_prefs_oldest_order;
+				prefs_oldest_order = !prefs_oldest_order;
 				prefs.edit().putBoolean(getString(R.string.prefs_inspector_oldest_first_key),
-										m_prefs_oldest_order)
+										prefs_oldest_order)
 								.commit();
 
 				// Show the default at the top.
@@ -264,7 +303,7 @@ public class InspectorActivity2
 				break;
 		}
 		return super.onOptionsItemSelected(item);
-	}
+	} // onOptionsItemSelected(item)
 
 
 	//------------------------------
@@ -340,8 +379,10 @@ public class InspectorActivity2
 		// WARNING!  This is a HACK to get around scoping rules!
 		s_id = id;
 
+		int orientation = get_screen_orientation();
+
 		// Set the scroll to the right value.
-		if (m_landscape) {
+		if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
 			m_hsv = (HorizontalScrollView) findViewById(R.id.inspector_sv);
 		}
 		else {
@@ -351,7 +392,7 @@ public class InspectorActivity2
 		// For the times we need to scroll to a given child of the
 		// scrollview.
 		if (id == -1) {
-			if (m_landscape) {
+			if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
 				m_hsv.scrollTo(0, 0);	// Go to the left.
 			}
 			else {
@@ -362,7 +403,7 @@ public class InspectorActivity2
 
 		// Make it scroll, but first we have to wait for
 		// everything to be set up.
-		if (m_landscape) {
+		if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
 			m_hsv.post(new Runnable() {
 				@Override
 				public void run() {
@@ -419,21 +460,60 @@ public class InspectorActivity2
 	 *
 	 * All the dirty details have been moved to an ASyncTask as database
 	 * stuff can take a while.
+	 *
+	 * todo:
+	 * 	I don't think this will work properly when the DB is dirty
+	 * 	and the ASyncTask is finished or in-progress (isDone() = false).
 	 */
 	void init_from_db() {
 		// Set the order description.
 		m_desc_tv = (TextView) findViewById(R.id.inspector_description_tv);
-		m_desc_tv.setText(m_prefs_oldest_order ?
+
+		SharedPreferences prefs =
+		PreferenceManager.getDefaultSharedPreferences(this);
+		boolean prefs_oldest_order =
+				prefs.getBoolean(getString(R.string.prefs_inspector_oldest_first_key),
+								false);
+		m_desc_tv.setText(prefs_oldest_order ?
 							R.string.inspector_oldest_first_msg :
 							R.string.inspector_newest_first_msg);
 
-		// Start the AsyncTask.  It'll handle the rest.
-		new InspectorSyncTask().execute();
+		// Start the ASyncTask!!!
+		if (m_task == null) {
+			// No ASync running, so start it up.
+			start_progress_dialog(R.string.loading_str);
+			m_task = new InspectorASyncTask(this, m_ex_name);
+			Log.d(tag, "init_from_db(): STARTING NEW ASYNCTASK!");
+			m_task.execute();
+		}
+		else {
+			// Tell the ASyncTask who the Activity is (us!).
+			m_task.attach(this);
+
+			// If the ASyncTask is still working, restart
+			// the progress dialog.
+			if (m_task.isDone() == false) {
+				start_progress_dialog(R.string.loading_str);
+			}
+			else {
+				// The ASyncTask has completed.  Just catchup and
+				// finish.
+				catchup();
+				finish_ui();
+
+				// todo
+				//	DON'T!!! This could be VERY VERY BAD!!!  The ASyncTack
+				//	isn't guaranteed to still be around, so calling
+				//	this could cause a crash!!!
+//				Log.e(tag, "About to call onPostExecute() outside of the ASyncTask! Get ready for something bad to happen!");
+//				m_task.onPostExecute(null);
+			}
+		}
 	} // init_from_db()
 
 
 	/***************************
-	 * Helper to converts the given number to a nice string for
+	 * Helper to convert the given number to a nice string for
 	 * display in the inspector as a weight, distance, etc.
 	 *
 	 * @param f		The FLOAT to turn into a string
@@ -447,10 +527,11 @@ public class InspectorActivity2
 	}
 
 	/***************************
-	 * Helper to converts the given number to a nice string for
+	 * Helper to convert the given number to a nice string for
 	 * display in the inspector as a weight, distance, etc.
 	 *
 	 * @param i		The INT to turn into a string
+	 *
 	 * @return		A nice string, or an appropriate message
 	 * 				if the user skipped this value.
 	 */
@@ -479,6 +560,7 @@ public class InspectorActivity2
 	 * 							loaded from the DB.
 	 */
 	void make_set_layout (SetLayout layout_values) {
+		Log.d(tag, "entering make_set_layout()");
 		if (!m_layout_initialized) {
 			init_layout(layout_values.data.millis);
 		}
@@ -549,20 +631,23 @@ public class InspectorActivity2
 
 	}  // make_set_layout (layout_values)
 
+
 	/**************************
-	 * Call this to reset the non-database part of the
-	 * of the UI.
-	 *
-	 * preconditions:
-	 * 	m_prefs_oldest_order		is properly set.
-	 *
+	 * Call this to set the correct message for the
+	 * m_desc_tv (depends on the order we're displaying).
 	 */
 	void set_order_msg() {
 		// Make ch
 		if (m_desc_tv == null) {
 			m_desc_tv = (TextView) findViewById(R.id.inspector_description_tv);
 		}
-		m_desc_tv.setText(m_prefs_oldest_order ?
+
+		SharedPreferences prefs =
+				PreferenceManager.getDefaultSharedPreferences(this);
+		boolean prefs_oldest_order =
+				prefs.getBoolean(getString(R.string.prefs_inspector_oldest_first_key),
+								false);
+		m_desc_tv.setText(prefs_oldest_order ?
 							R.string.inspector_oldest_first_msg :
 							R.string.inspector_newest_first_msg);
 	} // init_ui()
@@ -572,18 +657,28 @@ public class InspectorActivity2
 	 * Called the first time that make_set_layout() is called.
 	 * This sets up all the general stuff that's germain to
 	 * every set layout.
+	 *
+	 * todo:
+	 * 		The param date_in_millis is NOT used!!!
 	 */
 	protected void init_layout (long date_in_millis) {
+		Log.d(tag, "entering init_layout().");
 		if (m_layout_initialized) {
 			return;
 		}
+
+		if (m_task == null) {
+			Log.e(tag, "m_task is null in init_layout()!");
+		}
+
+		Log.d(tag, "init_layout: tabula rasa!");
 
 		// Tabula rasa.
 		m_main_ll.removeAllViews();
 
 		// If there are no sets, indicate so.
 		TextView title_tv = (TextView) findViewById(R.id.inspector_title_tv);
-		if (m_num_sets == 0) {
+		if (m_task.m_num_sets == 0) {
 			title_tv.setText(R.string.inspector_empty);
 		}
 		else {
@@ -667,11 +762,11 @@ public class InspectorActivity2
 							LinearLayout set_ll) {
 		LinearLayout reps_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_reps_ll);
 
-		if (m_ex_data.breps) {
+		if (m_task.m_ex_data.breps) {
 			String data_str = get_formatted_string(vals.data.reps);
 			TextView reps_data_tv = (TextView) set_ll.findViewById(R.id.inspector_set_reps_data);
 			reps_data_tv.setText(data_str);
-			if (m_ex_data.significant == DatabaseHelper.EXERCISE_COL_REP_NUM) {
+			if (m_task.m_ex_data.significant == DatabaseHelper.EXERCISE_COL_REP_NUM) {
 				TextView reps_label_tv = (TextView) set_ll.findViewById(R.id.inspector_set_reps_label);
 				reps_label_tv.setTypeface(null, Typeface.BOLD);
 			}
@@ -692,15 +787,15 @@ public class InspectorActivity2
 		LinearLayout weight_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_weight_ll);
 		View bar = set_ll.findViewById(R.id.inspector_set_weight_bar);
 
-		if (m_ex_data.bweight) {
+		if (m_task.m_ex_data.bweight) {
 			TextView weight_label_tv = (TextView) set_ll.findViewById(R.id.inspector_set_weight_label);
 			String weight_label_str = getString (R.string.inspector_set_weight_label,
-					(Object[]) new String[] {m_ex_data.weight_unit});
+					(Object[]) new String[] {m_task.m_ex_data.weight_unit});
 			weight_label_tv.setText(weight_label_str);
 
 			TextView weight_data_tv = (TextView) set_ll.findViewById(R.id.inspector_set_weight_data);
 			weight_data_tv.setText(get_formatted_string(vals.data.weight));
-			if (m_ex_data.significant == DatabaseHelper.EXERCISE_COL_WEIGHT_NUM) {
+			if (m_task.m_ex_data.significant == DatabaseHelper.EXERCISE_COL_WEIGHT_NUM) {
 				weight_label_tv.setTypeface(null, Typeface.BOLD);
 			}
 
@@ -726,11 +821,11 @@ public class InspectorActivity2
 		LinearLayout level_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_level_ll);
 		View bar = set_ll.findViewById(R.id.inspector_set_level_bar);
 
-		if (m_ex_data.blevel) {
+		if (m_task.m_ex_data.blevel) {
 			String data_str = get_formatted_string(vals.data.levels);
 			TextView level_data_tv = (TextView) set_ll.findViewById(R.id.inspector_set_level_data);
 			level_data_tv.setText(data_str);
-			if (m_ex_data.significant == DatabaseHelper.EXERCISE_COL_LEVEL_NUM) {
+			if (m_task.m_ex_data.significant == DatabaseHelper.EXERCISE_COL_LEVEL_NUM) {
 				TextView level_label_tv = (TextView) set_ll.findViewById(R.id.inspector_set_level_label);
 				level_label_tv.setTypeface(null, Typeface.BOLD);
 			}
@@ -757,11 +852,11 @@ public class InspectorActivity2
 		LinearLayout cals_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_calorie_ll);
 		View bar = set_ll.findViewById(R.id.inspector_set_calorie_bar);
 
-		if (m_ex_data.bcals) {
+		if (m_task.m_ex_data.bcals) {
 			String data_str = get_formatted_string(vals.data.cals);
 			TextView cals_data_tv = (TextView) set_ll.findViewById(R.id.inspector_set_calorie_data);
 			cals_data_tv.setText(data_str);
-			if (m_ex_data.significant == DatabaseHelper.EXERCISE_COL_CALORIE_NUM) {
+			if (m_task.m_ex_data.significant == DatabaseHelper.EXERCISE_COL_CALORIE_NUM) {
 				TextView cals_label_tv = (TextView) set_ll.findViewById(R.id.inspector_set_calorie_label);
 				cals_label_tv.setTypeface(null, Typeface.BOLD);
 			}
@@ -787,12 +882,13 @@ public class InspectorActivity2
 		LinearLayout dist_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_dist_ll);
 		View bar = set_ll.findViewById(R.id.inspector_set_dist_bar);
 
-		if (m_ex_data.bdist) {
+		if (m_task.m_ex_data.bdist) {
 			// Unit of Distance
 			TextView dist_label_tv = (TextView) set_ll.findViewById(R.id.inspector_set_dist_label);
-			String dist_label_str = getString (R.string.inspector_set_dist_label, m_ex_data.dist_unit);
+			String dist_label_str = getString (R.string.inspector_set_dist_label,
+											m_task.m_ex_data.dist_unit);
 			dist_label_tv.setText(dist_label_str);
-			if (m_ex_data.significant == DatabaseHelper.EXERCISE_COL_DIST_NUM) {
+			if (m_task.m_ex_data.significant == DatabaseHelper.EXERCISE_COL_DIST_NUM) {
 				dist_label_tv.setTypeface(null, Typeface.BOLD);
 			}
 
@@ -821,12 +917,13 @@ public class InspectorActivity2
 		LinearLayout time_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_time_ll);
 		View bar = set_ll.findViewById(R.id.inspector_set_time_bar);
 
-		if (m_ex_data.btime) {
+		if (m_task.m_ex_data.btime) {
 			// Unit of Time
 			TextView time_label_tv = (TextView) set_ll.findViewById(R.id.inspector_set_time_label);
-			String time_label_str = getString (R.string.inspector_set_time_label, m_ex_data.time_unit);
+			String time_label_str = getString (R.string.inspector_set_time_label,
+											m_task.m_ex_data.time_unit);
 			time_label_tv.setText(time_label_str);
-			if (m_ex_data.significant == DatabaseHelper.EXERCISE_COL_TIME_NUM) {
+			if (m_task.m_ex_data.significant == DatabaseHelper.EXERCISE_COL_TIME_NUM) {
 				time_label_tv.setTypeface(null, Typeface.BOLD);
 			}
 
@@ -855,11 +952,13 @@ public class InspectorActivity2
 		LinearLayout other_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_other_ll);
 		View bar = set_ll.findViewById(R.id.inspector_set_other_bar);
 
-		if (m_ex_data.bother) {
+		if (m_task.m_ex_data.bother) {
 			TextView other_label_tv = (TextView) set_ll.findViewById(R.id.inspector_set_other_label);
-			String other_label_str = getString (R.string.inspector_set_other_label, m_ex_data.other_title, m_ex_data.other_unit);
+			String other_label_str = getString (R.string.inspector_set_other_label,
+												m_task.m_ex_data.other_title,
+												m_task.m_ex_data.other_unit);
 			other_label_tv.setText(other_label_str);
-			if (m_ex_data.significant == DatabaseHelper.EXERCISE_COL_OTHER_NUM) {
+			if (m_task.m_ex_data.significant == DatabaseHelper.EXERCISE_COL_OTHER_NUM) {
 				other_label_tv.setTypeface(null, Typeface.BOLD);
 			}
 
@@ -931,33 +1030,65 @@ public class InspectorActivity2
 
 
 	/************************
-	 * A nice thing to do before trying to access the database.
-	 * This first tests to make sure that another thread is not
-	 * using it.  But if it IS, then this waits a second before
-	 * throwing an exception.
-	 *
-	 * NOTE:
-	 * 		This needs to be called within a TRY, as this
-	 * 		throws a SQLiteException!
-	 *
-	 * NOTE 2:
-	 * 		This should probably be called during an ASyncTask, as
-	 * 		it could take a long time!
+	 * Called during onProgressUpdate() or anytime after
+	 * the database is completely loaded.  This causes the
+	 * UI to "catch up" to whatever data has been loaded.
 	 */
-//	private void test_m_db() {
-//		if (m_db != null) {
-//			// The database may be used by another tab.  Give
-//			// it some time to finish.
-//			try {
-//				Thread.sleep(1000);
-//			}
-//			catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
-//			if (m_db != null)
-//				throw new SQLiteException("m_db not null when starting doInBackground() in InspectorActivity!");
-//		}
-//	} // test_m_db()
+	protected void catchup() {
+		Log.d(tag, "Entering catchup()");
+
+		if (m_task == null) {
+			Log.e(tag, "Trying to catchup without an ASyncTask!");
+			return;		// Nothing to catch up to!
+		}
+
+		if (m_task.m_layout_list == null) {
+			Log.e(tag, "m_layout_list is NULL while catching up!");
+			return;
+		}
+
+		if (m_task.m_layout_list.size() == 0) {
+			init_layout(0);
+			return;
+		}
+
+		if (!m_layout_initialized) {
+//			init_layout(layout_values.data.millis);
+			init_layout(0);
+		}
+
+		// strategy:
+		//	I'm assuming that we're adding the child nodes in
+		//	the correct order.
+		//
+		//	Find where we are in the layout, and add successive
+		//	items of m_task.m_layout_list until we max out.
+		//
+		int num_children = m_main_ll.getChildCount();
+//		Log.d(tag, "catchup(): num_children = " + num_children + ", layout_list.size() = " + m_task.m_layout_list.size());
+		while (num_children < m_task.m_layout_list.size()) {
+			make_set_layout(m_task.m_layout_list.get(num_children));
+			num_children++;
+		}
+
+	} // catchup()
+
+
+	/************************
+	 * This should be called after all the data has been
+	 * loaded and we're caught up.  This does the finishing
+	 * touches (like scrolling to the correct datum and
+	 * stopping the dialog).
+	 *
+	 * side effects:
+	 * 	m_db_dirty		set to false
+	 */
+	protected void finish_ui() {
+		trim_date_labels();
+		scroll_to_child (m_set_id);
+		stop_progress_dialog();
+		m_db_dirty = false;
+	}
 
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -970,27 +1101,128 @@ public class InspectorActivity2
 	 *
 	 * The types are: <params, progress, result>
 	 */
-	class InspectorSyncTask extends AsyncTask <Void, SetLayout, Void> {
+	static class InspectorASyncTask
+//					extends AsyncTask <Void, SetLayout, Void> {
+					extends AsyncTask <Void, Void, Void> {
 
-		static final String tag = "InspectorSyncTask";
+		static final String tag = "InspectorASyncTask";
 
-		//-------------------
+		/** TRUE while data is being loaded from the DB */
+//		private boolean m_loading = false;
+
+		/** Will be TRUE when the ASyncTask has finished. */
+		boolean m_done = false;
+
+		/**
+		 * The Activity that is using this ASyncTask.
+		 * This static class may ONLY access the activity
+		 * through this data member.
+		 * <p>
+		 * NOTE: Make sure this is not NULL before using!!!
+		 * (Actually, this is not necessary. Google promises that
+		 * this will always be valid when done in a UI thread.)
+		 */
+		private InspectorActivity2 m_activity = null;
+
+		/** Holds all info about this exercise. */
+		public ExerciseData m_ex_data = null;
+
+		/** The name of this exercise */
+		public String m_ex_name;
+
+		/**
+		 * The order that we should sort the workout sets.
+		 * True means Oldest First.  False means most recent first.
+		 */
+//		public boolean m_prefs_oldest_order = true;
+
+		/** The number of sets for this exercise. */
+		public int m_num_sets = -1;
+
+		/**
+		 * This is IT. This is the list that holds all the layouts
+		 * (which are sets + an order).  This is filled out progressively
+		 * during doInBackground() and tapped during onProgressUpdate()
+		 * and catchup().
+		 */
+		public ArrayList<SetLayout> m_layout_list = null;
+
+
+		/***************
+		 * Constructor
+		 *
+		 * Needs a reference to the Activity that's creating
+		 * this ASyncTask.  It's how this static class
+		 * communicates with that Activity.
+		 *
+		 * input:
+		 * 		activity		The Activity that wants this ASyncTask to
+		 * 					run.
+		 *
+		 * 		ex_name		The name of the exercise we're inspecting.
+		 */
+		public InspectorASyncTask (InspectorActivity2 activity, String ex_name) {
+//			Log.v(tag, "entering constructor, count = " + m_instance_counter +
+//				", id = " + this.toString());
+			m_layout_list = new ArrayList<SetLayout>();
+			m_ex_name = ex_name;
+			attach (activity);
+		} // constructor
+
+
+		//---------------------
+		//	Initializations here.
+		//
 		@Override
 		protected void onPreExecute() {
-			start_progress_dialog(R.string.loading_str);
-			m_layout_initialized = false;
-		} // onPreExecute
+			if (m_activity == null) {
+				Log.e (tag, "m_activity is NULL!!! We're about to make a lot of errors!");
+			}
 
+//			m_loading = true;
+			m_done = false;
+
+			m_activity.m_layout_initialized = false;
+
+			// Moved to Activity
+//			start_progress_dialog(R.string.loading_str);
+
+			// Load in our preferences.
+//			SharedPreferences prefs =
+//				PreferenceManager.getDefaultSharedPreferences(m_activity);
+//			m_prefs_oldest_order =
+//				prefs.getBoolean(m_activity.getString(R.string.prefs_inspector_oldest_first_key),
+//								false);
+
+
+		} // onPreExecute
 		//-------------------
+
 		@Override
 		protected Void doInBackground(Void... not_used) {
+			// todo: is this necessary? We just set it in
+			//	onPreExecute()!
+			//
+			// Mark that loading has begun.
+//			m_loading = true;
+
 			SQLiteDatabase db = null;
 			try {
+				if (WGlobals.g_db_helper == null) {
+					Log.e(tag, "doInBackground(): g_db_helper is NULL!");
+					throw new SQLiteException("doInBackground is starting up, yet WGlobals.g_db_helper is null!");
+				}
 				db = WGlobals.g_db_helper.getReadableDatabase();
 
 				// Read in all the info we need about this
 				// exercise.
 				m_ex_data = DatabaseHelper.getExerciseData(db, m_ex_name);
+
+				SharedPreferences prefs =
+				PreferenceManager.getDefaultSharedPreferences(m_activity);
+				boolean prefs_oldest_order =
+				prefs.getBoolean(m_activity.getString(R.string.prefs_inspector_oldest_first_key),
+								false);
 
 				// Get a cursor for the sets.  Then loop through
 				// them one by one, creating a layout for each.
@@ -999,8 +1231,9 @@ public class InspectorActivity2
 				// for that layout.
 				Cursor set_cursor = null;
 				try {
-					set_cursor = DatabaseHelper.getAllSets(db, m_ex_name,
-									m_prefs_oldest_order);
+					set_cursor = DatabaseHelper
+									.getAllSets(db, m_ex_name,
+												prefs_oldest_order);
 					m_num_sets = set_cursor.getCount();
 
 					int counter = 0;
@@ -1009,13 +1242,18 @@ public class InspectorActivity2
 						SetLayout layout_values = new SetLayout();
 						layout_values.data = DatabaseHelper.getSetData(set_cursor);
 						layout_values.order = counter;
-						publishProgress(layout_values);
+
+						m_layout_list.add(layout_values);
+//						publishProgress(layout_values);
+						publishProgress();
 						counter++;
 					}
 
+
 					// For the case where there are ZERO sets,
 					if (m_num_sets == 0) {
-						publishProgress((SetLayout)null);
+//						publishProgress((SetLayout)null);
+						publishProgress();
 					}
 
 				} // end of set_cursor
@@ -1040,6 +1278,7 @@ public class InspectorActivity2
 					db = null;
 				}
 				m_db_dirty = false;
+//				m_loading = false;		// Done loading!
 			}
 
 			return null;
@@ -1061,38 +1300,106 @@ public class InspectorActivity2
 		//						to make a new exercise set layout!
 		//
 		@Override
-		protected void onProgressUpdate(SetLayout... set_array) {
-			super.onProgressUpdate(set_array);
-			if (set_array[0] == null) {
-				init_layout(0);
+//		protected void onProgressUpdate(SetLayout... set_array) {
+		protected void onProgressUpdate(Void... not_used) {
+			if (m_activity == null) {
+				Log.e(tag, "onProgressUpdate() can't find the Activity!!! Can't do anything, so I'm simply returning.");
+				return;
 			}
-			else {
-				make_set_layout (set_array[0]);
-			}
+
+			m_activity.catchup();
+
+//			super.onProgressUpdate(set_array);	// todo: is this nec.?
+//			super.onProgressUpdate();	// todo: is this nec.?
+
+//			if (set_array[0] == null) {
+//				m_activity.init_layout(0);
+//			}
+//			else {
+//				m_activity.make_set_layout (set_array[0]);
+//			}
 		} // onProgressUpdate (arg0)
 
 
 		//-------------------
+		//	Note that this is called ONCE and once only!  This class will
+		//	self-destruct once it's done (the ASyncTask doesn't hang
+		//	around).
+		//
 		@Override
 		protected void onPostExecute(Void not_used) {
-			trim_date_labels();
-			scroll_to_child (m_set_id);
-			stop_progress_dialog();
-			m_db_dirty = false;
+			Log.d(tag, "onPostExecute(), id = " + this);
+			if (m_activity == null) {
+				Log.e(tag, "onPostExecute() can't find the Activity!!! This is really bad news.");
+			}
+
+			m_activity.catchup();
+
+			m_activity.finish_ui();
+
+			// Finish our UI
+//			m_activity.trim_date_labels();
+//			m_activity.scroll_to_child (m_activity.m_set_id);
+//			m_activity.stop_progress_dialog();
+//			m_db_dirty = false;
+
+			m_done =true;	// finally!
+		} // onPostExecute()
+
+
+		/***************
+		 * Connects this task to an Activity, allowing
+		 * this static class to communicate with that
+		 * Activity (so it can get the data we're reading
+		 * from the database!).
+		 *
+		 * @param activity	The Activity that wants to
+		 * 					use the data.
+		 */
+		public void attach (InspectorActivity2 activity) {
+			m_activity = activity;
 		}
 
-	} // class InspectorSyncTask
+		/***************
+		 * Removes our connection to whatever Activity
+		 * we're attached to (or does nothing if we're
+		 * not attached to anything).
+		 *
+		 * This is an important call when the Activity
+		 * goes away (like during an orientation change)
+		 * so that we're not using invalid pointers!
+		 */
+		public void detach() {
+//			Log.d(tag, "entering detach(), id = " + this.toString());
+			m_activity = null;
+		}
+
+		/****************
+		 * Please call this when the connecting Activity
+		 * goes away for good.  This will free up lots of
+		 * resources!
+		 */
+		public void kill() {
+//			Log.d(tag, "entering kill(), id = " + this.toString());
+
+			// todo	garbage collect
+
+			m_activity = null;
+		}
+
+		/*****************
+		 * Call this to see if the ASyncTask is complete.
+		 *
+		 * The done state is reset (to false) when onPreExecute()
+		 * is called, and terminated (true) during onPostExecute().
+		 */
+		public boolean isDone() {
+			return m_done;
+		}
 
 
-	/****************************************
-	 * Holds the data needed to fill in an entire set's layout.
-	 */
-	class SetLayout {
-		/** The order that this set should be displayed. Zero based. */
-		int order;
-		/** Holds all the data for the exercise set */
-		SetData data;
-	} // class SetLayout
+	} // class InspectorASyncTask
+
 
 
 }

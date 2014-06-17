@@ -1919,7 +1919,7 @@ public class AddSetActivity
 		private static final String tag = "ASetSyncTask";
 
 		/** TRUE while data is being loaded from the DB */
-		private boolean m_loading = false;
+//		private boolean m_loading = false;
 
 		/** Will be TRUE when the ASyncTask has finished. */
 		boolean m_done = false;
@@ -1970,7 +1970,7 @@ public class AddSetActivity
 				Log.e (tag, "m_activity is NULL!!! We're about to make a lot of errors!");
 			}
 
-			m_loading = true;
+//			m_loading = true;
 			m_done = false;
 		} // onPreExecute()
 
@@ -1986,7 +1986,7 @@ public class AddSetActivity
 //			Log.d (tag, "doInBackground() starting...");
 
 			// Mark that loading has begun.
-			m_loading = true;
+//			m_loading = true;
 
 			// Get the info from the Intent that GridActivity sent.
 			Intent itt = m_activity.getIntent();
@@ -2034,7 +2034,7 @@ public class AddSetActivity
 					db.close();
 					db = null;
 				}
-				m_loading = false;	// Finished loading!
+//				m_loading = false;	// Finished loading!
 			}
 
 			return null;
@@ -2052,13 +2052,14 @@ public class AddSetActivity
 				Log.e(tag, "onPostExecute() can't find the Activity!!! This is really bad news.");
 			}
 
-			try {
-				while (m_loading == true) {
-					Thread.sleep(100);	// Wait 1/10 of a second.
-				}
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+//			try {
+//				while (m_loading == true) {
+//					Log.e (tag, "m_loading is TRUE in onPostExecute()!  This should never happen!");
+//					Thread.sleep(100);	// Wait 1/10 of a second.
+//				}
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
 
 			if (WGlobals.g_wheel) {
 				m_activity.setContentView(R.layout.aset_wheel);

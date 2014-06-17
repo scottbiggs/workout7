@@ -1,5 +1,13 @@
 TODO:
 -----------------
+The Inspector doesn't update when a set is modified!
+
+UI issue: When looking at the Inspector in landscape mode, notice how
+	the successive sets on the same day are higher than the first one
+	(because they don't have the DATE to take up the space).  Change
+	this as it looks crappy.  I think simply having a date, but making
+	it INVISIBLE should work perfectly.
+
 BUG: Graphs: changing the options from "every set" to "daily" didn't
 	cause the graph to re-compute and display the new graph.
 
