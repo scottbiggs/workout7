@@ -73,6 +73,7 @@
 	<string-array name="dist_unit_array">
 		<item>miles</item>
 		<item>kilometers</item>
+		<item>smoots</item>
 		<item>yards</item>
 		<item>meters</item>
 		<item>feet</item>
