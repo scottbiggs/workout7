@@ -47,12 +47,12 @@
 		<!-- Dummy in the center of the screen -->
 
 		<TextView
-		    android:id="@+id/enter_stress_center_null"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_centerInParent="true"
-		    android:text="@string/null_string"
-		    android:visibility="invisible" />
+			android:id="@+id/enter_stress_center_null"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerInParent="true"
+			android:text="@string/null_string"
+			android:visibility="invisible" />
 
 		<!-- ============= -->
 		<!-- Buttons -->
@@ -106,7 +106,6 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_alignParentLeft="true"
-			android:layout_below="@id/enter_stress_title_tv"
 			android:layout_marginLeft="25dp"
 			android:layout_marginRight="12dp"
 			android:layout_marginTop="5dp"
@@ -225,17 +224,17 @@
 			android:layout_centerInParent="true" >
 
 			<TableRow
-			    android:id="@+id/enter_stress_table_row_too_easy"
-			    android:layout_width="fill_parent"
-			    android:layout_height="wrap_content"
-			    android:layout_marginBottom="4dp"
-			    android:layout_marginLeft="5dp"
-			    android:layout_marginRight="5dp"
-			    android:layout_marginTop="8dp"
-			    android:background="@drawable/rounded_edges_dark"
-			    android:clickable="true"
-			    android:gravity="center_horizontal"
-			    android:padding="3dp" >
+				android:id="@+id/enter_stress_table_row_too_easy"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="4dp"
+				android:layout_marginLeft="5dp"
+				android:layout_marginRight="5dp"
+				android:layout_marginTop="8dp"
+				android:background="@drawable/rounded_edges_dark"
+				android:clickable="true"
+				android:gravity="center_horizontal"
+				android:padding="3dp" >
 
 				<TextView
 					android:id="@+id/enter_stress_too_easy_tv"

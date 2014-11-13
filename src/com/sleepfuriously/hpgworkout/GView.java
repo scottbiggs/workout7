@@ -444,7 +444,7 @@ public class GView extends View {
 	 * 			-Returns null on an error.
 	 */
 	protected RectF find_GraphLine_area (int num_y_axii) {
-//		Log.d(tag, "find_GraphLine_area() called, num_y_axii = " + num_y_axii);
+		Log.d(tag, "find_GraphLine_area() called, num_y_axii = " + num_y_axii);
 		RectF draw_area = new RectF (m_canvas_padded_rect);
 		draw_area.left += num_y_axii * (DEFAULT_Y_AXIS_WIDTH + Y_AXIS_GAP);
 		if (draw_area.left >= draw_area.right) {

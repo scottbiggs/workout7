@@ -66,7 +66,7 @@ public class AddSetActivity
 	//	Constants
 	//------------------------
 
-	private static final String tag = "ASetActivity";
+	private static final String tag = "AddSetActivity";
 
 
 	/** ID for the menu item to change the wheel width */
@@ -195,6 +195,11 @@ public class AddSetActivity
 	 */
 	@Override
 	public Object onRetainNonConfigurationInstance() {
+		if (m_task == null) {
+//			Log.e(tag, "onRetainNonConfigurationInstance(), m_task is NULL! Aborting!");
+			return null;	// nothing to return!
+		}
+
 		m_task.detach();		// Tells task to remove its reference
 							// to this Activity as I'm about to
 							// die.

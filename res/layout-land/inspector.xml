@@ -42,7 +42,7 @@
 		android:text="error" />
 
 	<HorizontalScrollView
-		android:id="@+id/inspector_sv"
+		android:id="@+id/inspector_hsv"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"

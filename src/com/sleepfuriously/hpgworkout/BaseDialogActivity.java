@@ -461,13 +461,13 @@ public class BaseDialogActivity extends Activity {
 	 * it otherwise.
 	 */
 	public void stop_progress_dialog() {
-//		Log.d(tag, "stop_progress_dialog(), id = " + this.toString());
+		Log.d(tag, "stop_progress_dialog(), id = " + this.toString());
 		if (m_prog_dialog != null) {
 			m_prog_dialog.dismiss();
 			m_prog_dialog = null;
 		}
 		else {
-			Log.e(tag, "Tried to stop a dialog that was already null!");
+			Log.e(tag, "Tried to stop a progress dialog that was already null!  Here's the stack tracke");
 			Throwable e = new Throwable();
 			e.printStackTrace();
 		}
@@ -630,7 +630,7 @@ public class BaseDialogActivity extends Activity {
 
 	/*********************
 	 * Finds the current orientation of the device.  Works on
-	 * ALL devices, regardless of anhything. That's because
+	 * ALL devices, regardless of anything. That's because
 	 * it figures out the orientation itself, using the display's
 	 * width and height.
 	 *

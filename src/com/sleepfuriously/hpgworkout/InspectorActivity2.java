@@ -26,9 +26,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.view.View.OnLongClickListener;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -152,14 +150,6 @@ public class InspectorActivity2
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.inspector);
 
-		// Are we in landscape mode?
-//		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-//			m_landscape = true;
-//		}
-//		else {
-//			m_landscape = false;
-//		}
-
 		set_order_msg();
 
 		// Get our Intent and fill in the info that was passed
@@ -190,10 +180,14 @@ public class InspectorActivity2
 	@Override
 	protected void onResume() {
 		super.onResume();
-//		Log.i(tag, "onResume()");
+		Log.i(tag, "onResume() start");
 
 		if (m_db_dirty) {
+			Log.d(tag, "onResume(): calling init_from_db() from onResume()");
 			init_from_db();
+		}
+		else {
+			Log.d(tag, "onResume(): m_db_dirty is false, so I'm not calling init_from_db().");
 		}
 
 	} // onResume()
@@ -295,6 +289,7 @@ public class InspectorActivity2
 				// Show the default at the top.
 				m_set_id = -1;
 				set_order_msg();
+				Log.d(tag, "calling init_from_db() from onOptionsItemSelected()");
 				init_from_db();
 				break;
 
@@ -348,6 +343,7 @@ public class InspectorActivity2
 			else {
 				m_set_id = data.getIntExtra(EditSetActivity.ID_KEY, -1);
 			}
+			Log.d(tag, "calling init_from_db() from onActivityResult()");
 			init_from_db();
 			ExerciseTabHostActivity.m_dirty = true;
 			GraphActivity.m_db_dirty = true;
@@ -383,10 +379,22 @@ public class InspectorActivity2
 
 		// Set the scroll to the right value.
 		if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-			m_hsv = (HorizontalScrollView) findViewById(R.id.inspector_sv);
+			m_hsv = (HorizontalScrollView) findViewById(R.id.inspector_hsv);
 		}
 		else {
+			// Crashes on this next line!  Probably there's a problem
+			// either finding R.id.inspector_sv or in converting its
+			// type to ScrollView.
 			m_sv = (ScrollView) findViewById(R.id.inspector_sv);
+
+			/**
+			 * todo
+			 * 	This is just a debug trap.  PLEASE remove!
+			 */
+			if (m_sv == null) {
+				Log.e(tag, "m_sv is NULL!!!!");
+				return;
+			}
 		}
 
 		// For the times we need to scroll to a given child of the
@@ -466,6 +474,8 @@ public class InspectorActivity2
 	 * 	and the ASyncTask is finished or in-progress (isDone() = false).
 	 */
 	void init_from_db() {
+		Log.d(tag, "init_from_db()");
+
 		// Set the order description.
 		m_desc_tv = (TextView) findViewById(R.id.inspector_description_tv);
 
@@ -481,12 +491,15 @@ public class InspectorActivity2
 		// Start the ASyncTask!!!
 		if (m_task == null) {
 			// No ASync running, so start it up.
+
 			start_progress_dialog(R.string.loading_str);
 			m_task = new InspectorASyncTask(this, m_ex_name);
 			Log.d(tag, "init_from_db(): STARTING NEW ASYNCTASK!");
 			m_task.execute();
 		}
 		else {
+//			Log.d(tag, "init_from_db(): taking the else clause...");
+
 			// Tell the ASyncTask who the Activity is (us!).
 			m_task.attach(this);
 
@@ -509,6 +522,7 @@ public class InspectorActivity2
 //				m_task.onPostExecute(null);
 			}
 		}
+
 	} // init_from_db()
 
 
@@ -1343,7 +1357,7 @@ public class InspectorActivity2
 //			m_activity.stop_progress_dialog();
 //			m_db_dirty = false;
 
-			m_done =true;	// finally!
+			m_done = true;	// finally!
 		} // onPostExecute()
 
 

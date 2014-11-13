@@ -227,10 +227,13 @@ public class GridActivity2 extends BaseDialogActivity
 			// There is no GridASyncTask running, so go ahead
 			// and start it up.
 			start_progress_dialog(R.string.loading_str);
+			Log.d(tag, "start_async_task(): starting a new m_task with a progress dialog.");
 			m_task = new GridASyncTask(this);
 			m_task.execute();
 		}
 		else {
+			Log.d(tag, "start_async_task(): already an m_task, attaching (no need to start a progress dialog).");
+
 			// There is already a GridASyncTask running,
 			// establish a connection to it.
 			m_task.attach(this);
@@ -1040,7 +1043,7 @@ public class GridActivity2 extends BaseDialogActivity
 		 * communicates with that Activity.
 		 */
 		public GridASyncTask (GridActivity2 activity) {
-//			Log.v(tag, "entering constructor, id = " + this.toString());
+			Log.v(tag, "entering constructor, id = " + this.toString());
 
 			attach (activity);
 		} // constructor
@@ -1254,7 +1257,7 @@ public class GridActivity2 extends BaseDialogActivity
 		 */
 		@Override
 		protected void onPostExecute(Void result) {
-//			Log.v(tag, "entering onPostExecute(), id = " + this.toString());
+			Log.v(tag, "entering onPostExecute(), id = " + this.toString());
 
 			if (m_the_grid != null) {
 				m_the_grid.loading_done();	// Tell the activity to dismiss
@@ -1262,6 +1265,7 @@ public class GridActivity2 extends BaseDialogActivity
 			}
 			// Note that we're done.
 			m_done = true;
+			Log.v(tag, "finishing onPostExecute().");
 		}
 
 
