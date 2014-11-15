@@ -593,7 +593,7 @@ public class GridActivity2 extends BaseDialogActivity
 		// first row.
 		TableRow left_row = new TableRow(this);
 		TextView left_cell = new TextView(this);
-		left_cell.setPadding(4, 8, 4, 8);
+		left_cell.setPadding(GRID_CELL_PADDING_LEFT,  GRID_CELL_PADDING_TOP,  GRID_CELL_PADDING_RIGHT,  GRID_CELL_PADDING_BOTTOM);
 		left_cell.setTextAppearance(this, R.style.listlike_button);
 		left_cell.setTextColor(HEADER_TEXT_COLOR);
 		left_cell.setBackgroundColor(NORMAL_BACKGROUND_COLOR);
@@ -619,7 +619,7 @@ public class GridActivity2 extends BaseDialogActivity
 			// Putting in the string.
 			TextView cell = new TextView(this);
 			cell.setText(dates[i]);
-			cell.setPadding(4, 8, 4, 8);
+			cell.setPadding(GRID_CELL_PADDING_LEFT,  GRID_CELL_PADDING_TOP,  GRID_CELL_PADDING_RIGHT,  GRID_CELL_PADDING_BOTTOM);
 			cell.setId(make_id (0, i));	// first row, ith element
 			cell.setTextAppearance(this, R.style.listlike_button);
 			cell.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -760,7 +760,7 @@ public class GridActivity2 extends BaseDialogActivity
 		TextView tv = new TextView(this);
 		tv.setText(str);
 		tv.setGravity(Gravity.RIGHT);
-		tv.setPadding(4, 8, 4, 8);
+		tv.setPadding(GRID_CELL_PADDING_LEFT,  GRID_CELL_PADDING_TOP,  GRID_CELL_PADDING_RIGHT,  GRID_CELL_PADDING_BOTTOM);
 		tv.setTextAppearance(this, R.style.listlike_button);
 		tv.setTextColor(HEADER_TEXT_COLOR);
 		tv.setBackgroundColor(NORMAL_BACKGROUND_COLOR);
