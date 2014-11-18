@@ -1029,7 +1029,7 @@ public class GridActivity2 extends BaseDialogActivity
 		 * called multiple times before it exits, so I'm using
 		 * this to avoid that problem.
 		 */
-		int m_progress_lock = 0;
+//		int m_progress_lock = 0;
 
 		/** Will be TRUE when the ASyncTask has finished. */
 		boolean m_done = false;
@@ -1210,13 +1210,14 @@ public class GridActivity2 extends BaseDialogActivity
 
 			// Check for a lock condition--probably not
 			// necessary
-			while (m_progress_lock > 0) {
-				Log.e(tag, "onProgressUpdate() trying to run before it's finished! m_progress_lock = " + m_progress_lock);
-				SystemClock.sleep(25); // Wait 1/40 of a second
-			}
+//			while (m_progress_lock > 0) {
+//				Log.e(tag, "onProgressUpdate() trying to run before it's finished! m_progress_lock = " + m_progress_lock);
+//				SystemClock.sleep(25); // Wait 1/40 of a second
+//			}
 
 			// Lock this method!
-			m_progress_lock++;
+//			m_progress_lock++;
+
 //			Log.d (tag, "onProgressUpdate() row_num = " + row_num[0]);
 
 			while (m_the_grid == null) {
@@ -1247,7 +1248,7 @@ public class GridActivity2 extends BaseDialogActivity
 			}
 
 			// Unlock this method
-			m_progress_lock--;
+//			m_progress_lock--;
 		} // onProgressUpdate (...exercise_data)
 
 

@@ -29,6 +29,22 @@
 	<!-- Permissions -->
 <!--	<uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" /> -->
 
+	<!-- Screen Sizes -->
+	<!-- I don't include largeScreens="false" because I want users
+		to have the ability to turn on/off compatibility mode.
+		Todo:
+		Once I have large screen layouts done, I should disable
+		compatibility mode.
+			http://developer.android.com/guide/practices/screen-compat-mode.html#Disable
+		-->
+	<supports-screens
+		android:resizeable="true"
+		android:anyDensity="true"
+
+		android:smallScreens="false"
+		android:normalScreens="true"
+		/>
+
 	<application
 		android:name=".WGlobals"
 		android:icon="@drawable/hpglogo_med"
