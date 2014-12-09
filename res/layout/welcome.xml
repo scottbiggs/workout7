@@ -42,21 +42,21 @@
 			android:typeface="sans" />
 
 		<TextView
-		    android:id="@+id/welcome_user_name_tv"
-		    style="@style/white_alt_medium"
-		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"
-		    android:layout_marginLeft="30dp"
-		    android:layout_marginTop="6dp"
-		    android:background="@drawable/rounded_edges_black_small"
-		    android:gravity="center"
-		    android:padding="3dp"
-		    android:shadowColor="@color/hpg_orange"
-		    android:shadowDx="3"
-		    android:shadowDy="3"
-		    android:shadowRadius="5"
-		    android:text="Hello, default user!"
-		    android:textStyle="normal|italic" />
+			android:id="@+id/welcome_user_name_tv"
+			style="@style/white_alt_medium"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="30dp"
+			android:layout_marginTop="6dp"
+			android:background="@drawable/rounded_edges_medium"
+			android:gravity="center"
+			android:padding="3dp"
+			android:shadowColor="@color/hpg_orange"
+			android:shadowDx="3"
+			android:shadowDy="3"
+			android:shadowRadius="5"
+			android:text="Hello, default user!"
+			android:textStyle="normal|italic" />
 
 	</LinearLayout>
 
@@ -115,18 +115,18 @@
 		android:textSize="@dimen/font_size_button_default" />
 
 	<Button
-	    android:id="@+id/welcome_settings_butt"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_below="@id/welcome_graph_butt"
-	    android:layout_marginBottom="3dp"
-	    android:layout_marginLeft="10dp"
-	    android:layout_marginRight="10dp"
-	    android:layout_marginTop="3dp"
-	    android:background="@drawable/button_shiny_black"
-	    android:text="@string/welcome_settings_button"
-	    android:textColor="@color/ivory"
-	    android:textSize="@dimen/font_size_button_default" />
+		android:id="@+id/welcome_settings_butt"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/welcome_graph_butt"
+		android:layout_marginBottom="3dp"
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp"
+		android:layout_marginTop="3dp"
+		android:background="@drawable/button_shiny_black"
+		android:text="@string/welcome_settings_button"
+		android:textColor="@color/ivory"
+		android:textSize="@dimen/font_size_button_default" />
 
 	<Button
 		android:id="@+id/welcome_exit_butt"
