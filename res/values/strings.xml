@@ -185,7 +185,7 @@
 		Gym\u2014just look for place with the big arm
 		sticking out! Programmed by Scott M. Biggs.</string>
 	<string name="welcome_menu_exit_button">exit</string>
-	<string name="welcome_version_number">v. 0.73 Alpha Test</string>
+	<string name="welcome_version_number">v. 0.9</string>
 
 	<string name="welcome_manage_db_button">manage users</string>
 	<string name="welcome_manage_db_help_title">Manage Users</string>
