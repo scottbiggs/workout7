@@ -41,6 +41,7 @@
 			style="@style/white_text_large"
 			android:typeface="sans" />
 
+		<!-- Old, hard to decipher button
 		<TextView
 			android:id="@+id/welcome_user_name_tv"
 			style="@style/white_alt_medium"
@@ -51,6 +52,27 @@
 			android:background="@drawable/rounded_edges_medium"
 			android:gravity="center"
 			android:padding="3dp"
+			android:shadowColor="@color/hpg_orange"
+			android:shadowDx="3"
+			android:shadowDy="3"
+			android:shadowRadius="5"
+			android:text="Hello, default user!"
+			android:textStyle="normal|italic" />
+		-->
+
+		<TextView
+			android:id="@+id/welcome_user_name_tv"
+			style="@style/white_alt_medium"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="30dp"
+			android:layout_marginTop="6dp"
+			android:background="@drawable/button_shiny_black"
+			android:gravity="center"
+			android:paddingBottom="3dp"
+			android:paddingLeft="9dp"
+			android:paddingRight="9dp"
+			android:paddingTop="3dp"
 			android:shadowColor="@color/hpg_orange"
 			android:shadowDx="3"
 			android:shadowDy="3"

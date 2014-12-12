@@ -1,5 +1,7 @@
 TODO:
 -----------------
+Make a tutorial for youtube!
+
 The Inspector doesn't update when a set is modified!
 
 UI issue: When looking at the Inspector in landscape mode, notice how

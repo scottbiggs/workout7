@@ -62,16 +62,16 @@
 		android:orientation="vertical" >
 
 		<Button
-		    android:id="@+id/welcome_start_butt"
-		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"
-		    android:layout_marginBottom="3dp"
-		    android:layout_marginLeft="10dp"
-		    android:layout_marginTop="8dp"
-		    android:background="@drawable/button_shiny_black"
-		    android:text="@string/welcome_start_button"
-		    android:textColor="@color/ivory"
-		    android:textSize="@dimen/font_size_default" />
+			android:id="@+id/welcome_start_butt"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="3dp"
+			android:layout_marginLeft="10dp"
+			android:layout_marginTop="8dp"
+			android:background="@drawable/button_shiny_black"
+			android:text="@string/welcome_start_button"
+			android:textColor="@color/ivory"
+			android:textSize="@dimen/font_size_default" />
 
 		<Button
 			android:id="@+id/welcome_graph_butt"
@@ -100,26 +100,48 @@
 
 	</LinearLayout>
 
+	<!-- Old version, kind of not obvious that it's a button
 	<TextView
-	    android:id="@+id/welcome_user_name_tv"
-	    style="@style/white_alt_medium"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_above="@id/welcome_button_ll"
-	    android:layout_marginRight="18dp"
-	    android:layout_toRightOf="@id/welcome_title_ll"
-	    android:background="@drawable/rounded_edges_black_small"
-	    android:gravity="center"
-	    android:paddingBottom="3dp"
-	    android:paddingLeft="9dp"
-	    android:paddingRight="9dp"
-	    android:paddingTop="3dp"
-	    android:shadowColor="@color/hpg_orange"
-	    android:shadowDx="3"
-	    android:shadowDy="3"
-	    android:shadowRadius="5"
-	    android:text="Hello, default user!"
-	    android:textStyle="normal|italic" />
+		android:id="@+id/welcome_user_name_tv"
+		style="@style/white_alt_medium"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_above="@id/welcome_button_ll"
+		android:layout_marginRight="18dp"
+		android:layout_toRightOf="@id/welcome_title_ll"
+		android:background="@drawable/rounded_edges_black_small"
+		android:gravity="center"
+		android:paddingBottom="3dp"
+		android:paddingLeft="9dp"
+		android:paddingRight="9dp"
+		android:paddingTop="3dp"
+		android:shadowColor="@color/hpg_orange"
+		android:shadowDx="3"
+		android:shadowDy="3"
+		android:shadowRadius="5"
+		android:text="Hello, default user!"
+		android:textStyle="normal|italic" />
+	-->
+	<TextView
+		android:id="@+id/welcome_user_name_tv"
+		style="@style/white_alt_medium"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_above="@id/welcome_button_ll"
+		android:layout_marginRight="18dp"
+		android:layout_toRightOf="@id/welcome_title_ll"
+		android:background="@drawable/button_shiny_black"
+		android:gravity="center"
+		android:paddingBottom="3dp"
+		android:paddingLeft="15dp"
+		android:paddingRight="15dp"
+		android:paddingTop="3dp"
+		android:shadowColor="@color/hpg_orange"
+		android:shadowDx="3"
+		android:shadowDy="3"
+		android:shadowRadius="5"
+		android:text="Hello, default user!"
+		android:textStyle="normal|italic" />
 
 	<Button
 		android:id="@+id/welcome_help_butt"
