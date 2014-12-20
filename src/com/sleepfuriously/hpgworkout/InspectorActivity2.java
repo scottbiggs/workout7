@@ -51,6 +51,10 @@ public class InspectorActivity2
 	//	Widgets
 	//------------------
 
+	/**
+	 * The LinearLayout that holds all the Views (each View represents
+	 * a workout set).
+	 */
 	LinearLayout m_main_ll;
 
 	/** The ScrollView which holds all the workout sets. */
@@ -324,31 +328,102 @@ public class InspectorActivity2
 	//	returns, this method gets the result.
 	//
 	//	EditSetActivity:
-	//		- If OK, then reload the exercise set.
 	//		- CANCEL, do nothing.
+	//		- If OK, then
+	//			- if no Intent, redraw everything as a set was deleted.
+	//				NOTE: might be able to simply remove this View???
+	//			- else reload the exercise set.
 	//
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode,
-									Intent data) {
+									Intent itt) {
 		if (resultCode == RESULT_CANCELED) {
 			return;	// don't do anything
 		}
 
 		// This happens when a set has been edited/deleted.
 		if (requestCode == WGlobals.EDITSETACTIVITY) {
-			if (data == null) {
-				Log.v(tag, "Intent data is NULL in onActivityResult()!");
+			if (itt == null) {
+				Log.e(tag, "Intent data is NULL in onActivityResult()! Aborting!");
 				m_set_id = -1;
+				return;
 			}
-			else {
-				m_set_id = data.getIntExtra(EditSetActivity.ID_KEY, -1);
+
+			// Get the id of the exercise set that was modified or
+			// deleted by the user.  We'll need to change the UI to
+			// indicate the change.
+			m_set_id = itt.getIntExtra(EditSetActivity.ID_KEY, -1);
+			switch (resultCode) {
+				case EditSetActivity.RESULT_DELETED: {	// Brackets are for scoping
+					// The workout set was deleted.  Remove the
+					// View from our Activity.
+					LinearLayout view = (LinearLayout) m_main_ll.findViewById(m_set_id);
+					if (view == null) {
+						Log.e(tag, "Can't find the deleted viewin onActivityResult! Aborting!");
+						return;
+					}
+					m_main_ll.removeView(view);
+					break;
+				}
+
+				case RESULT_OK: {
+					SetData set_data = null;
+					SQLiteDatabase db = null;
+
+					// The workout set was modified.  Read in the
+					// new data and modify the View appropriately.
+
+					// Get our View to modify
+					LinearLayout view = (LinearLayout) m_main_ll.findViewById(m_set_id);
+					if (view == null) {
+						Log.e(tag, "Can't find the deleted viewin onActivityResult! Aborting!");
+						return;
+					}
+
+					// Read in the new data.
+					try {
+						db = WGlobals.g_db_helper.getReadableDatabase();
+						set_data = DatabaseHelper.getSetData (db, m_ex_name, m_set_id);
+					}
+					finally {
+						if (db != null) {
+							db.close();
+							db = null;
+						}
+					}
+
+					// Fill in the View.
+					// TODO
+					//	This will not cause the layout to be reloaded if
+					//	the date has changed!
+					fill_set_layout(set_data, view);
+					break;
+				}
+
+				default:
+					Log.e(tag, "Illegal value for resultCode in onActivityResult! Aborting!");
+					return;
 			}
+
+			// Indicate to the other Activities that something has changed.
+			// todo: this could be redundant!
+			ExerciseTabHostActivity.m_dirty = true;
+			GraphActivity.m_db_dirty = true;
+			AddSetActivity.m_reset_widgets = true;
+			m_database_changed = true;	// Used to tell the Grid that the DB changed.
+
+
+/*
 			Log.d(tag, "calling init_from_db() from onActivityResult()");
 			init_from_db();
 			ExerciseTabHostActivity.m_dirty = true;
 			GraphActivity.m_db_dirty = true;
 			AddSetActivity.m_reset_widgets = true;
 			m_database_changed = true;	// Used to tell the Grid that the DB changed.
+*/
+		}
+		else {
+			Log.e(tag, "Unknown requestCode in onActivityResult!!!");
 		}
 
 	} // onActivityResult (requestCode, resultCode, data)
@@ -386,15 +461,6 @@ public class InspectorActivity2
 			// either finding R.id.inspector_sv or in converting its
 			// type to ScrollView.
 			m_sv = (ScrollView) findViewById(R.id.inspector_sv);
-
-			/**
-			 * todo
-			 * 	This is just a debug trap.  PLEASE remove!
-			 */
-			if (m_sv == null) {
-				Log.e(tag, "m_sv is NULL!!!!");
-				return;
-			}
 		}
 
 		// For the times we need to scroll to a given child of the
@@ -491,7 +557,6 @@ public class InspectorActivity2
 		// Start the ASyncTask!!!
 		if (m_task == null) {
 			// No ASync running, so start it up.
-
 			start_progress_dialog(R.string.loading_str);
 			m_task = new InspectorASyncTask(this, m_ex_name);
 			Log.d(tag, "init_from_db(): STARTING NEW ASYNCTASK!");
@@ -573,14 +638,11 @@ public class InspectorActivity2
 	 * @param layout_values		The data for this set that was
 	 * 							loaded from the DB.
 	 */
-	void make_set_layout (SetLayout layout_values) {
+	void create_set_layout (SetLayout layout_values) {
 		Log.d(tag, "entering make_set_layout()");
 		if (!m_layout_initialized) {
 			init_layout(layout_values.data.millis);
 		}
-
-		/** used to determine whether or not to draw a divider bar */
-		boolean set_bar = false;
 
 		LayoutInflater inflater = getLayoutInflater();
 		LinearLayout set_ll = (LinearLayout) inflater
@@ -591,34 +653,7 @@ public class InspectorActivity2
 		MyCalendar cal = new MyCalendar(layout_values.data.millis);
 		date_tv.setText(cal.print_date(this));
 
-
-		// The date and time of this set.
-		setup_date (layout_values, set_ll);
-
-		if (setup_reps(layout_values, set_ll))
-			set_bar = true;
-
-		if (setup_weight (layout_values, set_ll, set_bar))
-			set_bar = true;
-
-		if (setup_level (layout_values, set_ll, set_bar))
-			set_bar = true;
-
-		if (setup_cals (layout_values, set_ll, set_bar))
-			set_bar = true;
-
-		if (setup_dist (layout_values, set_ll, set_bar))
-			set_bar = true;
-
-		if (setup_time (layout_values, set_ll, set_bar))
-			set_bar = true;
-
-		if (setup_other (layout_values, set_ll, set_bar))
-			set_bar = true;
-
-		setup_stress (layout_values, set_ll);
-
-		setup_notes (layout_values, set_ll);
+		fill_set_layout(layout_values.data, set_ll);
 
 		// Make this respond to long clicks.  Use the set ID.
 		LinearLayout clickable_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_ll);
@@ -643,7 +678,54 @@ public class InspectorActivity2
 
 		m_main_ll.addView(set_ll, i);
 
-	}  // make_set_layout (layout_values)
+	}  // create_set_layout (layout_values)
+
+
+	/**************************
+	 * After the layout has been inflated, use this to populate
+	 * it with data.
+	 *
+	 * @param	layout_values	A SetLayout that's already filled
+	 * 							in with values for this exercise set.
+	 *
+	 * @param	layout			The LinearLayout to display this
+	 * 							set (already inflated from
+	 * 							R.layout.inspector_set).  It'll be
+	 * 							modified as appropriate for this set.
+	 */
+	private void fill_set_layout(SetData data,
+								LinearLayout layout) {
+		/** used to determine whether or not to draw a divider bar */
+		boolean set_bar = false;
+
+		// The date and time of this set.
+		setup_date (data, layout);
+
+		if (setup_reps(data, layout))
+			set_bar = true;
+
+		if (setup_weight (data, layout, set_bar))
+			set_bar = true;
+
+		if (setup_level (data, layout, set_bar))
+			set_bar = true;
+
+		if (setup_cals (data, layout, set_bar))
+			set_bar = true;
+
+		if (setup_dist (data, layout, set_bar))
+			set_bar = true;
+
+		if (setup_time (data, layout, set_bar))
+			set_bar = true;
+
+		if (setup_other (data, layout, set_bar))
+			set_bar = true;
+
+		setup_stress (data, layout);
+
+		setup_notes (data, layout);
+	} // fill_set_layout (layout_values, layout)
 
 
 	/**************************
@@ -746,9 +828,9 @@ public class InspectorActivity2
 	 * 						particular exercise set.  It'll
 	 * 						have some Views added.
 	 */
-	private void setup_date (SetLayout vals, LinearLayout set_ll) {
+	private void setup_date (SetData vals, LinearLayout set_ll) {
 		String str = "";
-		MyCalendar set_date = new MyCalendar(vals.data.millis);
+		MyCalendar set_date = new MyCalendar(vals.millis);
 
 		// And display the time of this particular set.
 		TextView time_tv = (TextView) set_ll.findViewById(R.id.inspector_set_time_tv);
@@ -772,12 +854,12 @@ public class InspectorActivity2
 	 * 			this like:	if (setup_reps())
 	 * 							set_bar = true;
 	 */
-	private boolean setup_reps (SetLayout vals,
-							LinearLayout set_ll) {
+	private boolean setup_reps (SetData vals,
+								LinearLayout set_ll) {
 		LinearLayout reps_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_reps_ll);
 
 		if (m_task.m_ex_data.breps) {
-			String data_str = get_formatted_string(vals.data.reps);
+			String data_str = get_formatted_string(vals.reps);
 			TextView reps_data_tv = (TextView) set_ll.findViewById(R.id.inspector_set_reps_data);
 			reps_data_tv.setText(data_str);
 			if (m_task.m_ex_data.significant == DatabaseHelper.EXERCISE_COL_REP_NUM) {
@@ -796,7 +878,7 @@ public class InspectorActivity2
 
 	/*********************
 	 */
-	private boolean setup_weight (SetLayout vals,
+	private boolean setup_weight (SetData vals,
 								LinearLayout set_ll, boolean set_bar) {
 		LinearLayout weight_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_weight_ll);
 		View bar = set_ll.findViewById(R.id.inspector_set_weight_bar);
@@ -808,7 +890,7 @@ public class InspectorActivity2
 			weight_label_tv.setText(weight_label_str);
 
 			TextView weight_data_tv = (TextView) set_ll.findViewById(R.id.inspector_set_weight_data);
-			weight_data_tv.setText(get_formatted_string(vals.data.weight));
+			weight_data_tv.setText(get_formatted_string(vals.weight));
 			if (m_task.m_ex_data.significant == DatabaseHelper.EXERCISE_COL_WEIGHT_NUM) {
 				weight_label_tv.setTypeface(null, Typeface.BOLD);
 			}
@@ -830,13 +912,13 @@ public class InspectorActivity2
 
 	/*********************
 	 */
-	private boolean setup_level (SetLayout vals,
+	private boolean setup_level (SetData vals,
 								LinearLayout set_ll, boolean set_bar) {
 		LinearLayout level_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_level_ll);
 		View bar = set_ll.findViewById(R.id.inspector_set_level_bar);
 
 		if (m_task.m_ex_data.blevel) {
-			String data_str = get_formatted_string(vals.data.levels);
+			String data_str = get_formatted_string(vals.levels);
 			TextView level_data_tv = (TextView) set_ll.findViewById(R.id.inspector_set_level_data);
 			level_data_tv.setText(data_str);
 			if (m_task.m_ex_data.significant == DatabaseHelper.EXERCISE_COL_LEVEL_NUM) {
@@ -859,15 +941,14 @@ public class InspectorActivity2
 
 
 	/************************
-	 *
 	 */
-	private boolean setup_cals (SetLayout vals,
+	private boolean setup_cals (SetData vals,
 							LinearLayout set_ll, boolean set_bar) {
 		LinearLayout cals_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_calorie_ll);
 		View bar = set_ll.findViewById(R.id.inspector_set_calorie_bar);
 
 		if (m_task.m_ex_data.bcals) {
-			String data_str = get_formatted_string(vals.data.cals);
+			String data_str = get_formatted_string(vals.cals);
 			TextView cals_data_tv = (TextView) set_ll.findViewById(R.id.inspector_set_calorie_data);
 			cals_data_tv.setText(data_str);
 			if (m_task.m_ex_data.significant == DatabaseHelper.EXERCISE_COL_CALORIE_NUM) {
@@ -889,9 +970,8 @@ public class InspectorActivity2
 
 
 	/***********************
-	 *
 	 */
-	private boolean setup_dist (SetLayout vals,
+	private boolean setup_dist (SetData vals,
 								LinearLayout set_ll, boolean set_bar) {
 		LinearLayout dist_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_dist_ll);
 		View bar = set_ll.findViewById(R.id.inspector_set_dist_bar);
@@ -906,7 +986,7 @@ public class InspectorActivity2
 				dist_label_tv.setTypeface(null, Typeface.BOLD);
 			}
 
-			String data_str = get_formatted_string(vals.data.dist);
+			String data_str = get_formatted_string(vals.dist);
 			TextView dist_data_tv = (TextView) set_ll.findViewById(R.id.inspector_set_dist_data);
 			dist_data_tv.setText(data_str);
 
@@ -924,9 +1004,8 @@ public class InspectorActivity2
 	} // distance
 
 	/***********************
-	 *
 	 */
-	private boolean setup_time (SetLayout vals,
+	private boolean setup_time (SetData vals,
 							LinearLayout set_ll, boolean set_bar) {
 		LinearLayout time_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_time_ll);
 		View bar = set_ll.findViewById(R.id.inspector_set_time_bar);
@@ -941,7 +1020,7 @@ public class InspectorActivity2
 				time_label_tv.setTypeface(null, Typeface.BOLD);
 			}
 
-			String data_str = get_formatted_string(vals.data.time);
+			String data_str = get_formatted_string(vals.time);
 			TextView time_data_tv = (TextView) set_ll.findViewById(R.id.inspector_set_time_data);
 			time_data_tv.setText(data_str);
 
@@ -959,9 +1038,8 @@ public class InspectorActivity2
 	} // time
 
 	/***********************
-	 *
 	 */
-	private boolean setup_other (SetLayout vals,
+	private boolean setup_other (SetData vals,
 							LinearLayout set_ll, boolean set_bar) {
 		LinearLayout other_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_other_ll);
 		View bar = set_ll.findViewById(R.id.inspector_set_other_bar);
@@ -976,7 +1054,7 @@ public class InspectorActivity2
 				other_label_tv.setTypeface(null, Typeface.BOLD);
 			}
 
-			String data_str = get_formatted_string(vals.data.other);
+			String data_str = get_formatted_string(vals.other);
 
 			TextView other_data_tv = (TextView) set_ll.findViewById(R.id.inspector_set_other_data);
 			other_data_tv.setText(data_str);
@@ -995,13 +1073,12 @@ public class InspectorActivity2
 	} // other
 
 	/***********************
-	 *
 	 */
-	private void setup_stress (SetLayout vals,
+	private void setup_stress (SetData vals,
 							LinearLayout set_ll) {
 		ImageView stress_data_iv = (ImageView) set_ll.findViewById(R.id.inspector_set_stress_data);
 
-		switch (vals.data.cond) {
+		switch (vals.cond) {
 			case DatabaseHelper.SET_COND_OK:
 				stress_data_iv.setImageResource(R.drawable.stress_just_right);
 				break;
@@ -1022,15 +1099,14 @@ public class InspectorActivity2
 
 
 	/***********************
-	 *
 	 */
-	private void setup_notes (SetLayout vals,
+	private void setup_notes (SetData vals,
 							LinearLayout set_ll) {
 		TextView notes_tv = (TextView) set_ll.findViewById(R.id.inspector_set_notes_tv);
 
-		if ((vals.data.notes != null) && (vals.data.notes.length() > 0)) {
+		if ((vals.notes != null) && (vals.notes.length() > 0)) {
 			// There's a note!  Display it.
-			notes_tv.setText(vals.data.notes);
+			notes_tv.setText(vals.notes);
 		}
 		else {
 			View bar = set_ll.findViewById(R.id.inspector_set_notes_bar);
@@ -1081,7 +1157,7 @@ public class InspectorActivity2
 		int num_children = m_main_ll.getChildCount();
 //		Log.d(tag, "catchup(): num_children = " + num_children + ", layout_list.size() = " + m_task.m_layout_list.size());
 		while (num_children < m_task.m_layout_list.size()) {
-			make_set_layout(m_task.m_layout_list.get(num_children));
+			create_set_layout(m_task.m_layout_list.get(num_children));
 			num_children++;
 		}
 

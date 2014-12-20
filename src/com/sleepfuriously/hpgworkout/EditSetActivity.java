@@ -49,6 +49,12 @@ public class EditSetActivity
 	 */
 	public static final String ID_KEY = "id";
 
+	/**
+	 * As an alternative result code to RESULT_CANCELED or
+	 * RESULT_OK, this indicates that a workout set was deleted.
+	 */
+	public static final int RESULT_DELETED = RESULT_FIRST_USER + 1;
+
 
 	//-------------------------
 	//	Widgets
@@ -267,7 +273,13 @@ public class EditSetActivity
 	} // onCreate (.)
 
 
-	//-------------------------
+	/**************************
+	 * This is called when the user attempts to modify any
+	 * aspect of their workout set.  A new Activity is popped
+	 * up (which looks like a dialog), the user types in something,
+	 * hit ok or cancel, that Activity disappears, and this is called
+	 * so we can make changes.
+	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == RESULT_CANCELED) {
@@ -491,9 +503,10 @@ public class EditSetActivity
 									// YES, they want to delete it!
 									WGlobals.play_short_click();
 									delete_set();
-									setResult(RESULT_OK);
 									dismiss_all_dialogs();
-									finish();
+									Intent itt = new Intent (EditSetActivity.this, InspectorActivity2.class);
+									itt.putExtra(EditSetActivity.ID_KEY, m_set_id);
+									my_finish(RESULT_DELETED, itt);
 								}
 							});
 				break;
@@ -507,8 +520,7 @@ public class EditSetActivity
 			case R.id.editset_ok_butt:
 				WGlobals.play_short_click();
 				if (!m_dirty) {
-					setResult(RESULT_CANCELED);
-					finish();
+					my_finish(RESULT_CANCELED, null);
 				}
 				else {
 					save_and_exit();
@@ -525,16 +537,14 @@ public class EditSetActivity
 						public void onClick(View v) {
 							// Yes, they want to cancel.
 							WGlobals.play_short_click();
-							setResult(RESULT_CANCELED);
 							dismiss_all_dialogs();
-							finish();
+							my_finish(RESULT_CANCELED, null);
 							}
 					});
 
 				}
 				else {
-					setResult(RESULT_CANCELED);
-					finish();
+					my_finish(RESULT_CANCELED, null);
 				}
 				break;
 
@@ -653,6 +663,31 @@ public class EditSetActivity
 		m_calendar_time_data_tv.setText(m_set_date.print_time(false));
 		m_dirty = true;
 		m_done.setEnabled(true);
+	}
+
+
+
+	/***********************
+	 * Please call this method to finish this Activity.  Thus
+	 * the exit point of this Activity is centralized.
+	 *
+	 * @param finish_code	The code to return.  It's ususally
+	 * 						either RESULT_OK or RESULT_CANCELED,
+	 * 						depending on how we should exit.
+	 *
+	 * @param intent			The Intent to send when exiting.  If
+	 * 						you want to exit with RESULT_CANCELED,
+	 * 						supply null.
+	 */
+	public void my_finish (int finish_code, Intent intent) {
+		if (intent != null) {
+			setResult(finish_code, intent);
+		}
+		else {
+			setResult(finish_code);
+		}
+
+		super.finish();
 	}
 
 
@@ -826,14 +861,12 @@ public class EditSetActivity
 		Log.v(tag, "save_and_exit() updated " + num_rows + " rows");
 
 //		// Notify other Activities to reload
-//		InspectorActivity.m_db_dirty = true;
-//		HistoryActivity.m_db_dirty = true;
-//		GraphActivity.m_db_dirty = true;
+		InspectorActivity2.m_db_dirty = true;
+		GraphActivity.m_db_dirty = true;
 
 		Intent itt = new Intent (this, InspectorActivity2.class);
 		itt.putExtra(EditSetActivity.ID_KEY, m_set_id);
-		setResult(RESULT_OK, itt);
-		finish();
+		my_finish (RESULT_OK, itt);
 	} // save_and_exit()
 
 

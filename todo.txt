@@ -2,22 +2,21 @@ TODO:
 -----------------
 Make a tutorial for youtube!
 
-The Inspector doesn't update when a set is modified!
-
 UI issue: When looking at the Inspector in landscape mode, notice how
 	the successive sets on the same day are higher than the first one
 	(because they don't have the DATE to take up the space).  Change
 	this as it looks crappy.  I think simply having a date, but making
 	it INVISIBLE should work perfectly.
 
+BUG: The Inspector doesn't update when a set is modified!
+	Fixed.  But now the order of the sets isn't redone if the
+	date/time of the set is changed.
+
 BUG: Graphs: changing the options from "every set" to "daily" didn't
 	cause the graph to re-compute and display the new graph.
 
 BUG: Error messages pop up during graphing: "Don't have enough room to
 draw all the y-axii!" and others.
-
-BUG!!! When looking at any of the tabbed activities, we crash when going
-from landscape to portrait.
 
 Bug: Go to the tabs. Look at the graph. Add a set. Go back to the
 graph, and it does NOT show the added set!
@@ -253,6 +252,10 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+BUG!!! When looking at any of the tabbed activities, we crash when going
+from landscape to portrait.
+	Fixed.  Took a while!
+
 BUG: The sound goes out sometimes.  Thought I'd fixed it, but apparently
 there's another issue as well.  This time, it goes out when moving back
 and forth between the Grid and AddSet.  Hmmm, intermittent...sigh.

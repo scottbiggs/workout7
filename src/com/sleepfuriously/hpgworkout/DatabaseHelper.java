@@ -41,8 +41,15 @@ import android.util.Log;
  * Composes of two parts:
  *
  *	I.	Pertaining to the Exercise Table
+ *		- Each row is an exercise
+ *		- The columns are defined below, COL_ID, EXERCISE_COL_[unique]
  *
  *	II.	Pertaining to the Set Table
+ *		- Each row is a single exercise set
+ *		- The columns are defined below, COL_ID, SET_COL_[unique]
+ *
+ *	Note that the names in the exercise column of the Set Table
+ *	correspond to rows in the Exercise Table.
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -66,7 +73,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 	/**
-	 * Strings for the column names of the exercise
+	 * Strings for the column names of the EXERCISE
 	 * definition table.
 	 * <p>
 	 * <b>NOTE</b>:<br />
@@ -371,7 +378,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 		db.execSQL (EXERCISE_TABLE_CREATE_STRING);
 		init_exercises2 (db);
-//		init_exercises (db);
 
 		db.execSQL(SET_TABLE_CREATE_STRING);
 		init_sets (db);
@@ -622,7 +628,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			parser.close();
 		}
 
-	} // init_exercises (db)
+	} // init_exercises2 (db)
 
 
 	/************************
@@ -1625,6 +1631,55 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 		return data;
 	}  // getSetData(cursor)
+
+
+	/****************************
+	 * So you just want ONE set data and don't want to bother with
+	 * handling a Cursor? Well you've come to the right place.  Supply
+	 * the name of the exercise and the column id.  What, you don't
+	 * have the column id? Well sorry, you're SOL.
+	 *
+	 * @param	db			A database setup for READING.
+	 *
+	 * @param	ex_name		The name of the exercise that this set
+	 * 						belongs to.
+	 *
+	 * @param	id			The column id (_id) for this set.
+	 *
+	 * @return	A SetData instance filled in with the data for this
+	 * 			set.  Or null if we can't find it.
+	 */
+	public static SetData getSetData (SQLiteDatabase db, String ex_name, int id) {
+		SetData data = new SetData();
+		Cursor cursor = null;
+		try {
+			// Get the entire row that matches the id.
+			// Done two ways: old school (commented out), and android way.
+			// Both work fine.
+//			cursor = db.rawQuery("select * from " + SET_TABLE_NAME +
+//								" where " + COL_ID + "=" + id, null);
+			cursor = db.query(SET_TABLE_NAME, null, COL_ID + "=" + id,
+							null, null, null, null);
+
+			if (cursor.getCount() != 1) {
+				Log.e(tag, "Illegal retrieved rows in getSetData(), aborting!");
+				return null;
+			}
+
+			// Gather the data in the Cursor.
+			cursor.moveToFirst();
+			data = getSetData(cursor);
+		}
+
+		finally {
+			if (cursor != null) {
+				cursor.close();
+				cursor = null;
+			}
+		}
+
+		return data;
+	} // getSetData (ex_name, id)
 
 
 	/****************************

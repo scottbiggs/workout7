@@ -108,4 +108,23 @@ public class SetData {
 	} // copy (data)
 
 
+	/***************
+	 * Returns a string of this instance's data.
+	 */
+	@Override
+	public String toString() {
+		return "_id = " + _id + ", "
+			+ "name = " + name + ", "
+			+ "millis = " + millis + ", "
+			+ "weight = " + weight + ", "
+			+ "dist = " + dist + ", "
+			+ "time = " + time + ", "
+			+ "other = " + other + ", "
+			+ "reps = " + reps + ", "
+			+ "levels = " + levels + ", "
+			+ "cals = " + cals + ", "
+			+ "cond = " + cond + ", "
+			+ "notes = " + notes;
+	}
+
 }
