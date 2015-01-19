@@ -525,7 +525,10 @@ public class GridActivity2 extends BaseDialogActivity
 			WGlobals.play_short_click();
 
 			// Start a loading dialog
-			start_progress_dialog(R.string.loading_str);
+			// NO!  Dialogs should be started by the Activities
+			// that are most active.  We're starting and Activity
+			// here, let THAT Activity control its progress.
+//			start_progress_dialog(R.string.loading_str);
 
 			// If the id is odd, they clicked the header.  So we'll
 			// go directly to the ASet tab.

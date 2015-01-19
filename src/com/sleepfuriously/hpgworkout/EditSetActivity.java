@@ -50,10 +50,19 @@ public class EditSetActivity
 	public static final String ID_KEY = "id";
 
 	/**
-	 * As an alternative result code to RESULT_CANCELED or
-	 * RESULT_OK, this indicates that a workout set was deleted.
+	 * RESULT_CANCELED: Nothing happened (user cancelled).
+	 *
+	 * RESULT_OK: The set was modified, but NOT the time or date.
+	 *
+	 * RESULT_DELETED: the exercise set was deleted.
+	 *
+	 * RESULT_TIME_CHANGED: the set's date or time was
+	 * modified.  The ordering of the exercise sets may need to
+	 * reflect this change.
 	 */
-	public static final int RESULT_DELETED = RESULT_FIRST_USER + 1;
+	public static final int
+			RESULT_DELETED = RESULT_FIRST_USER + 1,
+			RESULT_TIME_CHANGED = RESULT_FIRST_USER + 2;
 
 
 	//-------------------------
@@ -89,6 +98,8 @@ public class EditSetActivity
 	/** Holds all sorts of info about this exercise */
 	private ExerciseData m_exer_data = null;
 
+	/** Tells if the user has modified the time or the date */
+	private boolean m_time_date_dirty = false;
 
 	///////////////////
 	// These variables hold the real data that is displayed
@@ -270,6 +281,8 @@ public class EditSetActivity
 
 		TextView name_tv = (TextView) findViewById(R.id.editset_ex_name_tv);
 		name_tv.setText(m_exer_data.name);
+
+		m_time_date_dirty = false;	// haven't changed anything yet.
 	} // onCreate (.)
 
 
@@ -651,6 +664,7 @@ public class EditSetActivity
 		m_calendar_date_data_tv.setText(date);
 		m_dirty = true;
 		m_done.setEnabled(true);
+		m_time_date_dirty = true;
 	} // onDateSet (v, year, month, day)
 
 
@@ -663,6 +677,7 @@ public class EditSetActivity
 		m_calendar_time_data_tv.setText(m_set_date.print_time(false));
 		m_dirty = true;
 		m_done.setEnabled(true);
+		m_time_date_dirty = true;
 	}
 
 
@@ -671,9 +686,11 @@ public class EditSetActivity
 	 * Please call this method to finish this Activity.  Thus
 	 * the exit point of this Activity is centralized.
 	 *
-	 * @param finish_code	The code to return.  It's ususally
-	 * 						either RESULT_OK or RESULT_CANCELED,
-	 * 						depending on how we should exit.
+	 * @param finish_code	The code to return.  It's either:
+	 * 						RESULT_CANCELED
+	 * 						RESULT_OK
+	 * 						RESULT_DELETED
+	 * 						RESULT_TIME_CHANGED
 	 *
 	 * @param intent			The Intent to send when exiting.  If
 	 * 						you want to exit with RESULT_CANCELED,
@@ -825,6 +842,7 @@ public class EditSetActivity
 	 * save the current state and exit this Activity.
 	 */
 	private void save_and_exit() {
+
 		SQLiteDatabase db = null;
 		ContentValues values = new ContentValues();
 
@@ -866,7 +884,7 @@ public class EditSetActivity
 
 		Intent itt = new Intent (this, InspectorActivity2.class);
 		itt.putExtra(EditSetActivity.ID_KEY, m_set_id);
-		my_finish (RESULT_OK, itt);
+		my_finish (m_time_date_dirty ? RESULT_TIME_CHANGED : RESULT_OK, itt);
 	} // save_and_exit()
 
 

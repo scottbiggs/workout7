@@ -502,6 +502,9 @@ public class BaseDialogActivity extends Activity {
 	 * 					load animation.  Use null for no string.
 	 */
 	public void start_progress_dialog (String str) {
+		if (is_progress_dialog_active())
+			return;		// already displaying
+
 		m_prog_dialog = new ProgressDialog(this);
 		m_prog_dialog.setMessage(getString(R.string.loading_str));
 		m_prog_dialog.setIndeterminate(true);

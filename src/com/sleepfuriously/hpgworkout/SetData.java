@@ -1,10 +1,10 @@
+package com.sleepfuriously.hpgworkout;
+
+
 /**
  * The SetData class is a nice way to encapsulate all
  * the data associated with an exercise set.
  */
-package com.sleepfuriously.hpgworkout;
-
-
 public class SetData {
 	/** The id for this item in the database */
 	int _id;
@@ -113,9 +113,12 @@ public class SetData {
 	 */
 	@Override
 	public String toString() {
+		MyCalendar cal = new MyCalendar(millis);
+
 		return "_id = " + _id + ", "
 			+ "name = " + name + ", "
-			+ "millis = " + millis + ", "
+			+ "millis = " + millis +
+				"(" + cal.print_date_numbers() + ", " + cal.print_time(true) + "), "
 			+ "weight = " + weight + ", "
 			+ "dist = " + dist + ", "
 			+ "time = " + time + ", "

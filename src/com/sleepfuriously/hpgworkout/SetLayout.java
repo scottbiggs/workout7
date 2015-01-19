@@ -6,6 +6,9 @@ package com.sleepfuriously.hpgworkout;
  * To be used ONLY in the Inspector.  For accessibility,
  * this class needs to be defined outside of the
  * Inspector file.
+ *<p>
+ * Essentially, this is just a SetData + the order that
+ * this piece of data will appear.
  */
 public class SetLayout {
 	/** The order that this set should be displayed. Zero based. */

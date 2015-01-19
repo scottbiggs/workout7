@@ -208,7 +208,7 @@ public class ExerciseTabHostActivity
 			// NOTE:
 			//		Need to create a NEW Intent--can't reuse the other one
 			//		as that'll create a lot of confusion.
-			Intent inspector_itt = new Intent(this, InspectorActivity2.class);
+			Intent inspector_itt = new Intent(this, InspectorActivity3.class);
 			inspector_itt.putExtra(KEY_NAME, m_ex_name);
 			inspector_itt.putExtra(KEY_SET_ID, m_id);
 			setup_a_tab (th, "InspectorActivity",

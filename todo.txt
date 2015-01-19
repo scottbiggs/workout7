@@ -1,5 +1,11 @@
 TODO:
 -----------------
+Re-working the Inspector:
+	- Should change the order when clicking on the TV that displays order
+
+Bug (minor):  I don't see the spinner spinning very much while the
+	asynctasks are doing their thing.
+
 Make a tutorial for youtube!
 
 UI issue: When looking at the Inspector in landscape mode, notice how

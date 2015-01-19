@@ -73,7 +73,7 @@
 		<activity android:name="com.sleepfuriously.hpgworkout.AddSetActivity"
 			android:windowSoftInputMode="stateHidden"
 			/>
-		<activity android:name=".InspectorActivity2"/>
+		<activity android:name=".InspectorActivity3"/>
 		<activity android:name=".PrefsActivity"/>
 		<activity android:name=".GraphActivity"/>
 		<activity android:name=".GraphSelectorActivity"/>

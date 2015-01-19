@@ -87,7 +87,6 @@ public class InspectorActivity2
 	 */
 	private int m_set_id = -1;
 
-
 	/**
 	 * Since the ASyncTask is static, it may persist
 	 * when this Activity is destroyed.  This variable
@@ -95,22 +94,30 @@ public class InspectorActivity2
 	 * onRetainLastConfiguationInstance() and
 	 * getLastNonConfigurationInstance().
 	 */
-	private InspectorASyncTask m_task = null;
+//	private InspectorASyncTask m_task = null;
+
+	/**
+	 * Holds instances of the AsyncTask.  Should be set
+	 * to null when completed.
+	 */
+	private InspectorAsyncTask2 m_task = null;
 
 
 	//--------------------
 	//	All from the exercise database
 	//--------------------
 
-//	/** Holds all info about this exercise. */		moved to ASyncTask
-//	protected ExerciseData m_ex_data = null;
+	/**
+	 * Holds all the info about this particular exercise.  Filled
+	 * in by the AsyncTask.
+	 */
+	public ExerciseData m_ex_data = null;
 
-//	protected int m_ex_id;
 	/** the name of this exercise. */
 	private String m_ex_name;
 
-//	/** The number of sets for this exercise. */
-//	protected int m_num_sets;				moved to ASyncTask
+	/** The number of sets for this exercise. Filled in during Async. */
+	protected int m_num_sets;
 
 	/**
 	 * This tells the Activity when it needs to load data.  It
@@ -128,7 +135,7 @@ public class InspectorActivity2
 	 * This flag is used to signal to the Grid whether or not
 	 * it needs to reload when this Activity exits.
 	 */
-	public static boolean m_database_changed = false;
+	private static boolean m_database_changed = false;
 
 	/** A hack to get around scoping rules for scroll_to_child(id). */
 	protected static int s_id;
@@ -137,14 +144,19 @@ public class InspectorActivity2
 	 * This indicates whether or not the main layout has
 	 * been initialized.  Necessary because of the multi-threading
 	 * nature of this class.
+	 *<p>
+	 * todo: is this really needed?
 	 */
-	protected boolean m_layout_initialized = false;
+	protected boolean m_async_layout_complete = false;
 
-	/** Should we use the quick view or the regular view */
-//	protected boolean m_prefs_quick_view = false;
+	/**
+	 * This is IT. This is the list that holds all the layouts
+	 * (which are sets + an order).  This is filled out progressively
+	 * during doInBackground() and tapped during onProgressUpdate()
+	 * and catchup() via the AsyncTask.
+	 */
+	public ArrayList<SetLayout> m_layout_list = null;
 
-//	/** The order that we should sort the workout sets */
-//	protected boolean m_prefs_oldest_order = true;		moved to ASyncTask
 
 
 	//------------------------------
@@ -175,45 +187,69 @@ public class InspectorActivity2
 		m_db_dirty = true;	// True for first time.
 
 
-		m_task = (InspectorASyncTask) getLastNonConfigurationInstance();
+//		m_task = (InspectorASyncTask) getLastNonConfigurationInstance();
 
+		// Moved from onResume(), which is no longer needed as we use
+		// onActivityResult() instead.
+		init_from_db();
 	} // onCreate (.)
 
 
-	//------------------------------
-	@Override
-	protected void onResume() {
-		super.onResume();
-		Log.i(tag, "onResume() start");
+//	//------------------------------
+//	@Override
+//	protected void onResume() {
+//		super.onResume();
+//		Log.i(tag, "onResume() start");
+//
+//		if (m_db_dirty) {
+//			Log.d(tag, "onResume(): calling init_from_db() from onResume()");
+//			init_from_db();
+//		}
+//		else {
+//			Log.d(tag, "onResume(): m_db_dirty is false, so I'm not calling init_from_db().");
+//		}
+//
+//	} // onResume()
 
-		if (m_db_dirty) {
-			Log.d(tag, "onResume(): calling init_from_db() from onResume()");
-			init_from_db();
-		}
-		else {
-			Log.d(tag, "onResume(): m_db_dirty is false, so I'm not calling init_from_db().");
-		}
-
-	} // onResume()
 
 
-	/*************************
-	 * Called when an Activity is destroyed during a
-	 * configuration/orientation change.  Whatever is
-	 * returned here can be retrieved by the new replacement
-	 * Activity by calling getlastNonConfigurationInstance().
-	 *
-	 * @see android.app.Activity#onRetainNonConfigurationInstance()
+//	/*************************
+//	 * Called when an Activity is destroyed during a
+//	 * configuration/orientation change.  Whatever is
+//	 * returned here can be retrieved by the new replacement
+//	 * Activity by calling getlastNonConfigurationInstance().
+//	 *
+//	 * @see android.app.Activity#onRetainNonConfigurationInstance()
+//	 */
+//	@Override
+//	public Object onRetainNonConfigurationInstance() {
+//		m_task.detach();		// Tells task to remove its reference
+//							// to this Activity as I'm about to
+//							// die.
+//
+//		return m_task;	// Return the ASyncTask so the
+//						// new Activity can find it (and then
+//						// attach it to the ASyncTask).
+//	}
+
+
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onDestroy()
 	 */
 	@Override
-	public Object onRetainNonConfigurationInstance() {
-		m_task.detach();		// Tells task to remove its reference
-							// to this Activity as I'm about to
-							// die.
+	protected void onDestroy() {
+		if (m_task != null) {
+			// Tell the AsyncTask to stop because the Activity
+			// is going away.
+			m_task.cancel(true);
+		}
 
-		return m_task;	// Return the ASyncTask so the
-						// new Activity can find it (and then
-						// attach it to the ASyncTask).
+		// Kill a dialog if running.
+		if (is_progress_dialog_active()) {
+			stop_progress_dialog();
+		}
+
+		super.onDestroy();
 	}
 
 
@@ -327,6 +363,8 @@ public class InspectorActivity2
 	//	This Activity calls EditSetActivity.  When it
 	//	returns, this method gets the result.
 	//
+	//	Note that this is called BEFORE onResult()
+	//
 	//	EditSetActivity:
 	//		- CANCEL, do nothing.
 	//		- If OK, then
@@ -359,12 +397,20 @@ public class InspectorActivity2
 					// View from our Activity.
 					LinearLayout view = (LinearLayout) m_main_ll.findViewById(m_set_id);
 					if (view == null) {
-						Log.e(tag, "Can't find the deleted viewin onActivityResult! Aborting!");
+						Log.e(tag, "Can't find the deleted view in onActivityResult! Aborting!");
 						return;
 					}
 					m_main_ll.removeView(view);
 					break;
 				}
+
+				case EditSetActivity.RESULT_TIME_CHANGED:
+					// todo
+					Log.e(tag, "need to implement this!!!");
+
+
+					//----
+					// Falls through...
 
 				case RESULT_OK: {
 					SetData set_data = null;
@@ -376,7 +422,7 @@ public class InspectorActivity2
 					// Get our View to modify
 					LinearLayout view = (LinearLayout) m_main_ll.findViewById(m_set_id);
 					if (view == null) {
-						Log.e(tag, "Can't find the deleted viewin onActivityResult! Aborting!");
+						Log.e(tag, "Can't find the view in onActivityResult! Aborting!");
 						return;
 					}
 
@@ -393,9 +439,6 @@ public class InspectorActivity2
 					}
 
 					// Fill in the View.
-					// TODO
-					//	This will not cause the layout to be reloaded if
-					//	the date has changed!
 					fill_set_layout(set_data, view);
 					break;
 				}
@@ -457,9 +500,6 @@ public class InspectorActivity2
 			m_hsv = (HorizontalScrollView) findViewById(R.id.inspector_hsv);
 		}
 		else {
-			// Crashes on this next line!  Probably there's a problem
-			// either finding R.id.inspector_sv or in converting its
-			// type to ScrollView.
 			m_sv = (ScrollView) findViewById(R.id.inspector_sv);
 		}
 
@@ -545,6 +585,11 @@ public class InspectorActivity2
 		// Set the order description.
 		m_desc_tv = (TextView) findViewById(R.id.inspector_description_tv);
 
+		//---------------
+		// todo:
+		//	We need a preferences manager to simplify this.
+		//---------------
+
 		SharedPreferences prefs =
 		PreferenceManager.getDefaultSharedPreferences(this);
 		boolean prefs_oldest_order =
@@ -555,38 +600,41 @@ public class InspectorActivity2
 							R.string.inspector_newest_first_msg);
 
 		// Start the ASyncTask!!!
-		if (m_task == null) {
-			// No ASync running, so start it up.
-			start_progress_dialog(R.string.loading_str);
-			m_task = new InspectorASyncTask(this, m_ex_name);
-			Log.d(tag, "init_from_db(): STARTING NEW ASYNCTASK!");
-			m_task.execute();
-		}
-		else {
-//			Log.d(tag, "init_from_db(): taking the else clause...");
+//		if (m_task == null) {
+//			// No ASync running, so start it up.
+//			start_progress_dialog(R.string.loading_str);
+//			m_task = new InspectorASyncTask(this, m_ex_name);
+//			Log.d(tag, "init_from_db(): STARTING NEW ASYNCTASK!");
+//			m_task.execute();
+//		}
+//		else {
+////			Log.d(tag, "init_from_db(): taking the else clause...");
+//
+//			// Tell the ASyncTask who the Activity is (us!).
+//			m_task.attach(this);
+//
+//			// If the ASyncTask is still working, restart
+//			// the progress dialog.
+//			if (m_task.isDone() == false) {
+//				start_progress_dialog(R.string.loading_str);
+//			}
+//			else {
+//				// The ASyncTask has completed.  Just catchup and
+//				// finish.
+//				catchup();
+//				finish_ui();
+//
+//				// todo
+//				//	DON'T!!! This could be VERY VERY BAD!!!  The ASyncTack
+//				//	isn't guaranteed to still be around, so calling
+//				//	this could cause a crash!!!
+////				Log.e(tag, "About to call onPostExecute() outside of the ASyncTask! Get ready for something bad to happen!");
+////				m_task.onPostExecute(null);
+//			}
+//		}
 
-			// Tell the ASyncTask who the Activity is (us!).
-			m_task.attach(this);
-
-			// If the ASyncTask is still working, restart
-			// the progress dialog.
-			if (m_task.isDone() == false) {
-				start_progress_dialog(R.string.loading_str);
-			}
-			else {
-				// The ASyncTask has completed.  Just catchup and
-				// finish.
-				catchup();
-				finish_ui();
-
-				// todo
-				//	DON'T!!! This could be VERY VERY BAD!!!  The ASyncTack
-				//	isn't guaranteed to still be around, so calling
-				//	this could cause a crash!!!
-//				Log.e(tag, "About to call onPostExecute() outside of the ASyncTask! Get ready for something bad to happen!");
-//				m_task.onPostExecute(null);
-			}
-		}
+		m_task = new InspectorAsyncTask2();
+		m_task.execute();
 
 	} // init_from_db()
 
@@ -599,7 +647,7 @@ public class InspectorActivity2
 	 * @return		A nice string, or an appropriate message
 	 * 				if the user skipped this value.
 	 */
-	private String get_formatted_string (float f) {
+	private String intfloat_to_string (float f) {
 		if (f < 0)
 			return getString (R.string.inspector_skipped_value);
 		return new DecimalFormat("#.###").format(f);
@@ -614,7 +662,7 @@ public class InspectorActivity2
 	 * @return		A nice string, or an appropriate message
 	 * 				if the user skipped this value.
 	 */
-	private String get_formatted_string (int i) {
+	private String intfloat_to_string (int i) {
 		if (i == -1) {
 			return getString(R.string.inspector_skipped_value);
 		}
@@ -639,8 +687,8 @@ public class InspectorActivity2
 	 * 							loaded from the DB.
 	 */
 	void create_set_layout (SetLayout layout_values) {
-		Log.d(tag, "entering make_set_layout()");
-		if (!m_layout_initialized) {
+//		Log.d(tag, "entering create_set_layout()");
+		if (!m_async_layout_complete) {
 			init_layout(layout_values.data.millis);
 		}
 
@@ -759,13 +807,13 @@ public class InspectorActivity2
 	 */
 	protected void init_layout (long date_in_millis) {
 		Log.d(tag, "entering init_layout().");
-		if (m_layout_initialized) {
+		if (m_async_layout_complete) {
 			return;
 		}
 
-		if (m_task == null) {
-			Log.e(tag, "m_task is null in init_layout()!");
-		}
+//		if (m_task == null) {
+//			Log.e(tag, "m_task is null in init_layout()!");
+//		}
 
 		Log.d(tag, "init_layout: tabula rasa!");
 
@@ -774,7 +822,7 @@ public class InspectorActivity2
 
 		// If there are no sets, indicate so.
 		TextView title_tv = (TextView) findViewById(R.id.inspector_title_tv);
-		if (m_task.m_num_sets == 0) {
+		if (m_num_sets == 0) {
 			title_tv.setText(R.string.inspector_empty);
 		}
 		else {
@@ -787,7 +835,7 @@ public class InspectorActivity2
 //								+ cal.get_year());
 //			}
 		}
-		m_layout_initialized = true;
+//		m_layout_complete = true;		Moved to the asynctask
 	} // init_layout()
 
 
@@ -858,11 +906,11 @@ public class InspectorActivity2
 								LinearLayout set_ll) {
 		LinearLayout reps_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_reps_ll);
 
-		if (m_task.m_ex_data.breps) {
-			String data_str = get_formatted_string(vals.reps);
+		if (m_ex_data.breps) {
+			String data_str = intfloat_to_string(vals.reps);
 			TextView reps_data_tv = (TextView) set_ll.findViewById(R.id.inspector_set_reps_data);
 			reps_data_tv.setText(data_str);
-			if (m_task.m_ex_data.significant == DatabaseHelper.EXERCISE_COL_REP_NUM) {
+			if (m_ex_data.significant == DatabaseHelper.EXERCISE_COL_REP_NUM) {
 				TextView reps_label_tv = (TextView) set_ll.findViewById(R.id.inspector_set_reps_label);
 				reps_label_tv.setTypeface(null, Typeface.BOLD);
 			}
@@ -883,15 +931,15 @@ public class InspectorActivity2
 		LinearLayout weight_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_weight_ll);
 		View bar = set_ll.findViewById(R.id.inspector_set_weight_bar);
 
-		if (m_task.m_ex_data.bweight) {
+		if (m_ex_data.bweight) {
 			TextView weight_label_tv = (TextView) set_ll.findViewById(R.id.inspector_set_weight_label);
 			String weight_label_str = getString (R.string.inspector_set_weight_label,
-					(Object[]) new String[] {m_task.m_ex_data.weight_unit});
+					(Object[]) new String[] {m_ex_data.weight_unit});
 			weight_label_tv.setText(weight_label_str);
 
 			TextView weight_data_tv = (TextView) set_ll.findViewById(R.id.inspector_set_weight_data);
-			weight_data_tv.setText(get_formatted_string(vals.weight));
-			if (m_task.m_ex_data.significant == DatabaseHelper.EXERCISE_COL_WEIGHT_NUM) {
+			weight_data_tv.setText(intfloat_to_string(vals.weight));
+			if (m_ex_data.significant == DatabaseHelper.EXERCISE_COL_WEIGHT_NUM) {
 				weight_label_tv.setTypeface(null, Typeface.BOLD);
 			}
 
@@ -917,11 +965,11 @@ public class InspectorActivity2
 		LinearLayout level_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_level_ll);
 		View bar = set_ll.findViewById(R.id.inspector_set_level_bar);
 
-		if (m_task.m_ex_data.blevel) {
-			String data_str = get_formatted_string(vals.levels);
+		if (m_ex_data.blevel) {
+			String data_str = intfloat_to_string(vals.levels);
 			TextView level_data_tv = (TextView) set_ll.findViewById(R.id.inspector_set_level_data);
 			level_data_tv.setText(data_str);
-			if (m_task.m_ex_data.significant == DatabaseHelper.EXERCISE_COL_LEVEL_NUM) {
+			if (m_ex_data.significant == DatabaseHelper.EXERCISE_COL_LEVEL_NUM) {
 				TextView level_label_tv = (TextView) set_ll.findViewById(R.id.inspector_set_level_label);
 				level_label_tv.setTypeface(null, Typeface.BOLD);
 			}
@@ -947,11 +995,11 @@ public class InspectorActivity2
 		LinearLayout cals_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_calorie_ll);
 		View bar = set_ll.findViewById(R.id.inspector_set_calorie_bar);
 
-		if (m_task.m_ex_data.bcals) {
-			String data_str = get_formatted_string(vals.cals);
+		if (m_ex_data.bcals) {
+			String data_str = intfloat_to_string(vals.cals);
 			TextView cals_data_tv = (TextView) set_ll.findViewById(R.id.inspector_set_calorie_data);
 			cals_data_tv.setText(data_str);
-			if (m_task.m_ex_data.significant == DatabaseHelper.EXERCISE_COL_CALORIE_NUM) {
+			if (m_ex_data.significant == DatabaseHelper.EXERCISE_COL_CALORIE_NUM) {
 				TextView cals_label_tv = (TextView) set_ll.findViewById(R.id.inspector_set_calorie_label);
 				cals_label_tv.setTypeface(null, Typeface.BOLD);
 			}
@@ -976,17 +1024,17 @@ public class InspectorActivity2
 		LinearLayout dist_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_dist_ll);
 		View bar = set_ll.findViewById(R.id.inspector_set_dist_bar);
 
-		if (m_task.m_ex_data.bdist) {
+		if (m_ex_data.bdist) {
 			// Unit of Distance
 			TextView dist_label_tv = (TextView) set_ll.findViewById(R.id.inspector_set_dist_label);
 			String dist_label_str = getString (R.string.inspector_set_dist_label,
-											m_task.m_ex_data.dist_unit);
+											m_ex_data.dist_unit);
 			dist_label_tv.setText(dist_label_str);
-			if (m_task.m_ex_data.significant == DatabaseHelper.EXERCISE_COL_DIST_NUM) {
+			if (m_ex_data.significant == DatabaseHelper.EXERCISE_COL_DIST_NUM) {
 				dist_label_tv.setTypeface(null, Typeface.BOLD);
 			}
 
-			String data_str = get_formatted_string(vals.dist);
+			String data_str = intfloat_to_string(vals.dist);
 			TextView dist_data_tv = (TextView) set_ll.findViewById(R.id.inspector_set_dist_data);
 			dist_data_tv.setText(data_str);
 
@@ -1010,17 +1058,17 @@ public class InspectorActivity2
 		LinearLayout time_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_time_ll);
 		View bar = set_ll.findViewById(R.id.inspector_set_time_bar);
 
-		if (m_task.m_ex_data.btime) {
+		if (m_ex_data.btime) {
 			// Unit of Time
 			TextView time_label_tv = (TextView) set_ll.findViewById(R.id.inspector_set_time_label);
 			String time_label_str = getString (R.string.inspector_set_time_label,
-											m_task.m_ex_data.time_unit);
+											m_ex_data.time_unit);
 			time_label_tv.setText(time_label_str);
-			if (m_task.m_ex_data.significant == DatabaseHelper.EXERCISE_COL_TIME_NUM) {
+			if (m_ex_data.significant == DatabaseHelper.EXERCISE_COL_TIME_NUM) {
 				time_label_tv.setTypeface(null, Typeface.BOLD);
 			}
 
-			String data_str = get_formatted_string(vals.time);
+			String data_str = intfloat_to_string(vals.time);
 			TextView time_data_tv = (TextView) set_ll.findViewById(R.id.inspector_set_time_data);
 			time_data_tv.setText(data_str);
 
@@ -1044,17 +1092,17 @@ public class InspectorActivity2
 		LinearLayout other_ll = (LinearLayout) set_ll.findViewById(R.id.inspector_set_other_ll);
 		View bar = set_ll.findViewById(R.id.inspector_set_other_bar);
 
-		if (m_task.m_ex_data.bother) {
+		if (m_ex_data.bother) {
 			TextView other_label_tv = (TextView) set_ll.findViewById(R.id.inspector_set_other_label);
 			String other_label_str = getString (R.string.inspector_set_other_label,
-												m_task.m_ex_data.other_title,
-												m_task.m_ex_data.other_unit);
+												m_ex_data.other_title,
+												m_ex_data.other_unit);
 			other_label_tv.setText(other_label_str);
-			if (m_task.m_ex_data.significant == DatabaseHelper.EXERCISE_COL_OTHER_NUM) {
+			if (m_ex_data.significant == DatabaseHelper.EXERCISE_COL_OTHER_NUM) {
 				other_label_tv.setTypeface(null, Typeface.BOLD);
 			}
 
-			String data_str = get_formatted_string(vals.other);
+			String data_str = intfloat_to_string(vals.other);
 
 			TextView other_data_tv = (TextView) set_ll.findViewById(R.id.inspector_set_other_data);
 			other_data_tv.setText(data_str);
@@ -1103,16 +1151,21 @@ public class InspectorActivity2
 	private void setup_notes (SetData vals,
 							LinearLayout set_ll) {
 		TextView notes_tv = (TextView) set_ll.findViewById(R.id.inspector_set_notes_tv);
+		TextView notes_label_tv = (TextView) set_ll.findViewById(R.id.inspector_set_notes_label_tv);
+		View bar = set_ll.findViewById(R.id.inspector_set_notes_bar);
 
 		if ((vals.notes != null) && (vals.notes.length() > 0)) {
+			// Make sure it's visible!
+			bar.setVisibility(View.VISIBLE);
+			notes_label_tv.setVisibility(View.VISIBLE);
+			notes_tv.setVisibility(View.VISIBLE);
+
 			// There's a note!  Display it.
 			notes_tv.setText(vals.notes);
 		}
 		else {
-			View bar = set_ll.findViewById(R.id.inspector_set_notes_bar);
 			// No notes, so display nothing.
 			bar.setVisibility(View.GONE);
-			TextView notes_label_tv = (TextView) set_ll.findViewById(R.id.inspector_set_notes_label_tv);
 			notes_label_tv.setVisibility(View.GONE);
 			notes_tv.setVisibility(View.GONE);
 		}
@@ -1127,22 +1180,25 @@ public class InspectorActivity2
 	protected void catchup() {
 		Log.d(tag, "Entering catchup()");
 
-		if (m_task == null) {
-			Log.e(tag, "Trying to catchup without an ASyncTask!");
-			return;		// Nothing to catch up to!
-		}
+//		if (m_task == null) {
+//			Log.e(tag, "Trying to catchup without an ASyncTask!");
+//			return;		// Nothing to catch up to!
+//		}
 
-		if (m_task.m_layout_list == null) {
+		if (m_layout_list == null) {
 			Log.e(tag, "m_layout_list is NULL while catching up!");
 			return;
 		}
 
-		if (m_task.m_layout_list.size() == 0) {
+		if (m_layout_list.size() == 0) {
 			init_layout(0);
 			return;
 		}
 
-		if (!m_layout_initialized) {
+// todo
+//				HEY!  I don't think this will ever be called now
+//				that I made some changes!
+		if (!m_async_layout_complete) {
 //			init_layout(layout_values.data.millis);
 			init_layout(0);
 		}
@@ -1156,8 +1212,8 @@ public class InspectorActivity2
 		//
 		int num_children = m_main_ll.getChildCount();
 //		Log.d(tag, "catchup(): num_children = " + num_children + ", layout_list.size() = " + m_task.m_layout_list.size());
-		while (num_children < m_task.m_layout_list.size()) {
-			create_set_layout(m_task.m_layout_list.get(num_children));
+		while (num_children < m_layout_list.size()) {
+			create_set_layout(m_layout_list.get(num_children));
 			num_children++;
 		}
 
@@ -1185,116 +1241,398 @@ public class InspectorActivity2
 		//	Classes
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	/**************************************************
-	 * Operates in the background to load the UI stuff from our
-	 * database, which can take a while.
-	 *
-	 * The types are: <params, progress, result>
-	 */
-	static class InspectorASyncTask
-//					extends AsyncTask <Void, SetLayout, Void> {
-					extends AsyncTask <Void, Void, Void> {
-
-		static final String tag = "InspectorASyncTask";
-
-		/** TRUE while data is being loaded from the DB */
-//		private boolean m_loading = false;
-
-		/** Will be TRUE when the ASyncTask has finished. */
-		boolean m_done = false;
-
-		/**
-		 * The Activity that is using this ASyncTask.
-		 * This static class may ONLY access the activity
-		 * through this data member.
-		 * <p>
-		 * NOTE: Make sure this is not NULL before using!!!
-		 * (Actually, this is not necessary. Google promises that
-		 * this will always be valid when done in a UI thread.)
-		 */
-		private InspectorActivity2 m_activity = null;
-
-		/** Holds all info about this exercise. */
-		public ExerciseData m_ex_data = null;
-
-		/** The name of this exercise */
-		public String m_ex_name;
-
-		/**
-		 * The order that we should sort the workout sets.
-		 * True means Oldest First.  False means most recent first.
-		 */
-//		public boolean m_prefs_oldest_order = true;
-
-		/** The number of sets for this exercise. */
-		public int m_num_sets = -1;
-
-		/**
-		 * This is IT. This is the list that holds all the layouts
-		 * (which are sets + an order).  This is filled out progressively
-		 * during doInBackground() and tapped during onProgressUpdate()
-		 * and catchup().
-		 */
-		public ArrayList<SetLayout> m_layout_list = null;
-
-
-		/***************
-		 * Constructor
-		 *
-		 * Needs a reference to the Activity that's creating
-		 * this ASyncTask.  It's how this static class
-		 * communicates with that Activity.
-		 *
-		 * input:
-		 * 		activity		The Activity that wants this ASyncTask to
-		 * 					run.
-		 *
-		 * 		ex_name		The name of the exercise we're inspecting.
-		 */
-		public InspectorASyncTask (InspectorActivity2 activity, String ex_name) {
-//			Log.v(tag, "entering constructor, count = " + m_instance_counter +
-//				", id = " + this.toString());
-			m_layout_list = new ArrayList<SetLayout>();
-			m_ex_name = ex_name;
-			attach (activity);
-		} // constructor
-
-
-		//---------------------
-		//	Initializations here.
-		//
-		@Override
-		protected void onPreExecute() {
-			if (m_activity == null) {
-				Log.e (tag, "m_activity is NULL!!! We're about to make a lot of errors!");
-			}
-
-//			m_loading = true;
-			m_done = false;
-
-			m_activity.m_layout_initialized = false;
-
-			// Moved to Activity
-//			start_progress_dialog(R.string.loading_str);
-
-			// Load in our preferences.
-//			SharedPreferences prefs =
+//	/**************************************************
+//	 * Operates in the background to load the UI stuff from our
+//	 * database, which can take a while.
+//	 *
+//	 * The types are: <params, progress, result>
+//	 */
+//	@Deprecated
+//	static class InspectorASyncTask
+////					extends AsyncTask <Void, SetLayout, Void> {
+//					extends AsyncTask <Void, Void, Void> {
+//
+//		static final String tag = "InspectorASyncTask";
+//
+//		/** TRUE while data is being loaded from the DB */
+////		private boolean m_loading = false;
+//
+//		/** Will be TRUE when the ASyncTask has finished. */
+//		@Deprecated
+//		boolean m_done = false;
+//
+//		/**
+//		 * The Activity that is using this ASyncTask.
+//		 * This static class may ONLY access the activity
+//		 * through this data member.
+//		 * <p>
+//		 * NOTE: Make sure this is not NULL before using!!!
+//		 * (Actually, this is not necessary. Google promises that
+//		 * this will always be valid when done in a UI thread.)
+//		 */
+//		@Deprecated
+//		private InspectorActivity2 m_activity = null;
+//
+//		/** Holds all info about this exercise. */
+//		@Deprecated
+//		public ExerciseData m_ex_data = null;
+//
+//		/** The name of this exercise */
+//		@Deprecated
+//		public String m_ex_name;
+//
+//		/**
+//		 * The order that we should sort the workout sets.
+//		 * True means Oldest First.  False means most recent first.
+//		 */
+////		public boolean m_prefs_oldest_order = true;
+//
+//		/** The number of sets for this exercise. */
+//		@Deprecated
+//		public int m_num_sets = -1;
+//
+//		/**
+//		 * This is IT. This is the list that holds all the layouts
+//		 * (which are sets + an order).  This is filled out progressively
+//		 * during doInBackground() and tapped during onProgressUpdate()
+//		 * and catchup().
+//		 */
+//		@Deprecated
+//		public ArrayList<SetLayout> m_layout_list = null;
+//
+//
+//		/***************
+//		 * Constructor
+//		 *
+//		 * Needs a reference to the Activity that's creating
+//		 * this ASyncTask.  It's how this static class
+//		 * communicates with that Activity.
+//		 *
+//		 * input:
+//		 * 		activity		The Activity that wants this ASyncTask to
+//		 * 					run.
+//		 *
+//		 * 		ex_name		The name of the exercise we're inspecting.
+//		 */
+//		public InspectorASyncTask (InspectorActivity2 activity, String ex_name) {
+////			Log.v(tag, "entering constructor, count = " + m_instance_counter +
+////				", id = " + this.toString());
+//			m_layout_list = new ArrayList<SetLayout>();
+//			m_ex_name = ex_name;
+//			attach (activity);
+//		} // constructor
+//
+//
+//		//---------------------
+//		//	Initializations here.
+//		//
+//		@Override
+//		protected void onPreExecute() {
+//			if (m_activity == null) {
+//				Log.e (tag, "m_activity is NULL!!! We're about to make a lot of errors!");
+//			}
+//
+////			m_loading = true;
+//			m_done = false;
+//
+//			m_activity.m_async_layout_complete = false;
+//
+//			// Moved to Activity
+////			start_progress_dialog(R.string.loading_str);
+//
+//			// Load in our preferences.
+////			SharedPreferences prefs =
+////				PreferenceManager.getDefaultSharedPreferences(m_activity);
+////			m_prefs_oldest_order =
+////				prefs.getBoolean(m_activity.getString(R.string.prefs_inspector_oldest_first_key),
+////								false);
+//
+//
+//		} // onPreExecute
+//		//-------------------
+//
+//		@Override
+//		protected Void doInBackground(Void... not_used) {
+//			// todo: is this necessary? We just set it in
+//			//	onPreExecute()!
+//			//
+//			// Mark that loading has begun.
+////			m_loading = true;
+//
+//			SQLiteDatabase db = null;
+//			try {
+//				if (WGlobals.g_db_helper == null) {
+//					Log.e(tag, "doInBackground(): g_db_helper is NULL!");
+//					throw new SQLiteException("doInBackground is starting up, yet WGlobals.g_db_helper is null!");
+//				}
+//				db = WGlobals.g_db_helper.getReadableDatabase();
+//
+//				// Read in all the info we need about this
+//				// exercise.
+//				m_ex_data = DatabaseHelper.getExerciseData(db, m_ex_name);
+//
+//				SharedPreferences prefs =
 //				PreferenceManager.getDefaultSharedPreferences(m_activity);
-//			m_prefs_oldest_order =
+//				boolean prefs_oldest_order =
 //				prefs.getBoolean(m_activity.getString(R.string.prefs_inspector_oldest_first_key),
 //								false);
+//
+//				// Get a cursor for the sets.  Then loop through
+//				// them one by one, creating a layout for each.
+//				// This requires filling in a SetLayout class
+//				// to hold the appropriate (and relevant) data
+//				// for that layout.
+//				Cursor set_cursor = null;
+//				try {
+//					set_cursor = DatabaseHelper
+//									.getAllSets(db, m_ex_name,
+//												prefs_oldest_order);
+//					m_num_sets = set_cursor.getCount();
+//
+//					int counter = 0;
+//					while (set_cursor.moveToNext()) {
+//
+//						SetLayout layout_values = new SetLayout();
+//						layout_values.data = DatabaseHelper.getSetData(set_cursor);
+//						layout_values.order = counter;
+//
+//						m_layout_list.add(layout_values);
+////						publishProgress(layout_values);
+//						publishProgress();
+//						counter++;
+//					}
+//
+//
+//					// For the case where there are ZERO sets,
+//					if (m_num_sets == 0) {
+////						publishProgress((SetLayout)null);
+//						publishProgress();
+//					}
+//
+//				} // end of set_cursor
+//				catch (SQLiteException e) {
+//					e.printStackTrace();
+//				}
+//				finally {
+//					if (set_cursor != null) {
+//						set_cursor.close();
+//						set_cursor = null;
+//					}
+//				}
+//
+//
+//			} // end of m_db usage
+//			catch (SQLiteException e) {
+//				e.printStackTrace();
+//			}
+//			finally {
+//				if (db != null) {
+//					db.close();
+//					db = null;
+//				}
+//				m_db_dirty = false;
+////				m_loading = false;		// Done loading!
+//			}
+//
+//			return null;
+//		} // doInBackground(...)
+//
+//
+//		//-------------------
+//		//	Okay, gotta be careful with this one.  It happens in the
+//		//	UI thread, not the same thread as doInBackground().  That
+//		//	means that if any variables passed into this can be changed
+//		//	in doInBackground(), then this is a BIG problem!
+//		//
+//		//	input:
+//		//		set_array		This is an array of SetLayouts that
+//		//						were filled in by the background
+//		//						thread via doInBackground().  It has
+//		//						only ONE element, the most recently
+//		//						created SetLayout.  Let's use it
+//		//						to make a new exercise set layout!
+//		//
+//		@Override
+////		protected void onProgressUpdate(SetLayout... set_array) {
+//		protected void onProgressUpdate(Void... not_used) {
+//			if (m_activity == null) {
+//				Log.e(tag, "onProgressUpdate() can't find the Activity!!! Can't do anything, so I'm simply returning.");
+//				return;
+//			}
+//
+//			m_activity.catchup();
+//
+////			super.onProgressUpdate(set_array);	// todo: is this nec.?
+////			super.onProgressUpdate();	// todo: is this nec.?
+//
+////			if (set_array[0] == null) {
+////				m_activity.init_layout(0);
+////			}
+////			else {
+////				m_activity.make_set_layout (set_array[0]);
+////			}
+//		} // onProgressUpdate (arg0)
+//
+//
+//		//-------------------
+//		//	Note that this is called ONCE and once only!  This class will
+//		//	self-destruct once it's done (the ASyncTask doesn't hang
+//		//	around).
+//		//
+//		@Override
+//		protected void onPostExecute(Void not_used) {
+//			Log.d(tag, "onPostExecute(), id = " + this);
+//			if (m_activity == null) {
+//				Log.e(tag, "onPostExecute() can't find the Activity!!! This is really bad news.");
+//			}
+//
+//			m_activity.catchup();
+//
+//			m_activity.finish_ui();
+//
+//			// Finish our UI
+////			m_activity.trim_date_labels();
+////			m_activity.scroll_to_child (m_activity.m_set_id);
+////			m_activity.stop_progress_dialog();
+////			m_db_dirty = false;
+//
+//			m_done = true;	// finally!
+//		} // onPostExecute()
+//
+//
+//		/***************
+//		 * Connects this task to an Activity, allowing
+//		 * this static class to communicate with that
+//		 * Activity (so it can get the data we're reading
+//		 * from the database!).
+//		 *
+//		 * @param activity	The Activity that wants to
+//		 * 					use the data.
+//		 */
+//		public void attach (InspectorActivity2 activity) {
+//			m_activity = activity;
+//		}
+//
+//		/***************
+//		 * Removes our connection to whatever Activity
+//		 * we're attached to (or does nothing if we're
+//		 * not attached to anything).
+//		 *
+//		 * This is an important call when the Activity
+//		 * goes away (like during an orientation change)
+//		 * so that we're not using invalid pointers!
+//		 */
+//		public void detach() {
+////			Log.d(tag, "entering detach(), id = " + this.toString());
+//			m_activity = null;
+//		}
+//
+//		/****************
+//		 * Please call this when the connecting Activity
+//		 * goes away for good.  This will free up lots of
+//		 * resources!
+//		 */
+//		public void kill() {
+////			Log.d(tag, "entering kill(), id = " + this.toString());
+//
+//			// todo	garbage collect
+//
+//			m_activity = null;
+//		}
+//
+//		/*****************
+//		 * Call this to see if the ASyncTask is complete.
+//		 *
+//		 * The done state is reset (to false) when onPreExecute()
+//		 * is called, and terminated (true) during onPostExecute().
+//		 */
+//		public boolean isDone() {
+//			return m_done;
+//		}
+//
+//
+//	} // class InspectorASyncTask
+//
 
+	/**************************************************
+	 * New Version for my AsyncTask.  I realized that I don't really
+	 * need to do a static--my users are fine if I restart during
+	 * a configuration change.  All I need to do is display a waiting
+	 * dialog while the data is loaded and the UI is drawn.
+	 *
+	 * When the parent Activity stops or destroys itself, then is
+	 * MUST call AsyncTask.cancel(true).  This signals the AsyncTask
+	 * to stop processing.
+	 *
+	 * 	Method:
+	 * 	~~~~~~
+	 *
+	 *	The data is retrieved from the DB in the doInBackground()
+	 *	method.
+	 *
+	 *	The UI is built during the publish() / onProgressUpdate() method
+	 *	and then completed in onPostExecute().
+	 *
+	 * 	In onPostExecute(), when the layout is completed, then a
+	 * 	flag is set to indicate that the layout is done.
+	 *
+	 * 	Before any variable of the parent Activity is used,
+	 * 	we MUST remember to check to see if this task has been
+	 *  CANCELLED.  If it is, then stop everything.
+	 *
+	 * Side Effects:
+	 * ~~~~~~~~~~~~
+	 * m_async_layout_complete	Set to false when begun and set to
+	 * 							true when done.
+	 *
+	 * m_ex_data		Filled in to hold all the information about this
+	 * 				exercise.
+	 *
+	 * m_num_sets	Changed to indicate the number of sets for this
+	 * 				exercise.
+	 *
+	 * m_layout_list		The main list for all the set layouts.  Filled
+	 * 					in here and used throughout the Activity
+	 * 					(primarily in the catchup() method).
+	 */
+	class InspectorAsyncTask2 extends AsyncTask<Void, Void, Void> {
 
+		private final static String tag = "InspectorAsyncTask2";
+
+		/*****************
+		 * Any initializations are done here.  The Activity should
+		 * really be running, but I'm putting a test here for
+		 * completeness.
+		 */
+		@Override
+		protected void onPreExecute() {
+			if (isCancelled() == true) {
+				Log.v(tag, "onPreExecute() called but the Activity has Terminated!");
+				return;
+			}
+
+			start_progress_dialog();
+
+			// Create the Layout List if necessary.
+			if (m_layout_list == null) {
+				m_layout_list = new ArrayList<SetLayout>();
+			}
+			m_layout_list.clear();
+
+			// Just starting.
+			m_async_layout_complete = false;
 		} // onPreExecute
-		//-------------------
 
+
+		/*****************
+		 *
+		 */
 		@Override
 		protected Void doInBackground(Void... not_used) {
-			// todo: is this necessary? We just set it in
-			//	onPreExecute()!
-			//
-			// Mark that loading has begun.
-//			m_loading = true;
+			if (isCancelled()) {
+				Log.v(tag, "doInBackground(), but cancelled at the beginning. Aborting.");
+				return null;
+			}
 
 			SQLiteDatabase db = null;
 			try {
@@ -1307,11 +1645,16 @@ public class InspectorActivity2
 				// Read in all the info we need about this
 				// exercise.
 				m_ex_data = DatabaseHelper.getExerciseData(db, m_ex_name);
+				if (m_ex_data == null) {
+					Log.e(tag, "Error finding out about this exercise in doInBackground(). Aborting!");
+					return null;
+				}
 
+				// Find out whether to list the sets oldest or newest first.
 				SharedPreferences prefs =
-				PreferenceManager.getDefaultSharedPreferences(m_activity);
+					PreferenceManager.getDefaultSharedPreferences(InspectorActivity2.this);
 				boolean prefs_oldest_order =
-				prefs.getBoolean(m_activity.getString(R.string.prefs_inspector_oldest_first_key),
+				prefs.getBoolean(getString(R.string.prefs_inspector_oldest_first_key),
 								false);
 
 				// Get a cursor for the sets.  Then loop through
@@ -1328,6 +1671,11 @@ public class InspectorActivity2
 
 					int counter = 0;
 					while (set_cursor.moveToNext()) {
+
+						// Quick check: has the Activity been destroyed?
+						if (isCancelled()) {
+							return null;
+						}
 
 						SetLayout layout_values = new SetLayout();
 						layout_values.data = DatabaseHelper.getSetData(set_cursor);
@@ -1367,129 +1715,42 @@ public class InspectorActivity2
 					db.close();
 					db = null;
 				}
-				m_db_dirty = false;
-//				m_loading = false;		// Done loading!
 			}
 
 			return null;
 		} // doInBackground(...)
 
 
-		//-------------------
-		//	Okay, gotta be careful with this one.  It happens in the
-		//	UI thread, not the same thread as doInBackground().  That
-		//	means that if any variables passed into this can be changed
-		//	in doInBackground(), then this is a BIG problem!
-		//
-		//	input:
-		//		set_array		This is an array of SetLayouts that
-		//						were filled in by the background
-		//						thread via doInBackground().  It has
-		//						only ONE element, the most recently
-		//						created SetLayout.  Let's use it
-		//						to make a new exercise set layout!
-		//
+		/*****************
+		 * Right now I just call catchup().  Data is passed through
+		 * data members (side effect).
+		 */
 		@Override
-//		protected void onProgressUpdate(SetLayout... set_array) {
 		protected void onProgressUpdate(Void... not_used) {
-			if (m_activity == null) {
-				Log.e(tag, "onProgressUpdate() can't find the Activity!!! Can't do anything, so I'm simply returning.");
+			if (isCancelled() == true) {
+				Log.v(tag, "onProgressUpdate() called but the Activity has Terminated!");
 				return;
 			}
-
-			m_activity.catchup();
-
-//			super.onProgressUpdate(set_array);	// todo: is this nec.?
-//			super.onProgressUpdate();	// todo: is this nec.?
-
-//			if (set_array[0] == null) {
-//				m_activity.init_layout(0);
-//			}
-//			else {
-//				m_activity.make_set_layout (set_array[0]);
-//			}
-		} // onProgressUpdate (arg0)
-
-
-		//-------------------
-		//	Note that this is called ONCE and once only!  This class will
-		//	self-destruct once it's done (the ASyncTask doesn't hang
-		//	around).
-		//
-		@Override
-		protected void onPostExecute(Void not_used) {
-			Log.d(tag, "onPostExecute(), id = " + this);
-			if (m_activity == null) {
-				Log.e(tag, "onPostExecute() can't find the Activity!!! This is really bad news.");
-			}
-
-			m_activity.catchup();
-
-			m_activity.finish_ui();
-
-			// Finish our UI
-//			m_activity.trim_date_labels();
-//			m_activity.scroll_to_child (m_activity.m_set_id);
-//			m_activity.stop_progress_dialog();
-//			m_db_dirty = false;
-
-			m_done = true;	// finally!
-		} // onPostExecute()
-
-
-		/***************
-		 * Connects this task to an Activity, allowing
-		 * this static class to communicate with that
-		 * Activity (so it can get the data we're reading
-		 * from the database!).
-		 *
-		 * @param activity	The Activity that wants to
-		 * 					use the data.
-		 */
-		public void attach (InspectorActivity2 activity) {
-			m_activity = activity;
-		}
-
-		/***************
-		 * Removes our connection to whatever Activity
-		 * we're attached to (or does nothing if we're
-		 * not attached to anything).
-		 *
-		 * This is an important call when the Activity
-		 * goes away (like during an orientation change)
-		 * so that we're not using invalid pointers!
-		 */
-		public void detach() {
-//			Log.d(tag, "entering detach(), id = " + this.toString());
-			m_activity = null;
-		}
-
-		/****************
-		 * Please call this when the connecting Activity
-		 * goes away for good.  This will free up lots of
-		 * resources!
-		 */
-		public void kill() {
-//			Log.d(tag, "entering kill(), id = " + this.toString());
-
-			// todo	garbage collect
-
-			m_activity = null;
+			catchup();
 		}
 
 		/*****************
-		 * Call this to see if the ASyncTask is complete.
-		 *
-		 * The done state is reset (to false) when onPreExecute()
-		 * is called, and terminated (true) during onPostExecute().
 		 */
-		public boolean isDone() {
-			return m_done;
+		@Override
+		protected void onPostExecute(Void not_used) {
+			if (isCancelled()) {
+				Log.v(tag, "onPostExecute() called but the Activity has Terminated!");
+				return;
+			}
+
+			catchup();
+			finish_ui();
+
+			// Indicate that the UI operation is complete.
+			m_async_layout_complete = true;
 		}
 
-
-	} // class InspectorASyncTask
-
+	} // class InspectorAsyncTask2
 
 
 }
