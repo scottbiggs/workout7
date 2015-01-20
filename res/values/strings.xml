@@ -1256,8 +1256,8 @@
 	<string name="inspector_menu_brief_label">brief</string>
 	<string name="inspector_menu_verbose_label">verbose</string>
 
-	<string name="inspector_menu_old_first_label">put oldest at top</string>
-	<string name="inspector_menu_newest_first_label">put newest at top</string>
+	<string name="inspector_menu_old_first_label">put oldest first</string>
+	<string name="inspector_menu_newest_first_label">put newest first</string>
 
 
 	<!-- ============         ============ -->
