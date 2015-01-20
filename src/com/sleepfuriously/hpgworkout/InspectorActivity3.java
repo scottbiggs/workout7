@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -76,6 +77,9 @@ public class InspectorActivity3
 	 * optimization process.  Constructed in onCreate().
 	 */
 	LayoutInflater m_set_inflater = null;
+
+	/** This TextView tells the user the current order that sets are displayed */
+	TextView m_desc_tv = null;
 
 
 	//------------------
@@ -188,12 +192,23 @@ public class InspectorActivity3
 		m_layout_list = new ArrayList<SetLayout>();
 
 		// Create the UI that will ALWAYS be there for this Activity.
-		v_set_order_msg();
 		m_main_ll = (LinearLayout) findViewById(R.id.inspector_all_sets_ll);
 		if (m_landscape)
 			m_hsv = (HorizontalScrollView) findViewById(R.id.inspector_hsv);
 		else
 			m_sv = (ScrollView) findViewById(R.id.inspector_sv);
+
+		m_desc_tv = (TextView) findViewById(R.id.inspector_description_tv);
+		v_set_order_msg();
+		m_desc_tv.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick (View v) {
+				// Toggle the display order.  This is called when the user
+				// clicks on it.
+				v_toggle_set_order();
+			}
+		});
+
 
 		// Preloading stuff to optimize the layout creator.
 		m_set_inflater = getLayoutInflater();
@@ -214,6 +229,8 @@ public class InspectorActivity3
 	 */
 	@Override
 	protected void onDestroy() {
+		Log.d(tag, "onDestroy()");
+
 		if (m_task != null) {
 			// Tell the AsyncTask to stop because the Activity
 			// is going away.  This should work regardless of
@@ -377,24 +394,7 @@ public class InspectorActivity3
 		int id = item.getItemId();
 		switch (id) {
 			case MENU_ID_ORDER:
-				// First change our data.
-				m_oldest_first = !m_oldest_first;
-				m_data.set_oldest_first(m_oldest_first);
-
-				// Save it.
-				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-				prefs.edit().putBoolean(getString(R.string.prefs_inspector_oldest_first_key),
-										m_oldest_first)
-								.commit();
-
-				// Show the default at the top.
-				m_set_id = -1;
-				v_set_order_msg();
-
-				// Rebuild the set list
-				m_task = new BuildSetListAsyncTask();
-				m_task.execute();
-				start_progress_dialog();
+				v_toggle_set_order();
 				break;
 
 			default:
@@ -412,12 +412,50 @@ public class InspectorActivity3
 
 
 	/**************************
+	 * Call this when the user wants to reverse the order of the displayed
+	 * sets.  This will start a new AsyncTask to redisplay/redraw all the
+	 * exercise sets.
+	 *
+	 * preconditions:
+	 *	m_oldest_first		correctly holds the current order
+	 *
+	 * side effects:
+	 * 	m_oldest_first		Will be toggled.
+	 * 	m_data 				Will have it's order toggled, too.
+	 *  -The preferences will indicate the new change
+	 */
+	private void v_toggle_set_order() {
+		// First change our data.
+		m_oldest_first = !m_oldest_first;
+		m_data.set_oldest_first(m_oldest_first);
+
+		// Save it.
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		prefs.edit().putBoolean(getString(R.string.prefs_inspector_oldest_first_key),
+								m_oldest_first)
+						.commit();
+
+		// Show the default at the top.
+		m_set_id = -1;
+		v_set_order_msg();
+
+		// Rebuild the set list
+		m_task = new BuildSetListAsyncTask();
+		m_task.execute();
+		start_progress_dialog();
+	} // v_toggle_set_order()
+
+
+	/**************************
 	 * Call this to set the correct message for the
 	 * m_desc_tv (depends on the order we're displaying).
+	 *
+	 * preconditions:
+	 * 	m_desc_tv		Is ready to be changed.
 	 */
 	private void v_set_order_msg() {
-		TextView desc_tv = (TextView) findViewById(R.id.inspector_description_tv);
-		desc_tv.setText(m_oldest_first ?
+		m_desc_tv = (TextView) findViewById(R.id.inspector_description_tv);
+		m_desc_tv.setText(m_oldest_first ?
 							R.string.inspector_oldest_first_msg :
 							R.string.inspector_newest_first_msg);
 	} // v_set_order_msg()
@@ -717,7 +755,7 @@ public class InspectorActivity3
 		str += set_date.print_time(false);
 
 		time_tv.setText(str);
-	} // setup_date (set_cursor, set_ll)
+	} // setup_date (vals, set_ll)
 
 
 	/********************
@@ -752,7 +790,7 @@ public class InspectorActivity3
 			reps_ll.setVisibility(View.GONE);
 		}
 		return false;
-	} // v_setup_reps (set_cursor, ex_cursor, set_ll)
+	} // v_setup_reps (vals, set_ll)
 
 
 	/*********************
@@ -786,7 +824,7 @@ public class InspectorActivity3
 			bar.setVisibility(View.GONE);
 		}
 		return false;
-	} // v_setup_weight (set_cursor, ex_cursor, set_ll)
+	} // v_setup_weight (vals, set_ll, set_bar)
 
 
 	/*********************

@@ -461,7 +461,7 @@ public class BaseDialogActivity extends Activity {
 	 * it otherwise.
 	 */
 	public void stop_progress_dialog() {
-		Log.d(tag, "stop_progress_dialog(), id = " + this.toString());
+//		Log.d(tag, "stop_progress_dialog(), id = " + this.toString());
 		if (m_prog_dialog != null) {
 			m_prog_dialog.dismiss();
 			m_prog_dialog = null;

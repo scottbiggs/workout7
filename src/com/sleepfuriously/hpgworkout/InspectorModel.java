@@ -203,38 +203,42 @@ public class InspectorModel {
 	 * @return	An empty list if there are none, null on error.
 	 */
 	ArrayList<SetData> get_all_sets() {
-		if (m_sets == null) {
-			// Need to load up our sets.  This may take a
-			// while.
-			SQLiteDatabase db = null;
-			Cursor cursor = null;
-			try {
-				db = WGlobals.g_db_helper.getReadableDatabase();
-				cursor = DatabaseHelper
-						.getAllSets(db, m_ex_name, m_oldest_first);
 
-				// Loop through the cursor and build our array.
-				m_sets = new ArrayList<SetData>();
-				while (cursor.moveToNext()) {
-					// Yup, that's all there is to it!
-					m_sets.add(DatabaseHelper.getSetData(cursor));
-				}
-			}
-			catch (SQLiteException e) {
-				e.printStackTrace();
-			}
-			finally {					// Clean up!
-				if (cursor != null) {
-					cursor.close();
-					cursor = null;
-				}
-				if (db != null) {
-					db.close();
-					db = null;
-				}
-			}
+		// Easy case first.
+		if (m_sets != null)
+			return m_sets;
 
+
+		// Need to load up our sets.  This may take a
+		// while.
+		SQLiteDatabase db = null;
+		Cursor cursor = null;
+		try {
+			db = WGlobals.g_db_helper.getReadableDatabase();
+			cursor = DatabaseHelper
+					.getAllSets(db, m_ex_name, m_oldest_first);
+
+			// Loop through the cursor and build our array.
+			m_sets = new ArrayList<SetData>();
+			while (cursor.moveToNext()) {
+				// Yup, that's all there is to it!
+				m_sets.add(DatabaseHelper.getSetData(cursor));
+			}
 		}
+		catch (SQLiteException e) {
+			e.printStackTrace();
+		}
+		finally {					// Clean up!
+			if (cursor != null) {
+				cursor.close();
+				cursor = null;
+			}
+			if (db != null) {
+				db.close();
+				db = null;
+			}
+		}
+
 		return m_sets;
 	} // get_all_sets()
 

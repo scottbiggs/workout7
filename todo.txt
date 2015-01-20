@@ -1,7 +1,7 @@
 TODO:
 -----------------
 Re-working the Inspector:
-	- Should change the order when clicking on the TV that displays order
+	- Need to test how the changes around the tabs work/don't work.
 
 Bug (minor):  I don't see the spinner spinning very much while the
 	asynctasks are doing their thing.
