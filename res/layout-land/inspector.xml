@@ -30,26 +30,15 @@
 		style="@style/white_text_large"
 		/>
 
-	<TextView
-		android:id="@+id/inspector_description_tv"
-		style="@style/white_text_small"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignParentRight="true"
-		android:layout_alignParentTop="true"
-		android:layout_marginRight="24dp"
-		android:gravity="center"
-		android:text="error" />
-
 	<HorizontalScrollView
-		android:id="@+id/inspector_hsv"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_alignParentBottom="true"
-		android:layout_below="@id/inspector_description_tv"
-		android:layout_centerHorizontal="true"
-		android:layout_marginLeft="5dp"
-		android:layout_marginRight="5dp" >
+	    android:id="@+id/inspector_hsv"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentBottom="true"
+	    android:layout_below="@+id/inspector_title_tv"
+	    android:layout_centerHorizontal="true"
+	    android:layout_marginLeft="5dp"
+	    android:layout_marginRight="5dp" >
 
 		<!--
 			This LinearLayout is where all the tables
@@ -65,5 +54,17 @@
 
 
 	</HorizontalScrollView>
+
+	<TextView
+	    android:id="@+id/inspector_description_tv"
+	    style="@style/white_text_small"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignBaseline="@+id/inspector_title_tv"
+	    android:layout_alignBottom="@+id/inspector_title_tv"
+	    android:layout_alignRight="@+id/inspector_hsv"
+	    android:layout_marginRight="18dp"
+	    android:gravity="center"
+	    android:text="error" />
 
 </RelativeLayout>
