@@ -10,6 +10,7 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.style.SuperscriptSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -89,13 +90,8 @@ public class InspectorActivity3
 	/**
 	 * External flag.  Other Activities use this to tell
 	 * the Inspector that it needs to refresh its data.
-	 *
-	 * When the Inspector has reloaded, this is set to false.
-	 *
-	 * todo
-	 * 		This is NOT used!!!  (and poorly named)
 	 */
-	public static boolean m_db_dirty = true;
+	public static boolean m_refresh = true;
 
 	/**
 	 * This flag is used to signal to the Grid whether or not
@@ -185,7 +181,7 @@ public class InspectorActivity3
 
 		// Initialize data members that are universal to this
 		// Activity.
-		m_db_dirty = true;	// True for first time.
+		m_refresh = true;	// True for first time.
 		m_landscape = (get_screen_orientation() ==
 							Configuration.ORIENTATION_LANDSCAPE);
 		m_data = new InspectorModel(ex_name, m_oldest_first);
@@ -205,7 +201,7 @@ public class InspectorActivity3
 			public void onClick (View v) {
 				// Toggle the display order.  This is called when the user
 				// clicks on it.
-				v_toggle_set_order();
+				toggle_set_order_and_start_new_async();
 			}
 		});
 
@@ -213,13 +209,28 @@ public class InspectorActivity3
 		// Preloading stuff to optimize the layout creator.
 		m_set_inflater = getLayoutInflater();
 
-
-		// Start building the View
-		m_task = new BuildSetListAsyncTask();
-		((BuildSetListAsyncTask) m_task).execute();
-		start_progress_dialog();
-
 	} // onCreate (.)
+
+
+	/**************************
+	 * This is used to start the progress dialog the FIRST time the
+	 * Activity goes (instead of onCreate()) and any time we come
+	 * back to this Activity from another tab AND the m_refresh
+	 * has been set.
+	 */
+	@Override
+	protected void onResume() {
+		if (m_refresh) {
+			m_refresh = false;
+
+			// Start building the View
+			m_task = new BuildSetListAsyncTask();
+			m_task.execute();
+			start_progress_dialog();
+		}
+		super.onResume();
+	} // onResume()
+
 
 
 	/**************************
@@ -335,6 +346,7 @@ public class InspectorActivity3
 					return;	// No need to set any flags
 				}
 				m_main_ll.removeView(layout);
+				m_refresh = false;	// No need to redraw everything
 				break;
 
 			case EditSetActivity.RESULT_TIME_CHANGED:
@@ -346,10 +358,11 @@ public class InspectorActivity3
 				// Falls through... ??
 
 			case RESULT_OK:
-				// Redraw the set as the data has changed.
+				// Redraw the set (not the whole list) as the data has changed.
+				start_progress_dialog();
 				m_task = new ChangeSetAsyncTask();
 				m_task.execute();
-				start_progress_dialog();
+				m_refresh = false;	// No need to redraw everything
 				break;
 
 			default:
@@ -363,7 +376,6 @@ public class InspectorActivity3
 		GraphActivity.m_db_dirty = true;
 		AddSetActivity.m_reset_widgets = true;
 		m_signal_grid_that_database_changed = true;
-
 
 	} // onActivityResult (requestCode, resultCode, data)
 
@@ -394,7 +406,7 @@ public class InspectorActivity3
 		int id = item.getItemId();
 		switch (id) {
 			case MENU_ID_ORDER:
-				v_toggle_set_order();
+				toggle_set_order_and_start_new_async();
 				break;
 
 			default:
@@ -403,12 +415,6 @@ public class InspectorActivity3
 		}
 		return super.onOptionsItemSelected(item);
 	} // onOptionsItemSelected(item)
-
-
-
-	//------------------
-	//	View Methods
-	//------------------
 
 
 	/**************************
@@ -421,10 +427,12 @@ public class InspectorActivity3
 	 *
 	 * side effects:
 	 * 	m_oldest_first		Will be toggled.
+	 *
 	 * 	m_data 				Will have it's order toggled, too.
+	 *
 	 *  -The preferences will indicate the new change
 	 */
-	private void v_toggle_set_order() {
+	private void toggle_set_order_and_start_new_async() {
 		// First change our data.
 		m_oldest_first = !m_oldest_first;
 		m_data.set_oldest_first(m_oldest_first);
@@ -443,7 +451,13 @@ public class InspectorActivity3
 		m_task = new BuildSetListAsyncTask();
 		m_task.execute();
 		start_progress_dialog();
-	} // v_toggle_set_order()
+	} // toggle_set_order()
+
+
+
+	//------------------
+	//	View Methods
+	//------------------
 
 
 	/**************************
@@ -1212,16 +1226,23 @@ public class InspectorActivity3
 	class ChangeSetAsyncTask extends AsyncTask<Void, Void, Void> {
 		private final static String tag = "ChangeSetAsyncTask";
 
+		/** The new data to display in this set */
 		private SetData m_set_data = null;
+
+		/** The View to modify */
 		private LinearLayout m_set_view = null;
 
 
+		/**************************
+		 */
 		@Override
 		protected void onCancelled() {
 			if (is_progress_dialog_active())
 				stop_progress_dialog();
 		}
 
+		/**************************
+		 */
 		@Override
 		protected void onPreExecute() {
 			if (isCancelled())
@@ -1236,6 +1257,8 @@ public class InspectorActivity3
 			}
 		}
 
+		/**************************
+		 */
 		@Override
 		protected Void doInBackground(Void... not_used) {
 			// Make sure the data if fresh.  Then grab it.
@@ -1245,6 +1268,8 @@ public class InspectorActivity3
 			return null;
 		}
 
+		/**************************
+		 */
 		@Override
 		protected void onPostExecute(Void result) {
 			if (isCancelled())

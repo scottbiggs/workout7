@@ -1007,7 +1007,7 @@ public class EditExerciseActivity
 
 			AddSetActivity.m_db_dirty = true;
 			AddSetActivity.m_reset_widgets = true;
-			InspectorActivity2.m_db_dirty = true;
+			InspectorActivity3.m_refresh = true;
 //			HistoryActivity.m_db_dirty = true;
 			GraphActivity.m_db_dirty = true;
 			ExerciseTabHostActivity.m_dirty = true;

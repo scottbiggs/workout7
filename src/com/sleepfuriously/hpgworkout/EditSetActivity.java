@@ -517,7 +517,7 @@ public class EditSetActivity
 									WGlobals.play_short_click();
 									delete_set();
 									dismiss_all_dialogs();
-									Intent itt = new Intent (EditSetActivity.this, InspectorActivity2.class);
+									Intent itt = new Intent (EditSetActivity.this, InspectorActivity3.class);
 									itt.putExtra(EditSetActivity.ID_KEY, m_set_id);
 									my_finish(RESULT_DELETED, itt);
 								}
@@ -879,10 +879,10 @@ public class EditSetActivity
 		Log.v(tag, "save_and_exit() updated " + num_rows + " rows");
 
 //		// Notify other Activities to reload
-		InspectorActivity2.m_db_dirty = true;
+		InspectorActivity3.m_refresh = true;
 		GraphActivity.m_db_dirty = true;
 
-		Intent itt = new Intent (this, InspectorActivity2.class);
+		Intent itt = new Intent (this, InspectorActivity3.class);
 		itt.putExtra(EditSetActivity.ID_KEY, m_set_id);
 		my_finish (m_time_date_dirty ? RESULT_TIME_CHANGED : RESULT_OK, itt);
 	} // save_and_exit()

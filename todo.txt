@@ -2,6 +2,8 @@ TODO:
 -----------------
 Re-working the Inspector:
 	- Need to test how the changes around the tabs work/don't work.
+	- When entering an exercise AFTER looking at the Inspector, it
+	doesn't update the next time you look at it.
 
 Bug (minor):  I don't see the spinner spinning very much while the
 	asynctasks are doing their thing.
