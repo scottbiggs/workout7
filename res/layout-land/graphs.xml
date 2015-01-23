@@ -6,22 +6,23 @@
 	>
 
 	<RelativeLayout
-		android:id="@+id/graph_title_rl"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_alignParentTop="true"
-		android:layout_marginLeft="8dp"
-		android:layout_marginRight="8dp"
-		android:layout_marginTop="2dp" >
+	    android:id="@+id/graph_title_rl"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentTop="true"
+	    android:layout_marginBottom="2dp"
+	    android:layout_marginLeft="8dp"
+	    android:layout_marginRight="8dp"
+	    android:layout_marginTop="2dp" >
 
 	<ImageView
-		android:id="@+id/graph_logo"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignParentRight="true"
-		android:layout_marginRight="12dp"
-		android:layout_marginTop="3dp"
-		android:src="@drawable/hpglogo_small" />
+	    android:id="@+id/graph_logo"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentRight="true"
+	    android:layout_marginRight="12dp"
+	    android:layout_marginTop="3dp"
+	    android:src="@drawable/hpglogo_small" />
 
 	<TextView
 		android:id="@+id/graph_title_tv"
@@ -51,22 +52,6 @@
 		android:layout_marginTop="3dp"
 		android:text="@string/loading_str"
 		android:textColor="@color/off_white" />
-
-	<TextView
-		android:id="@+id/graph_daily_toggle_mode_tv"
-		style="@style/white_text_smallish"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignRight="@id/graph_title_rl"
-		android:layout_above="@id/graph_description_tv"
-		android:layout_marginRight="65dp"
-		android:background="@drawable/rounded_edges_dark"
-		android:paddingBottom="2dp"
-		android:paddingLeft="5dp"
-		android:paddingRight="5dp"
-		android:paddingTop="2dp"
-		android:text="Display Mode" />
-
 
 	<Button
 		android:id="@+id/graph_options_butt"
@@ -138,5 +123,19 @@
 		</ScrollView>
 
 	</LinearLayout>
+
+	<TextView
+	    android:id="@+id/graph_daily_toggle_mode_tv"
+	    style="@style/white_text_smallish"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignBottom="@+id/graph_description_tv"
+	    android:layout_alignRight="@+id/graph_title_rl"
+	    android:background="@drawable/rounded_edges_dark"
+	    android:paddingBottom="2dp"
+	    android:paddingLeft="5dp"
+	    android:paddingRight="5dp"
+	    android:paddingTop="2dp"
+	    android:text="Display Mode" />
 
 </RelativeLayout>
