@@ -1005,7 +1005,6 @@ public class EditExerciseActivity
 
 			save_data();		// YEAH!!!!!
 
-			AddSetActivity.m_db_dirty = true;
 			AddSetActivity.m_reset_widgets = true;
 			InspectorActivity3.m_refresh = true;
 //			HistoryActivity.m_db_dirty = true;

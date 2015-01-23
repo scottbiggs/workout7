@@ -2,8 +2,12 @@ TODO:
 -----------------
 Re-working the Inspector:
 	- Need to test how the changes around the tabs work/don't work.
-	- When entering an exercise AFTER looking at the Inspector, it
-	doesn't update the next time you look at it.
+	- Changing the time in a set is not implemented yet.
+
+Bug (minor):  I get a warning (stopping a progress dialog that's
+	already null when rotating in EditSetActivity.  By the way,
+	there are a number of things that don't go as expected when
+	rotating the EditSetActivity.
 
 Bug (minor):  I don't see the spinner spinning very much while the
 	asynctasks are doing their thing.
@@ -160,6 +164,12 @@ In the graphs, instead of horizontal lines, divide up into
 ---------------------------------------------------
 TABLED (for later versions)
 ---------------------------------------------------
+When someone enters a set in ASet, the Inspector should MOVE
+	to that set (instead of staying on the one that was centered
+	before).  Or you could just move to the top (set current set to -1)?
+	- Requires more inter-Activity communication than I want to do
+	at the moment.
+
 In GraphOptions, if there's just one aspect, have it list none (so it's
 	just used to toggle the daily mode).
 	- nah, not worth it.

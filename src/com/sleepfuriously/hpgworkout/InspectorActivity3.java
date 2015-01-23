@@ -53,6 +53,10 @@ public class InspectorActivity3
 	/** Id for the menu item to change the order that sets are listed */
 	protected static final int MENU_ID_ORDER = 2;
 
+	/** Use this number to indicate that no select was selected by the user */
+	protected static final int NO_SET_SELECTED = -1;
+
+
 	//------------------
 	//	Widget Data
 	//------------------
@@ -113,7 +117,7 @@ public class InspectorActivity3
 	 * If the number is invalid (-1), then scroll to the top (or don't
 	 * scroll at all).
 	 */
-	private int m_set_id = -1;
+	private int m_set_id = NO_SET_SELECTED;
 
 	/** Tells if we're in landscape mode or not. */
 	private boolean m_landscape = false;
@@ -171,7 +175,7 @@ public class InspectorActivity3
 			Log.e(tag, "Cannot find the exercise name in onCreate()!!!");
 			return;
 		}
-		m_set_id = itt.getIntExtra(ExerciseTabHostActivity.KEY_SET_ID, -1);
+		m_set_id = itt.getIntExtra(ExerciseTabHostActivity.KEY_SET_ID, NO_SET_SELECTED);
 
 		SharedPreferences prefs =
 				PreferenceManager.getDefaultSharedPreferences(this);
@@ -221,7 +225,11 @@ public class InspectorActivity3
 	@Override
 	protected void onResume() {
 		if (m_refresh) {
+//			Log.d(tag, "onResume(), m_set_id = " + m_set_id);
 			m_refresh = false;
+
+			// Reload the data from the DB
+			m_data.refresh_data();
 
 			// Start building the View
 			m_task = new BuildSetListAsyncTask();
@@ -275,7 +283,6 @@ public class InspectorActivity3
 	} // onBackPressed()
 
 	/**************************
-	 *
 	 */
 	@Override
 	public boolean onLongClick(View v) {
@@ -335,7 +342,7 @@ public class InspectorActivity3
 		//
 		// I'm going ahead and making this the new main ID.  Kind
 		// of makes sense for a user's perspective.
-		m_set_id = itt.getIntExtra(EditSetActivity.ID_KEY, -1);
+		m_set_id = itt.getIntExtra(EditSetActivity.ID_KEY, NO_SET_SELECTED);
 		switch (resultCode) {
 			case EditSetActivity.RESULT_DELETED:
 				// The workout set was deleted.  Remove the
@@ -346,6 +353,7 @@ public class InspectorActivity3
 					return;	// No need to set any flags
 				}
 				m_main_ll.removeView(layout);
+				m_set_id = NO_SET_SELECTED;	// Indicate that there's no selected set anymore.
 				m_refresh = false;	// No need to redraw everything
 				break;
 
@@ -444,7 +452,7 @@ public class InspectorActivity3
 						.commit();
 
 		// Show the default at the top.
-		m_set_id = -1;
+		m_set_id = NO_SET_SELECTED;
 		v_set_order_msg();
 
 		// Rebuild the set list
@@ -1148,7 +1156,7 @@ public class InspectorActivity3
 		/************************
 		 */
 		@Override
-		protected Void doInBackground(Void... arg0) {
+		protected Void doInBackground(Void... not_used) {
 			if (isCancelled())
 				return null;
 
@@ -1177,7 +1185,7 @@ public class InspectorActivity3
 		/************************
 		 */
 		@Override
-		protected void onProgressUpdate(Void... values) {
+		protected void onProgressUpdate(Void... not_used) {
 			if (isCancelled() == true)
 				return;
 			v_catchup();
@@ -1186,7 +1194,7 @@ public class InspectorActivity3
 		/************************
 		 */
 		@Override
-		protected void onPostExecute(Void result) {
+		protected void onPostExecute(Void not_used) {
 			if (isCancelled())
 				return;
 
@@ -1194,21 +1202,20 @@ public class InspectorActivity3
 			// display.
 			if (m_layout_list.size() == 0) {
 				v_display_no_sets();
-				return;
+			}
+			else {
+				v_catchup();
+
+				if (isCancelled())
+					return;
+				v_finish_ui();
+
+				if (isCancelled())
+					return;
 			}
 
-			if (isCancelled())
-				return;
-			v_catchup();
-
-			if (isCancelled())
-				return;
-			v_finish_ui();
-
-			if (isCancelled())
-				return;
 			stop_progress_dialog();
-		}
+		} // onPostExecute()
 
 	} // class BuildSetListAsyncTask
 

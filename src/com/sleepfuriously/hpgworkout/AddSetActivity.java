@@ -112,13 +112,6 @@ public class AddSetActivity
 	 */
 	public static boolean m_reset_widgets = true;
 
-	/**
-	 * When true, this indicates that the database has been changed.
-	 * Primarily, this means that when Activity calls finish(),
-	 * it needs to tell GridActivity to reload.
-	 */
-	public static boolean m_db_dirty = false;
-
 
 	/**
 	 * Since the ASyncTask is static, it may persist
@@ -1606,7 +1599,6 @@ public class AddSetActivity
 
 		// Indicate that the database has changed and tell the
 		//	other activities to reset.
-		m_db_dirty = true;
 		InspectorActivity3.m_refresh = true;
 		GraphActivity.m_db_dirty = true;
 		ExerciseTabHostActivity.m_dirty = true;
