@@ -320,7 +320,8 @@ public class GridActivity2 extends BaseDialogActivity
 
 		// This means that the Database has changed.  Reload
 		// everything.
-		if (result_code == RESULT_OK) {
+		if ((result_code == RESULT_OK) ||
+			(result_code == EditSetActivity.RESULT_TIME_CHANGED)) {
 			m_left_table.removeAllViews();
 			m_main_table.removeAllViews();
 

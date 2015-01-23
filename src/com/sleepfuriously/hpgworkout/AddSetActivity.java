@@ -123,6 +123,13 @@ public class AddSetActivity
 	private ASetASyncTask m_task = null;
 
 
+	/**
+	 * The ID of the set that was last added.  -1 if n/a.
+	 * Used by other Activities to see what has happened here.
+	 */
+	public static int m_last_set_added = -1;
+
+
 	//------------------------
 	//	Methods
 	//------------------------
@@ -135,6 +142,8 @@ public class AddSetActivity
 
 		m_reset_widgets = true;	// Fill the forms the first time this
 								// activity is called.
+
+		m_last_set_added = -1;	// No sets added yet.
 
 		// Try to grab a reference it from a previous
 		// instance of this Activity.
@@ -1582,8 +1591,10 @@ public class AddSetActivity
 			Calendar now = Calendar.getInstance();
 			values.put(DatabaseHelper.SET_COL_DATEMILLIS, now.getTimeInMillis());
 
-			// That's it!  Insert and we're done.
-			db.insert(DatabaseHelper.SET_TABLE_NAME, null, values);
+			// That's it!  Insert and we're done.  Oh, by the way,
+			// let's remember the ID of that set for anyone that
+			// wants it.
+			m_last_set_added = (int) db.insert(DatabaseHelper.SET_TABLE_NAME, null, values);
 		}
 		catch (SQLiteException e) {
 			e.printStackTrace();

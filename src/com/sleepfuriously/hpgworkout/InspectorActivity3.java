@@ -185,7 +185,6 @@ public class InspectorActivity3
 
 		// Initialize data members that are universal to this
 		// Activity.
-		m_refresh = true;	// True for first time.
 		m_landscape = (get_screen_orientation() ==
 							Configuration.ORIENTATION_LANDSCAPE);
 		m_data = new InspectorModel(ex_name, m_oldest_first);
@@ -209,9 +208,16 @@ public class InspectorActivity3
 			}
 		});
 
-
 		// Preloading stuff to optimize the layout creator.
 		m_set_inflater = getLayoutInflater();
+
+		// Get that AsyncTask cranking!  Start by building
+		// the View
+		m_task = new BuildSetListAsyncTask();
+		m_task.execute();
+		start_progress_dialog();
+		m_refresh = false;	// The first time, we'll take care of
+							// the Async in onCreate(), not onResume().
 
 	} // onCreate (.)
 
@@ -227,6 +233,10 @@ public class InspectorActivity3
 		if (m_refresh) {
 //			Log.d(tag, "onResume(), m_set_id = " + m_set_id);
 			m_refresh = false;
+
+			// This changes our current id to whatever the AddSetActivity
+			// thinks it is.
+			m_set_id = AddSetActivity.m_last_set_added;
 
 			// Reload the data from the DB
 			m_data.refresh_data();
@@ -264,6 +274,7 @@ public class InspectorActivity3
 		if (is_progress_dialog_active()) {
 			stop_progress_dialog();
 		}
+
 		super.onDestroy();
 	} // onDestroy()
 
@@ -330,6 +341,9 @@ public class InspectorActivity3
 			return;
 		}
 
+		// Note that our data has changed.
+		m_data.refresh_data();
+
 		// The set has been edited/deleted.
 		if (itt == null) {
 			Log.e(tag, "Intent data is NULL in onActivityResult()! Aborting!");
@@ -349,7 +363,7 @@ public class InspectorActivity3
 				// View from our Activity.
 				layout = (LinearLayout) m_main_ll.findViewById(m_set_id);
 				if (layout == null) {
-					Log.e(tag, "Can't find the deleted view in onActivityResult! Aborting!");
+					Log.e(tag, "Can't find the deleted view in onActivityResult()! Aborting!");
 					return;	// No need to set any flags
 				}
 				m_main_ll.removeView(layout);
@@ -358,12 +372,10 @@ public class InspectorActivity3
 				break;
 
 			case EditSetActivity.RESULT_TIME_CHANGED:
-				// todo
-				Log.e(tag, "need to implement this!!!");
+				// Ok, I'm lazy.  Here I just draw the whole set again.
+				// It'll happen automatically during onResume(), which hits
+				// just after this method.
 				break;
-
-				//----
-				// Falls through... ??
 
 			case RESULT_OK:
 				// Redraw the set (not the whole list) as the data has changed.

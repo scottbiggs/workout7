@@ -2,7 +2,6 @@ TODO:
 -----------------
 Re-working the Inspector:
 	- Need to test how the changes around the tabs work/don't work.
-	- Changing the time in a set is not implemented yet.
 
 Bug (minor):  I get a warning (stopping a progress dialog that's
 	already null when rotating in EditSetActivity.  By the way,
@@ -164,12 +163,6 @@ In the graphs, instead of horizontal lines, divide up into
 ---------------------------------------------------
 TABLED (for later versions)
 ---------------------------------------------------
-When someone enters a set in ASet, the Inspector should MOVE
-	to that set (instead of staying on the one that was centered
-	before).  Or you could just move to the top (set current set to -1)?
-	- Requires more inter-Activity communication than I want to do
-	at the moment.
-
 In GraphOptions, if there's just one aspect, have it list none (so it's
 	just used to toggle the daily mode).
 	- nah, not worth it.
@@ -270,6 +263,15 @@ When long-clicking a single exercise set on the Grid,
 ---------------------------------------------------
 DONE DONE DONE DONE DONE DONE DONE DONE DONE DONE
 ---------------------------------------------------
+Going from the Grid to Inspector, and then simply hitting the
+	back button causes the Grid to reload when it wasn't necessary!
+	- Can't repeat this.
+
+When someone enters a set in ASet, the Inspector should MOVE
+	to that set (instead of staying on the one that was centered
+	before).  Or you could just move to the top (set current set to -1)?
+	- done
+
 BUG!!! When looking at any of the tabbed activities, we crash when going
 from landscape to portrait.
 	Fixed.  Took a while!
