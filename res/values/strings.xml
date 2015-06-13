@@ -1871,7 +1871,7 @@
 
 	<string name="muscle_group_upper">upper</string>
 	<string name="muscle_group_lower">lower</string>
-	<string name="muscle_group_trunk">trunk</string>
+	<string name="muscle_group_trunk">core</string>
 	<string name="muscle_group_all">all</string>
 	<string name="muscle_group_misc">misc</string>
 
