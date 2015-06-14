@@ -147,6 +147,7 @@ public class InspectorModel {
 	 * within the UI thread.
 	 */
 	void refresh_data() {
+		m_ex_data = null;	// Signal to refresh exercise info.
 		m_sets = null;		// Signal to read in new data
 							// next request.
 	} // refresh_data()
