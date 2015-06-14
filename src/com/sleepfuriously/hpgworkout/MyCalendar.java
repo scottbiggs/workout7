@@ -24,6 +24,12 @@ public class MyCalendar {
 	//------------------------------
 	// Constructors
 	//------------------------------
+
+
+	/********************
+	 * This basic constructor sets the time to NOW, when it is
+	 * actually constructed.
+	 */
 	MyCalendar() {
 		m_legal_date = true;
 	}
@@ -227,13 +233,24 @@ public class MyCalendar {
 	}
 
 	/********************
-	 * Convenience function.
+	 * Convenience function.  Returns the time in milliseconds.
 	 */
 	long get_millis() {
 		if (!m_legal_date)
 			return -1;
 
 		return m_cal.getTimeInMillis();
+	}
+
+
+	/********************
+	 * You want full accuracy on what time it is?  This is the
+	 * print function for you!  Returns a string suitable for
+	 * printing that has the hours, minutes, seconds, and
+	 * milliseconds.  Yeah.
+	 */
+	String print_time_full_accuracy() {
+		return print_time(true) + ":" + get_seconds() + "." + m_cal.get(Calendar.MILLISECOND);
 	}
 
 	/********************
@@ -326,6 +343,14 @@ public class MyCalendar {
 	 */
 	public String print_month_day_numbers() {
 		return get_month_12() + "/" + get_day();
+	}
+
+	/********************
+	 * Tells this instance to set its time to exactly NOW.  Any
+	 * previous time will be forgotten.
+	 */
+	void set_time_to_now() {
+		set_millis(System.currentTimeMillis());
 	}
 
 	/********************
